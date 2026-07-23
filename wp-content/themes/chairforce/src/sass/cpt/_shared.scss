@@ -1,0 +1,54 @@
+/**
+ * TODO: CSS specificity Rules HERE!!!
+ */
+//.blokki-card.hentry {
+//  @include cardImageZoom;
+//
+//  .wp-block-briks-post-type {
+//    @include cardSingleTaxonomyTerm;
+//  }
+//}
+
+/**
+ * TODO: CSS specificity Rules HERE!!!
+ */
+//.accordion-cell.hentry.status-publish {
+//
+//  border-bottom: 1px solid $color-contrast;
+//
+//  .accordion-icon {
+//    color: $color-primary;
+//  }
+//
+//  .accordion-button {
+//    font-size: $font-size-large;
+//  }
+//
+//  .card-readmore {
+//    margin-block-start: $spacing-large;
+//    margin-block-end: $spacing-xl;
+//    text-align: right;
+//  }
+//}
+
+/**
+ * Featured Cards
+ */
+//.wpgb-card.featured-card .blokki-card,
+//.blokki-card.featured-card {
+//  @include featuredCard;
+//}
+
+.card-two-columns {
+
+  @include breakpoint-medium-up{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+    gap: $spacing-xsmall;
+  }
+
+}
+
+p.is-style-subtitle {
+  @include cardSubTitle
+}

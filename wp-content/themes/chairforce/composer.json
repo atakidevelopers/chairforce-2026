@@ -1,0 +1,18 @@
+{
+  "name": "nc/chairforce",
+  "description": "Theme Boilerplate with Namespace and Gutenberg Block support",
+  "type": "wordpress-theme",
+  "license": "GPL2",
+  "authors": [
+    {
+      "name": "NextAndCo Developers",
+      "email": "rao@nextandco.com.au"
+    }
+  ],
+  "require": {},
+  "autoload": {
+    "classmap": [
+      "lib"
+    ]
+  }
+}

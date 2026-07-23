@@ -1,0 +1,105 @@
+// TODO: these values should match with theme.json
+
+// settings.layout.contentSize
+$grid-container: var(--wp--style--global--content-size);
+
+// settings.layout.wideSize
+$grid-container-wide: var(--wp--style--global--wide-size);
+
+// There is no Theme JSO for this, but keeping it here as grid widths are defined here
+$grid-container-narrow: 720px;
+
+// styles.padding.left
+$grid-container-padding: max(var(--wp--style--root--padding-right), var(--wp--style--root--padding-left));
+$grid-container-padding-right: var(--wp--style--root--padding-right);
+$grid-container-padding-left: var(--wp--style--root--padding-left);
+
+
+// Theme.json Set Colors Variables
+// settings.color.palette
+$color-primary: var(--wp--preset--color--primary);
+$color-secondary: var(--wp--preset--color--secondary);
+$color-heading: var(--wp--preset--color--heading);
+$color-body: var(--wp--preset--color--body);
+$color-background: var(--wp--preset--color--background);
+$color-tertiary: var(--wp--preset--color--tertiary);
+$color-quaternary: var(--wp--preset--color--quaternary);
+$color-surface: var(--wp--preset--color--surface);
+$color-foreground: var(--wp--preset--color--foreground);
+$color-outline: var(--wp--preset--color--outline);
+$color-neutral: var(--wp--preset--color--neutral);
+$color-transparent: var(--wp--preset--color--transparent);
+$color-current-color: var(--wp--preset--color--current-color);
+$color-inherit: var(--wp--preset--color--inherit);
+
+$color-contrast: $color-body;
+$color-text: $color-body;
+$color-base: $color-background;
+$color-4: $color-tertiary;
+$color-5: $color-quaternary;
+$color-6: $color-surface;
+$transparent: $color-transparent;
+
+// Theme.json Set Font Variables
+// settings.typography.fontSizes
+$font-size-regular: var(--wp--preset--font-size--normal);
+$font-size-xsmall: var(--wp--preset--font-size--x-small);
+$font-size-small: var(--wp--preset--font-size--small);
+$font-size-medium: var(--wp--preset--font-size--medium);
+$font-size-large: var(--wp--preset--font-size--large);
+$font-size-xlarge: var(--wp--preset--font-size--x-large);
+$font-size-xxlarge: var(--wp--preset--font-size--xx-large);
+$font-size-xxxlarge: var(--wp--preset--font-size--xxx-large);
+$font-size-xxxxlarge: var(--wp--preset--font-size--xxxx-large);
+$font-size-huge: var(--wp--preset--font-size--huge);
+
+// settings.typography.fontFamilies
+$font-primary: var(--wp--preset--font-family--primary);
+$font-secondary: var(--wp--preset--font-family--secondary);
+
+
+// Spacing
+// style.spacing.blockGap
+$block-gap: var(--wp--style--block-gap);
+
+// settings.spacing.spacingSizes
+$spacing-xxsmall: var(--wp--preset--spacing--xx-small);
+$spacing-xsmall: var(--wp--preset--spacing--x-small);
+$spacing-small: var(--wp--preset--spacing--small);
+$spacing-medium: var(--wp--preset--spacing--medium);
+$spacing-large: var(--wp--preset--spacing--large);
+$spacing-xl: var(--wp--preset--spacing--x-large);
+$spacing-xxl: var(--wp--preset--spacing--xx-large);
+$spacing-section: var(--wp--preset--spacing--section);
+
+
+// Theme.json Elements Styling
+
+// Buttons
+// styles.elements.button
+$button-text-color: var(--wp--preset--color--contrast);
+$button-background-color: var(--wp--preset--color--primary);
+
+$button-border-color: var(--wp--preset--color--primary);
+$button-border-style: solid;
+
+$button-padding-vertical: var(--wp--preset--spacing--s);
+$button-padding-sides: var(--wp--preset--spacing--m);
+
+$button-text-color-hover: var(--wp--preset--color--primary);
+$button-background-color-hover: var(--wp--preset--color--secondary);
+
+
+// Theme.json Custom Variables
+$custom-transition-snap: var(--wp--custom--transition-snap);
+
+$font-weight-black: var(--wp--custom--font-weight--black);
+$font-weight-extra-bold: var(--wp--custom--font-weight--extra-bold);
+$font-weight-bold: var(--wp--custom--font-weight--bold);
+$font-weight-semi-bold: var(--wp--custom--font-weight--semi-bold);
+$font-weight-medium: var(--wp--custom--font-weight--medium);
+$font-weight-regular: var(--wp--custom--font-weight--regular);
+$font-weight-light: var(--wp--custom--font-weight--light);
+$font-weight-extra-light: var(--wp--custom--font-weight--extra-light);
+$font-weight-thin: var(--wp--custom--font-weight--thin);
+

@@ -1,0 +1,109 @@
+@import "theme-json-variable";
+
+/**
+ * IMPORTANT: This file should not never declare any CSS rules, it should only contain variables and settings.
+ * TODO: Read Note above!
+ */
+
+/**
+ * Breakpoints
+ */
+$breakpoints: (
+        small: 0,
+        wp-small: 600px,
+        navigation: 767px, // TODO: This value should be changed where we want to make the navigation responsive
+        medium: 781px, // Columns Wrap breakpoint for WordPress
+        uagb-medium: 767px, // Columns Wrap breakpoint for UAGB
+        large: 1024px,
+        wide: 1280px, // TODO: this should match with theme.json
+        hd: 1920px,
+        unlimited: 9999px
+);
+
+/**
+ * Colours for Theme
+ * (Ideally, these should be css variables created with theme.json
+ */
+
+// General Colors
+$white: #FFFFFF;
+$black: #000000;
+$neutral: rgba($black, 0.1);
+
+
+/**
+ * Theme.json Set Color Variables
+ */
+
+
+// Style
+$radius-sm: 2px;
+$radius-md: 10px;
+$radius-lg: 15px;
+$radius-btn: 0; // TODO: this should match with theme.json
+$border-radius: $radius-lg;
+$border-radius-small: $radius-sm;
+
+$radius-pill: 9999px;
+$radius-card: 25px;
+$radius-card-sm: 3px;
+$radius-card-md: 0.5rem;
+$radius-card-big: 21px;
+$shadow-sm: 0 2px 8px 0 rgba($black, 0.025), 0 4px 12px 0 rgba($black, 0.05);
+$shadow-md: 0 3px 9px 0 rgba($black, 0.05), 0 6px 20px 0 rgba($black, 0.1);
+$shadow-lg: 10px 4px 10px 10px rgba($black, 0.05), 0 10px 30px 0 rgba($black, 0.1);
+//$shadow-card: 0px 10px 30px 0px color-mix(in srgb, $color-outline 80%, transparent);
+$shadow-card: 0px 20px 80px 0px color-mix(in srgb, $color-outline 25%, transparent);
+$shadow-card-hover: 0px 0px 20px rgba(105, 105, 105, 0.3);
+
+/**
+ * Card related settings
+ */
+$card-icon-size: 2.5rem;
+$card-icon-padding-top: 1rem;
+$card-content-narrow: 80%;
+$card-transform-vertical: 5rem;
+$card-readmore-font-size: $font-size-small;
+
+// Fonts
+$font-awesome-family: 'Font Awesome 6 Sharp';
+
+
+// Transitions
+$transition-duration: 0.25s;
+$transition-style: cubic-bezier(0.46, 0.03, 0.52, 0.96);
+$transition: $transition-duration $transition-style;
+
+$arrow-transform-transformX: translateX(0.5rem);
+
+// Header
+$admin-bar-height-mobile: 46px;
+$admin-bar-height-desktop: 32px;
+
+// Cards
+// Use these instead of using custom values sprinkled all over the place
+$card-elements-spacing-v: $spacing-medium;
+$card-elements-spacing-h: $spacing-small;
+$card-content-spacing-v: $spacing-large;
+$card-content-spacing-h: $spacing-large;
+
+$blokki-accordion-padding-v: $spacing-large;
+$blokki-accordion-padding-h: 0;
+
+
+/**
+ * Misc.
+ */
+$button-transition-duration: $transition-duration;
+$button-transition-style: $transition-style;
+$button-transition: $button-transition-duration $button-transition-style;
+
+$header-height-desktop: 96px;
+$header-height-desktop-with-admin-bar: calc($header-height-desktop + $admin-bar-height-desktop);
+
+$header-height-mobile: 72px;
+$header-height-mobile-with-admin-bar: calc($header-height-mobile + $admin-bar-height-mobile);
+
+
+// Used for Media-Text Block (Alternate images) and Side-by-side Texts in Columns, only applies to Large Screens
+$constrained-content-width: 32rem;

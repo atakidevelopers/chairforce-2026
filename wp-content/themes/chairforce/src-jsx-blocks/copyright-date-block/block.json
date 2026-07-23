@@ -1,0 +1,52 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "chairforce/copyright-date-block",
+  "version": "1.0.0",
+  "title": "Copyright Date Block",
+  "category": "widgets",
+  "icon": "calendar-alt",
+  "description": "Display the Copyright Block with the starting year.",
+  "example": {},
+  "supports": {
+    "html": true,
+    "jsx": true,
+    "align": true,
+    "color": {
+      "gradients": true,
+      "text": true,
+      "background": true
+    },
+    "typography": {
+      "textAlign": true
+    },
+    "dimensions": {
+      "aspectRatio": true,
+      "minHeight": true
+    },
+    "background": {
+      "backgroundImage": true,
+      "backgroundSize": true
+    },
+    "layout": {
+      "default": {
+        "type": "flex",
+        "flexWrap": "wrap"
+      },
+      "allowVerticalAlignment": true,
+      "allowJustification": true
+    }
+  },
+  "attributes": {
+    "startingYear": {
+      "type": "string",
+      "default": "2000"
+    }
+  },
+  "textdomain": "chairforce",
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css",
+  "viewScript": "file:./view.js",
+  "render": "file:./render.php"
+}

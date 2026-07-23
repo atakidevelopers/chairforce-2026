@@ -1,0 +1,105 @@
+:root {
+  body {
+
+    // WordPress Spacing Mapping
+    --wp--preset--spacing--20: var(--wp--preset--spacing--xx-small);
+    --wp--preset--spacing--30: var(--wp--preset--spacing--x-small);
+    --wp--preset--spacing--40: var(--wp--preset--spacing--small);
+    --wp--preset--spacing--50: var(--wp--preset--spacing--medium);
+    --wp--preset--spacing--60: var(--wp--preset--spacing--large);
+    --wp--preset--spacing--70: var(--wp--preset--spacing--x-large);
+    --wp--preset--spacing--80: var(--wp--preset--spacing--xx-large);
+
+    // briks var mapping
+    --wp--preset--spacing--s: var(--wp--preset--spacing--small);
+    --wp--preset--spacing--m: var(--wp--preset--spacing--medium);
+    --wp--preset--spacing--l: var(--wp--preset--spacing--large);
+    --wp--preset--spacing--xl: var(--wp--preset--spacing--x-large);
+    --wp--preset--spacing--xxl: var(--wp--preset--spacing--xx-large);
+    --wp--preset--spacing--section: calc(
+            var(--wp--preset--spacing--xx-large) * 1.25
+    );
+
+       // Blokki Spacing Variable
+    --blokki-grid-row-gap: var(--wp--preset--spacing--medium);
+    --blokki-grid-column-gap: var(--wp--preset--spacing--medium);
+    --blokki-modal-container-padding: 10vh 10vw;
+
+    /**
+     * WPGB Variables Overrides
+     */
+    // Accent Color scheme
+    --wpgb-accent-scheme-1: var(--wp--preset--color--secondary);
+
+    // Reset Button Color
+    --wpgb-red: var(--wp--preset--color--primary);
+
+    // Border Radius for all facets
+    --wpgb-border-radius: 0px;
+
+    // Border Color
+    --wpgb-grey-500: var(--wp--preset--color--secondary);
+
+  }
+}
+
+//h1.has-background,h2.has-background,h3.has-background,h4.has-background,h5.has-background,h6.has-background,
+//:root :where(ul.has-background,ol.has-background),
+//:root :where(p.has-background),
+//:where(.wp-block-preformatted.has-background),
+//:where(.wp-block-columns.has-background),
+//:where(.wp-block-group.has-background),
+//:root :where(.wp-block-template-part.has-background)
+//{
+//  //padding:1.25em 2.375em; This is the default WordPress Padding
+//  padding: var(--wp--style--block-gap);
+//}
+
+h1.has-background, h2.has-background, h3.has-background, h4.has-background, h5.has-background, h6.has-background,
+:root :where(ul.has-background,ol.has-background),
+:root :where(p.has-background),
+:where(.wp-block-preformatted.has-background),
+:where(.wp-block-columns.has-background),
+{
+  //padding:1.25em 2.375em; This is the default WordPress Padding
+  padding: var(--wp--style--block-gap);
+}
+
+:where(.wp-block-cover-image.is-light:not(.has-text-color)),
+:where(.wp-block-cover.is-light:not(.has-text-color)) {
+  color: var(--wp--preset--color--contrast)
+}
+
+/**
+ * Figure can go outside of the viewport, so, need to fix that
+ */
+figure {
+  &.wp-caption {
+    max-width: 100%;
+  }
+}
+
+/**
+ * Navigation Colors
+ */
+//.wp-block-navigation:not(.has-text-color) .wp-block-navigation__submenu-container {
+//  color: var(--wp--preset--color--contrast);
+//}
+//
+////
+//.wp-block-navigation:not(.has-background) .wp-block-navigation__submenu-container {
+//  background-color: var(--wp--preset--color--color-6);
+//  border: none;
+//}
+//
+//.wp-block-navigation:not(.has-background) .wp-block-navigation__responsive-container.is-menu-open {
+//  background-color: var(--wp--preset--color--color-6);
+//}
+//
+//.wp-block-navigation:not(.has-text-color) .wp-block-navigation__responsive-container.is-menu-open {
+//  color: var(--wp--preset--color--contrast);
+//}
+
+.title {
+  word-break: break-word;
+}

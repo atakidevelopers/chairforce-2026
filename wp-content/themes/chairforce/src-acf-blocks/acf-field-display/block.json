@@ -1,0 +1,38 @@
+{
+  "name": "chairforce/acf-field-display",
+  "title": "ACF Field Display",
+  "description": "Display any ACF field value with a chosen tag.",
+  "category": "theme",
+  "icon": "editor-textcolor",
+  "apiVersion": 2,
+  "keywords": [
+    "acf",
+    "field",
+    "display"
+  ],
+  "acf": {
+    "mode": "preview",
+    "renderTemplate": "render.php"
+  },
+  "supports": {
+    "align": true,
+    "anchor": true,
+    "color": {
+      "text": true,
+      "background": true
+    },
+    "spacing": {
+      "margin": true,
+      "padding": true
+    },
+    "typography": {
+      "fontSize": true,
+      "lineHeight": true,
+      "fontFamily": true,
+      "fontStyle": true,
+      "fontWeight": true,
+      "textTransform": true,
+      "letterSpacing": true
+    }
+  }
+}

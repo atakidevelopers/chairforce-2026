@@ -1,0 +1,534 @@
+# Copyright (C) 2026 Chairforce
+# This file is distributed under the GNU General Public License v2 or later license.
+msgid ""
+msgstr ""
+"Project-Id-Version: Chairforce 1.0.1\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/themes/chairforce\n"
+"MIME-Version: 1.0\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Content-Type: text/plain; charset=iso-8859-1\n"
+"Plural-Forms: nplurals=2; plural=(n!=1);\n"
+"POT-Creation-Date: 2026-07-23T09:53:48.179Z\n"
+"PO-Revision-Date: 2026-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Rao - Next&Co <rao@nextandco.com.au>\n"
+"Language-Team: Rao - Next&Co <rao@nextandco.com.au>\n"
+"X-Generator: @wp-blocks/make-pot 1.6.6\n"
+"Language: en\n"
+"X-Domain: chairforce\n"
+
+#: style.css
+#. Name of the theme
+msgid "Chairforce"
+msgstr ""
+
+#: style.css
+#. Description of the theme
+msgid "This is a custom FSE and WooCommerce theme for Chairforce"
+msgstr ""
+
+#: style.css
+#. Author of the theme
+msgid "Rao - Next&Co"
+msgstr ""
+
+#: block.json
+#. Font size name
+#. Space size name
+msgid "X Small"
+msgstr ""
+
+#: block.json
+#. Font size name
+#. Space size name
+msgid "Small"
+msgstr ""
+
+#: block.json
+#. Font size name
+#. Space size name
+msgid "Medium"
+msgstr ""
+
+#: block.json
+#. Font size name
+#. Space size name
+msgid "Large"
+msgstr ""
+
+#: block.json
+#. Font size name
+#. Space size name
+msgid "X Large"
+msgstr ""
+
+#: block.json
+#. Font size name
+#. Space size name
+msgid "XX Large"
+msgstr ""
+
+#: block.json
+#. Font size name
+msgid "XXX Large"
+msgstr ""
+
+#: block.json
+#. Font size name
+msgid "XXXX Large"
+msgstr ""
+
+#: block.json
+#. Font family name
+msgid "Urbanist"
+msgstr ""
+
+#: block.json
+#. Font family name
+msgid "Poppins"
+msgstr ""
+
+#: block.json
+#. Color name
+#. Gradient name
+#. Duotone name
+msgid "Primary"
+msgstr ""
+
+#: block.json
+#. Color name
+#. Duotone name
+msgid "Secondary"
+msgstr ""
+
+#: block.json
+#. Color name
+msgid "Heading"
+msgstr ""
+
+#: block.json
+#. Color name
+msgid "Body"
+msgstr ""
+
+#: block.json
+#. Color name
+msgid "Background"
+msgstr ""
+
+#: block.json
+#. Color name
+#. Duotone name
+msgid "Tertiary"
+msgstr ""
+
+#: block.json
+#. Color name
+msgid "Quaternary"
+msgstr ""
+
+#: block.json
+#. Color name
+msgid "Surface"
+msgstr ""
+
+#: block.json
+#. Color name
+msgid "Foreground"
+msgstr ""
+
+#: block.json
+#. Color name
+msgid "Outline"
+msgstr ""
+
+#: block.json
+#. Color name
+msgid "Neutral"
+msgstr ""
+
+#: block.json
+#. Color name
+msgid "Transparent"
+msgstr ""
+
+#: block.json
+#. Color name
+msgid "Current Color"
+msgstr ""
+
+#: block.json
+#. Color name
+msgid "Inherit"
+msgstr ""
+
+#: block.json
+#. Color name
+msgid "White"
+msgstr ""
+
+#: block.json
+#. Color name
+msgid "Black"
+msgstr ""
+
+#: block.json
+#. Space size name
+msgid "XXX Small"
+msgstr ""
+
+#: block.json
+#. Space size name
+msgid "XX Small"
+msgstr ""
+
+#: block.json
+#. Custom template name
+msgid "Page sidebar"
+msgstr ""
+
+#: block.json
+#. Custom template name
+msgid "Single sidebar"
+msgstr ""
+
+#: block.json
+#. Template part name
+msgid "Header"
+msgstr ""
+
+#: block.json
+#. Template part name
+msgid "Footer"
+msgstr ""
+
+#: block.json
+#. Template part name
+msgid "Sidebar"
+msgstr ""
+
+#: patterns/single.php:18
+#: patterns/single.php:24
+msgid "·"
+msgstr ""
+
+#: patterns/section-title-with-button.php:11
+msgid "Architectures"
+msgstr ""
+
+#: patterns/section-title-with-button.php:17
+msgid "View All Architectures"
+msgstr ""
+
+#: patterns/search.php:18
+msgid "Sorry, but nothing matched your search terms. Try another search?"
+msgstr ""
+
+#: patterns/search.php:22
+msgid "Search"
+msgstr ""
+
+#: patterns/search.php:22
+msgid "Search..."
+msgstr ""
+
+#: patterns/header.php:17
+#: patterns/footer.php:20
+msgid "Get Started"
+msgstr ""
+
+#: patterns/footer.php:9
+msgid "abstract-white-cube-block-moving-animation-background"
+msgstr ""
+
+#: patterns/footer.php:11
+msgid "Ready to build something that behaves like a product?"
+msgstr ""
+
+#: patterns/footer.php:15
+msgid ""
+"If you need a senior WordPress / Laravel engineer to design and ship a "
+"portal, workflow automation, or integration-heavy build ? I can own it "
+"end-to-end."
+msgstr ""
+
+#: patterns/footer.php:24
+msgid "About"
+msgstr ""
+
+#: patterns/footer.php:48
+msgid "© 2026 ·"
+msgstr ""
+
+#: lib/class-theme-style-switcher.php:205
+msgid "Choose Style"
+msgstr ""
+
+#: lib/class-after-setup-theme.php:121
+msgid "Elements"
+msgstr ""
+
+#: lib/class-after-setup-theme.php:122
+msgid "Section"
+msgstr ""
+
+#: lib/class-acf.php:89
+#: lib/class-acf.php:90
+msgid "Theme Options"
+msgstr ""
+
+#: includes/register-cpt.php:13
+#: includes/register-cpt.php:15
+#: includes/register-cpt.php:48
+msgid "FAQs"
+msgstr ""
+
+#: includes/register-cpt.php:14
+#: includes/register-cpt.php:38
+msgid "FAQ"
+msgstr ""
+
+#: includes/register-cpt.php:16
+msgid "All FAQs"
+msgstr ""
+
+#: includes/register-cpt.php:17
+msgid "Add new"
+msgstr ""
+
+#: includes/register-cpt.php:18
+msgid "Add new FAQ"
+msgstr ""
+
+#: includes/register-cpt.php:19
+msgid "Edit FAQ"
+msgstr ""
+
+#: includes/register-cpt.php:20
+msgid "New FAQ"
+msgstr ""
+
+#: includes/register-cpt.php:21
+msgid "View FAQ"
+msgstr ""
+
+#: includes/register-cpt.php:22
+msgid "View FAQs"
+msgstr ""
+
+#: includes/register-cpt.php:23
+msgid "Search FAQs"
+msgstr ""
+
+#: includes/register-cpt.php:24
+msgid "No FAQs found"
+msgstr ""
+
+#: includes/register-cpt.php:25
+msgid "No FAQs found in trash"
+msgstr ""
+
+#: includes/register-cpt.php:26
+#: includes/register-cpt.php:44
+msgid "Parent FAQ:"
+msgstr ""
+
+#: includes/register-cpt.php:27
+msgid "Featured image for this FAQ"
+msgstr ""
+
+#: includes/register-cpt.php:28
+msgid "Set featured image for this FAQ"
+msgstr ""
+
+#: includes/register-cpt.php:29
+msgid "Remove featured image for this FAQ"
+msgstr ""
+
+#: includes/register-cpt.php:30
+msgid "Use as featured image for this FAQ"
+msgstr ""
+
+#: includes/register-cpt.php:31
+msgid "FAQ archives"
+msgstr ""
+
+#: includes/register-cpt.php:32
+msgid "Insert into FAQ"
+msgstr ""
+
+#: includes/register-cpt.php:33
+msgid "Upload to this FAQ"
+msgstr ""
+
+#: includes/register-cpt.php:34
+msgid "Filter FAQs list"
+msgstr ""
+
+#: includes/register-cpt.php:35
+msgid "FAQs list navigation"
+msgstr ""
+
+#: includes/register-cpt.php:36
+msgid "FAQs list"
+msgstr ""
+
+#: includes/register-cpt.php:37
+msgid "FAQs attributes"
+msgstr ""
+
+#: includes/register-cpt.php:39
+msgid "FAQ published"
+msgstr ""
+
+#: includes/register-cpt.php:40
+msgid "FAQ published privately."
+msgstr ""
+
+#: includes/register-cpt.php:41
+msgid "FAQ reverted to draft."
+msgstr ""
+
+#: includes/register-cpt.php:42
+msgid "FAQ scheduled"
+msgstr ""
+
+#: includes/register-cpt.php:43
+msgid "FAQ updated."
+msgstr ""
+
+#: includes/register-cpt.php:92
+#: includes/register-cpt.php:94
+#: includes/register-cpt.php:117
+msgid "FAQ Categories"
+msgstr ""
+
+#: includes/register-cpt.php:93
+msgid "FAQ Category"
+msgstr ""
+
+#: includes/register-cpt.php:95
+msgid "All FAQ Categories"
+msgstr ""
+
+#: includes/register-cpt.php:96
+msgid "Edit FAQ Category"
+msgstr ""
+
+#: includes/register-cpt.php:97
+msgid "View FAQ Category"
+msgstr ""
+
+#: includes/register-cpt.php:98
+msgid "Update FAQ Category name"
+msgstr ""
+
+#: includes/register-cpt.php:99
+msgid "Add new FAQ Category"
+msgstr ""
+
+#: includes/register-cpt.php:100
+msgid "New FAQ Category name"
+msgstr ""
+
+#: includes/register-cpt.php:101
+msgid "Parent FAQ Category"
+msgstr ""
+
+#: includes/register-cpt.php:102
+msgid "Parent FAQ Category:"
+msgstr ""
+
+#: includes/register-cpt.php:103
+msgid "Search FAQ Categories"
+msgstr ""
+
+#: includes/register-cpt.php:104
+msgid "Popular FAQ Categories"
+msgstr ""
+
+#: includes/register-cpt.php:105
+msgid "Separate FAQ Categories with commas"
+msgstr ""
+
+#: includes/register-cpt.php:106
+msgid "Add or remove FAQ Categories"
+msgstr ""
+
+#: includes/register-cpt.php:107
+msgid "Choose from the most used FAQ Categories"
+msgstr ""
+
+#: includes/register-cpt.php:108
+msgid "No FAQ Categories found"
+msgstr ""
+
+#: includes/register-cpt.php:109
+msgid "No FAQ Categories"
+msgstr ""
+
+#: includes/register-cpt.php:110
+msgid "FAQ Categories list navigation"
+msgstr ""
+
+#: includes/register-cpt.php:111
+msgid "FAQ Categories list"
+msgstr ""
+
+#: includes/register-cpt.php:112
+msgid "Back to FAQ Categories"
+msgstr ""
+
+#: src-jsx-blocks/copyright-date-block/save.js:20
+msgid "Copyright Year"
+msgstr ""
+
+#: src-jsx-blocks/copyright-date-block/edit.js:44
+msgid "Settings"
+msgstr ""
+
+#: src-jsx-blocks/copyright-date-block/edit.js:46
+msgid "Starting Year"
+msgstr ""
+
+#: src-jsx-blocks/copyright-date-block/edit.js:55
+msgid "Copyright"
+msgstr ""
+
+#: block.json
+#. block title
+msgid "Copyright Date Block"
+msgstr ""
+
+#: block.json
+#. block description
+msgid "Display the Copyright Block with the starting year."
+msgstr ""
+
+#: src-acf-blocks/acf-field-display/render.php:24
+msgid "ACF display field: "
+msgstr ""
+
+#: block.json
+#. block title
+msgid "ACF Field Display"
+msgstr ""
+
+#: block.json
+#. block description
+msgid "Display any ACF field value with a chosen tag."
+msgstr ""
+
+#: block.json
+#. block keyword
+msgid "acf"
+msgstr ""
+
+#: block.json
+#. block keyword
+msgid "field"
+msgstr ""
+
+#: block.json
+#. block keyword
+msgid "display"
+msgstr ""

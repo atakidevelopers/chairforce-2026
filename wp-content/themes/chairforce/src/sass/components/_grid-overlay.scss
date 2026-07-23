@@ -1,0 +1,82 @@
+#grid-overlay {
+  &-bg,
+  &-lines,
+  &-lines-wide,
+  &-lines-root-padding {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 50%;
+    height: 100%;
+    max-width: 100%;
+    width: $grid-container;
+    transform: translateX(-50%);
+    pointer-events: none;
+    padding: 0 $grid-container-padding;
+
+    @media screen and (min-width: #{$grid-container}) {
+      padding: 0;
+    }
+
+    span {
+      height: 100vh;
+      display: block;
+    }
+  }
+
+
+  &-bg {
+    z-index: -1;
+
+    span {
+      width: 100%;
+    }
+  }
+
+  &-lines,
+  &-lines-wide,
+  &-lines-root-padding {
+    z-index: 99;
+
+    span {
+      margin-left: -1px;
+      margin-right: -1px;
+      width: calc(100% + 2px);
+
+    }
+  }
+
+  &-lines {
+    border-left: 2px dashed lighten(#e49700, 30%);
+    border-right: 2px dashed lighten(#e49700, 30%);
+  }
+
+  &-lines-wide {
+    width: $grid-container-wide;
+    border-left: 2px dashed lighten(#e49700, 10%);
+    border-right: 2px dashed lighten(#e49700, 10%);
+  }
+
+  &-lines-root-padding {
+    border-left: 2px dashed lighten(#e49700, 5%);
+    border-right: 2px dashed lighten(#e49700, 5%);
+    width: calc(100% - #{$grid-container-padding} * 2);
+  }
+
+  &-toggle {
+    position: fixed;
+    bottom: 1rem;
+    right: 1rem;
+    width: 2rem;
+    height: 2rem;
+    padding: 2px;
+    border-radius: $radius-sm;
+    background-color: $white;
+    z-index: 999;
+    border: 0;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}

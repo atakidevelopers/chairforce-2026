@@ -1,0 +1,15 @@
+<div id="grid-overlay-bg" class="grid-overlay">
+    <span></span>
+</div>
+<div id="grid-overlay-lines" class="grid-overlay">
+    <span></span>
+</div>
+<div id="grid-overlay-lines-wide" class="grid-overlay">
+    <span></span>
+</div>
+<div id="grid-overlay-lines-root-padding" class="grid-overlay">
+    <span></span>
+</div>
+<button id="grid-overlay-toggle" type="button" title="Toggle grid">
+    <svg xmlns="http://www.w3.org/2000/svg" height="14" width="12.25" viewBox="0 0 448 512"><path d="M432 48l0 192-208 0 0-192 208 0zm0 208l0 208-208 0 0-208 208 0zM208 240L16 240 16 48l192 0 0 192zM16 256l192 0 0 208L16 464l0-208zM16 32L0 32 0 48 0 464l0 16 16 0 416 0 16 0 0-16 0-416 0-16-16 0L16 32z"/></svg>
+</button>

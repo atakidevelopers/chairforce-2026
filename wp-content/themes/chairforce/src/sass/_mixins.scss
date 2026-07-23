@@ -1,0 +1,661 @@
+// TODO: Rao: Review the breakpoint rules/function
+// Breakpoints
+@mixin breakpoint($breakpoint) {
+  @if map-has-key($breakpoints, $breakpoint) {
+    @media (min-width: map-get($breakpoints, $breakpoint)) {
+      @content;
+    }
+  } @else {
+    @warn "Unfortunately, no value could be retrieved from #{$breakpoint}. "
+          + "Available breakpoints are: #{map-keys($breakpoints)}.";
+  }
+}
+
+@mixin breakpoint-max($breakpoint) {
+  @if map-has-key($breakpoints, $breakpoint) {
+    @media (max-width: #{'calc(' + map-get($breakpoints, $breakpoint) + ' - 0px)'}) {
+      @content;
+    }
+  } @else {
+    @warn "Unfortunately, no value could be retrieved from `#{$breakpoint}`. "
+          + "Available breakpoints are: #{map-keys($breakpoints)}.";
+  }
+}
+
+@mixin breakpoint-min-max($min, $max : unlimited) {
+  @if map-has-key($breakpoints, $min) and map-has-key($breakpoints, $max) {
+    @media (min-width: map-get($breakpoints, $min)) and (max-width: #{'calc(' + map-get($breakpoints, $max) + ' - 1px)'}) {
+      @content;
+    }
+  } @else {
+    @warn "Unfortunately, no value could be retrieved from `#{$min}` or `#{$max}`. "
+          + "Available breakpoints are: #{map-keys($breakpoints)}.";
+  }
+}
+
+@mixin breakpoint-medium-down {
+  @media screen and (max-width: #{map-get($breakpoints, medium)}) {
+    @content;
+  }
+}
+
+@mixin breakpoint-medium-up {
+  @media screen and (min-width: #{map-get($breakpoints, medium)}) {
+    @content;
+  }
+}
+
+@mixin breakpoint-large-down {
+  @media screen and (max-width: #{map-get($breakpoints, large)}) {
+    @content;
+  }
+}
+
+@mixin breakpoint-large-up {
+  @media screen and (min-width: #{map-get($breakpoints, large)}) {
+    @content;
+  }
+}
+
+@mixin breakpoint-wide-up {
+  @media screen and (min-width: #{map-get($breakpoints, wide)}) {
+    @content;
+  }
+}
+
+@mixin breakpoint-menu-responsive-up {
+  @media screen and (min-width: #{map-get($breakpoints, navigation)}) {
+    @content;
+  }
+}
+
+@mixin breakpoint-menu-responsive-down {
+  @media screen and (max-width: #{map-get($breakpoints, navigation)}) {
+    @content;
+  }
+}
+
+
+@mixin megaMenuAnimation {
+  [aria-expanded="true"] ~ {
+    .wp-block-navigation__submenu-container {
+      .wp-block-group,
+      .wp-block-column {
+        animation: mega-menu-open 500ms;
+        animation-timing-function: $custom-transition-snap;
+        animation-fill-mode: both;
+
+        @for $i from 1 through 10 { // create a loop of animation delay for each child
+          &:nth-child(#{$i}n) {
+            animation-delay: #{$i * 0.05}s;
+          }
+        }
+      }
+    }
+  }
+}
+
+@mixin mobileMenuMinimumHeight {
+
+  $mobile-menu-back-button-height: 72px;
+
+  min-height: calc(100svh - #{$header-height-mobile} - #{$mobile-menu-back-button-height});
+
+  body.admin-bar & {
+    min-height: calc(100svh - #{$header-height-mobile-with-admin-bar} - #{$mobile-menu-back-button-height});
+  }
+}
+
+@mixin invisibleText {
+  border: 0;
+  clip: rect(1px, 1px, 1px, 1px);
+  clip-path: inset(50%);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute !important;
+  width: 1px;
+  word-wrap: normal !important;
+}
+
+/* Rem calc */
+$rem-base: 16px;
+
+@function strip-unit($num) {
+  @return $num / ($num * 0 + 1);
+}
+
+@function convert-to-rem($value, $base-value: $rem-base) {
+  $value: calc(strip-unit($value) / strip-unit($base-value) * 1rem);
+  @if ($value == 0rem) {
+    $value: 0;
+  }
+  // Turn 0rem into 0
+  @return $value;
+}
+
+@function rem-calc($values, $base-value: $rem-base) {
+  $max: length($values);
+  @if $max == 1 {
+    @return convert-to-rem(nth($values, 1), $base-value);
+  }
+  $remValues: ();
+  @for $i from 1 through $max {
+    $remValues: append($remValues, convert-to-rem(nth($values, $i), $base-value));
+  }
+  @return $remValues;
+}
+
+
+@mixin fa-icon-insert($fa-var) {
+  content: fa-content($fa-var);
+  font-family: $font-awesome-family;
+}
+
+
+@mixin gridPadding() {
+  padding-left: $grid-container-padding;
+  padding-right: $grid-container-padding;
+}
+
+
+@mixin alertBoxStyling {
+  .alert-box {
+    padding: 1rem;
+    color: #31708f;
+    background-color: #d9edf7;
+    border-color: #bce8f1;
+
+    &.warning {
+      color: #8a6d3b;
+      background-color: #fcf8e3;
+      border-color: #faebcc;
+    }
+
+    &.error {
+      color: #a94442;
+      background-color: #f2dede;
+      border-color: #ebccd1;
+    }
+
+    &.success {
+      color: #3c763d;
+      background-color: #dff0d8;
+      border-color: #d6e9c6;
+    }
+  }
+}
+
+// Headings
+@mixin allHeadings {
+  h1, h2, h3, h4, h5, h6 {
+    @content;
+  }
+}
+
+
+@mixin font-awesome-after-icon($fa-var) {
+  &:after {
+    @include fa-icon-insert($fa-var);
+  }
+}
+
+@mixin font-awesome-before-icon($fa-var) {
+  &:before {
+    @include fa-icon-insert($fa-var);
+  }
+}
+
+//Menu
+@mixin icon-right($fa-icon) {
+  display: flex;
+  &::after {
+    font-size: inherit;
+    @include fa-icon-insert($fa-icon);
+  }
+
+}
+
+@mixin constrainedContent {
+  @include breakpoint-min-max(small, medium) {
+    padding: $block-gap $grid-container-padding-right $grid-container-padding-left;
+  }
+
+  @include breakpoint-min-max(medium, wide) {
+    padding: $spacing-xl $spacing-xl;
+  }
+
+  @include breakpoint-min-max(wide, hd) {
+    padding: $spacing-xl $spacing-xxl;
+  }
+
+  @include breakpoint-min-max(hd) {
+    padding-top: $spacing-xxl;
+    padding-bottom: $spacing-xxl;
+    padding-left: $spacing-section;
+    padding-right: $spacing-section;
+    > * {
+      max-width: $constrained-content-width;
+      margin-left: auto;
+      margin-right: auto;
+    }
+  }
+
+
+}
+
+/**
+ * Buttons
+ */
+@mixin button-reset {
+  padding: 0;
+  appearance: none;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  line-height: 1;
+  cursor: auto;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  color: inherit;
+}
+
+
+@mixin button-utility-icon {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: $spacing-small;
+
+}
+
+@mixin transform-element-after {
+
+  &:after {
+    transition: $button-transition;
+  }
+  &:hover,
+  &:focus {
+    &:after {
+      transform: translateX(25%);
+    }
+  }
+
+}
+
+@mixin transform-element-before {
+
+  &:before {
+    transition: $button-transition;
+  }
+  &:hover,
+  &:focus {
+    &:before {
+      transform: translateX(-25%);
+    }
+  }
+
+}
+
+@mixin button-utility-padding {
+  padding: $button-padding-vertical $button-padding-sides;
+}
+
+@mixin button-utility-icon-right {
+  @include font-awesome-after-icon($fa-var-arrow-right-long);
+  @include transform-element-after
+}
+
+@mixin button-utility-icon-left {
+  @include font-awesome-before-icon($fa-var-arrow-left-long);
+  @include transform-element-before;
+}
+
+@mixin button-outline {
+  @include button-utility-padding;
+
+  color: $color-primary;
+  background-color: $transparent;
+
+  /**
+   * Forcing the Hover Color
+   */
+  &:hover,
+  &:focus {
+    color: $color-contrast;
+  }
+
+}
+
+@mixin button-primary {
+  @include button-utility-padding;
+
+  color: $color-base;
+  background-color: $color-primary;
+  text-transform: uppercase;
+  transition: $transition;
+  font-weight: $font-weight-semi-bold;
+  line-height: 2;
+  padding-top: var(--wp--preset--spacing--s);
+  padding-bottom: var(--wp--preset--spacing--s);
+
+
+  /**
+   * Forcing the Hover Color
+   */
+  &:hover,
+  &:focus {
+
+    color: $color-base;
+    background-color: $color-contrast;
+  }
+
+}
+
+@mixin button-link {
+
+  padding-left: 0;
+  padding-right: 0;
+  border-bottom: 1px solid $color-primary;
+  background-color: $transparent;
+
+  color: $color-primary;
+
+  &:hover,
+  &:focus {
+    color: $color-contrast;
+    border-bottom-color: $color-contrast;
+  }
+
+}
+
+@mixin button-link-right {
+  @include button-utility-icon;
+  @include button-link;
+  @include button-utility-icon-right;
+}
+
+@mixin button-icon-right {
+  @include button-utility-icon;
+  @include button-utility-icon-right;
+}
+
+@mixin cardImageAspect8x9 {
+  .card-image {
+    img,
+    > a img {
+      aspect-ratio: 8 / 9;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    picture {
+      aspect-ratio: 8 / 9;
+      height: auto;
+    }
+  }
+}
+
+@mixin cardImageAspect4x3 {
+  .card-image {
+
+    img,
+    > a img {
+      aspect-ratio: 4 / 3;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    picture {
+      aspect-ratio: 4 / 3;
+      height: auto;
+    }
+  }
+}
+
+@mixin cardImageAspect3x4 {
+  .card-image {
+    img,
+    > a img {
+      aspect-ratio: 3 / 4;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    picture {
+      aspect-ratio: 3 / 4;
+      height: auto;
+    }
+  }
+}
+
+@mixin cardReadMoreSmall {
+
+
+  .card-readmore-link {
+    font-size: $card-readmore-font-size;
+  }
+  .card-readmore {
+    .card-readmore-link {
+      border-bottom-width: 2px;
+
+    }
+  }
+}
+
+@mixin cardImageZoom {
+
+
+  .card-image {
+    overflow: clip;
+    contain: paint;
+    width: auto;
+  }
+
+  &:hover, &:focus-within {
+    .card-title {
+      a {
+        color: $color-primary;
+      }
+    }
+
+    img {
+      scale: 1.1;
+    }
+  }
+
+}
+
+@mixin cardBase {
+  column-gap: $card-elements-spacing-h;
+  row-gap: $card-elements-spacing-v;
+  background-color: $color-background;
+  padding: $spacing-medium;
+  border-radius: $radius-card;
+  overflow: hidden;
+  box-shadow: $shadow-card;
+
+  > * + * {
+    margin-block-start: var(--wp--preset--spacing--xx-small);
+  }
+}
+
+@mixin cardSingleTaxonomyTerm {
+  color: $color-secondary;
+  border: 2px solid;
+  font-size: $font-size-small;
+  border-radius: $radius-sm;
+  padding-left: $spacing-xxsmall;
+  padding-right: $spacing-xxsmall;
+  > *:not(:last-child) {
+    display: inherit;
+    flex-wrap: inherit;
+    margin-right: $spacing-small;
+  }
+}
+
+@mixin cardTaxonomySeparator {
+  > *:not(:last-child) {
+    display: inherit;
+    flex-wrap: inherit;
+
+    &:after {
+      content: "";
+      border: 1px solid;
+      align-self: stretch;
+      margin-left: $spacing-small;
+      margin-right: $spacing-small;
+      font-family: inherit;
+    }
+  }
+}
+
+@mixin cardTaxonomyList {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+@mixin cardFeaturedIcon {
+
+
+  max-width: 54px;
+  max-height: 54px;
+  color: $color-primary;
+
+  svg {
+    fill: $color-primary;
+  }
+
+
+}
+
+@mixin cardSubTitle {
+  font-style: normal;
+  letter-spacing: 3px;
+  font-family: $font-secondary;
+  font-size: $font-size-xsmall;
+  //color: $color-neutral;
+}
+
+@mixin cardBackgroundImage {
+
+  &:has(.card-background-image-wrapper) {
+
+    .card-background-image-wrapper {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-size: cover; /* Cover the entire background */
+      background-position: center; /* Center the background image */
+      background-repeat: no-repeat; /* Prevent repetition */
+      z-index: -1; /* Place the background behind other content */
+    }
+
+    // TODO: if we need Overlay
+    .card-background-image-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.6); /* Black overlay with 60% opacity */
+      z-index: 0; /* Place behind the content */
+    }
+
+    .card-inner {
+      position: relative; /* Establish a containing block for absolutely positioned elements */
+      overflow: clip; /* Prevent background image overflow */
+    }
+
+    .card-inner-content {
+      z-index: 1; /* Make sure content stays above the background */
+    }
+  }
+}
+
+@mixin featuredCard {
+
+  @include breakpoint(medium) {
+    grid-column: 1 / -1;
+
+    .card-inner-content {
+      justify-content: center;
+    }
+
+    .card-inner {
+      display: grid;
+      grid-auto-flow: column;
+      column-gap: $block-gap;
+    }
+
+    .card-image {
+      grid-column: 1;
+    }
+
+    .card-readmore,
+    .card-title {
+      flex: unset;
+      justify-content: flex-start;
+    }
+    .card-inner {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+}
+
+@mixin fieldSelectIcon($fa-icon) {
+  position: relative;
+
+  select {
+    background-image: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+  }
+  &::after {
+    @extend .fal;
+    content: fa-content($fa-icon);
+    position: absolute;
+    right: 10px;
+    bottom: 14px;
+    @include breakpoint-max(medium) {
+      bottom: 18px;
+    }
+  }
+}
+
+
+@mixin linkContainerWithInnerBlocks {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  align-items: center;
+  gap: $block-gap;
+  padding: $spacing-small $spacing-small $spacing-small $spacing-medium;
+  border: 1px solid $color-primary;
+  border-radius: $radius-lg;
+
+  .content-section {
+    flex: 1;
+    color: $color-contrast;
+    // Style InnerBlocks content
+    > * {
+      //margin: 0 0 $spacing-xs 0;
+      font-weight: $font-bold;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+
+  .button-section {
+    .wp-block-button {
+      flex: 1;
+    }
+
+  }
+}

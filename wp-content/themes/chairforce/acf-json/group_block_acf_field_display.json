@@ -1,0 +1,60 @@
+{
+  "key": "group_block_acf_field_display",
+  "title": "Block: ACF Field Display",
+  "fields": [
+    {
+      "key": "field_block_acf_field_display_field_reference",
+      "label": "ACF Field",
+      "name": "acf_field_reference",
+      "type": "select",
+      "instructions": "Search and select any ACF field to display.",
+      "required": 1,
+      "choices": [],
+      "default_value": "",
+      "return_format": "value",
+      "allow_null": 0,
+      "multiple": 0,
+      "ui": 1,
+      "ajax": 1,
+      "placeholder": "Search ACF fields"
+    },
+    {
+      "key": "field_block_acf_field_display_tag",
+      "label": "Display Tag",
+      "name": "display_tag",
+      "type": "select",
+      "instructions": "Choose the HTML tag for output.",
+      "choices": {
+        "h1": "H1",
+        "h2": "H2",
+        "h3": "H3",
+        "h4": "H4",
+        "h5": "H5",
+        "h6": "H6",
+        "p": "Paragraph",
+        "div": "Div"
+      },
+      "default_value": "div",
+      "allow_null": 0,
+      "multiple": 0,
+      "return_format": "value"
+    }
+  ],
+  "location": [
+    [
+      {
+        "param": "block",
+        "operator": "==",
+        "value": "chairforce/acf-field-display"
+      }
+    ]
+  ],
+  "menu_order": 0,
+  "position": "acf_after_title",
+  "style": "default",
+  "label_placement": "top",
+  "instruction_placement": "label",
+  "hide_on_screen": "",
+  "active": true,
+  "description": ""
+}

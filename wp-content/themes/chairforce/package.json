@@ -1,0 +1,60 @@
+{
+  "name": "chairforce",
+  "version": "1.0.0",
+  "description": "Chairforce Theme Boilerplate with Namespace and Gutenberg Block support",
+  "author": "Chairforce <rao@nextandco.com.au>",
+  "license": "GPL-2.0-or-later",
+  "keywords": [
+    "boilerplate",
+    "gutenberg",
+    "block"
+  ],
+  "homepage": "https://nextandco.com.au/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/atakidevelopers/chairforce-2026.git",
+    "directory": "chairforce-2026",
+    "branch": "main"
+  },
+  "bugs": {
+    "url": "https://nextandco.com.au/"
+  },
+  "files": [
+    "*"
+  ],
+  "main": "build/index.js",
+  "dependencies": {
+    "@wordpress/block-editor": "^15.11.0",
+    "@wordpress/blocks": "^15.11.0",
+    "@wordpress/i18n": "^6.11.0"
+  },
+  "devDependencies": {
+    "@wordpress/prettier-config": "^4.38.0",
+    "@wordpress/scripts": "^31.3.0",
+    "browser-sync": "^3.0.4",
+    "dotenv": "^16.5.0",
+    "npm-run-all": "^4.1.5"
+  },
+  "prettier": "@wordpress/prettier-config",
+  "scripts": {
+    "start:assets": "wp-scripts start src/index.js src/public.js",
+    "start:blocks": "wp-scripts start --webpack-src-dir=src-jsx-blocks --output-path=build-jsx-blocks",
+    "start": "npm run start:assets && npm run start:blocks",
+    "build:assets": "wp-scripts build src/index.js src/public.js",
+    "build:blocks": "wp-scripts build --webpack-src-dir=src-jsx-blocks --output-path=build-jsx-blocks",
+    "build:makepot": "npx @wp-blocks/make-pot ./ ./languages --slug chairforce --domain theme",
+    "build": "npm run build:assets && npm run build:blocks",
+    "format": "wp-scripts format",
+    "format:src": "wp-scripts format ./src",
+    "format:js": "wp-scripts format-js src/",
+    "lint:style": "wp-scripts lint-style",
+    "lint:js": "wp-scripts lint-js",
+    "lint:pkg-json": "wp-scripts lint-pkg-json",
+    "lint:md:docs": "wp-scripts lint-md-docs",
+    "packages-update": "wp-scripts packages-update",
+    "check-licenses": "wp-scripts check-licenses --prod --gpl2 --ignore=abab",
+    "create-zip": "wp-scripts plugin-zip",
+    "sync": "browser-sync start --config \"config-dev/browser-sync.js\"",
+    "dev": "npm-run-all --parallel sync start:assets start:blocks"
+  }
+}

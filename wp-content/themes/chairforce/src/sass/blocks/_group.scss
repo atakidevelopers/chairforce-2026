@@ -1,0 +1,6 @@
+.wp-block-group{
+
+  &.is-style-card{
+    @include cardBase;
+  }
+}
