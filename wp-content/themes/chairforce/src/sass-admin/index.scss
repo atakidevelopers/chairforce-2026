@@ -1,49 +1,49 @@
-@import "../sass/settings";
-@import "../sass/mixins";
-
-// Theme imports
-
-
-.editor-styles-wrapper {
-  font-size: 1rem;
-  color: $color-contrast;
-  @import "../sass/wp-default-overrides";
-  //@import "../sass/base/index";
-  @import "../sass/blocks/index";
-  @import "../sass/cpt/index";
-  //@import "../sass/components/index";
-
-  //@include allHeadings {
-  //  font-weight: 400; // TODO: this should match with theme.json
-  //}
-
-  .acf-block-preview {
-    @include alertBoxStyling;
-  }
-
-  .modal {
-    display: none;
-  }
-
-  .wp-block-chairforce-acf-field-display{
-    @include allHeadings{
-      color: inherit;
-    }
-  }
-
-}
-
-
-.wp-block-navigation__submenu-container {
-  > .block-editor-block-list__layout {
-    width: 100vw !important;
-  }
-}
-
-.block-editor-block-list__layout .block-editor-block-list__block {
-  &.wp-block-navigation-submenu {
-    position: initial;
-  }
-}
-
-
+//@import "../sass/settings";
+//@import "../sass/mixins";
+//
+//// Theme imports
+//
+//
+//.editor-styles-wrapper {
+//  font-size: 1rem;
+//  color: $color-contrast;
+//  @import "../sass/wp-default-overrides";
+//  //@import "../sass/base/index";
+//  @import "../sass/blocks/index";
+//  @import "../sass/cpt/index";
+//  //@import "../sass/components/index";
+//
+//  //@include allHeadings {
+//  //  font-weight: 400; // TODO: this should match with theme.json
+//  //}
+//
+//  .acf-block-preview {
+//    @include alertBoxStyling;
+//  }
+//
+//  .modal {
+//    display: none;
+//  }
+//
+//  .wp-block-chairforce-acf-field-display{
+//    @include allHeadings{
+//      color: inherit;
+//    }
+//  }
+//
+//}
+//
+//
+//.wp-block-navigation__submenu-container {
+//  > .block-editor-block-list__layout {
+//    width: 100vw !important;
+//  }
+//}
+//
+//.block-editor-block-list__layout .block-editor-block-list__block {
+//  &.wp-block-navigation-submenu {
+//    position: initial;
+//  }
+//}
+//
+//

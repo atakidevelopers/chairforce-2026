@@ -31,5 +31,5 @@ Chairforce Theme Boilerplate with Namespace and Gutenberg Block support
 
 ## Dependencies
 
-1. Node Version: `20.17.X`
-2. PHP: `8.2`
+1. Node Version: `24.X.X`
+2. PHP: `8.2` (Recommended: `8.4`)
