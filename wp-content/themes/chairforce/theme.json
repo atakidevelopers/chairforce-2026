@@ -181,6 +181,7 @@
 			"wideSize": "1440px"
 		},
 		"spacing": {
+			"defaultSpacingSizes": false,
 			"spacingScale": {
 				"theme": {
 					"increment": 0,
@@ -192,44 +193,59 @@
 			},
 			"spacingSizes": [
 				{
-					"name": "XXX Small",
-					"size": "calc(var(--wp--preset--font-size--medium,1rem)/4)",
+					"name": "3X-Small",
+					"size": "4px",
 					"slug": "xxx-small"
 				},
 				{
-					"name": "XX Small",
-					"size": "calc(var(--wp--preset--font-size--medium,1rem)/2)",
+					"name": "2X-Small",
+					"size": "8px",
 					"slug": "xx-small"
 				},
 				{
-					"name": "X Small",
-					"size": "calc(var(--wp--preset--font-size--medium,1rem))",
+					"name": "X-Small",
+					"size": "12px",
 					"slug": "x-small"
 				},
 				{
 					"name": "Small",
-					"size": "calc(var(--wp--preset--font-size--medium,1rem)*1.5)",
+					"size": "16px",
 					"slug": "small"
 				},
 				{
 					"name": "Medium",
-					"size": "calc(var(--wp--preset--font-size--medium,1rem)*2)",
+					"size": "20px",
 					"slug": "medium"
 				},
 				{
 					"name": "Large",
-					"size": "calc(var(--wp--preset--font-size--medium,1rem)*3)",
+					"size": "24px",
 					"slug": "large"
 				},
 				{
-					"name": "X Large",
-					"size": "calc(var(--wp--preset--font-size--medium,1rem)*4)",
+					"name": "X-Large",
+					"size": "clamp(24px, 1.496rem + ((1vw - 3.2px) * 0.714), 32px)",
 					"slug": "x-large"
 				},
 				{
-					"name": "XX Large",
-					"size": "calc(var(--wp--preset--font-size--medium,1rem)*6)",
+					"name": "2X-Large",
+					"size": "clamp(32px, 1.781rem + ((1vw - 3.2px) * 0.714), 40px)",
 					"slug": "xx-large"
+				},
+				{
+					"name": "3X-Large",
+					"size": "clamp(40px, 2.066rem + ((1vw - 3.2px) * 0.714), 48px)",
+					"slug": "xxx-large"
+				},
+				{
+					"name": "4X-Large",
+					"size": "clamp(48px, 2.351rem + ((1vw - 3.2px) * 1.429), 64px)",
+					"slug": "xxxx-large"
+				},
+				{
+					"name": "Section",
+					"size": "clamp(64px, 3.988rem + ((1vw - 3.2px) * 1.786), 84px)",
+					"slug": "section"
 				}
 			],
 			"units": [

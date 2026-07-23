@@ -16,9 +16,7 @@
     --wp--preset--spacing--l: var(--wp--preset--spacing--large);
     --wp--preset--spacing--xl: var(--wp--preset--spacing--x-large);
     --wp--preset--spacing--xxl: var(--wp--preset--spacing--xx-large);
-    --wp--preset--spacing--section: calc(
-            var(--wp--preset--spacing--xx-large) * 1.25
-    );
+    --wp--preset--spacing--section: clamp(64px, 3.988rem + ((1vw - 3.2px) * 1.786), 84px);
 
        // Blokki Spacing Variable
     --blokki-grid-row-gap: var(--wp--preset--spacing--medium);
@@ -59,7 +57,7 @@ h1.has-background, h2.has-background, h3.has-background, h4.has-background, h5.h
 :root :where(ul.has-background,ol.has-background),
 :root :where(p.has-background),
 :where(.wp-block-preformatted.has-background),
-:where(.wp-block-columns.has-background),
+:where(.wp-block-columns.has-background)
 {
   //padding:1.25em 2.375em; This is the default WordPress Padding
   padding: var(--wp--style--block-gap);
