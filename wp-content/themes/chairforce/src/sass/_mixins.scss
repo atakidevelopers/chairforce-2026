@@ -531,12 +531,49 @@ $rem-base: 16px;
 
 }
 
-@mixin cardSubTitle {
+@mixin textStyleEyebrow {
+  font-family: $font-primary;
+  font-size: clamp(11px, 0.925rem + ((1vw - 3.2px) * 0.089), 12px);
   font-style: normal;
-  letter-spacing: 3px;
+  font-weight: $font-weight-semi-bold;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  color: $color-secondary;
+}
+
+@mixin textStyleLead {
+  font-family: $font-primary;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: $font-weight-regular;
+  line-height: 1.6;
+  color: $color-neutral;
+}
+
+@mixin textStyleLabelNav {
+  font-family: $font-primary;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: $font-weight-semi-bold;
+  line-height: 1.4;
+  color: $color-contrast;
+}
+
+@mixin textStyleMeta {
+  font-family: $font-primary;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: $font-weight-medium;
+  color: $color-neutral;
+}
+
+@mixin textStylePrice {
   font-family: $font-secondary;
-  font-size: $font-size-xsmall;
-  //color: $color-neutral;
+  font-size: clamp(20px, 1.356rem + ((1vw - 3.2px) * 0.357), 24px);
+  font-style: normal;
+  font-weight: $font-weight-bold;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
 }
 
 @mixin cardBackgroundImage {

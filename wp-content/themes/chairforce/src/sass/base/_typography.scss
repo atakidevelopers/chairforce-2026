@@ -1,0 +1,19 @@
+.is-style-text-eyebrow {
+  @include textStyleEyebrow;
+}
+
+.is-style-text-lead {
+  @include textStyleLead;
+}
+
+.is-style-text-label-nav {
+  @include textStyleLabelNav;
+}
+
+.is-style-text-meta {
+  @include textStyleMeta;
+}
+
+.is-style-text-price {
+  @include textStylePrice;
+}

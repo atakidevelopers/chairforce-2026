@@ -9,8 +9,24 @@ wp.domReady(() => {
 
 	wp.blocks.registerBlockStyle('core/paragraph', [
 		{
-			name: 'subtitle',
-			label: 'Subtitle',
+			name: 'text-eyebrow',
+			label: 'Eyebrow',
+		},
+		{
+			name: 'text-lead',
+			label: 'Lead',
+		},
+		{
+			name: 'text-label-nav',
+			label: 'Label / Nav',
+		},
+		{
+			name: 'text-meta',
+			label: 'Meta / Small',
+		},
+		{
+			name: 'text-price',
+			label: 'Price',
 		}
 	]);
 
