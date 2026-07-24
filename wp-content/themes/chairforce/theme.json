@@ -557,8 +557,8 @@
 			"button": {
 				":hover": {
 					"color": {
-						"background": "var(--wp--preset--color--secondary)",
-						"text": "var(--wp--preset--color--heading)"
+						"background": "var(--wp--preset--color--body)",
+						"text": "var(--wp--preset--color--white)"
 					}
 				},
 				"border": {

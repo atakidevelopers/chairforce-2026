@@ -223,18 +223,18 @@ $rem-base: 16px;
   }
 
   @include breakpoint-min-max(medium, wide) {
-    padding: $spacing-xl $spacing-xl;
+    padding: $spacing-x-large $spacing-x-large;
   }
 
   @include breakpoint-min-max(wide, hd) {
-    padding: $spacing-xl $spacing-xxl;
+    padding: $spacing-x-large $spacing-xx-large;
   }
 
   @include breakpoint-min-max(hd) {
-    padding-top: $spacing-xxl;
-    padding-bottom: $spacing-xxl;
-    padding-left: $spacing-section;
-    padding-right: $spacing-section;
+    padding-top: $spacing-xx-large;
+    padding-bottom: $spacing-xx-large;
+    padding-left: $spacing-huge;
+    padding-right: $spacing-huge;
     > * {
       max-width: $constrained-content-width;
       margin-left: auto;
@@ -317,14 +317,14 @@ $rem-base: 16px;
   @include button-utility-padding;
 
   color: $color-primary;
-  background-color: $transparent;
+  background-color: $color-transparent;
 
   /**
    * Forcing the Hover Color
    */
   &:hover,
   &:focus {
-    color: $color-contrast;
+    color: $color-body;
   }
 
 }
@@ -343,8 +343,8 @@ $rem-base: 16px;
   &:focus {
 
     color: $color-white;
-    background-color: $color-contrast;
-    border-color: $color-contrast;
+    background-color: $color-body;
+    border-color: $color-body;
   }
 
 }
@@ -354,14 +354,14 @@ $rem-base: 16px;
   padding-left: 0;
   padding-right: 0;
   border-bottom: 1px solid $color-primary;
-  background-color: $transparent;
+  background-color: $color-transparent;
 
   color: $color-primary;
 
   &:hover,
   &:focus {
-    color: $color-contrast;
-    border-bottom-color: $color-contrast;
+    color: $color-body;
+    border-bottom-color: $color-body;
   }
 
 }
@@ -445,14 +445,14 @@ $rem-base: 16px;
 
 @mixin button-light {
   background-color: $color-background;
-  color: $color-contrast;
+  color: $color-body;
   border: 1px solid $color-outline;
   transition: $transition;
 
   &:hover,
   &:focus {
     background-color: $color-outline;
-    color: $color-contrast;
+    color: $color-body;
     border-color: $color-outline;
   }
 }
@@ -646,8 +646,8 @@ $rem-base: 16px;
   border: 2px solid;
   font-size: $font-size-small;
   border-radius: $radius-sm;
-  padding-left: $spacing-xxsmall;
-  padding-right: $spacing-xxsmall;
+  padding-left: $spacing-xx-small;
+  padding-right: $spacing-xx-small;
   > *:not(:last-child) {
     display: inherit;
     flex-wrap: inherit;
@@ -715,7 +715,7 @@ $rem-base: 16px;
   font-style: normal;
   font-weight: $font-weight-semi-bold;
   line-height: 1.4;
-  color: $color-contrast;
+  color: $color-body;
 }
 
 @mixin textStyleMeta {
@@ -836,7 +836,7 @@ $rem-base: 16px;
 
   .content-section {
     flex: 1;
-    color: $color-contrast;
+    color: $color-body;
     // Style InnerBlocks content
     > * {
       //margin: 0 0 $spacing-xs 0;

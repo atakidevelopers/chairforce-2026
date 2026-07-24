@@ -1,14 +1,12 @@
-.wp-block-buttons {
-  &.is-style-full-on-small {
-    @include breakpoint-max(wp-small) {
-      .wp-block-button {
-        width: 100%;
-      }
+:where(.wp-block-buttons.is-style-full-on-small) {
+  @include breakpoint-max(wp-small) {
+    .wp-block-button {
+      width: 100%;
+    }
 
-      .wp-block-button__link {
-        width: 100%;
-        text-align: center;
-      }
+    .wp-block-button__link {
+      width: 100%;
+      text-align: center;
     }
   }
 }

@@ -14,7 +14,7 @@
  */
 //.accordion-cell.hentry.status-publish {
 //
-//  border-bottom: 1px solid $color-contrast;
+//  border-bottom: 1px solid $color-body;
 //
 //  .accordion-icon {
 //    color: $color-primary;
@@ -26,7 +26,7 @@
 //
 //  .card-readmore {
 //    margin-block-start: $spacing-large;
-//    margin-block-end: $spacing-xl;
+//    margin-block-end: $spacing-x-large;
 //    text-align: right;
 //  }
 //}
@@ -44,7 +44,7 @@
   @include breakpoint-medium-up{
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
-    gap: $spacing-xsmall;
+    gap: $spacing-x-small;
   }
 
 }

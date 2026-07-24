@@ -34,25 +34,16 @@ $color-inherit: var(--wp--preset--color--inherit);
 $color-white: var(--wp--preset--color--white);
 $color-black: var(--wp--preset--color--black);
 
-$color-contrast: $color-body;
-$color-text: $color-body;
-$color-base: $color-background;
-$color-4: $color-tertiary;
-$color-5: $color-quaternary;
-$color-6: $color-surface;
-$transparent: $color-transparent;
-
 // Theme.json Set Font Variables
 // settings.typography.fontSizes
-$font-size-regular: var(--wp--preset--font-size--normal);
-$font-size-xsmall: var(--wp--preset--font-size--x-small);
+$font-size-x-small: var(--wp--preset--font-size--x-small);
 $font-size-small: var(--wp--preset--font-size--small);
 $font-size-medium: var(--wp--preset--font-size--medium);
 $font-size-large: var(--wp--preset--font-size--large);
-$font-size-xlarge: var(--wp--preset--font-size--x-large);
-$font-size-xxlarge: var(--wp--preset--font-size--xx-large);
-$font-size-xxxlarge: var(--wp--preset--font-size--xxx-large);
-$font-size-xxxxlarge: var(--wp--preset--font-size--xxxx-large);
+$font-size-x-large: var(--wp--preset--font-size--x-large);
+$font-size-xx-large: var(--wp--preset--font-size--xx-large);
+$font-size-xxx-large: var(--wp--preset--font-size--xxx-large);
+$font-size-xxxx-large: var(--wp--preset--font-size--xxxx-large);
 $font-size-huge: var(--wp--preset--font-size--huge);
 
 // settings.typography.fontFamilies
@@ -65,31 +56,44 @@ $font-secondary: var(--wp--preset--font-family--secondary);
 $block-gap: var(--wp--style--block-gap);
 
 // settings.spacing.spacingSizes
-$spacing-xxsmall: var(--wp--preset--spacing--xx-small);
-$spacing-xsmall: var(--wp--preset--spacing--x-small);
+$spacing-xxx-small: var(--wp--preset--spacing--xxx-small);
+$spacing-xx-small: var(--wp--preset--spacing--xx-small);
+$spacing-x-small: var(--wp--preset--spacing--x-small);
 $spacing-small: var(--wp--preset--spacing--small);
 $spacing-medium: var(--wp--preset--spacing--medium);
 $spacing-large: var(--wp--preset--spacing--large);
-$spacing-xl: var(--wp--preset--spacing--x-large);
-$spacing-xxl: var(--wp--preset--spacing--xx-large);
-$spacing-section: var(--wp--preset--spacing--huge);
+$spacing-x-large: var(--wp--preset--spacing--x-large);
+$spacing-xx-large: var(--wp--preset--spacing--xx-large);
+$spacing-xxx-large: var(--wp--preset--spacing--xxx-large);
+$spacing-xxxx-large: var(--wp--preset--spacing--xxxx-large);
+$spacing-huge: var(--wp--preset--spacing--huge);
+$spacing-section-s: var(--wp--preset--spacing--section-s);
+$spacing-section-m: var(--wp--preset--spacing--section-m);
+$spacing-section-l: var(--wp--preset--spacing--section-l);
+$spacing-section-xl: var(--wp--preset--spacing--section-xl);
 
 
 // Theme.json Elements Styling
 
 // Buttons
 // styles.elements.button
-$button-text-color: var(--wp--preset--color--contrast);
+$button-text-color: var(--wp--preset--color--white);
 $button-background-color: var(--wp--preset--color--primary);
 
 $button-border-color: var(--wp--preset--color--primary);
+$button-border-radius: 0px;
 $button-border-style: solid;
 
 $button-padding-vertical: 15px;
 $button-padding-sides: 30px;
 
-$button-text-color-hover: var(--wp--preset--color--primary);
-$button-background-color-hover: var(--wp--preset--color--secondary);
+$button-font-size: var(--wp--preset--font-size--small);
+$button-font-weight: var(--wp--custom--font-weight--semi-bold);
+$button-line-height: 2;
+$button-text-transform: uppercase;
+
+$button-text-color-hover: var(--wp--preset--color--white);
+$button-background-color-hover: var(--wp--preset--color--body);
 
 
 // Theme.json Custom Variables
@@ -109,4 +113,11 @@ $font-weight-regular: var(--wp--custom--font-weight--regular);
 $font-weight-light: var(--wp--custom--font-weight--light);
 $font-weight-extra-light: var(--wp--custom--font-weight--extra-light);
 $font-weight-thin: var(--wp--custom--font-weight--thin);
+
+$line-height-initial: var(--wp--custom--line-height--initial);
+$line-height-large: var(--wp--custom--line-height--large);
+$line-height-medium: var(--wp--custom--line-height--medium);
+$line-height-small: var(--wp--custom--line-height--small);
+$line-height-x-small: var(--wp--custom--line-height--x-small);
+$line-height-xx-small: var(--wp--custom--line-height--xx-small);
 
