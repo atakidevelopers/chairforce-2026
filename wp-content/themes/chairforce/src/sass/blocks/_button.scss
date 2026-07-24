@@ -1,0 +1,105 @@
+.wp-block-buttons {
+  &.is-style-full-on-small {
+    @include breakpoint-max(wp-small) {
+      .wp-block-button {
+        width: 100%;
+      }
+
+      .wp-block-button__link {
+        width: 100%;
+        text-align: center;
+      }
+    }
+  }
+}
+
+:where(.wp-block-button.is-style-primary) {
+  .wp-block-button__link {
+    @include button-primary-default;
+  }
+}
+
+:where(.wp-block-button.is-style-secondary) {
+  .wp-block-button__link {
+    @include button-secondary;
+  }
+}
+
+:where(.wp-block-button.is-style-ghost) {
+  .wp-block-button__link {
+    @include button-ghost;
+  }
+}
+
+:where(.wp-block-button.is-style-light) {
+  .wp-block-button__link {
+    @include button-light;
+  }
+}
+
+// Contextual overrides using :where() to keep selector specificity low.
+// This avoids fighting editor/user color overrides while letting us set
+// intentional contrast behavior for known background contexts.
+:where(
+  .has-black-background-color,
+  .has-primary-background-color,
+  .has-body-background-color,
+  .has-secondary-background-color
+) {
+  :where(.wp-block-button.is-style-ghost) {
+    .wp-block-button__link {
+      @include button-ghost-on-dark-background;
+    }
+  }
+}
+
+:where(.has-primary-background-color) {
+  :where(.wp-block-button.is-style-primary) {
+    .wp-block-button__link {
+      @include button-primary-on-primary-background;
+    }
+  }
+}
+
+:where(
+  .has-black-background-color,
+  .has-body-background-color
+) {
+  :where(.wp-block-button.is-style-primary) {
+    .wp-block-button__link {
+      @include button-primary-on-dark-background;
+    }
+  }
+}
+
+:where(
+  .has-black-background-color,
+  .has-body-background-color,
+  .has-primary-background-color
+) {
+  :where(.wp-block-button.is-style-secondary) {
+    .wp-block-button__link {
+      @include button-secondary-on-dark-background;
+    }
+  }
+
+  :where(.wp-block-button.is-style-light) {
+    .wp-block-button__link {
+      @include button-light-on-dark-background;
+    }
+  }
+}
+
+:where(.has-secondary-background-color) {
+  :where(.wp-block-button.is-style-primary) {
+    .wp-block-button__link {
+      @include button-primary-on-secondary-background;
+    }
+  }
+
+  :where(.wp-block-button.is-style-secondary) {
+    .wp-block-button__link {
+      @include button-secondary-on-secondary-background;
+    }
+  }
+}

@@ -31,6 +31,8 @@ $color-neutral: var(--wp--preset--color--neutral);
 $color-transparent: var(--wp--preset--color--transparent);
 $color-current-color: var(--wp--preset--color--current-color);
 $color-inherit: var(--wp--preset--color--inherit);
+$color-white: var(--wp--preset--color--white);
+$color-black: var(--wp--preset--color--black);
 
 $color-contrast: $color-body;
 $color-text: $color-body;
@@ -83,8 +85,8 @@ $button-background-color: var(--wp--preset--color--primary);
 $button-border-color: var(--wp--preset--color--primary);
 $button-border-style: solid;
 
-$button-padding-vertical: var(--wp--preset--spacing--s);
-$button-padding-sides: var(--wp--preset--spacing--m);
+$button-padding-vertical: 15px;
+$button-padding-sides: 30px;
 
 $button-text-color-hover: var(--wp--preset--color--primary);
 $button-background-color-hover: var(--wp--preset--color--secondary);

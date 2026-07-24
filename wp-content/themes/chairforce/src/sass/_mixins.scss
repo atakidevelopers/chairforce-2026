@@ -329,18 +329,12 @@ $rem-base: 16px;
 
 }
 
-@mixin button-primary {
-  @include button-utility-padding;
-
-  color: $color-base;
-  background-color: $color-primary;
-  text-transform: uppercase;
+@mixin button-primary-default {
   transition: $transition;
-  font-weight: $font-weight-semi-bold;
-  line-height: 2;
-  padding-top: var(--wp--preset--spacing--s);
-  padding-bottom: var(--wp--preset--spacing--s);
 
+  &:visited {
+    color: $color-white;
+  }
 
   /**
    * Forcing the Hover Color
@@ -348,8 +342,9 @@ $rem-base: 16px;
   &:hover,
   &:focus {
 
-    color: $color-base;
+    color: $color-white;
     background-color: $color-contrast;
+    border-color: $color-contrast;
   }
 
 }
@@ -380,6 +375,170 @@ $rem-base: 16px;
 @mixin button-icon-right {
   @include button-utility-icon;
   @include button-utility-icon-right;
+}
+
+@mixin button-secondary {
+  background-color: $color-secondary;
+  color: $color-background;
+  border: 1px solid $color-secondary;
+  transition: $transition;
+
+  &:hover,
+  &:focus {
+    background-color: $color-primary;
+    color: $color-background;
+    border-color: $color-primary;
+  }
+}
+
+@mixin button-secondary-on-dark-background {
+  background-color: $color-secondary;
+  color: $color-background;
+  border-color: $color-secondary;
+
+  &:visited {
+    color: $color-background;
+  }
+
+  &:hover,
+  &:focus {
+    background-color: $color-background;
+    color: $color-secondary;
+    border-color: $color-background;
+  }
+}
+
+@mixin button-secondary-on-secondary-background {
+  background-color: $color-background;
+  color: $color-secondary;
+  border-color: $color-background;
+
+  &:visited {
+    color: $color-secondary;
+  }
+
+  &:hover,
+  &:focus {
+    background-color: $color-quaternary;
+    color: $color-secondary;
+    border-color: $color-quaternary;
+  }
+}
+
+@mixin button-ghost {
+  background-color: transparent;
+  border: 1px solid $color-body;
+  color: $color-body;
+  transition: $transition;
+
+  &:visited {
+    color: $color-body;
+  }
+
+  &:hover,
+  &:focus {
+    background-color: $color-primary;
+    color: $color-background;
+    border-color: $color-body;
+  }
+}
+
+@mixin button-light {
+  background-color: $color-background;
+  color: $color-contrast;
+  border: 1px solid $color-outline;
+  transition: $transition;
+
+  &:hover,
+  &:focus {
+    background-color: $color-outline;
+    color: $color-contrast;
+    border-color: $color-outline;
+  }
+}
+
+@mixin button-light-on-dark-background {
+  background-color: $color-background;
+  color: $color-body;
+  border-color: $color-background;
+
+  &:visited {
+    color: $color-body;
+  }
+
+  &:hover,
+  &:focus {
+    background-color: $color-outline;
+    color: $color-body;
+    border-color: $color-outline;
+  }
+}
+
+@mixin button-ghost-on-dark-background {
+  color: $color-background;
+  border-color: $color-background;
+
+  &:visited {
+    color: $color-background;
+  }
+
+  &:hover,
+  &:focus {
+    background-color: $color-background;
+    color: $color-body;
+    border-color: $color-background;
+  }
+}
+
+@mixin button-primary-on-primary-background {
+  background-color: $color-background;
+  color: $color-primary;
+  border-color: $color-background;
+
+  &:visited {
+    color: $color-primary;
+  }
+
+  &:hover,
+  &:focus {
+    background-color: $color-quaternary;
+    color: $color-primary;
+    border-color: $color-quaternary;
+  }
+}
+
+@mixin button-primary-on-secondary-background {
+  background-color: $color-background;
+  color: $color-primary;
+  border-color: $color-background;
+
+  &:visited {
+    color: $color-primary;
+  }
+
+  &:hover,
+  &:focus {
+    background-color: $color-quaternary;
+    color: $color-primary;
+    border-color: $color-quaternary;
+  }
+}
+
+@mixin button-primary-on-dark-background {
+  background-color: $color-background;
+  color: $color-body;
+  border-color: $color-background;
+
+  &:visited {
+    color: $color-body;
+  }
+
+  &:hover,
+  &:focus {
+    background-color: $color-quaternary;
+    color: $color-body;
+    border-color: $color-quaternary;
+  }
 }
 
 @mixin cardImageAspect8x9 {

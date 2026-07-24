@@ -106,7 +106,7 @@
 					"slug": "foreground"
 				},
 				{
-					"color": "#E3E5E8",
+					"color": "#D6D9DD",
 					"name": "Outline",
 					"slug": "outline"
 				},
@@ -563,16 +563,25 @@
 				},
 				"border": {
 					"color": "var(--wp--preset--color--primary)",
-					"radius": "0.375em"
+					"radius": "0px"
 				},
 				"color": {
 					"background": "var(--wp--preset--color--primary)",
-					"text": "var(--wp--preset--color--heading)"
+					"text": "var(--wp--preset--color--white)"
+				},
+				"spacing": {
+					"padding": {
+						"top": "15px",
+						"right": "30px",
+						"bottom": "15px",
+						"left": "30px"
+					}
 				},
 				"typography": {
 					"fontSize": "var(--wp--preset--font-size--small)",
-					"fontWeight": "var(--wp--custom--font-weight--medium)",
-					"lineHeight": "var(--wp--custom--line-height--initial)"
+					"fontWeight": "var(--wp--custom--font-weight--semi-bold)",
+					"lineHeight": "2",
+					"textTransform": "uppercase"
 				}
 			},
 			"h1": {

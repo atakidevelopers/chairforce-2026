@@ -7,6 +7,25 @@ wp.domReady(() => {
 		}
 	]);
 
+	wp.blocks.registerBlockStyle('core/button', [
+		{
+			name: 'primary',
+			label: 'Primary',
+		},
+		{
+			name: 'secondary',
+			label: 'Secondary',
+		},
+		{
+			name: 'ghost',
+			label: 'Ghost',
+		},
+		{
+			name: 'light',
+			label: 'Light',
+		}
+	]);
+
 	wp.blocks.registerBlockStyle('core/paragraph', [
 		{
 			name: 'text-eyebrow',
