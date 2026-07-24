@@ -37,14 +37,14 @@ $neutral: rgba($black, 0.1);
 
 
 // Style
-$radius-sm: 2px;
-$radius-md: 10px;
-$radius-lg: 15px;
+$radius-sm: $border-radius-sm;
+$radius-md: $border-radius-md;
+$radius-lg: $border-radius-lg;
 $radius-btn: 0; // TODO: this should match with theme.json
 $border-radius: $radius-lg;
 $border-radius-small: $radius-sm;
 
-$radius-pill: 9999px;
+$radius-pill: $border-radius-full;
 $radius-card: 25px;
 $radius-card-sm: 3px;
 $radius-card-md: 0.5rem;

@@ -144,14 +144,11 @@
 		},
 		"custom": {
 			"borderRadius": {
-				"full": "999px",
-				"large": "16px",
-				"medium": "12px",
-				"small": "8px",
-				"xLarge": "20px",
-				"xSmall": "6px",
-				"xxLarge": "24px",
-				"xxSmall": "4px"
+				"sm": "4px",
+				"md": "8px",
+				"lg": "12px",
+				"xl": "16px",
+				"full": "999px"
 			},
 			"font-family": {
 				"body": "var(--wp--preset--font-family--primary)"
@@ -177,8 +174,8 @@
 			}
 		},
 		"layout": {
-			"contentSize": "960px",
-			"wideSize": "1440px"
+			"contentSize": "1084px",
+			"wideSize": "1480px"
 		},
 		"spacing": {
 			"defaultSpacingSizes": false,
@@ -243,9 +240,29 @@
 					"slug": "xxxx-large"
 				},
 				{
-					"name": "Section",
+					"name": "Huge",
 					"size": "clamp(64px, 3.988rem + ((1vw - 3.2px) * 1.786), 84px)",
-					"slug": "section"
+					"slug": "huge"
+				},
+				{
+					"name": "Section-Sides",
+					"size": "clamp(20px, 1.25rem + ((1vw - 3.2px) * 2.5), 48px)",
+					"slug": "section-s"
+				},
+				{
+					"name": "Section-M-TB",
+					"size": "clamp(24px, 1.5rem + ((1vw - 3.2px) * 0.714), 32px)",
+					"slug": "section-m"
+				},
+				{
+					"name": "Section-L-TB",
+					"size": "clamp(30px, 1.875rem + ((1vw - 3.2px) * 3.75), 72px)",
+					"slug": "section-l"
+				},
+				{
+					"name": "Section-XL-TB",
+					"size": "clamp(42px, 2.625rem + ((1vw - 3.2px) * 3.75), 84px)",
+					"slug": "section-xl"
 				}
 			],
 			"units": [
@@ -452,12 +469,7 @@
 	"styles": {
 		"blocks": {
 			"core/group": {
-				"spacing": {
-					"padding": {
-						"left": "var(--wp--preset--spacing--x-small)",
-						"right": "var(--wp--preset--spacing--x-small)"
-					}
-				}
+				
 			},
 			"core/navigation": {
 				"spacing": {
@@ -673,11 +685,11 @@
 			}
 		},
 		"spacing": {
-			"blockGap": "var(--wp--preset--spacing--medium)",
+			"blockGap": "clamp(20px, 1.25rem + ((1vw - 3.2px) * 1.071), 32px)",
 			"padding": {
 				"bottom": "0px",
-				"left": "var(--wp--preset--spacing--x-small)",
-				"right": "var(--wp--preset--spacing--x-small)",
+				"left": "var(--wp--preset--spacing--medium)",
+				"right": "var(--wp--preset--spacing--medium)",
 				"top": "0px"
 			}
 		},

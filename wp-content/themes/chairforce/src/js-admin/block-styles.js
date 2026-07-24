@@ -34,6 +34,10 @@ wp.domReady(() => {
 		{
 			name: 'card',
 			label: 'Card',
+		},
+		{
+			name: 'narrow',
+			label: 'Narrow',
 		}
 	]);
 

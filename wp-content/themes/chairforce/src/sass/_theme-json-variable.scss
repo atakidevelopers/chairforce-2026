@@ -70,7 +70,7 @@ $spacing-medium: var(--wp--preset--spacing--medium);
 $spacing-large: var(--wp--preset--spacing--large);
 $spacing-xl: var(--wp--preset--spacing--x-large);
 $spacing-xxl: var(--wp--preset--spacing--xx-large);
-$spacing-section: var(--wp--preset--spacing--section);
+$spacing-section: var(--wp--preset--spacing--huge);
 
 
 // Theme.json Elements Styling
@@ -92,6 +92,11 @@ $button-background-color-hover: var(--wp--preset--color--secondary);
 
 // Theme.json Custom Variables
 $custom-transition-snap: var(--wp--custom--transition-snap);
+$border-radius-sm: var(--wp--custom--border-radius--sm);
+$border-radius-md: var(--wp--custom--border-radius--md);
+$border-radius-lg: var(--wp--custom--border-radius--lg);
+$border-radius-xl: var(--wp--custom--border-radius--xl);
+$border-radius-full: var(--wp--custom--border-radius--full);
 
 $font-weight-black: var(--wp--custom--font-weight--black);
 $font-weight-extra-bold: var(--wp--custom--font-weight--extra-bold);

@@ -16,7 +16,8 @@
     --wp--preset--spacing--l: var(--wp--preset--spacing--large);
     --wp--preset--spacing--xl: var(--wp--preset--spacing--x-large);
     --wp--preset--spacing--xxl: var(--wp--preset--spacing--xx-large);
-    --wp--preset--spacing--section: clamp(64px, 3.988rem + ((1vw - 3.2px) * 1.786), 84px);
+    // Backward-compatible alias: old "section" now maps to "huge".
+    --wp--preset--spacing--section: var(--wp--preset--spacing--huge);
 
        // Blokki Spacing Variable
     --blokki-grid-row-gap: var(--wp--preset--spacing--medium);
