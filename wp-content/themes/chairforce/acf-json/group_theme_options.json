@@ -1,0 +1,305 @@
+{
+    "key": "group_theme_options",
+    "title": "Theme Options",
+    "fields": [
+        {
+            "key": "field_6147c97b1039d",
+            "label": "General",
+            "name": "",
+            "aria-label": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "top",
+            "endpoint": 0,
+            "selected": 0
+        },
+        {
+            "key": "field_6361f76e567ef",
+            "label": "Placeholder Image",
+            "name": "placeholder_image_default",
+            "aria-label": "",
+            "type": "image",
+            "instructions": "This image shall be used if a Post, Page or Custom Post Type does not have a featured image added. Leave blank to disable the default placeholder",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "return_format": "id",
+            "library": "all",
+            "min_width": "",
+            "min_height": "",
+            "min_size": "",
+            "max_width": "",
+            "max_height": "",
+            "max_size": "",
+            "mime_types": "",
+            "preview_size": "thumbnail"
+        },
+        {
+            "key": "field_6361f7fe567f0",
+            "label": "Placeholder Configuration for Post Type",
+            "name": "placeholder_config_for_cpt",
+            "aria-label": "",
+            "type": "repeater",
+            "instructions": "This image shall be used if a Post, Page or Custom Post Type does not have a featured image added. Leave blank to disable the default placeholder",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "layout": "table",
+            "pagination": 0,
+            "min": 0,
+            "max": 0,
+            "collapsed": "",
+            "button_label": "Add Row",
+            "rows_per_page": 20,
+            "sub_fields": [
+                {
+                    "key": "field_6361f828567f1",
+                    "label": "Post Type",
+                    "name": "post_type",
+                    "aria-label": "",
+                    "type": "select",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "50",
+                        "class": "",
+                        "id": ""
+                    },
+                    "choices": {
+                        "post": "Posts",
+                        "page": "Pages",
+                        "attachment": "Media"
+                    },
+                    "default_value": false,
+                    "return_format": "",
+                    "multiple": 0,
+                    "allow_null": 0,
+                    "allow_in_bindings": 1,
+                    "ui": 0,
+                    "ajax": 0,
+                    "placeholder": "",
+                    "parent_repeater": "field_6361f7fe567f0"
+                },
+                {
+                    "key": "field_6361f859567f2",
+                    "label": "Placeholder Image",
+                    "name": "placeholder_image",
+                    "aria-label": "",
+                    "type": "image",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "50",
+                        "class": "",
+                        "id": ""
+                    },
+                    "return_format": "id",
+                    "library": "all",
+                    "min_width": "",
+                    "min_height": "",
+                    "min_size": "",
+                    "max_width": "",
+                    "max_height": "",
+                    "max_size": "",
+                    "mime_types": "",
+                    "preview_size": "thumbnail",
+                    "parent_repeater": "field_6361f7fe567f0"
+                }
+            ]
+        },
+        {
+            "key": "field_6147c9851039e",
+            "label": "Misc",
+            "name": "",
+            "aria-label": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "top",
+            "endpoint": 0,
+            "selected": 0
+        },
+        {
+            "key": "field_63411c4d1cfff",
+            "label": "Enable Grid Guides",
+            "name": "enable_grid_guides",
+            "aria-label": "",
+            "type": "true_false",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "message": "",
+            "default_value": 1,
+            "allow_in_bindings": 1,
+            "ui_on_text": "",
+            "ui_off_text": "",
+            "ui": 1
+        },
+        {
+            "key": "field_66ed789f1b093",
+            "label": "Enable Style Switcher",
+            "name": "enable_style_switcher",
+            "aria-label": "",
+            "type": "true_false",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "message": "",
+            "default_value": 1,
+            "allow_in_bindings": 1,
+            "ui_on_text": "",
+            "ui_off_text": "",
+            "ui": 1
+        },
+        {
+            "key": "field_6147c9a6103a0",
+            "label": "Google Maps Key",
+            "name": "google_maps_key",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "maxlength": ""
+        },
+        {
+            "key": "field_633eaf8d8b3b8",
+            "label": "Analytics",
+            "name": "",
+            "aria-label": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "top",
+            "endpoint": 0,
+            "selected": 0
+        },
+        {
+            "key": "field_633eafa88b3b9",
+            "label": "Head",
+            "name": "code_for_wp_head",
+            "aria-label": "",
+            "type": "textarea",
+            "instructions": "Code added here with be added to site head",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "rows": "",
+            "placeholder": "",
+            "new_lines": ""
+        },
+        {
+            "key": "field_633eb0178b3bc",
+            "label": "Footer",
+            "name": "code_for_wp_footer",
+            "aria-label": "",
+            "type": "textarea",
+            "instructions": "Code added here with be added to footer of the site",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "rows": "",
+            "placeholder": "",
+            "new_lines": ""
+        },
+        {
+            "key": "field_633eafe08b3ba",
+            "label": "Body Open",
+            "name": "code_for_wp_body_open",
+            "aria-label": "",
+            "type": "textarea",
+            "instructions": "Code added here with be added immediately after opening body tag",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "rows": "",
+            "placeholder": "",
+            "new_lines": ""
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "options_page",
+                "operator": "==",
+                "value": "chairforce-theme-options"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "",
+    "show_in_rest": 0,
+    "modified": 1784974707
+}
