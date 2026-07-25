@@ -9,7 +9,9 @@
       "email": "rao@nextandco.com.au"
     }
   ],
-  "require": {},
+  "require": {
+    "tgmpa/tgm-plugin-activation": "^2.6.1"
+  },
   "autoload": {
     "classmap": [
       "lib"

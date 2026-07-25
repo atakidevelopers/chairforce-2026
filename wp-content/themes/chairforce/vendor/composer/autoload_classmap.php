@@ -14,6 +14,8 @@ return array(
     'Chairforce\\Front' => $baseDir . '/lib/class-front.php',
     'Chairforce\\Init' => $baseDir . '/lib/class-init.php',
     'Chairforce\\Lucide_Icons' => $baseDir . '/lib/class-lucide-icons.php',
+    'Chairforce\\Plugins_Manager' => $baseDir . '/lib/class-plugins-manager.php',
     'Chairforce\\Theme_Style_Switcher' => $baseDir . '/lib/class-theme-style-switcher.php',
+    'Chairforce\\Zip_Archive' => $baseDir . '/lib/class-zip-archive.php',
     'Composer\\InstalledVersions' => $vendorDir . '/composer/InstalledVersions.php',
 );

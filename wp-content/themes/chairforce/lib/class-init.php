@@ -45,6 +45,7 @@ class Init {
 	public function __construct() {
 
 		$this->after_setup_theme();
+		$this->define_plugins_manager_hooks();
 		$this->define_acf_hooks();
 		$this->define_api_hooks();
 		$this->define_public_hooks();
@@ -66,6 +67,19 @@ class Init {
 
 		new After_Setup_Theme();
 		new Theme_Style_Switcher();
+
+	}
+
+	/**
+	 * Register hooks related to the required/recommended plugin
+	 * dependencies of the theme (TGMPA).
+	 *
+	 * @since    0.0.1
+	 * @access   private
+	 */
+	private function define_plugins_manager_hooks() {
+
+		new Plugins_Manager();
 
 	}
 
