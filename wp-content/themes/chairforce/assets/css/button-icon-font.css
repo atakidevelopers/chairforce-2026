@@ -1,0 +1,292 @@
+/**
+ * Lucide icon font for the Button block's icon picker.
+ *
+ * This is a plain, static, hand-authored stylesheet - it is intentionally
+ * NOT part of the src/ Sass build pipeline. It is enqueued directly (see
+ * Chairforce\Lucide_Icons in /lib/class-lucide-icons.php) on the
+ * `enqueue_block_assets` hook, which loads it globally on the frontend and
+ * inside the block editor's iframed canvas alike.
+ *
+ * Why a static file instead of building it: when this same content was
+ * compiled through the theme's webpack/Sass/cssnano pipeline, cssnano's
+ * production minification silently stripped the `content: "\eXXX"` glyph
+ * values (reproducible only inside the real build, not in isolation - a
+ * tooling bug we couldn't pin down). Since icons are used on nearly every
+ * screen, and this file has no reason to change often, hand-authoring it
+ * as a static asset sidesteps that bug entirely and matches the approach
+ * used by other working WordPress icon-font implementations (see the
+ * reference `jksn-button-icon-fonts` plugin).
+ *
+ * Font source: lucide-static (https://github.com/lucide-icons/lucide),
+ * font/lucide.woff2 + font/lucide.woff, copied as-is into
+ * assets/fonts/lucide/. Codepoints copied from font/codepoints.json.
+ *
+ * Icon set is intentionally curated (not the full ~2,000 Lucide library)
+ * to match the project's Figma design system.
+ *
+ * All classes use a `cf-` prefix (instead of generic names like
+ * `has-icon`/`icon-left`, which the `jksn-button-icon-fonts` reference
+ * plugin used as `ic-*`) to avoid colliding with similarly-generic
+ * class names from other plugins/themes.
+ *
+ * Each button glyph rule is duplicated with an `.editor-styles-wrapper`
+ * ancestor prefix for defensive editor compatibility (matching the
+ * `jksn-button-icon-fonts` reference plugin's technique), plus a third,
+ * context-free `.cf-icon-preview` selector so the same glyph can be
+ * rendered as a standalone swatch anywhere in the admin UI - e.g. the
+ * icon picker's ComboboxControl in src/js-admin/button-icons.js - not
+ * just inside a `.wp-block-button__link`.
+ *
+ * To add a new icon:
+ * 1. Add `{ slug: '...', label: '...' }` to CHAIRFORCE_LUCIDE_ICON_OPTIONS
+ *    in src/js-admin/lucide-icon-options.js.
+ * 2. Look up its codepoint in
+ *    node_modules/lucide-static/font/codepoints.json (decimal -> hex).
+ * 3. Add a `.wp-block-button.cf-icon-{slug} ... { content: "\{hex}"; }`
+ *    rule (3 selectors, see below) below.
+ */
+
+@font-face {
+  font-family: 'Lucide';
+  src:
+    url('../fonts/lucide/lucide.woff2') format('woff2'),
+    url('../fonts/lucide/lucide.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+.wp-block-button.cf-has-icon .wp-block-button__link,
+.editor-styles-wrapper .wp-block-button.cf-has-icon .wp-block-button__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+}
+
+.wp-block-button.cf-has-icon .wp-block-button__link::before,
+.editor-styles-wrapper .wp-block-button.cf-has-icon .wp-block-button__link::before {
+  font-family: 'Lucide' !important;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  display: inline-block;
+  font-size: 1em;
+  /* Icon is first (left) by default; .cf-icon-right flips it via order. */
+  order: -1;
+}
+
+.wp-block-button.cf-has-icon.cf-icon-right .wp-block-button__link::before,
+.editor-styles-wrapper .wp-block-button.cf-has-icon.cf-icon-right .wp-block-button__link::before {
+  order: 1;
+}
+
+/**
+ * Standalone icon preview swatch, used outside the Button block (e.g. in
+ * the icon picker's ComboboxControl). Usage: <span class="cf-icon-preview cf-icon-{slug}" />
+ *
+ * Uses an inline-flex 1em square box centered on its own ::before glyph
+ * (pseudo-elements are treated as flex children), rather than relying on
+ * text-line-height metrics, so the glyph is reliably centered regardless
+ * of context/font-size.
+ */
+.cf-icon-preview {
+  font-family: 'Lucide' !important;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1em;
+  height: 1em;
+}
+
+/* --- Icon glyphs (one rule per slug in CHAIRFORCE_LUCIDE_ICON_OPTIONS) --- */
+
+.wp-block-button.cf-icon-search .wp-block-button__link::before,
+.editor-styles-wrapper .wp-block-button.cf-icon-search .wp-block-button__link::before,
+.cf-icon-preview.cf-icon-search::before {
+  content: "\e151";
+}
+
+.wp-block-button.cf-icon-shopping-cart .wp-block-button__link::before,
+.editor-styles-wrapper .wp-block-button.cf-icon-shopping-cart .wp-block-button__link::before,
+.cf-icon-preview.cf-icon-shopping-cart::before {
+  content: "\e15c";
+}
+
+.wp-block-button.cf-icon-file-text .wp-block-button__link::before,
+.editor-styles-wrapper .wp-block-button.cf-icon-file-text .wp-block-button__link::before,
+.cf-icon-preview.cf-icon-file-text::before {
+  content: "\e0cc";
+}
+
+.wp-block-button.cf-icon-user .wp-block-button__link::before,
+.editor-styles-wrapper .wp-block-button.cf-icon-user .wp-block-button__link::before,
+.cf-icon-preview.cf-icon-user::before {
+  content: "\e19f";
+}
+
+.wp-block-button.cf-icon-map-pin .wp-block-button__link::before,
+.editor-styles-wrapper .wp-block-button.cf-icon-map-pin .wp-block-button__link::before,
+.cf-icon-preview.cf-icon-map-pin::before {
+  content: "\e111";
+}
+
+.wp-block-button.cf-icon-phone .wp-block-button__link::before,
+.editor-styles-wrapper .wp-block-button.cf-icon-phone .wp-block-button__link::before,
+.cf-icon-preview.cf-icon-phone::before {
+  content: "\e133";
+}
+
+.wp-block-button.cf-icon-heart .wp-block-button__link::before,
+.editor-styles-wrapper .wp-block-button.cf-icon-heart .wp-block-button__link::before,
+.cf-icon-preview.cf-icon-heart::before {
+  content: "\e0f2";
+}
+
+.wp-block-button.cf-icon-plus .wp-block-button__link::before,
+.editor-styles-wrapper .wp-block-button.cf-icon-plus .wp-block-button__link::before,
+.cf-icon-preview.cf-icon-plus::before {
+  content: "\e13d";
+}
+
+.wp-block-button.cf-icon-minus .wp-block-button__link::before,
+.editor-styles-wrapper .wp-block-button.cf-icon-minus .wp-block-button__link::before,
+.cf-icon-preview.cf-icon-minus::before {
+  content: "\e11c";
+}
+
+.wp-block-button.cf-icon-trash-2 .wp-block-button__link::before,
+.editor-styles-wrapper .wp-block-button.cf-icon-trash-2 .wp-block-button__link::before,
+.cf-icon-preview.cf-icon-trash-2::before {
+  content: "\e18e";
+}
+
+.wp-block-button.cf-icon-chevron-left .wp-block-button__link::before,
+.editor-styles-wrapper .wp-block-button.cf-icon-chevron-left .wp-block-button__link::before,
+.cf-icon-preview.cf-icon-chevron-left::before {
+  content: "\e06e";
+}
+
+.wp-block-button.cf-icon-chevron-right .wp-block-button__link::before,
+.editor-styles-wrapper .wp-block-button.cf-icon-chevron-right .wp-block-button__link::before,
+.cf-icon-preview.cf-icon-chevron-right::before {
+  content: "\e06f";
+}
+
+.wp-block-button.cf-icon-chevron-down .wp-block-button__link::before,
+.editor-styles-wrapper .wp-block-button.cf-icon-chevron-down .wp-block-button__link::before,
+.cf-icon-preview.cf-icon-chevron-down::before {
+  content: "\e06d";
+}
+
+.wp-block-button.cf-icon-arrow-right .wp-block-button__link::before,
+.editor-styles-wrapper .wp-block-button.cf-icon-arrow-right .wp-block-button__link::before,
+.cf-icon-preview.cf-icon-arrow-right::before {
+  content: "\e049";
+}
+
+.wp-block-button.cf-icon-x .wp-block-button__link::before,
+.editor-styles-wrapper .wp-block-button.cf-icon-x .wp-block-button__link::before,
+.cf-icon-preview.cf-icon-x::before {
+  content: "\e1b2";
+}
+
+.wp-block-button.cf-icon-menu .wp-block-button__link::before,
+.editor-styles-wrapper .wp-block-button.cf-icon-menu .wp-block-button__link::before,
+.cf-icon-preview.cf-icon-menu::before {
+  content: "\e115";
+}
+
+.wp-block-button.cf-icon-truck .wp-block-button__link::before,
+.editor-styles-wrapper .wp-block-button.cf-icon-truck .wp-block-button__link::before,
+.cf-icon-preview.cf-icon-truck::before {
+  content: "\e194";
+}
+
+.wp-block-button.cf-icon-zap .wp-block-button__link::before,
+.editor-styles-wrapper .wp-block-button.cf-icon-zap .wp-block-button__link::before,
+.cf-icon-preview.cf-icon-zap::before {
+  content: "\e1b4";
+}
+
+.wp-block-button.cf-icon-shield-check .wp-block-button__link::before,
+.editor-styles-wrapper .wp-block-button.cf-icon-shield-check .wp-block-button__link::before,
+.cf-icon-preview.cf-icon-shield-check::before {
+  content: "\e1ff";
+}
+
+.wp-block-button.cf-icon-smile .wp-block-button__link::before,
+.editor-styles-wrapper .wp-block-button.cf-icon-smile .wp-block-button__link::before,
+.cf-icon-preview.cf-icon-smile::before {
+  content: "\e164";
+}
+
+.wp-block-button.cf-icon-package .wp-block-button__link::before,
+.editor-styles-wrapper .wp-block-button.cf-icon-package .wp-block-button__link::before,
+.cf-icon-preview.cf-icon-package::before {
+  content: "\e129";
+}
+
+.wp-block-button.cf-icon-star .wp-block-button__link::before,
+.editor-styles-wrapper .wp-block-button.cf-icon-star .wp-block-button__link::before,
+.cf-icon-preview.cf-icon-star::before {
+  content: "\e176";
+}
+
+.wp-block-button.cf-icon-clock .wp-block-button__link::before,
+.editor-styles-wrapper .wp-block-button.cf-icon-clock .wp-block-button__link::before,
+.cf-icon-preview.cf-icon-clock::before {
+  content: "\e087";
+}
+
+.wp-block-button.cf-icon-mail .wp-block-button__link::before,
+.editor-styles-wrapper .wp-block-button.cf-icon-mail .wp-block-button__link::before,
+.cf-icon-preview.cf-icon-mail::before {
+  content: "\e10f";
+}
+
+.wp-block-button.cf-icon-check .wp-block-button__link::before,
+.editor-styles-wrapper .wp-block-button.cf-icon-check .wp-block-button__link::before,
+.cf-icon-preview.cf-icon-check::before {
+  content: "\e06c";
+}
+
+.wp-block-button.cf-icon-check-circle .wp-block-button__link::before,
+.editor-styles-wrapper .wp-block-button.cf-icon-check-circle .wp-block-button__link::before,
+.cf-icon-preview.cf-icon-check-circle::before {
+  content: "\e07c";
+}
+
+.wp-block-button.cf-icon-tag .wp-block-button__link::before,
+.editor-styles-wrapper .wp-block-button.cf-icon-tag .wp-block-button__link::before,
+.cf-icon-preview.cf-icon-tag::before {
+  content: "\e17f";
+}
+
+.wp-block-button.cf-icon-filter .wp-block-button__link::before,
+.editor-styles-wrapper .wp-block-button.cf-icon-filter .wp-block-button__link::before,
+.cf-icon-preview.cf-icon-filter::before {
+  content: "\e0dc";
+}
+
+.wp-block-button.cf-icon-sliders-horizontal .wp-block-button__link::before,
+.editor-styles-wrapper .wp-block-button.cf-icon-sliders-horizontal .wp-block-button__link::before,
+.cf-icon-preview.cf-icon-sliders-horizontal::before {
+  content: "\e29a";
+}
+
+.wp-block-button.cf-icon-grid-2x2 .wp-block-button__link::before,
+.editor-styles-wrapper .wp-block-button.cf-icon-grid-2x2 .wp-block-button__link::before,
+.cf-icon-preview.cf-icon-grid-2x2::before {
+  content: "\e4ff";
+}

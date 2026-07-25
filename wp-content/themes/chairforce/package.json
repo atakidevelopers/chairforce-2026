@@ -26,7 +26,9 @@
   "dependencies": {
     "@wordpress/block-editor": "^15.11.0",
     "@wordpress/blocks": "^15.11.0",
-    "@wordpress/i18n": "^6.11.0"
+    "@wordpress/i18n": "^6.11.0",
+    "lucide": "^1.26.0",
+    "lucide-static": "^1.26.0"
   },
   "devDependencies": {
     "@wordpress/prettier-config": "^4.38.0",

@@ -2,6 +2,9 @@
 @import "../sass/mixins";
 
 // Theme imports
+// Note: the Lucide icon font for the Button block is a static asset
+// enqueued directly by Chairforce\Lucide_Icons (lib/class-lucide-icons.php),
+// not part of this build - see assets/css/button-icon-font.css for why.
 
 
 .editor-styles-wrapper {
@@ -45,5 +48,9 @@
     position: initial;
   }
 }
+
+// Inspector Controls sidebar chrome (not iframed canvas content, so this
+// stays outside .editor-styles-wrapper above).
+@import "button-icon-picker";
 
 

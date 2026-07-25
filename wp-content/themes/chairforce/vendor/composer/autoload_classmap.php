@@ -13,6 +13,7 @@ return array(
     'Chairforce\\Editor_Curation' => $baseDir . '/lib/class-editor-curation.php',
     'Chairforce\\Front' => $baseDir . '/lib/class-front.php',
     'Chairforce\\Init' => $baseDir . '/lib/class-init.php',
+    'Chairforce\\Lucide_Icons' => $baseDir . '/lib/class-lucide-icons.php',
     'Chairforce\\Theme_Style_Switcher' => $baseDir . '/lib/class-theme-style-switcher.php',
     'Composer\\InstalledVersions' => $vendorDir . '/composer/InstalledVersions.php',
 );

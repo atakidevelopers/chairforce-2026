@@ -1,5 +1,6 @@
 document.addEventListener( 'DOMContentLoaded', function () {
 	console.log( 'Chairforce Theme JS loaded' );
+
 	/* Grid Guide overlay */
 	var toggle = document.querySelector( '#grid-overlay-toggle' );
 	if ( toggle ) {

@@ -50,6 +50,7 @@ class Init {
 		$this->define_public_hooks();
 		$this->define_blocks_jsx_hooks();
 		$this->define_editor_curation_hooks();
+		$this->define_lucide_icons_hooks();
 
 		do_action( 'chairforce_init_construct' );
 
@@ -134,6 +135,19 @@ class Init {
 	private function define_editor_curation_hooks() {
 
 		new Editor_Curation();
+
+	}
+
+	/**
+	 * Register all the hooks related to the Lucide icon font
+	 * (Button block icon picker).
+	 *
+	 * @since    2.0.0
+	 * @access   private
+	 */
+	private function define_lucide_icons_hooks() {
+
+		new Lucide_Icons();
 
 	}
 

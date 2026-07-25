@@ -62,6 +62,14 @@ class Blocks_Jsx {
 		add_action( 'enqueue_block_editor_assets', [ $this, 'enqueue_block_editor_assets' ] );
 
 		/**
+		 * Fires on both Editor (incl. the iframed canvas) and front end.
+		 * Used here for the editor block/content styles so Gutenberg can
+		 * correctly copy them into the iframed editor canvas. Guarded with
+		 * is_admin() below since these styles are editor-only.
+		 */
+		add_action( 'enqueue_block_assets', [ $this, 'enqueue_block_assets' ] );
+
+		/**
 		 * Register JSX Block Types
 		 */
 		add_action( 'init', [ $this, 'register_block_type' ] );
@@ -110,11 +118,25 @@ class Blocks_Jsx {
 
 		wp_localize_script( $this->editor_script_handle, 'Chairforce', $this->get_localize_script_data() );
 
+	}
+
+	/**
+	 * Enqueue CSS Style for the Editor's block content (incl. the iframed canvas)
+	 * @hooked enqueue_block_assets
+	 *
+	 * @see https://developer.wordpress.org/block-editor/how-to-guides/enqueueing-assets-in-the-editor/
+	 */
+	public function enqueue_block_assets() {
+
 		/**
-		 * Register CSS Style
+		 * These styles are editor-only, bail out on the front end.
 		 */
+		if ( ! is_admin() ) {
+			return;
+		}
 
 		$editor_css = 'index.css';
+
 		wp_enqueue_style(
 			$this->editor_style_handle,
 			chairforce_get_build_url( $editor_css ),

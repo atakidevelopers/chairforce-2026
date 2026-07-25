@@ -11,6 +11,11 @@
   }
 }
 
+// Button icon layout & glyphs (the `cf-has-icon`/`cf-icon-{slug}`/
+// `cf-icon-right` classes) are styled by the static Lucide icon font
+// stylesheet, enqueued globally by Chairforce\Lucide_Icons - see
+// assets/css/button-icon-font.css.
+
 :where(.wp-block-button.is-style-primary) {
   .wp-block-button__link {
     @include button-primary-default;

@@ -1,0 +1,56 @@
+// Button block icon picker (Inspector Controls sidebar) chrome.
+//
+// This only lays out the picker's own UI (the ComboboxControl, its
+// dropdown rows, and the "currently selected" preview swatch) - it lives
+// in the regular admin build pipeline since it's plain editor sidebar
+// chrome, not iframed block/content styling.
+//
+// The `.cf-icon-preview` glyph itself (font-face + `::before` content
+// rules) comes from the static, globally-enqueued
+// assets/css/button-icon-font.css (see Chairforce\Lucide_Icons), shared
+// with the Button block's frontend/editor-canvas rendering.
+//
+// All classes use a `cf-` prefix to avoid colliding with similarly-generic
+// class names from other plugins/themes.
+
+.cf-icon-picker {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: $spacing-small;
+}
+
+.cf-icon-picker__combobox {
+  width: 100%;
+}
+
+.cf-icon-picker__preview {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 4rem;
+  height: 4rem;
+  font-size: 2.25rem;
+  border: 1px solid $color-outline;
+  border-radius: $radius-sm;
+}
+
+.cf-icon-picker__preview-empty {
+  width: 1.25rem;
+  height: 1.25rem;
+  border: 1px dashed currentColor;
+  border-radius: $radius-sm;
+  opacity: 0.3;
+}
+
+.cf-icon-picker__option {
+  display: flex;
+  align-items: center;
+  gap: $spacing-x-small;
+}
+
+.cf-icon-picker__option .cf-icon-preview {
+  flex: 0 0 auto;
+  font-size: 1rem;
+}
