@@ -90,7 +90,8 @@ class Acf {
 				'menu_title' => esc_html__( 'Theme Options', 'chairforce' ),
 				'menu_slug'  => 'chairforce-theme-options', // after changing the slug, update Fields Group location as well
 				'capability' => 'manage_options',
-				'icon_url'   => 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2MzYiIGhlaWdodD0iNjM2IiB2aWV3Qm94PSIwIDAgMzYzLjA0IDM2My4wNCINCiAgc2hhcGUtcmVuZGVyaW5nPSJnZW9tZXRyaWNQcmVjaXNpb24iIGltYWdlLXJlbmRlcmluZz0ib3B0aW1pemVRdWFsaXR5IiBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGZpbGw9IiNmZWZlZmUiDQogIHhtbG5zOnY9Imh0dHBzOi8vdmVjdGEuaW8vbmFubyI+DQogIDxwYXRoIGQ9Ik0wIDBoMzYzLjA0djM2My4wNEgweiIgZmlsbC1vcGFjaXR5PSIwIiAvPg0KICA8cGF0aA0KICAgIGQ9Ik03MS43IDkzLjYzbDY5LjAyLTM4LjUyTDcxLjcgMTYuMjJ6bTcwLjU0LTM1LjA5TDczLjYxIDk3LjA2bDY4LjYzIDM4Ljg5em0tMjkuNzQgNjQuODNsLTQwLjgtMjIuODh2NzcuNzlsMzkuMjctMjIuMTIgMjkuNzUtMTYuNzh6bTMwLjEyIDE5LjQ1bC02OC42MyAzOC44OSAxMS40NCA2LjQ4IDU3LjE5IDMyLjAzem0tMi4yOCA4MC44M2wtNjIuMTYtMzUuMDgtNi40OC0zLjQzdjc3LjQxem0yLjI4IDMuNDRsLTY4LjYzIDM4Ljg5IDY4LjYzIDM4LjUxem0tMi4yOCA4MC44NEw3MS43IDI2OS40MXY3Ny40MXptNzcuMDItMzguNTJsLTY4LjYzIDM4LjUyIDY4LjYzIDM4Ljg5em0zLjgyIDB2NzcuNDFsNjguMjUtMzguODl6bTEuOS0zLjQzbDY4LjI2IDM4LjUxdi03Ny40em0wLTg0LjI3bDY4LjI2IDM4LjN2LTc3LjE5em0tMS45LTMuNDNsNjguMjUtMzguOS02OC4yNS0zOC44OXptLTMuODIgMHYtNzcuNzlsLTY4LjYzIDM4Ljg5eiIgLz4NCjwvc3ZnPg=='
+				// N&C infinity mark, derived from assets/images/nc-favicon.svg (cropped + recolored for the dark admin-menu background).
+				'icon_url'   => 'data:image/svg+xml;base64,' . base64_encode( file_get_contents( get_theme_file_path( 'assets/images/nc-menu-icon.svg' ) ) ),
 			]
 		);
 
