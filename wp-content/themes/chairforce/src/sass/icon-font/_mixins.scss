@@ -1,0 +1,73 @@
+// Lucide icon font - Sass mixins
+//
+// Use these to apply a curated Lucide icon to a selector via CSS alone -
+// no class injection, no markup control needed. This is the "CSS-only
+// fallback" path for contexts we can't add a `cf-icon-{slug}` class to
+// (e.g. WooCommerce/plugin-rendered markup) - see the Button block's
+// button-icons.js + assets/css/button-icon-font.css for the primary,
+// class-based path used there instead.
+//
+// Font is already loaded globally by Chairforce\Lucide_Icons - these
+// mixins only add `font-family` + `content`, they do not declare
+// @font-face again.
+
+@function cf-icon-content($slug) {
+  @if not map-has-key($cf-icon-codepoints, $slug) {
+    @warn "cf-icon: unknown icon slug `#{$slug}`. Available: #{map-keys($cf-icon-codepoints)}.";
+    @return "";
+  }
+  @return map-get($cf-icon-codepoints, $slug);
+}
+
+// Base glyph styling shared by every usage below - mirrors the rules in
+// assets/css/button-icon-font.css so an icon looks identical whether it
+// comes from a `cf-icon-{slug}` class or one of these mixins.
+@mixin cf-icon-insert($slug) {
+  content: cf-icon-content($slug);
+  font-family: $cf-icon-font-family !important;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  display: inline-block;
+  font-size: 1em;
+}
+
+// Insert the icon as a `::before` pseudo-element on the current selector.
+@mixin cf-icon-before($slug) {
+  &::before {
+    @include cf-icon-insert($slug);
+  }
+}
+
+// Insert the icon as an `::after` pseudo-element on the current selector.
+@mixin cf-icon-after($slug) {
+  &::after {
+    @include cf-icon-insert($slug);
+  }
+}
+
+// Full "icon + label" treatment for a button/link-like element: makes the
+// element a flex row with a gap, and inserts the icon on the requested
+// side. This is the mixin equivalent of the Button block's
+// `cf-has-icon`/`cf-icon-left`/`cf-icon-right` classes, for elements whose
+// markup we can't add those classes to.
+//
+// Example - WooCommerce "Add to cart" button (see 16-icon-system.mdc):
+//   .add_to_cart_button {
+//     @include cf-icon-button('shopping-cart');
+//   }
+@mixin cf-icon-button($slug, $position: left, $gap: 0.5em) {
+  display: inline-flex;
+  align-items: center;
+  gap: $gap;
+
+  @if $position == right {
+    @include cf-icon-after($slug);
+  } @else {
+    @include cf-icon-before($slug);
+  }
+}

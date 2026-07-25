@@ -1,0 +1,16 @@
+// WooCommerce button icons
+//
+// WooCommerce (classic templates + WC Blocks' interactive "Add to Cart"
+// button) renders its own markup that we don't control via the block
+// editor, so it can't use the Button block's `cf-icon-{slug}` class-based
+// system (see 16-icon-system.mdc). Instead, target WooCommerce's own
+// selectors directly and pull in the icon via the `cf-icon-button` mixin
+// (src/sass/icon-font/_mixins.scss) - no markup/class changes needed on
+// the WooCommerce side at all.
+
+// Classic "Add to Cart" button (single product + archive/loop templates)
+// and the WC Blocks equivalent (Products block, mini-cart, etc.).
+.add_to_cart_button,
+.wc-block-components-product-button__button {
+  @include cf-icon-button('shopping-cart');
+}

@@ -1,0 +1,58 @@
+// Lucide icon font - Sass variables
+//
+// Companion to assets/css/button-icon-font.css (the static, hand-authored
+// stylesheet that already loads this same font + these same icons globally
+// via Chairforce\Lucide_Icons - see /lib/class-lucide-icons.php). That file
+// serves the Button block's `cf-icon-{slug}` classes; this Sass map exists
+// so *any other* selector - especially third-party/plugin markup we don't
+// control (e.g. WooCommerce templates) - can pull in the same icons via a
+// mixin, without needing a class injected into that markup at all.
+//
+// IMPORTANT - content values MUST be literal glyph characters, not
+// backslash-escaped codepoints (e.g. "\e151"). When this exact content was
+// previously compiled through this theme's webpack/Sass/cssnano pipeline
+// using "\eXXX" escapes, cssnano's production minification silently
+// stripped the content values (see assets/css/button-icon-font.css header
+// comment for the full story). Literal characters sidestep that bug
+// entirely and were the original, working fix before that file was made
+// static. Do not "clean up" these into \eXXX escapes.
+//
+// Source: node_modules/lucide-static/font/codepoints.json - same codepoints
+// used in assets/css/button-icon-font.css. Keep both files in sync manually
+// (no generator script - curated to a fixed ~30 icon set, see
+// src/js-admin/lucide-icon-options.js for the canonical slug/label list).
+
+$cf-icon-font-family: 'Lucide';
+
+$cf-icon-codepoints: (
+  'search': "",
+  'shopping-cart': "",
+  'file-text': "",
+  'user': "",
+  'map-pin': "",
+  'phone': "",
+  'heart': "",
+  'plus': "",
+  'minus': "",
+  'trash-2': "",
+  'chevron-left': "",
+  'chevron-right': "",
+  'chevron-down': "",
+  'arrow-right': "",
+  'x': "",
+  'menu': "",
+  'truck': "",
+  'zap': "",
+  'shield-check': "",
+  'smile': "",
+  'package': "",
+  'star': "",
+  'clock': "",
+  'mail': "",
+  'check': "",
+  'check-circle': "",
+  'tag': "",
+  'filter': "",
+  'sliders-horizontal': "",
+  'grid-2x2': "",
+);
