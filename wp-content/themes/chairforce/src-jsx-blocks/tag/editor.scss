@@ -1,0 +1,4 @@
+// Editor-only tweaks. Block styles load via style.scss (style-index.css).
+.wp-block-chairforce-tag .cf-tag__label[data-rich-text-placeholder]::after {
+  opacity: 0.65;
+}

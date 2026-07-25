@@ -1,0 +1,26 @@
+@import "../components/tag/mixins";
+
+/**
+ * WooCommerce tag/badge styling via shared cf-tag mixins.
+ * Markup is owned by WooCommerce; theme applies pill styles through selectors.
+ */
+
+:where(.woocommerce) {
+  :where(span.onsale),
+  :where(.wc-block-components-product-sale-badge),
+  :where(.wc-block-grid__product-onsale) {
+    @include cf-tag('sale');
+    min-height: unset;
+    min-width: unset;
+  }
+
+  :where(p.stock.in-stock),
+  :where(.stock.in-stock) {
+    @include cf-tag('stock');
+  }
+
+  :where(p.stock.out-of-stock),
+  :where(.stock.out-of-stock) {
+    @include cf-tag('sale');
+  }
+}

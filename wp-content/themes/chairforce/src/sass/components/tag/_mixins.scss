@@ -1,0 +1,83 @@
+// Block label — single rule set (no duplicate selectors in compiled CSS).
+@mixin cf-tag-block-label {
+  display: inline-block;
+  margin: 0;
+  padding: $spacing-tag-y $spacing-x-small;
+  border: 0;
+  border-radius: 0;
+  box-sizing: border-box;
+  font-family: $font-primary;
+  font-size: 1em;
+  font-style: normal;
+  font-weight: $font-weight-semi-bold;
+  line-height: 1.2;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  text-transform: uppercase;
+  color: inherit;
+
+  // Reset theme element styles when label is a heading or paragraph.
+  &:where(h1, h2, h3, h4, h5, h6, p) {
+    font-family: inherit;
+    font-style: inherit;
+    font-size: 1em;
+  }
+}
+
+@mixin cf-tag-label {
+  margin: 0;
+  padding: $spacing-tag-y $spacing-x-small;
+  border: 0;
+  border-radius: 0;
+  box-sizing: border-box;
+  font-family: $font-primary;
+  font-style: normal;
+  font-weight: $font-weight-semi-bold;
+  line-height: 1.2;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+@mixin cf-tag-variant-text($variant) {
+  @if $variant == 'best' {
+    color: $color-white;
+  } @else if $variant == 'stock' {
+    color: $color-white;
+  } @else if $variant == 'sale' {
+    color: $color-white;
+  } @else if $variant == 'new' {
+    color: $color-background;
+  } @else {
+    color: $color-white;
+  }
+}
+
+@mixin cf-tag-variant-background($variant) {
+  @if $variant == 'best' {
+    background-color: $color-primary;
+  } @else if $variant == 'stock' {
+    background-color: $color-tertiary;
+  } @else if $variant == 'sale' {
+    background-color: $color-secondary;
+  } @else if $variant == 'new' {
+    background-color: $color-body;
+  } @else {
+    background-color: $color-secondary;
+  }
+}
+
+@mixin cf-tag-variant-colors($variant) {
+  @include cf-tag-variant-text($variant);
+  @include cf-tag-variant-background($variant);
+}
+
+@mixin cf-tag-base {
+  @include cf-tag-label;
+  font-size: $font-size-x-small;
+}
+
+@mixin cf-tag($variant: 'sale') {
+  @include cf-tag-base;
+  @include cf-tag-variant-colors($variant);
+}

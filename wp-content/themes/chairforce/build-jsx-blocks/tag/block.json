@@ -1,0 +1,110 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "chairforce/tag",
+  "version": "1.0.0",
+  "title": "Tag",
+  "category": "text",
+  "icon": "tag",
+  "description": "Display a styled tag label with preset styles for promos, stock, and product badges.",
+  "parent": [
+    "chairforce/tags"
+  ],
+  "keywords": [
+    "tag",
+    "badge",
+    "label",
+    "pill"
+  ],
+  "example": {
+    "attributes": {
+      "content": "New",
+      "tagName": "span",
+      "className": "is-style-new"
+    }
+  },
+  "styles": [
+    {
+      "name": "sale",
+      "label": "Sale",
+      "isDefault": true
+    },
+    {
+      "name": "best",
+      "label": "Best"
+    },
+    {
+      "name": "stock",
+      "label": "Stock"
+    },
+    {
+      "name": "new",
+      "label": "New"
+    }
+  ],
+  "selectors": {
+    "root": ".wp-block-chairforce-tag",
+    "color": {
+      "text": ".cf-tag__label",
+      "background": ".cf-tag__label"
+    },
+    "typography": {
+      "selector": ".cf-tag__label"
+    },
+    "spacing": {
+      "padding": ".cf-tag__label",
+      "margin": ".wp-block-chairforce-tag"
+    },
+    "border": ".cf-tag__label"
+  },
+  "supports": {
+    "html": false,
+    "anchor": true,
+    "align": true,
+    "color": {
+      "gradients": false,
+      "text": true,
+      "background": true
+    },
+    "typography": {
+      "fontSize": true,
+      "lineHeight": true,
+      "fontWeight": true,
+      "fontStyle": true,
+      "textTransform": true,
+      "letterSpacing": true,
+      "textDecoration": true,
+      "fontFamily": true,
+      "textAlign": true
+    },
+    "spacing": {
+      "margin": true,
+      "padding": true
+    },
+    "border": {
+      "color": true,
+      "radius": true,
+      "style": true,
+      "width": true
+    }
+  },
+  "attributes": {
+    "content": {
+      "type": "string",
+      "source": "html",
+      "selector": ".cf-tag__label",
+      "default": ""
+    },
+    "tagName": {
+      "type": "string",
+      "default": "span"
+    },
+    "align": {
+      "type": "string"
+    }
+  },
+  "textdomain": "chairforce",
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css"
+}

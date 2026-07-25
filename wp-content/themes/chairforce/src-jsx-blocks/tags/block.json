@@ -1,0 +1,40 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "chairforce/tags",
+  "version": "1.0.0",
+  "title": "Tags",
+  "category": "text",
+  "icon": "tag",
+  "description": "Display a horizontal group of tag labels.",
+  "keywords": [
+    "tags",
+    "badges",
+    "labels",
+    "pills"
+  ],
+  "supports": {
+    "html": false,
+    "anchor": true,
+    "align": [
+      "wide",
+      "full"
+    ],
+    "layout": {
+      "allowSwitching": false,
+      "allowInheriting": false,
+      "allowEditing": false,
+      "default": {
+        "type": "flex",
+        "flexWrap": "wrap"
+      }
+    },
+    "spacing": {
+      "blockGap": true,
+      "margin": true,
+      "padding": true
+    }
+  },
+  "textdomain": "chairforce",
+  "editorScript": "file:./index.js"
+}

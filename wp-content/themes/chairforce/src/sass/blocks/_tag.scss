@@ -1,0 +1,43 @@
+@import "../settings";
+@import "../components/tag/mixins";
+
+// Container block — layout only (mirrors .wp-block-buttons).
+:where(.wp-block-chairforce-tags) {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+// Item wrapper — layout + typography sizing (mirrors .wp-block-button).
+:where(.wp-block-chairforce-tag) {
+  display: inline-block;
+  margin: 0;
+  font-size: $font-size-x-small;
+}
+
+// Label — one selector, one rule block.
+.wp-block-chairforce-tag .cf-tag__label {
+  @include cf-tag-block-label;
+}
+
+@mixin cf-tag-block-style-rules($variant) {
+  .wp-block-chairforce-tag.is-style-#{$variant}:not(.has-text-color) .cf-tag__label {
+    @include cf-tag-variant-text($variant);
+  }
+
+  .wp-block-chairforce-tag.is-style-#{$variant}:not(.has-background) .cf-tag__label {
+    @include cf-tag-variant-background($variant);
+  }
+}
+
+@include cf-tag-block-style-rules('sale');
+@include cf-tag-block-style-rules('best');
+@include cf-tag-block-style-rules('stock');
+@include cf-tag-block-style-rules('new');
+
+.wp-block-chairforce-tag:not(.is-style-best):not(.is-style-stock):not(.is-style-new):not(.has-text-color) .cf-tag__label {
+  @include cf-tag-variant-text('sale');
+}
+
+.wp-block-chairforce-tag:not(.is-style-best):not(.is-style-stock):not(.is-style-new):not(.has-background) .cf-tag__label {
+  @include cf-tag-variant-background('sale');
+}

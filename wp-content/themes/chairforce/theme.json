@@ -200,6 +200,11 @@
 					"slug": "xx-small"
 				},
 				{
+					"name": "Tag Vertical",
+					"size": "6px",
+					"slug": "tag-y"
+				},
+				{
 					"name": "X-Small",
 					"size": "12px",
 					"slug": "x-small"

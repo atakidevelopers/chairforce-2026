@@ -1,0 +1,22 @@
+@import "mixins";
+
+:where(.cf-tag) {
+  @include cf-tag-base;
+  @include cf-tag-variant-colors('sale');
+}
+
+:where(.cf-tag--best) {
+  @include cf-tag-variant-colors('best');
+}
+
+:where(.cf-tag--stock) {
+  @include cf-tag-variant-colors('stock');
+}
+
+:where(.cf-tag--sale) {
+  @include cf-tag-variant-colors('sale');
+}
+
+:where(.cf-tag--new) {
+  @include cf-tag-variant-colors('new');
+}
