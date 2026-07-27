@@ -1,0 +1,102 @@
+---
+description: Blokki plugin integration patterns for Chairforce theme
+globs: ["**/*.php", "**/*.scss", "**/*.js"]
+alwaysApply: true
+---
+
+# Blokki Integration Rules
+
+## Actual Blokki Integration in Chairforce Theme
+
+### **Post Type Configuration Files**
+**Main Hooks**: `includes/blokki-hooks.php`
+**Examples**: `includes/blokki-hooks-examples.php`
+**Custom Partials**: `blokki/partials/card/`
+
+### **How to Configure Post Type Display**
+```php
+// Example from theme: chairforce_blokki_post_type_post
+function chairforce_blokki_post_type_post($post_type_config) {
+    $post_type_config = array_merge($post_type_config, [
+        'taxonomy'       => 'category',
+        'link_card'      => true,
+        'link_image'     => false,
+        'link_title'     => false,
+        'show_author'    => false,
+        'image_size'     => 'medium_vertical',
+        'title_html_tag' => 'h3',
+        'partials'       => [
+            'image',
+            'inner' => [
+                'meta' => ['date', 'taxonomy'],
+                'title',
+            ],
+        ],
+    ]);
+    
+    if (is_home()) {
+        $post_type_config['image_size'] = 'medium_large';
+    }
+    
+    return $post_type_config;
+}
+
+add_filter('blokki_get_post_type_config_post', 'chairforce_blokki_post_type_post');
+```
+
+### **Available Post Type Configurations**
+**Active in Theme**:
+- `post` - Blog posts with conditional image sizing
+- `page` - Pages with excerpt display
+
+**Commented Out (Ready to Use)**:
+- `chairforce_service` - Service cards with readmore
+- `chairforce_industry` - Industry cards with taxonomy
+- `chairforce_success_story` - Success stories with stats
+- `chairforce_team` - Team member cards with modal
+- `chairforce_career` - Career positions with accordion template
+
+### **Custom Card Partials**
+**Location**: `blokki/partials/card/`
+**Available Partials**:
+- `card-background-image.php` - Background image with overlay
+- `featured-icon.php` - SVG icon display with fallback
+- `image-attachment.php` - Image display with classes
+- `myth-card.php` - Myth/fact card layout
+- `post-type-output.php` - Post type block display
+- `quote.php` - Quote display with icon
+
+### **How to Create New Partial**
+```php
+// Create: blokki/partials/card/custom-partial.php
+<?php
+$custom_field = get_field('custom_field', get_the_ID());
+if ($custom_field): ?>
+    <div class="custom-partial">
+        <?php echo wp_kses_post($custom_field); ?>
+    </div>
+<?php endif; ?>
+```
+
+**Include in Post Type Config**:
+```php
+'partials' => [
+    'image',
+    'custom-partial',  // Your new partial
+    'inner' => ['title', 'excerpt']
+]
+```
+
+### **Template System**
+**Default Template**: `accordion` for FAQ-style content
+**Custom Templates**: Override via `template` key in post type config
+
+### **Styling Integration**
+**Sass Files**: Import Blokki styles in theme's Sass system
+**Custom Classes**: Use theme's CSS custom properties and breakpoints
+
+## Related Rules
+- [PHP Architecture](07-php-architecture.mdc) - How Blokki integration works with class system
+- [Helper Functions](08-helper-functions.mdc) - Utility functions for Blokki integration
+- [Build System](03-build-system.mdc) - How to build and compile Blokki styles
+- [Directory Structure](02-directory-structure.mdc) - Where Blokki files are located

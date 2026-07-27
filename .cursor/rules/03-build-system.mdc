@@ -1,0 +1,113 @@
+---
+description: Build workflow and development commands for Chairforce theme
+globs: ["**/*.js", "**/*.scss", "**/*.php", "**/*.json"]
+alwaysApply: true
+---
+
+# Build System Rules
+
+## ⚠️ **Critical: Always Run Commands in Theme Directory**
+```bash
+cd wp-content/themes/chairforce/
+```
+
+## How to Build
+
+### **Development**
+```bash
+npm run dev              # Full development environment
+npm run start:assets     # Main assets only
+npm run start:blocks     # JSX blocks only
+npm run sync             # Browser-sync only
+```
+
+### **Production**
+```bash
+npm run build            # Build everything
+npm run build:assets     # Main assets only
+npm run build:blocks     # JSX blocks only
+```
+
+## Build Architecture
+
+### **Dual Build Process**
+- **Main Assets**: `/src/` → Webpack → `/build/`
+- **JSX Blocks**: `/src-jsx-blocks/` → Webpack → `/build-jsx-blocks/`
+
+### **Entry Points**
+- **Admin + Blocks**: `src/index.js`
+- **Public Frontend**: `src/public.js`
+- **JSX Blocks**: `src-jsx-blocks/` (auto-discovers all blocks)
+
+## How to Organize Source Files
+
+### **Main Assets (`/src/`)**
+```
+src/
+├── index.js              # Admin + blocks entry
+├── public.js             # Public entry
+├── sass/                 # Main Sass structure
+├── js/                   # Public JavaScript
+├── js-admin/             # Admin JavaScript
+├── sass-admin/           # Admin Sass
+└── blocks-extension/     # Block extensions
+```
+
+### **JSX Blocks (`/src-jsx-blocks/`)**
+```
+src-jsx-blocks/
+├── [block-name]/
+│   ├── block.json        # Block metadata
+│   ├── index.js          # Block registration
+│   ├── edit.js           # Editor component
+│   ├── save.js           # Save component
+│   ├── render.php        # Server-side render
+│   ├── view.js           # Frontend script
+│   ├── style.scss        # Block styles
+│   └── editor.scss       # Editor styles
+```
+
+## How to Setup Development
+
+### **Initial Setup**
+```bash
+npm install
+composer install
+npm run build
+```
+
+### **Browser-sync Setup**
+```bash
+# Create: config-dev/.env
+PROXY=localhost:8888
+```
+
+### **Development Features**
+- **Hot Reloading**: Automatic refresh on file changes
+- **Source Maps**: Debug-friendly development builds
+- **Parallel Processing**: Both builds run simultaneously
+- **Ports**: 8000 (main), 8001 (UI)
+
+## How to Troubleshoot
+
+### **Build Failures**
+```bash
+npm list                  # Check dependencies
+ls -la src/index.js       # Verify entry points
+ls -la build/             # Check build output
+ls -la build-jsx-blocks/  # Check block builds
+```
+
+### **Common Issues**
+- **Missing Entry Points**: Verify `src/index.js` and `src/public.js` exist
+- **Permission Errors**: Check write permissions to build directories
+- **Port Conflicts**: Verify ports 8000/8001 are available
+- **Missing .env**: Create `config-dev/.env` with PROXY setting
+
+## Related Rules
+- [Directory Structure](02-directory-structure.mdc) - File organization
+- [Block System](04-block-system.mdc) - Dual block approach
+- [JSX Blocks Guide](06-jsx-blocks.mdc) - Detailed JSX build process
+- [Assets & Styling](12-assets-styling.mdc) - Detailed styling and JS architecture
+- [Troubleshooting](15-troubleshooting.mdc) - Common issues and debugging
+- [Best Practices](14-best-practices.mdc) - Coding standards and optimization

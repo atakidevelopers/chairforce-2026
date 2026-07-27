@@ -1,0 +1,122 @@
+---
+description: Troubleshooting and debugging for Chairforce theme development
+globs: ["**/*.php", "**/*.js", "**/*.scss", "**/*.json"]
+alwaysApply: true
+---
+
+# Chairforce Theme Troubleshooting
+
+## Chairforce-Specific Debug Functions
+
+### **chairforce_write_log()**
+```php
+chairforce_write_log('Debug message');
+chairforce_write_log($variable);
+// Location: wp-content/themes/chairforce/debug.log
+```
+
+### **chairforce_dump()**
+```php
+chairforce_dump($variable);
+chairforce_dump($_POST);
+chairforce_dump(get_field('field_name'));
+```
+
+### **chairforce_get_build_url() & chairforce_get_build_dir()**
+```php
+$css_url = chairforce_get_build_url('index.css');
+$js_path = chairforce_get_build_dir('index.js');
+```
+
+## Theme-Specific Build Issues
+
+### **Missing Build Files**
+**Check build directories:**
+```bash
+cd wp-content/themes/chairforce/
+ls -la build/
+ls -la build-jsx-blocks/
+```
+
+**Required files:**
+```
+build/ - index.asset.php, index.css, index.js, public.css, public.js
+build-jsx-blocks/ - reading-time/, copyright-date-block/, [other-blocks]/
+```
+
+**Solution:**
+```bash
+npm install
+npm run build
+```
+
+### **JSX Blocks Not Building**
+**Check block build:**
+```bash
+npm run build:blocks
+ls -la build-jsx-blocks/
+```
+
+**Each block needs:**
+```
+block.json, index.js, index.css, view.js
+```
+
+## Theme-Specific Plugin Issues
+
+### **ACF Blocks Not Appearing**
+**Check ACF integration:**
+```php
+if (function_exists('acf_register_block')) {
+    chairforce_write_log('ACF is active');
+} else {
+    chairforce_write_log('ACF is NOT active');
+}
+
+$blocks = get_block_types();
+foreach ($blocks as $block) {
+    if (strpos($block->name, 'acf/') === 0) {
+        chairforce_write_log('ACF block found: ' . $block->name);
+    }
+}
+```
+
+### **JSX Blocks Not Registering**
+**Check block registration:**
+```php
+add_action('init', function() {
+    $blocks = get_block_types();
+    foreach ($blocks as $block) {
+        if (strpos($block->name, 'chairforce/') === 0) {
+            chairforce_write_log('Chairforce block found: ' . $block->name);
+        }
+    }
+});
+```
+
+## Quick Chairforce Debug Checklist
+
+### **Build Issues**
+- [ ] Run `npm install` in `wp-content/themes/chairforce/`
+- [ ] Run `npm run build` for all assets
+- [ ] Check `build/` and `build-jsx-blocks/` directories exist
+- [ ] Verify file permissions on build directories
+
+### **Theme Issues**
+- [ ] Check `wp-content/themes/chairforce/debug.log`
+- [ ] Verify theme constants are defined
+- [ ] Check theme classes exist
+- [ ] Verify theme hooks are registered
+
+### **Plugin Integration**
+- [ ] Check if required plugins are active (ACF Pro, Blokki)
+- [ ] Verify plugin compatibility with theme version
+- [ ] Check PHP error logs for theme-specific errors
+- [ ] Test with default theme to isolate issues
+
+## Related Rules
+- [Build System](03-build-system.mdc) - Understanding build process
+- [Block System](04-block-system.mdc) - Block registration and debugging
+- [PHP Architecture](07-php-architecture.mdc) - Class debugging and troubleshooting
+- [Assets & Styling](12-assets-styling.mdc) - Sass and CSS debugging
+

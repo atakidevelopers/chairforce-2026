@@ -1,0 +1,119 @@
+---
+description: File organization and directory structure for Chairforce theme
+globs: ["**/*.php", "**/*.js", "**/*.scss", "**/*.json", "**/*.html"]
+alwaysApply: true
+---
+
+# Directory Structure Rules
+
+## Quick File Locations
+
+### **Core Files**
+- **Theme Header**: `style.css` (root)
+- **Main Entry**: `functions.php` (root)
+- **FSE Config**: `theme.json` (root)
+- **Build Scripts**: `package.json` (root)
+- **PHP Dependencies**: `composer.json` (root)
+
+### **Source Directories**
+- **Main Assets**: `/src/` (Sass, JS, admin)
+- **ACF Blocks**: `/src-acf-blocks/` (quick setup)
+- **JSX Blocks**: `/src-jsx-blocks/` (preferred approach)
+- **PHP Classes**: `/lib/` (Chairforce namespace)
+- **Helper Functions**: `/includes/` (hooks, utilities)
+
+### **Build Outputs**
+- **Main Assets**: `/build/` (compiled CSS/JS)
+- **JSX Blocks**: `/build-jsx-blocks/` (compiled blocks)
+
+### **Templates & Patterns**
+- **FSE Templates**: `/templates/` (page layouts)
+- **Template Parts**: `/parts/` (reusable components)
+- **Block Patterns**: `/patterns/` (content layouts)
+- **PHP Partials**: `/partials/` (template fragments)
+
+## How to Add New Features
+
+### **New Helper Functions**
+```bash
+# Add to: /includes/helper-functions.php
+# Or create: /includes/{purpose}-functions.php
+```
+
+### **New PHP Classes**
+```bash
+# Create: /lib/class-{name}.php
+# Namespace: Chairforce\
+# Add to: /includes/init.php constructor
+```
+
+### **New ACF Blocks**
+```bash
+# Create: /src-acf-blocks/{block-name}/
+# Required: block.json, render.php, index.php
+# Auto-registers on build
+```
+
+### **New JSX Blocks**
+```bash
+# Create: /src-jsx-blocks/{block-name}/
+# Required: block.json, index.js, edit.js, save.js, render.php
+# Auto-registers on build
+```
+
+### **New Styles**
+```bash
+# Main: /src/sass/{component}.scss
+# Block: Block-specific style.scss
+# Admin: /src/sass-admin/{component}.scss
+```
+
+### **New Templates**
+```bash
+# Page: /templates/{template-name}.html
+# Part: /parts/{part-name}.html
+# Pattern: /patterns/{pattern-name}.php
+```
+
+## File Naming Conventions
+
+### **PHP Files**
+- **Classes**: `class-{name}.php`
+- **Functions**: `{purpose}-{type}.php`
+- **Hooks**: `{plugin}-hooks.php`
+
+### **Block Files**
+- **ACF**: `block.json`, `render.php`, `index.php`
+- **JSX**: `block.json`, `index.js`, `edit.js`, `save.js`, `render.php`
+
+### **Asset Files**
+- **Sass**: `_{partial}.scss` (partials), `{component}.scss` (components)
+- **JavaScript**: `{component}.js`, `index.js` (entry points)
+
+## Plugin Integration Locations
+
+### **Blokki Plugin**
+- **Overrides**: `/blokki/partials/card/`
+- **Templates**: `/blokki/templates/`
+- **Functions**: `/blokki/functions/`
+- **Hooks**: `/includes/blokki-hooks.php`
+
+### **ACF Fields**
+- **Field Groups**: Create in WP-Admin
+- **Auto-export**: `/acf-json/` directory
+- **Integration**: `/lib/class-acf.php`
+
+### **WP Grid Builder**
+- **Custom Files**: `/wp-grid-builder/`
+- **Integration**: `/includes/wpgb-hooks.php`
+
+## How to Find Existing Code
+- **Helper functions**: `/includes/helper-functions.php`
+- **Class methods**: `/lib/class-{name}.php`
+- **Hook registrations**: `/includes/{plugin}-hooks.php`
+- **Block templates**: `/src-{type}-blocks/{block-name}/`
+
+## Related Rules
+- [Theme Overview](01-theme-overview.mdc) - Architecture understanding
+- [Build System](03-build-system.mdc) - Development workflow
+- [PHP Architecture](07-php-architecture.mdc) - Class system

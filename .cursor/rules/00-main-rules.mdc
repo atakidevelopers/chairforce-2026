@@ -1,0 +1,77 @@
+---
+description: Main navigation and quick reference for Chairforce theme development
+globs: ["**/*.php", "**/*.js", "**/*.scss", "**/*.json"]
+alwaysApply: true
+---
+
+# Chairforce Theme Development Rules
+
+## Quick Navigation
+
+### 🏗️ **Foundation**
+- **[Theme Overview](01-theme-overview.mdc)** - Architecture, FSE, dual blocks
+- **[Directory Structure](02-directory-structure.mdc)** - File locations, organization
+- **[Build System](03-build-system.mdc)** - npm scripts, webpack, development
+
+### 🧩 **Block Development**
+- **[Block System](04-block-system.mdc)** - Dual approach, auto-discovery
+- **[ACF Blocks](05-acf-blocks.mdc)** - Quick setup, PHP-focused
+- **[JSX Blocks](06-jsx-blocks.mdc)** - Preferred approach, React-based
+
+### 🔧 **Core Systems**
+- **[PHP Architecture](07-php-architecture.mdc)** - Classes, namespaces, autoloading
+- **[Helper Functions](08-helper-functions.mdc)** - Utilities, hooks, patterns
+- **[Assets & Styling](12-assets-styling.mdc)** - Sass, JS, fonts
+
+### 🔌 **Integrations**
+- **[Blokki Integration](09-blokki-integration.mdc)** - Cards, templates, hooks
+- **[ACF Integration](10-acf-integration.mdc)** - Field groups, JSON exports
+- **[Plugin Integrations](13-integrations.mdc)** - General integration patterns
+
+### 📄 **Templates & Advanced**
+- **[Template System](11-template-system.mdc)** - FSE, patterns, parts
+- **[Best Practices](14-best-practices.mdc)** - Standards, performance, security
+- **[Troubleshooting](15-troubleshooting.mdc)** - Common issues, debugging
+- **[Icon System](16-icon-system.mdc)** - Lucide icon font, Button block picker
+- **[Menu System](17-menu-system.mdc)** - Mega menu Sass, breakpoints, a11y focus/hover
+
+## Common Developer Tasks
+
+### **"Create a JSX block that does X"**
+→ See: [JSX Blocks](06-jsx-blocks.mdc) + [Block System](04-block-system.mdc)
+
+### **"Create a PHP class that does X"**
+→ See: [PHP Architecture](07-php-architecture.mdc) + [Helper Functions](08-helper-functions.mdc)
+
+### **"Add Sass styles for X"**
+→ See: [Assets & Styling](12-assets-styling.mdc) + [Build System](03-build-system.mdc)
+
+### **"Integrate plugin X"**
+→ See: [Plugin Integrations](13-integrations.mdc) + [Blokki Integration](09-blokki-integration.mdc)
+
+### **"Create ACF fields for X"**
+→ See: [ACF Integration](10-acf-integration.mdc) + [ACF Blocks](05-acf-blocks.mdc)
+
+### **"Build/deploy the theme"**
+→ See: [Build System](03-build-system.mdc) + [Best Practices](14-best-practices.mdc)
+
+### **"Add/change an icon on the Button block"**
+→ See: [Icon System](16-icon-system.mdc)
+
+### **"Style the header / mega menu"**
+→ See: [Menu System](17-menu-system.mdc) + [header mega menu plan](../context/plans/header-mega-menu-plan.md)
+
+## ⚠️ **Critical: Always Run Commands in Theme Directory**
+All npm commands (`npm run dev`, `npm run start:assets`, etc.) must run in:
+```
+wp-content/themes/chairforce/
+```
+**NOT** in the repository root!
+
+## Key Theme Concepts
+
+- **Dual Block System**: ACF (quick setup) + JSX (preferred approach)
+- **Namespace**: `Chairforce\` for all PHP classes
+- **Auto-discovery**: Blocks, classes, and assets auto-register
+- **WordPress Standards**: Leverages core blocks and FSE
+- **Modern Workflow**: wp-scripts, Sass, browser-sync

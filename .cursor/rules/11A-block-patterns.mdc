@@ -1,0 +1,119 @@
+---
+description: Block patterns development and management for Chairforce theme
+globs: ["**/*.php", "**/*.html"]
+alwaysApply: true
+---
+
+# Block Patterns Rules
+
+## ⚠️ **Critical: Always Run Commands in Theme Directory**
+```bash
+cd wp-content/themes/chairforce/
+```
+
+## How Block Patterns Work in Chairforce
+
+### **Pattern Discovery**
+- **Auto-registration**: WordPress automatically discovers patterns in `/patterns/` directory
+- **No manual registration**: Just place PHP files with proper metadata comments
+- **Theme categories**: Theme registers custom categories (elements, section, stats)
+
+### **Pattern Organization**
+```
+patterns/
+├── hero-*.php             # Hero section patterns
+├── content-*.php          # Content layout patterns
+├── section-*.php          # Section patterns
+├── elements-*.php         # UI element patterns
+└── all-patterns.php       # Demo pattern showcase
+```
+
+## How to Create Block Patterns
+
+### **Theme Asset References**
+**Always use theme assets instead of WordPress uploads directory:**
+
+```php
+<?php
+/**
+ * Title: Hero Section
+ * Slug: chairforce/hero-section
+ * Categories: hero, sections
+ */
+?>
+<!-- wp:cover {"url":"<?php echo esc_url( get_theme_file_uri( 'src/assets/images/dark-headshot-bg.png' ) ); ?>","alt":"placeholder-hero-large-bg"} -->
+<div class="wp-block-cover">
+    <!-- wp:heading {"level":1,"textAlign":"center"} --><h1 class="wp-block-heading has-text-align-center">Hero Title</h1><!-- /wp:heading -->
+    <!-- wp:paragraph {"align":"center"} --><p class="has-text-align-center">Hero description text goes here.</p><!-- /wp:paragraph -->
+</div><!-- /wp:cover -->
+```
+
+**Why theme assets:**
+- **Theme-controlled**: Assets travel with theme, not dependent on site-specific uploads
+- **Portable**: Patterns work on any site where theme is installed
+- **Consistent**: Same images across all installations
+- **No broken links**: Assets are always available
+
+## How to Fix Patterns Using Upload URLs
+
+### **Identify Upload References**
+Look for these patterns in existing pattern files:
+- `wp_get_attachment_url()` calls
+- Hardcoded `/wp-content/uploads/` paths
+- `get_field('image')` returning upload URLs
+
+### **Replace with Theme Assets**
+```php
+// ❌ Don't use
+"url":"<?php echo wp_get_attachment_url(123); ?>"
+"url":"/wp-content/uploads/2024/01/image.jpg"
+
+// ✅ Use instead
+"url":"<?php echo esc_url( get_theme_file_uri( 'src/assets/images/dark-headshot-bg.png' ) ); ?>"
+```
+
+### **Available Theme Assets**
+Check `/src/assets/images/` for available images:
+- `dark-headshot-bg.png` - Hero backgrounds
+- `placeholder-*.png` - Various placeholder images
+- `logo-*.png` - Theme logos and branding
+
+### **When Images Aren't in Theme Assets**
+If the required image isn't in theme assets:
+1. **Ask user to place it** in `/src/assets/images/` directory, OR
+2. **Auto-fetch from uploads** and place in theme assets
+
+**Never leave external upload references** - all assets must be theme-contained.
+
+## ACF Field Integration in Patterns
+
+### **Using ACF Fields**
+```php
+<!-- wp:heading {"level":1,"textAlign":"center"} --><h1 class="wp-block-heading has-text-align-center">[chairforce field="hero_title"]</h1><!-- /wp:heading -->
+<!-- wp:paragraph {"align":"center"} --><p class="has-text-align-center">[chairforce field="hero_description"]</p><!-- /wp:paragraph -->
+<!-- wp:button --><div class="wp-block-button"><a class="wp-block-button__link wp-element-button" href="[chairforce field='hero_cta_link']">[chairforce field="hero_cta_text"]</a></div><!-- /wp:button -->
+```
+
+### **Screen-Specific Content**
+```php
+<!-- wp:chairforce/screen-specific-content {"data":{"screen":"mobile"}} --><!-- Mobile-specific content --><!-- /wp:chairforce/screen-specific-content -->
+<!-- wp:chairforce/screen-specific-content {"data":{"screen":"desktop"}} --><!-- Desktop-specific content --><!-- /wp:chairforce/screen-specific-content -->
+```
+
+## Pattern Categories
+
+### **Theme-Registered Categories**
+- **`elements`** - UI components (buttons, tiles, icons)
+- **`section`** - Page sections and layouts
+- **`stats`** - Statistics and counter displays
+
+### **Standard Categories**
+- **`hero`** - Hero sections and banners
+- **`banner`** - Banner displays
+- **`content`** - Content layouts
+- **`post`** - Post-specific patterns
+
+## Related Rules
+- [Template System](11-template-system.mdc) - How patterns integrate with templates
+- [ACF Integration](10-acf-integration.mdc) - ACF field usage in patterns
+- [Build System](03-build-system.mdc) - Asset compilation for pattern images

@@ -1,0 +1,126 @@
+---
+description: Preferred React-based approach for JSX blocks in Chairforce theme
+globs: ["**/*.js", "**/*.jsx", "**/*.php", "**/*.json", "**/*.scss"]
+alwaysApply: true
+---
+
+# JSX Blocks Rules
+
+## Preferred Approach
+
+### **Best For**
+- **Modern Development**: React-based workflow with ES6+ and modern tooling
+- **WordPress Core Experience**: Follows official block development patterns
+- **Rich Interactions**: Dynamic content and sophisticated user experiences
+- **Long-term Maintainability**: Component-based architecture
+
+### **When to Use JSX Blocks**
+- You want the **preferred, modern approach**
+- You're comfortable with **React development**
+- You need **complex interactions** and dynamic content
+- You want **WordPress core-like** development experience
+
+## How to Create JSX Blocks
+
+### **Step 1: Create Block Directory**
+```bash
+cd wp-content/themes/chairforce
+mkdir src-jsx-blocks/interactive-card
+cd src-jsx-blocks/interactive-card
+```
+
+### **Step 2: Create Required Files**
+1. **`block.json`** - WordPress block.json v3 configuration
+2. **`index.js`** - Block registration with `registerBlockType`
+3. **`edit.js`** - Editor component (React functional component)
+4. **`save.js`** - Save component (React functional component)
+5. **`view.js`** - Frontend interactions script (optional, add only if frontend JS needed)
+6. **`style.scss`** - Block styles  (optional, add only if styling needed)
+7. **`editor.scss`** - Editor-specific styles  (optional , add only if styling needed)
+
+**Note**: `render.php` is only needed for dynamic blocks requiring server-side rendering. Static blocks can use `save.js` for frontend rendering.
+
+### **When to Use Each Approach**
+
+**Use Static Blocks (save.js) When:**
+- Displaying static content (images, text, layouts)
+- No server-side logic required
+- Content is fully defined in the editor
+- Better performance (no PHP processing)
+
+**Use Dynamic Blocks (render.php) When:**
+- Content depends on server-side data (database, user info, etc.)
+- PHP logic is required for rendering
+- Content changes based on context or conditions
+- Integration with WordPress functions or plugins
+
+### **Step 3: Block Structure**
+
+**Static Block (Frontend Rendering via save.js):**
+```
+src-jsx-blocks/
+├── static-card/
+│   ├── block.json              # Block metadata
+│   ├── index.js                # Block registration
+│   ├── edit.js                 # Editor component
+│   ├── save.js                 # Save component (handles frontend rendering)
+│   ├── view.js                 # Frontend interactions (optional)
+│   ├── style.scss              # Block styles
+│   └── editor.scss             # Editor styles
+```
+
+**Dynamic Block (Server-side Rendering via render.php):**
+```
+src-jsx-blocks/
+├── dynamic-card/
+│   ├── block.json              # Block metadata
+│   ├── index.js                # Block registration
+│   ├── edit.js                 # Editor component
+│   ├── save.js                 # Save component (returns null for dynamic blocks)
+│   ├── render.php              # Server-side rendering template
+│   ├── view.js                 # Frontend interactions (optional)
+│   ├── style.scss              # Block styles
+│   └── editor.scss             # Editor styles
+```
+
+### **Step 4: Build and Register**
+```bash
+# Build JSX blocks
+npm run build:blocks
+
+# Or build all assets
+npm run build
+```
+
+**Auto-registration**: Theme discovers blocks from `/build-jsx-blocks/` and registers them automatically.
+
+## Key Development Patterns
+
+### **Modern JavaScript Guidelines**
+- **Use ES6+ Features**: Arrow functions, destructuring, template literals
+- **React Hooks**: Use functional components with hooks
+- **WordPress Components**: Leverage `@wordpress/components` and `@wordpress/block-editor`
+- **Internationalization**: Use `@wordpress/i18n` for translations
+
+### **Component Architecture**
+- **Single Responsibility**: Each component has one clear purpose
+- **Reusability**: Design components for reuse across blocks
+- **Props Interface**: Clear, documented component interfaces
+- **State Management**: Efficient state handling and updates
+
+## Common Issues
+
+### **Build Errors**
+- Check JavaScript syntax, verify import paths, check for missing dependencies
+
+### **Block Not Registering**
+- Verify build completed successfully, check block.json syntax, clear WordPress cache
+
+### **JavaScript Errors**
+- Check browser console for errors, verify viewScript path in block.json
+
+## Related Rules
+- [Block System](04-block-system.mdc) - Dual block approach architecture
+- [ACF Blocks Guide](05-acf-blocks.mdc) - Quick setup and PHP development
+- [Build System](03-build-system.mdc) - Asset compilation and development workflow
+

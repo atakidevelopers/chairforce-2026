@@ -1,0 +1,100 @@
+---
+description: Dual block system architecture and when to use ACF vs JSX blocks
+globs: ["**/*.php", "**/*.js", "**/*.json", "**/*.scss"]
+alwaysApply: true
+---
+
+# Block System Rules
+
+## Dual Block Approach
+
+### **ACF Blocks: Quick Setup & PHP Preference**
+- **Best For**: PHP-focused developers, quick prototyping, rapid development
+- **Workflow**: Create block options using ACF Groups UI in WP-Admin
+- **File Location**: `/src-acf-blocks/{block-name}/`
+- **Required Files**: `block.json`, `render.php`, `index.php`
+
+### **JSX Blocks: Preferred Approach & Modern Workflow**
+- **Best For**: React developers, WordPress core experience, complex interactions
+- **Workflow**: Develop blocks using React/JSX, follow WordPress core patterns
+- **File Location**: `/src-jsx-blocks/{block-name}/`
+- **Required Files**: `block.json`, `index.js`, `edit.js`, `save.js`, `render.php`
+
+## When to Use Each Approach
+
+### **Choose ACF Blocks When:**
+- You need to **get up and running quickly**
+- You prefer **PHP development** over JavaScript
+- You want **simple block options** without complex interactions
+- You're **prototyping** or building simple content blocks
+
+### **Choose JSX Blocks When:**
+- You want the **preferred, modern approach**
+- You're comfortable with **React development**
+- You need **complex interactions** and dynamic content
+- You want **WordPress core-like** development experience
+
+## Block Architecture
+
+### **ACF Block System**
+```
+acf-blocks/
+├── custom-block/
+│   ├── block.json          # Block configuration
+│   ├── render.php          # PHP rendering logic
+│   └── style.scss          # Block-specific styles
+```
+
+**Registration Flow**:
+1. **Auto-Discovery**: Theme finds blocks in `/acf-blocks/`
+2. **ACF Registration**: Blocks registered via `acf_register_block_type()`
+3. **Options Integration**: ACF field groups automatically linked
+
+### **JSX Block System**
+```
+src-jsx-blocks/
+├── custom-jsx-block/
+│   ├── block.json          # Block configuration
+│   ├── index.js            # Main block entry point
+│   ├── edit.js             # Editor component
+│   ├── save.js             # Save component
+│   ├── render.php          # Server-side rendering
+│   ├── view.js             # Frontend interactions
+│   └── style.scss          # Block-specific styles
+```
+
+**Registration Flow**:
+1. **Build Process**: Webpack compiles to `/build-jsx-blocks/`
+2. **WordPress Registration**: Blocks registered via `register_block_type()`
+3. **Asset Loading**: Compiled JavaScript and CSS automatically loaded
+
+## Block Features
+
+### **Shared Features**
+- **Custom Fields**: Block-specific data storage
+- **Server-Side Rendering**: PHP-based output generation
+- **Styling Support**: SCSS compilation and CSS custom properties
+- **Theme Integration**: Access to theme functions and data
+
+### **ACF-Specific Features**
+- **Field Groups**: Easy block options creation via WP-Admin
+- **Conditional Logic**: Advanced field display rules
+- **Repeater Fields**: Complex data structures
+
+### **JSX-Specific Features**
+- **React Components**: Modern component architecture
+- **State Management**: Dynamic content updates
+- **WordPress Core Patterns**: Official block development standards
+
+## Block Registration
+
+### **Automatic Discovery**
+The theme automatically discovers and registers blocks:
+- **ACF blocks** auto-register from `/acf-blocks/`
+- **JSX blocks** auto-register from `/build-jsx-blocks/`
+
+## Related Rules
+- [ACF Blocks Guide](05-acf-blocks.mdc) - Quick setup and PHP development
+- [JSX Blocks Guide](06-jsx-blocks.mdc) - Preferred React-based approach
+- [Build System](03-build-system.mdc) - Asset compilation and development workflow
+

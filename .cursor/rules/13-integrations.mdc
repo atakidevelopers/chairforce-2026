@@ -1,0 +1,66 @@
+---
+description: Plugin integrations and development workflows for Chairforce theme
+globs: ["**/*.php", "**/*.js", "**/*.json"]
+alwaysApply: true
+---
+
+# Plugin Integrations Rules
+
+## Actual Plugin Integrations in Chairforce Theme
+
+### **JVM Rich Text Icons Plugin**
+**File**: `includes/plugin-hooks.php`
+**Integration**: Removes Font Awesome stylesheet
+```php
+add_filter('jvm_richtext_icons_css_file', '__return_false');
+```
+
+### **Yoast SEO Integration**
+**File**: `includes/misc-hooks.php`
+**Integration**: Removes breadcrumbs on home page
+```php
+add_filter('wpseo_breadcrumb_output', 'chairforce_no_breadcrumbs_for_home_page');
+```
+
+### **WP Grid Builder Integration**
+**File**: `includes/wpgb-hooks.php`
+**Integration**: Extensive integration with Blokki plugin for card management
+
+**Key Hooks Used**:
+- `wp_grid_builder/card/attributes` - Modify card attributes
+- `wp_grid_builder/grid/query_args` - Modify grid queries
+- `wp_grid_builder/blocks` - Register custom card blocks
+- `wp_grid_builder/grid/settings` - Override grid settings
+
+**For Detailed Examples**: See `includes/wpgb-hooks.php` and `includes/wpgb-overide-examples.php`
+
+## How to Add New Plugin Integration
+
+### **Step 1: Create Hook File**
+```bash
+touch includes/new-plugin-hooks.php
+```
+
+### **Step 2: Add to init.php**
+```php
+// Add to: includes/init.php
+require_once get_template_directory() . '/includes/new-plugin-hooks.php';
+```
+
+### **Step 3: Follow Theme Pattern**
+```php
+// includes/new-plugin-hooks.php
+<?php
+if (!defined('ABSPATH')) exit;
+
+add_filter('plugin_hook', 'chairforce_plugin_integration');
+function chairforce_plugin_integration($value) {
+    // Integration logic
+    return $value;
+}
+```
+
+## Related Rules
+- [Blokki Integration](09-blokki-integration.mdc) - Blokki plugin specifics
+- [Build System](03-build-system.mdc) - Asset compilation for integrations
+- [PHP Architecture](07-php-architecture.mdc) - Class-based integration patterns

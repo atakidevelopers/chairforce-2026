@@ -1,0 +1,75 @@
+---
+description: Concise theme architecture and key concepts for Chairforce theme
+globs: ["**/*.php", "**/*.js", "**/*.scss", "**/*.json"]
+alwaysApply: true
+---
+
+# Theme Overview Rules
+
+## Quick Facts
+- **Theme Type**: Full Site Editing (FSE) WordPress theme
+- **Namespace**: `Chairforce\` for all PHP classes
+- **Framework**: WordPress 6.0+ with Gutenberg blocks
+- **Build Tool**: @wordpress/scripts (webpack)
+
+## Key Architecture
+
+### Dual Block System
+- **ACF Blocks**: Quick setup, PHP-focused, WP-Admin field creation
+- **JSX Blocks**: Preferred approach, React-based, modern workflow
+- **Auto-Discovery**: Both types auto-register from their directories
+
+### Core Technologies
+- **PHP**: Namespaced classes with Composer autoloading
+- **JavaScript**: Modern ES6+ with wp-scripts build system
+- **Sass**: Modular architecture with breakpoint mixins
+- **FSE**: Block templates, template parts, and patterns
+
+## Essential Directories
+```
+wp-content/themes/chairforce/
+├── src/                    # Main assets (Sass, JS)
+├── src-jsx-blocks/         # JSX blocks (preferred)
+├── src-acf-blocks/         # ACF blocks (quick setup)
+├── lib/                    # PHP classes (Chairforce namespace)
+├── includes/               # Helper functions and hooks
+├── templates/              # FSE block templates
+├── parts/                  # FSE template parts
+├── patterns/               # Block patterns
+├── acf-json/               # ACF field groups (auto-exported)
+├── build/                  # Compiled main assets
+└── build-jsx-blocks/       # Compiled JSX blocks
+```
+
+## Plugin Dependencies
+- **Required**: ACF Pro, Blokki
+- **Recommended**: WP Grid Builder, Yoast SEO
+- **Managed by**: TGMPA (TGM Plugin Activation)
+
+## Development Workflow
+```bash
+# ⚠️ IMPORTANT: Run these commands in wp-content/themes/chairforce/
+cd wp-content/themes/chairforce/
+
+# Start development
+npm run dev
+
+# Build for production
+npm run build
+
+# Individual builds
+npm run start:assets    # Main assets only
+npm run start:blocks    # JSX blocks only
+```
+
+## Key Concepts
+- **Graceful Degradation**: Works without plugins
+- **WordPress Standards**: Leverages core blocks
+- **Performance First**: Optimized builds and lazy loading
+- **Security**: SVG sanitization, nonce protection
+- **Accessibility**: WCAG compliance built-in
+
+## Related Rules
+- [Directory Structure](02-directory-structure.mdc) - File locations
+- [Build System](03-build-system.mdc) - Development workflow
+- [Block System](04-block-system.mdc) - Dual block approach

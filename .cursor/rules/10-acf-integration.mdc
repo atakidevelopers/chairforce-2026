@@ -1,0 +1,101 @@
+---
+description: ACF integration patterns and field management for Chairforce theme
+globs: ["**/*.php", "**/*.json"]
+alwaysApply: true
+---
+
+# ACF Integration Rules
+
+## ⚠️ **Critical: Always Run Commands in Theme Directory**
+```bash
+cd wp-content/themes/chairforce/
+```
+
+## How ACF Integration Works
+
+### **Integration Architecture**
+- **Class-based Integration**: `Chairforce\Acf` class in `/lib/class-acf.php`
+- **JSON Field Groups**: Organized field groups in `/acf-json/`
+- **Options Pages**: Theme options and configuration management
+
+### **Key Integration Points**
+- **Field Group Organization**: Descriptive naming conventions for field groups
+- **Options Page Management**: Centralized theme configuration
+- **Automatic JSON Loading**: Field groups automatically loaded from JSON files
+
+## How to Organize ACF Field Groups
+
+### **Naming Convention**
+Use descriptive names: `group_[context]_[purpose]_[specificity]`
+
+**Examples:**
+- `group_theme_options` - Main theme configuration
+- `group_theme_block_screen_specific_content` - Block content settings
+- `group_theme_post_display_settings` - Post display configuration
+
+## How to Create Field Groups
+
+### **Create JSON Files in /acf-json/**
+Agents can create field groups by adding JSON files to `/acf-json/` directory:
+
+1. **Create JSON file** with descriptive naming: `group_[context]_[purpose].json`
+2. **Use proper JSON structure** following ACF field group format
+3. **Set location rules** to determine where fields appear
+4. **Theme automatically loads** all JSON files from `/acf-json/`
+
+## How to Add Theme Option Fields
+
+### **Existing Theme Options Files**
+To add new theme option fields, modify these existing JSON files:
+
+- **`/acf-json/group_theme_options.json`** - Main theme configuration
+- **`/acf-json/group_theme_block_screen_specific_content.json`** - Block content settings  
+- **`/acf-json/group_theme_post_display_settings.json`** - Post display configuration
+
+### **Theme Options Page**
+Options page already exists at `chairforce-theme-options` with tabs:
+1. **General Tab** - Default placeholder images, global theme settings
+2. **Post Types Tab** - Post type specific settings, custom field configurations
+3. **Blocks Tab** - Block-specific settings, content management
+
+## How ACF Actually Works in the Theme
+
+### **Field Group Loading**
+- No manual PHP registration required
+- JSON files auto-load from `/acf-json/` directory
+- Field groups appear based on location rules
+
+### **Block Render Context**
+- Use `get_block_wrapper_attributes()` for block markup wrapper attributes.
+- In block `render.php`, `get_field()` defaults to the block’s field group. To fetch a post field by ID/name, use:
+```php
+get_field( $field_id, get_the_ID() )
+```
+
+## How to Debug ACF Fields in Chairforce Theme
+
+### **Use Theme Debug Functions**
+```php
+chairforce_write_log('ACF Fields: ' . print_r(get_fields(), true));
+chairforce_dump(get_field('field_name'));
+$field_groups = acf_get_field_groups();
+chairforce_write_log('Field Groups: ' . print_r($field_groups, true));
+```
+
+### **Common Issues and Solutions**
+1. **Fields Not Displaying**: Check field group location rules, verify field group is active, check field names match exactly
+2. **Field Values Not Saving**: Check user capabilities, verify field group permissions, check for JavaScript errors
+3. **Performance Issues**: Use field caching, minimize database queries, load fields conditionally
+
+## Best Practices
+
+### **Chairforce-Specific Patterns**
+- Use descriptive field group names following `group_[context]_[purpose]` pattern
+- Group related fields logically (theme options, block settings, post display)
+- Provide clear instructions for content editors
+
+## Related Rules
+- [ACF Blocks](05-acf-blocks.mdc) - How to create ACF blocks
+- [PHP Architecture](07-php-architecture.mdc) - How ACF integration works with the class system
+- [Helper Functions](08-helper-functions.mdc) - Utility functions for ACF integration
+- [Blokki Integration](09-blokki-integration.mdc) - How ACF works with Blokki cards

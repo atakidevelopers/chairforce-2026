@@ -1,0 +1,103 @@
+---
+description: "How to work with PHP classes and architecture in the Chairforce theme"
+globs: ["**/*.php", "**/lib/**", "**/includes/**"]
+alwaysApply: true
+---
+
+# Chairforce PHP Architecture Rules
+
+## Class Creation & Structure
+
+### **Step 1: Create Class File**
+```bash
+# Create in: /lib/class-{name}.php
+```
+
+### **Step 2: Class Structure**
+```php
+<?php
+namespace Chairforce;
+
+class CustomFeature {
+    public function __construct() {
+        $this->register_hooks();
+    }
+    private function register_hooks() {
+        add_action('init', [$this, 'custom_function']);
+    }
+    public function custom_function() {
+        // Implementation
+    }
+}
+```
+
+### **Step 3: Integration**
+```php
+// In /lib/class-init.php constructor
+private function define_custom_feature_hooks() {
+    new CustomFeature();
+}
+
+// Add to constructor
+public function __construct() {
+    $this->define_custom_feature_hooks();
+}
+```
+
+### **Hook Registration Pattern**
+- **Constructor calls register_hooks()**: Always call `$this->register_hooks()` in constructor
+- **Hooks registered in register_hooks()**: Use `[$this, 'method_name']` syntax
+- **Default Priorities**: Use WordPress default hook priorities
+- **No Hook Management**: Keep it simple, no complex hook systems
+
+## Class Organization & Dependencies
+
+### **Class Categories**
+- **Core Theme Classes**: Init, After_Setup_Theme, Theme_Style_Switcher
+- **Block System Classes**: Acf, Blocks_Jsx
+- **Feature Classes**: Mega_Menu, Editor_Curation, ReadingTime
+- **Integration Classes**: Plugins_Manager, Api
+
+### **Dependency Management**
+```php
+// Classes are directly instantiated in private methods in class-init.php
+private function define_api_hooks() {
+    $this->api = new Api();
+}
+```
+## Chairforce Autoloading System
+
+### **Composer Configuration**
+```json
+{
+  "autoload": {
+    "classmap": ["lib", "public"]
+  }
+}
+```
+
+### **Autoloading Rules**
+- **File Naming**: File name must exactly match class name (case-sensitive)
+- **Namespace**: All classes use `Chairforce\` namespace
+- **Directory**: Classes must be in `/lib` directory
+- **No PSR-4**: Uses simple classmap autoloading
+
+### **Class Discovery**
+```bash
+# After creating new class, regenerate autoloader
+composer dump-autoload
+```
+
+## Chairforce Best Practices
+
+### **Theme-Specific Best Practices**
+1. **Follow Existing Patterns**: Use the same structure as existing classes
+2. **Use WordPress Hooks**: Register hooks in register_hooks() method
+3. **Use Theme Constants**: Use theme constants for consistency
+4. **Follow Naming Conventions**: Use chairforce_ prefix for functions, Chairforce\ namespace for classes
+
+## Related Rules
+- [Directory Structure](02-directory-structure.mdc) - Where classes are located
+- [Build System](03-build-system.mdc) - How classes integrate with build process
+- [Block System](04-block-system.mdc) - How blocks use the class system
+- [Helper Functions](08-helper-functions.mdc) - Utility functions and patterns

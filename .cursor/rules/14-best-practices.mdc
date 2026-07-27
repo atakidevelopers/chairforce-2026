@@ -1,0 +1,102 @@
+---
+description: Chairforce theme-specific development best practices and patterns
+globs: ["**/*.php", "**/*.scss", "**/*.js", "**/*.json"]
+alwaysApply: true
+---
+
+# Chairforce Theme Best Practices
+
+## Theme-Specific Development Patterns
+
+### **Use Theme's Debug Functions**
+```php
+chairforce_write_log('Debug message');
+chairforce_dump($variable);
+// Don't use: error_log(), var_dump()
+```
+
+### **Follow Theme's Hook Registration Pattern**
+```php
+class CustomFeature {
+    public function __construct() {
+        $this->register_hooks();
+    }
+    
+    private function register_hooks() {
+        add_action('init', [$this, 'custom_function']);
+        add_filter('the_content', [$this, 'custom_filter']);
+    }
+}
+// Don't register hooks outside classes
+```
+
+### **Use Theme's Namespace and Constants**
+```php
+namespace Chairforce;
+CHAIRFORCE_PREFIX . 'custom_hook'
+CHAIRFORCE_VERSION
+// Don't use generic namespaces
+```
+
+### **Follow Theme's File Organization**
+```php
+/lib/class-custom-feature.php           # PHP classes
+/includes/custom-hooks.php              # Hook files
+/src-acf-blocks/custom-block/           # ACF blocks
+/src-jsx-blocks/custom-block/           # JSX blocks
+// Don't create random directories
+```
+
+### **Use Theme's Asset Management**
+```php
+chairforce_get_build_url('css/main.css')
+chairforce_get_build_dir('js/app.js')
+// Don't hardcode asset paths
+```
+
+### **Follow Theme's ACF Pattern**
+```php
+chairforce_get_acf_block_classname($block, 'default-class')
+// Don't manually build ACF classes
+```
+
+### **Use Theme's Blokki Integration**
+```php
+function chairforce_blokki_post_type_custom($post_type_config) {
+    return array_merge($post_type_config, [
+        'image_size' => 'medium_large',
+        'partials' => ['image', 'title', 'excerpt']
+    ]);
+}
+add_filter('blokki_get_post_type_config_custom', 'chairforce_blokki_post_type_custom');
+```
+
+### **Follow Theme's Sass Architecture**
+```scss
+$color-primary
+$spacing-large
+@include breakpoint(medium) { padding: 1.5rem; }
+// Don't use direct CSS custom properties or custom breakpoints
+```
+
+### **Follow Theme's Block Pattern**
+```php
+register_block_type('chairforce/custom-block', [
+    'render_callback' => 'chairforce_render_custom_block',
+    'attributes' => $attributes
+]);
+// Don't use generic block registration
+```
+
+### **Use Theme's Nonce System**
+```php
+wp_create_nonce(CHAIRFORCE_PREFIX . 'custom_action')
+wp_verify_nonce($_POST['_wpnonce'], CHAIRFORCE_PREFIX . 'custom_action')
+// Don't use generic nonce names
+```
+
+## Related Rules
+- [PHP Architecture](07-php-architecture.mdc) - Class-based development patterns
+- [Assets & Styling](12-assets-styling.mdc) - Sass organization and styling
+- [Block System](04-block-system.mdc) - Block development patterns
+- [Blokki Integration](09-blokki-integration.mdc) - Card system integration

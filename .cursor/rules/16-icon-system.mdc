@@ -1,0 +1,218 @@
+---
+description: Lucide icon system - Button block picker, Icon Block plugin, and CSS-only Sass mixins
+globs: ["**/lib/class-lucide-icons.php", "**/src/js-admin/button-icons.js", "**/src/js-admin/lucide-icon-options.js", "**/src/js-admin/register-custom-icons.js", "**/src/js-admin/chairforce-icon-block-icons.js", "**/assets/css/button-icon-font.css", "**/src/sass-admin/_button-icon-picker.scss", "**/src/sass/blocks/_button.scss", "**/src/sass/icon-font/**", "**/src/sass/woocommerce/**"]
+alwaysApply: true
+---
+
+# Icon System Rules (Lucide Icons)
+
+The theme has one curated set of ~30 Lucide icons (see
+`src/js-admin/lucide-icon-options.js` → `CHAIRFORCE_LUCIDE_ICON_OPTIONS` —
+the single source of truth for slugs/labels) consumed by **three separate
+surfaces**, each solving a different rendering constraint:
+
+| Surface | How icons render | When to use |
+|---|---|---|
+| Button block picker | Icon font (`::before` CSS glyph) | Editing a `core/button` block. |
+| Icon Block plugin | Inline SVG (plugin's own block) | Editors inserting a standalone icon anywhere in content. |
+| Sass mixins | Icon font (`::before` CSS glyph) | Styling markup you don't control (plugins, WooCommerce templates) - no class injection needed. |
+
+## Why This Exists
+
+The block editor's canvas is rendered inside an `<iframe>` (WP 6.3+). Any CSS that
+needs to visually render inside block **content** (not just editor UI) must be
+loaded via `enqueue_block_assets`, never `enqueue_block_editor_assets` — the
+latter only loads in the editor chrome, not inside the iframe, and WordPress
+will warn `"...-style-css was added to the iframe incorrectly"` if you try.
+
+Icon SVGs also can't be injected as raw `<svg data-lucide>` markup + a JS
+`createIcons()` call for the Button block, because that JS never runs against
+the iframed editor canvas reliably. **Button block icons render as CSS (icon
+font), not JS-injected SVG.**
+
+## Surface 1: Button Block Picker (Icon Font)
+
+| Piece | Location | Purpose |
+|---|---|---|
+| Icon font CSS | `assets/css/button-icon-font.css` | Static, hand-authored `@font-face` + `content` rules. **Not part of the webpack/Sass build.** |
+| Font files | `assets/fonts/lucide/lucide.woff(2)` | Self-hosted Lucide icon font (subset, no SVG fallback). |
+| PHP enqueue | `lib/class-lucide-icons.php` (`Chairforce\Lucide_Icons`) | Enqueues `button-icon-font.css` via `enqueue_block_assets` so it loads in the editor iframe **and** on the frontend, globally. Registered in `lib/class-init.php`. |
+| Curated icon list | `src/js-admin/lucide-icon-options.js` | `CHAIRFORCE_LUCIDE_ICON_OPTIONS` — the ~30 icon slugs matching Figma. Admin-only bundle. |
+| Editor UI | `src/js-admin/button-icons.js` | Registers `chairforceIcon` / `chairforceIconPosition` attributes on `core/button`, adds a `ComboboxControl` + preview swatch in `InspectorControls`, and builds the `cf-*` class names applied to `save()`/frontend markup. |
+| Picker styling | `src/sass-admin/_button-icon-picker.scss` | Editor-only sidebar styling for the combobox + preview swatch. |
+
+### Why the Icon Font CSS Is NOT in the Webpack/Sass Pipeline
+
+Do not `@import` `lucide-static`'s CSS/font into Sass or JS. Three build-pipeline
+issues were hit and are why this is a static, manually-maintained file instead:
+
+1. **Tree-shaking removes it**: `lucide-static`'s `package.json` sets
+   `"sideEffects": false`, so webpack strips the CSS import in production builds.
+2. **Font bloat**: The upstream `lucide.css` embeds a ~19MB SVG font fallback via
+   `@font-face`, ballooning `build/index.css` to 25MB+ if bundled directly.
+3. **Minifier corruption**: cssnano (via `postcss-loader`) was silently wiping
+   `content: "\eXXX"` **escape-sequence** values down to empty strings during
+   minification. (Literal glyph characters do survive the pipeline - see
+   Surface 3 below, which relies on exactly that.)
+
+**Rule: keep `assets/css/button-icon-font.css` as a static asset outside the
+build pipeline.** It only contains a minimal `woff2`/`woff` `@font-face` and
+`content: "\eXXX"` rules for the icons actually in the curated list.
+
+### Class Naming Convention
+
+All classes for this feature use a `cf-` prefix to avoid colliding with
+generically-named classes from other plugins/themes (e.g. a prior `has-icon`
+class collided with third-party plugin CSS):
+
+- `cf-has-icon` — applied to `.wp-block-button` when an icon is set
+- `cf-icon-left` / `cf-icon-right` — icon position
+- `cf-icon-{slug}` — the specific icon glyph (e.g. `cf-icon-shopping-cart`)
+- `cf-icon-preview` — generic preview swatch (editor picker)
+- `cf-icon-picker`, `cf-icon-picker__combobox`, `cf-icon-picker__preview`,
+  `cf-icon-picker__preview-empty`, `cf-icon-picker__option` — picker UI structure
+
+No backward compatibility is required for these class names (new theme, no
+legacy content).
+
+## Surface 2: Icon Block Plugin Integration
+
+**The Icon Block** (`outermost/icon-block`, by Nick Diego - must be installed
++ active) is a standalone block for inserting one-off icons anywhere in
+content. It's unrelated to `core/button` and unrelated to WordPress core's
+own native `core/icon` block (see Future section below). It exposes a
+documented JS filter, `iconBlock.icons`, for third-party icon registration:
+https://nickdiego.com/adding-custom-icons-to-the-icon-block
+
+| Piece | Location | Purpose |
+|---|---|---|
+| Icon data | `src/js-admin/chairforce-icon-block-icons.js` | `CHAIRFORCE_ICON_BLOCK_ICONS` - same 30 slugs/labels as `lucide-icon-options.js`, reshaped for the plugin: `{ name, title, icon (raw SVG), categories: ['chairforce'], hasNoIconFill: true }`. SVG markup copied by hand from `node_modules/lucide-static/icons/{slug}.svg` with the root `<svg>`'s `width`/`height`/`class` attributes stripped (plugin controls sizing; child shapes left untouched). No generator script - fixed, small (~30) curated set, kept manually in sync with `lucide-icon-options.js`. |
+| Filter registration | `src/js-admin/register-custom-icons.js` | Registers `iconBlock.icons` (namespace `chairforce/icon-block-custom-icons`), adding a `"ChairForce"` icon type/category alongside the plugin's own default icons. |
+| Wiring | `src/js-admin/index.js` | `import './register-custom-icons';` - bundled into the same `build/index.js` already enqueued via `enqueue_block_editor_assets`. **No PHP changes needed.** |
+
+### `hasNoIconFill: true` Is Mandatory
+
+Lucide icons are **stroke-based** (`stroke="currentColor"`, `fill="none"`),
+unlike the plugin's own default icon set, which is fill-based. The plugin's
+`hasNoIconFill` flag exists specifically for this ("set to `true` for icons
+that use `stroke` attributes and/or should not have a color fill applied").
+Every entry in `chairforce-icon-block-icons.js` must set it, or the plugin's
+color control will fight with the icon's `fill="none"` and can render
+incorrectly.
+
+### How to Add/Remove an Icon Here
+
+1. Update `CHAIRFORCE_LUCIDE_ICON_OPTIONS` in `lucide-icon-options.js` first
+   (source of truth).
+2. Add/remove the matching entry in `chairforce-icon-block-icons.js`, copying
+   the SVG body from `node_modules/lucide-static/icons/{slug}.svg` (strip
+   `width`/`height`/`class` from the root `<svg>` tag only).
+3. `npm run build:assets`.
+
+## Surface 3: CSS-Only Icons via Sass Mixins
+
+For markup we don't control - WooCommerce templates, WC Blocks' interactive
+buttons, other plugin output - there's no way to inject a `cf-icon-{slug}`
+class via JS/PHP. Instead, target the plugin's own existing selector directly
+in Sass and pull in the icon via a mixin - no markup changes needed at all.
+
+| Piece | Location | Purpose |
+|---|---|---|
+| Font family + codepoints | `src/sass/icon-font/_variables.scss` | `$cf-icon-font-family` and the `$cf-icon-codepoints` map (same ~30 slugs, same codepoints as `button-icon-font.css`). |
+| Mixins | `src/sass/icon-font/_mixins.scss` | See full API below. |
+| Example usage | `src/sass/woocommerce/_buttons.scss` | Adds the `shopping-cart` icon to WooCommerce's "Add to Cart" button (classic `.add_to_cart_button` + WC Blocks' `.wc-block-components-product-button__button`) via `@include cf-icon-button('shopping-cart')` - zero markup/class changes to WooCommerce's own templates. |
+
+### Full Mixin API (`src/sass/icon-font/_mixins.scss`)
+
+- `cf-icon-content($slug)` - function, returns the raw glyph character for a
+  slug (rarely needed directly - the mixins below wrap it).
+- `cf-icon-before($slug)` - inserts the icon as a bare `::before`
+  pseudo-element on the current selector (no layout/flex/gap added).
+- `cf-icon-after($slug)` - same, but `::after`. Full before/after pair is
+  available, matching the Button block's left/right icon positions.
+- `cf-icon-button($slug, $position: left, $gap: 0.5em)` - the full
+  "icon + label" treatment: makes the selector `inline-flex` with a `gap`,
+  and picks `cf-icon-before`/`cf-icon-after` based on `$position`. This is
+  the Sass equivalent of the Button block's
+  `cf-has-icon`/`cf-icon-left`/`cf-icon-right` classes.
+
+```scss
+.add_to_cart_button {
+  @include cf-icon-button('shopping-cart'); // icon left, default gap
+}
+
+.some-other-button {
+  @include cf-icon-button('arrow-right', right); // icon right
+}
+
+// Lower-level, for a bare pseudo-element without the flex/gap wrapper:
+.some-other-selector {
+  @include cf-icon-before('search');
+}
+.another-selector {
+  @include cf-icon-after('chevron-down');
+}
+```
+
+This relies on the font already being loaded globally by
+`Chairforce\Lucide_Icons` (Surface 1) - these mixins only add
+`font-family`/`content`, they don't re-declare `@font-face`.
+
+### Critical: Literal Glyph Characters, Not `\eXXX` Escapes
+
+`$cf-icon-codepoints` in `_variables.scss` stores each icon as a **literal
+Unicode character** (e.g. a real `` glyph character pasted into the file),
+**not** a backslash-escaped codepoint string like `"\e151"`. This is
+deliberate and load-bearing: escape-sequence `content` values are exactly
+what cssnano silently stripped during production minification when this
+same content previously went through this pipeline (see Surface 1's
+"Why the Icon Font CSS Is NOT in the Webpack/Sass Pipeline"). Literal
+characters were the original, verified-working fix for that bug, before
+Surface 1 was pulled out of the build entirely as a static file instead.
+Verified end-to-end: after `npm run build:assets`, the compiled
+`build/public.css` still contains the correct raw UTF-8 bytes for each glyph
+(e.g. `\xee\x85\x9c` for `shopping-cart`/U+E15C) — confirm this if you ever
+touch `_variables.scss`, don't just eyeball the (invisible-looking)
+characters in an editor.
+
+**Do not "clean up" `$cf-icon-codepoints` into `\eXXX` escapes.** If you need
+to regenerate/verify the map, use a short one-off script (Python/Node) that
+writes the file programmatically via `chr(int(hex, 16))` - typing/copy-pasting
+these Private-Use-Area characters through chat/tool text can silently drop
+them, so always verify the written file's raw bytes (e.g. `xxd`/`hexdump`)
+rather than trusting how they render in an editor.
+
+### How to Add an Icon Here
+
+1. Update `CHAIRFORCE_LUCIDE_ICON_OPTIONS` in `lucide-icon-options.js` first.
+2. Look up the codepoint in `node_modules/lucide-static/font/codepoints.json`.
+3. Add the literal-character entry to `$cf-icon-codepoints` in
+   `src/sass/icon-font/_variables.scss` (see caution above - generate via
+   script, verify bytes, don't hand-type).
+4. `npm run build:assets`, then spot-check `build/public.css` bytes for the
+   new glyph if in doubt.
+
+## Enqueue Rule of Thumb
+
+- Needs to render inside block **content** (editor iframe + frontend) →
+  `enqueue_block_assets`.
+- Editor UI/chrome only (sidebar controls, toolbar) → `enqueue_block_editor_assets`.
+- When in doubt for anything icon/content-related, prefer `enqueue_block_assets`
+  and guard with `is_admin()` only if you truly need to exclude the frontend.
+
+## Future: WordPress Core `core/icon` Block
+
+WordPress core ships a native `core/icon` block backed by `WP_Icons_Registry`.
+As of the WP version this theme currently targets, that registry is **closed**
+to third parties (no public `register()`, no filters) — our Lucide icons cannot
+be added to it yet. WP 7.1 introduces public `wp_register_icon_collection()` /
+`wp_register_icon()` APIs; once core is upgraded, register a `chairforce`
+icon collection (reusing the same curated SVGs/content) from
+`Chairforce\Lucide_Icons` so the icons also appear in the native Icon block's
+picker.
+
+## Related Rules
+- [Assets & Styling](12-assets-styling.mdc) — Sass architecture and build pipeline
+- [JSX Blocks](06-jsx-blocks.mdc) — block editor extension patterns
+- [PHP Architecture](07-php-architecture.mdc) — class registration in `class-init.php`
+- `context/plans/icon-block-plugin-integration-plan.md` — planning doc for Surface 2

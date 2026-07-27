@@ -1,0 +1,118 @@
+---
+description: Quick setup and rapid development for ACF blocks in Chairforce theme
+globs: ["**/*.php", "**/*.json", "**/*.scss"]
+alwaysApply: true
+---
+
+# ACF Blocks Rules
+
+## Quick Setup Approach
+
+### **Best For**
+- **Rapid Development**: Get blocks working in minutes, not hours
+- **PHP-Focused**: No JavaScript or React knowledge required
+- **WP-Admin UI**: Create block options using familiar ACF Groups interface
+- **Immediate Results**: Blocks work instantly after creation
+
+### **When to Use ACF Blocks**
+- You need to **get up and running quickly**
+- You prefer **PHP development** over JavaScript
+- You want **simple block options** without complex interactions
+- You're **prototyping** or building simple content blocks
+
+## How to Create ACF Blocks
+
+### **Step 1: Create Block Directory**
+```bash
+cd wp-content/themes/chairforce
+mkdir acf-blocks/hero-section
+cd acf-blocks/hero-section
+```
+
+### **Step 2: Create Required Files**
+1. **`block.json`** - Block metadata and configuration
+2. **`render.php`** - PHP template for rendering the block
+3. **Styles**: Add block styles to main `/src/sass/` structure (ACF blocks don't support individual SCSS files)
+
+### **Step 3: Create ACF Field Group (Only if Configuration Needed)**
+**When to Skip**: If your block doesn't need configurable fields, skip this step entirely.
+
+**When to Use**: Only if your block needs user-configurable options (text, images, links, etc.)
+
+**Programmatic Approach** (for agents):
+1. **Create Field Group JSON**: Create `/acf-json/group_{block-name}.json`
+2. **Define Fields**: Specify field types, labels, and validation rules
+3. **Set Location Rules**: Configure to target your specific block
+4. **Auto-Export**: Theme automatically loads JSON files from `/acf-json/`
+
+**Example Field Group Structure**:
+```json
+{
+  "key": "group_your_block_name",
+  "title": "Your Block Name",
+  "fields": [
+    {
+      "key": "field_title",
+      "label": "Title",
+      "name": "title",
+      "type": "text"
+    }
+  ],
+  "location": [
+    [
+      {
+        "param": "block",
+        "operator": "==",
+        "value": "acf/your-block-name"
+      }
+    ]
+  ]
+}
+```
+
+### **Step 4: Block Structure**
+```
+acf-blocks/
+├── hero-section/           # Block directory
+│   ├── block.json          # Block configuration
+│   └── render.php          # PHP rendering logic
+# Note: Styles go in main /src/sass/ structure, not in block directory
+```
+
+## Key Development Patterns
+
+### **Quick Setup Guidelines**
+- **Keep it Simple**: Focus on getting the block working quickly
+- **Use ACF Groups UI**: Leverage the visual field builder
+- **Minimal Customization**: Start with basic fields, enhance later
+- **Rapid Iteration**: Test and refine in the editor
+
+### **PHP Best Practices**
+- **Data Sanitization**: Always sanitize and escape output
+- **Field Validation**: Check field existence before use
+- **WordPress Standards**: Follow WordPress coding standards
+- **Error Handling**: Provide graceful fallbacks
+
+## Advanced Features
+
+### **Conditional Field Display**
+- Use ACF's conditional logic for field display in field group settings
+
+### **Repeater Fields**
+- For complex, repeatable content structures
+
+### **ACF Options Integration**
+- Access theme options with `get_field('field_name', 'option')`
+
+## Troubleshooting
+
+### **Common Issues**
+- **Block Not Appearing**: Check `block.json` syntax, verify ACF field group location rules
+- **Fields Not Loading**: Verify field group is published, check location rules match block name
+- **Styling Issues**: Check that block styles are added to main `/src/sass/` structure, verify CSS class names match
+
+## Related Rules
+- [Block System](04-block-system.mdc) - Dual block approach architecture
+- [JSX Blocks Guide](06-jsx-blocks.mdc) - Preferred React-based approach
+- [Build System](03-build-system.mdc) - Asset compilation and development workflow
+

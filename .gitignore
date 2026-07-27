@@ -112,3 +112,8 @@ GEMINI.md
 .codyignore
 .aiignore
 
+
+
+# Temporarily include the files
+!.cursor/
+!context/

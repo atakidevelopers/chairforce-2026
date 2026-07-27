@@ -1,0 +1,118 @@
+---
+description: Sass architecture and styling organization for Chairforce theme
+globs: ["**/*.scss", "**/*.css"]
+alwaysApply: true
+---
+
+# Assets & Styling Rules
+
+## How to Organize Sass Files
+
+### **Directory Structure**
+```
+src/sass/
+├── _mixins.scss              # Global mixins and utilities
+├── _settings.scss            # Global variables and settings
+├── _theme-json-variable.scss # WordPress theme.json variables
+├── index.scss                # Main entry point
+├── base/                     # Base styles and resets
+├── blocks/                   # Block-specific styles
+├── components/               # Reusable component styles
+└── sections/                 # Page section styles
+```
+
+### **Create Feature Directory**
+```
+src/sass/[feature-name]/
+├── _index.scss          # Always include index file
+├── _[component].scss    # Individual component files
+└── _[variant].scss      # Variant or modifier files
+```
+
+## How to Use TODO Comments for Theme.json Integration
+
+### **TODO Methodology for Agents**
+The theme uses TODOs as **verification checkpoints** to ensure Sass files match theme.json configuration.
+
+### **How to Follow TODO Instructions**
+
+#### **Step 1: Find TODO Comments**
+```scss
+wide: 1280px, // TODO: this should match with theme.json
+$radius-btn: 0; // TODO: this should match with theme.json
+// TODO: This should match with theme.json huge font size
+```
+
+#### **Step 2: Cross-Reference with theme.json**
+- **Breakpoints**: Check `settings.layout.wideSize` in theme.json (menu nav breakpoint: [Menu System](17-menu-system.mdc))
+- **Colors**: Check `settings.color.palette` in theme.json  
+- **Spacing**: Check `settings.spacing.spacingSizes` in theme.json
+- **Typography**: Check `settings.typography.fontSizes` in theme.json
+
+#### **Step 3: Update Sass Files**
+```scss
+// ❌ Before: Hardcoded values
+wide: 1280px,
+$radius-btn: 0;
+
+// ✅ After: Use Sass variables from _theme-json-variable.scss
+wide: $grid-container-wide,
+$radius-btn: $spacing-small;
+```
+
+### **Common TODO Categories**
+- **Breakpoint alignment**: Navigation, wide, medium breakpoints
+- **Theme.json integration**: Colors, spacing, typography, layout
+- **Component consistency**: Button styles, form elements, cards
+
+## How to Use Sass Variables (Not Direct CSS Variables)
+
+```scss
+// Use Sass variables from _theme-json-variable.scss and _settings.scss
+.hero-section {
+  background-color: $color-primary;
+  padding: $spacing-large;
+  max-width: $grid-container-wide;
+}
+
+// Available Sass variables:
+// Colors: $color-primary, $color-secondary, $color-base, $color-contrast
+// Spacing: $spacing-small, $spacing-medium, $spacing-large, $spacing-xl
+// Layout: $grid-container, $grid-container-wide
+// Typography: $font-size-small, $font-size-medium, $font-size-large
+```
+
+## How to Create Responsive Designs
+
+### **Available Breakpoints**
+```scss
+$breakpoints: (
+  small: 0, wp-small: 600px, navigation: 767px, medium: 781px,
+  large: 1024px, wide: 1280px, hd: 1920px, unlimited: 9999px
+);
+```
+
+### **How to Use @breakpoint Mixin**
+```scss
+.component {
+  padding: 1rem; // Mobile first
+  @include breakpoint(medium) { padding: 1.5rem; }
+  @include breakpoint(large) { padding: 2rem; }
+  @include breakpoint(wide) { padding: 3rem; }
+}
+```
+
+## Best Practices
+
+- **Use Descriptive Names**: Make file names self-explanatory
+- **Follow Directory Structure**: Use `_index.scss` for directory loading
+- **Use Kebab-case**: For file and directory names
+- **Use BEM**: For CSS class naming
+- **Minimize Imports**: Only import what you need
+- **Avoid Deep Nesting**: Keep selectors flat
+
+## Related Rules
+- [Build System](03-build-system.mdc) - How to compile and build Sass files
+- [Menu System](17-menu-system.mdc) - Header/mega menu Sass architecture and breakpoints
+- [PHP Architecture](07-php-architecture.mdc) - How styles integrate with the class system
+- [Helper Functions](08-helper-functions.mdc) - Utility functions for asset management

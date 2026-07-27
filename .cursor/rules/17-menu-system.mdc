@@ -1,0 +1,239 @@
+---
+description: Header mega menu Sass architecture, breakpoint mixins, and a11y interaction patterns
+globs: ["**/src/sass/menu/**", "**/src/sass/header/**", "**/src/js/site-header.js", "**/includes/menu/**", "**/lib/class-mega-menu.php", "**/lib/class-site-header.php", "**/partials/site-header.php"]
+alwaysApply: false
+---
+
+# Menu System Rules (Header & Mega Menu)
+
+Port reference: `wp-content/themes/shineon/src/sass/menu/`  
+Implementation plan: `context/plans/header-mega-menu-plan.md`
+
+## Goals
+
+1. **Self-contained menu token layer** — menu Sass reads global theme tokens but does not hard-wire `theme.json` CSS variables inside component partials.
+2. **Single breakpoint control** — one variable + mixins decide desktop nav vs mobile drawer.
+3. **Keyboard-safe styling** — focus states paired with hover; open states driven by ARIA/JS, not hover alone.
+
+---
+
+## Directory structure
+
+Menu styles live in **`src/sass/menu/`**. Header shell (announcement, search row, utilities) stays in **`src/sass/header/`**.
+
+```
+src/sass/menu/
+├── _index.scss                 # Entry — import order matters
+├── _variables.scss             # Menu semantic tokens (maps from global settings)
+├── _mixins.scss                # Menu breakpoint + panel + a11y mixins
+├── _structure.scss             # Shared layout (lists, panels, z-index)
+├── _desktop.scss               # Desktop nav row + mega panels
+├── _mobile-drawer.scss         # #chairforce-mobile-drawer, drill-down
+├── _labels.scss                # site-header__menu-label desktop/mobile toggle
+├── _link-types/
+│   ├── _index.scss
+│   ├── _default.scss
+│   ├── _heading.scss
+│   ├── _thumbnail-link.scss    # 54×54 display, chairforce-menu-thumb
+│   ├── _highlight-link.scss
+│   └── _utility-link.scss
+├── _layout-patterns/           # Figma patterns A / B / C
+│   ├── _grouped-text.scss
+│   ├── _flat-grid.scss
+│   └── _grouped-thumbnails.scss
+└── _animations.scss            # Mega panel open (port megaMenuAnimation logic)
+```
+
+Import in main `src/sass/index.scss`:
+
+```scss
+@import "header";   // shell only
+@import "menu";    // nav + mega menu + drawer
+```
+
+**Do not** put mega menu rules in global `_mixins.scss` except re-exports if needed. Menu-specific mixins belong in `menu/_mixins.scss`.
+
+---
+
+## Variable layering (three tiers)
+
+### Tier 1 — Global (existing)
+
+- `src/sass/_settings.scss` — `$breakpoints`, header heights, spacing
+- `src/sass/_theme-json-variable.scss` — theme.json → Sass colour/type tokens
+
+### Tier 2 — Menu semantic (`menu/_variables.scss`)
+
+Define **menu-only** variables that **reference** Tier 1 — never duplicate raw hex/px from Figma here without mapping through globals:
+
+```scss
+// Breakpoint key — single place to change mobile/desktop switch
+$menu-breakpoint-key: navigation; // → 767px in _settings.scss
+
+// Mega menu
+$menu-mega-panel-bg: $color-background;
+$menu-mega-heading-color: $color-neutral;
+$menu-thumb-display-size: 54px;
+
+// Mobile drawer
+$menu-drawer-bg: $color-background;
+$menu-drawer-bar-height: 3rem;
+```
+
+Component partials use **`$menu-*`** and **`$color-*`** from Tier 1/2 — **not** `var(--wp--preset--*)` directly.
+
+### Tier 3 — Component partials
+
+`_desktop.scss`, `_link-types/*`, etc. consume Tier 2 only.
+
+---
+
+## Breakpoint mixins (single control point)
+
+Define in **`menu/_mixins.scss`**. All menu desktop/mobile splits **must** use these — never raw `@media` or global `@include breakpoint(navigation)` inside menu partials.
+
+**Chairforce uses `$breakpoints.navigation` (767px)** — not shineon's `large` (1024px).
+
+```scss
+@mixin breakpoint-menu-up {
+  @media screen and (min-width: #{map-get($breakpoints, $menu-breakpoint-key)}) {
+    @content;
+  }
+}
+
+@mixin breakpoint-menu-down {
+  @media screen and (max-width: #{map-get($breakpoints, $menu-breakpoint-key)}) {
+    @content;
+  }
+}
+
+// Readable aliases — use when intent matters
+@mixin menu-desktop-only {
+  @include breakpoint-menu-up { @content; }
+}
+
+@mixin menu-mobile-only {
+  @include breakpoint-menu-down { @content; }
+}
+```
+
+To change when the menu becomes mobile: update **`$menu-breakpoint-key`** in `_variables.scss` (and `_settings.scss` `$breakpoints.navigation` if the pixel value changes).
+
+### Other menu mixins (port/adapt from shineon)
+
+Keep in `menu/_mixins.scss`:
+
+| Mixin | Purpose |
+|---|---|
+| `site-header-menu` | Scope block: `.site-header { @content }` |
+| `menu-mega-panel-hidden` / `menu-mega-panel-visible` | Closed/open panel visibility |
+| `menu-drawer-min-height` | Drawer min-height minus header (port `mobileMenuMinimumHeight`) |
+| `menu-link-with-icon` | Flex row for icon + label |
+| `menu-interactive-states` | Shared `:hover` + `:focus-visible` block |
+
+---
+
+## Selector scope & naming
+
+All menu Sass scopes under **`.site-header`**. See plan § Naming conventions:
+
+- Menu locations: `chairforce-primary-nav`, `chairforce-utility-nav` (PHP constants)
+- Classes: `.site-header__mega-menu`, `.site-header__mobile-drawer`, `.site-header__nav-item--align-right`
+- **Never** bare `.mobile-menu`, `.mega-menu`, `#mobile-menu` (Woodmart collision)
+
+Walker may output WordPress `.menu-item` classes — style via `.site-header .menu-item`, not global `.menu-item` alone.
+
+---
+
+## Interaction & accessibility (CSS)
+
+**Plan decision:** mega panels open on **click/tap** (JS sets `aria-expanded`, `.is-open`). CSS must not rely on `:hover` alone.
+
+### Open / active states (desktop mega menu)
+
+Style open panels using **all** of:
+
+```scss
+.site-header__nav-item--has-mega {
+  &.is-open,
+  &[aria-expanded='true'] {
+    // trigger styling
+  }
+
+  &.is-open .site-header__mega-menu,
+  &[aria-expanded='true'] .site-header__mega-menu {
+    // panel visible
+  }
+
+  // Keyboard: keep panel accessible while focus inside
+  &:focus-within .site-header__mega-menu {
+    // match open panel styles when tabbing through
+  }
+}
+```
+
+`:hover` may **supplement** desktop styling but must **not** be the only selector that reveals content or indicates state.
+
+### Links and buttons
+
+Always pair hover with keyboard focus:
+
+```scss
+// ✅ Good
+.site-header__nav-link {
+  &:hover,
+  &:focus-visible {
+    color: $color-primary;
+  }
+}
+
+// ❌ Bad — hover only
+.site-header__nav-link:hover { ... }
+
+// ❌ Bad — outline removed without replacement
+outline: none;
+```
+
+Prefer **`:focus-visible`** over bare `:focus` for mouse users (avoid focus ring on click when possible). Buttons/triggers must keep a visible focus indicator.
+
+### Mobile drawer
+
+- Open: `html.menu-open` or `[aria-hidden='false']` on `#chairforce-mobile-drawer`
+- Focus trap is JS; CSS supports `:focus-visible` on drawer links and visible focus on close/back buttons
+- Body scroll lock: `html.menu-open { overflow: hidden; }` inside `@include menu-mobile-only`
+
+### Label visibility
+
+Desktop/mobile labels: CSS toggle inside `@include breakpoint-menu-up` / `@include menu-mobile-only` on `.site-header__menu-label--desktop` / `--mobile` — not `wp_is_mobile()`.
+
+---
+
+## File responsibilities
+
+| File | Contains |
+|---|---|
+| `_variables.scss` | `$menu-breakpoint-key`, colours, spacing, thumb size, z-index |
+| `_mixins.scss` | `breakpoint-menu-up/down`, panel visibility, a11y helpers |
+| `_structure.scss` | Lists, flex rows, panel positioning skeleton |
+| `_desktop.scss` | Nav row, align-right, mega panel shell, `[aria-expanded]` |
+| `_mobile-drawer.scss` | Drawer panels, drill-down, chevrons |
+| `_layout-patterns/*` | Pattern A/B/C grid rules only |
+| `_link-types/*` | One partial per ACF `link_type` |
+| `_animations.scss` | Staggered column reveal on open |
+
+---
+
+## What not to port from shineon
+
+- Tab/block/cards link-type partials (not in Figma)
+- `breakpoint-menu-up` wired to `large` — **wrong breakpoint for Chairforce**
+- Generic `.header-nav` / `.mobile-menu` selectors
+- Hover-only mega menu reveal without `aria-expanded` / `.is-open`
+
+---
+
+## Related rules
+
+- [Header mega menu plan](../context/plans/header-mega-menu-plan.md) — PHP, ACF, DOM, naming
+- [Assets & Styling](12-assets-styling.mdc) — global Sass architecture
+- [Icon System](16-icon-system.mdc) — utility icons in header cluster

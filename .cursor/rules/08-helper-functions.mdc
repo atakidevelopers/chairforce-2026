@@ -1,0 +1,99 @@
+---
+description: "How to use helper functions and utilities in the Chairforce theme"
+globs: ["**/*.php", "**/includes/**", "**/lib/**"]
+alwaysApply: true
+---
+
+# Chairforce Helper Functions Rules
+
+## ⚠️ **Important: Working with Helper Functions**
+
+**Before creating a new helper function:**
+1. **Check if it already exists** in `/includes/helper-functions.php`
+2. **Avoid shortcuts** - don't modify existing functions unless you're certain about all implications
+3. **Create new functions** in the helper functions file when needed
+4. **Test thoroughly** - helper functions are used throughout the theme
+
+**File Location**: `/includes/helper-functions.php`
+
+## Build System Helpers
+```php
+// Get build file URLs & paths
+$css_url = chairforce_get_build_url('style.css');
+$js_path = chairforce_get_build_dir('script.js');
+```
+
+## Media & Image Helpers
+```php
+// Post thumbnail MIME type & CPT placeholders
+$mime_type = chairforce_get_post_thumbnail_mime_type(get_the_ID());
+$placeholder = chairforce_get_placeholder_thumbnail_for_cpt('chairforce_faq');
+
+// SVG image handling
+$svg_content = chairforce_maybe_get_svg_img($attachment_id);
+```
+
+## Block System Helpers
+```php
+// ACF block CSS classes & taxonomy terms with Yoast
+$block_classes = chairforce_get_acf_block_classname($block, 'my-block');
+$primary_category = chairforce_get_taxonomy_terms_for_post('category');
+```
+
+## Debug & Development Helpers
+```php
+// Logging & variable dumping
+chairforce_write_log('Debug message');
+chairforce_dump($variable);
+// Logs to: /wp-content/themes/chairforce/debug.log
+```
+
+## Utility Helpers
+```php
+// Array operations & database queries
+$result = bjm_insert_array_at_position(['a', 'b', 'c'], ['x', 'y'], 1);
+$count = chairforce_get_post_count_for_terms_and_post_types([1, 2, 3], ['post', 'page'], 'category');
+```
+
+## Chairforce Best Practices
+1. **Use Build System Helpers**: Always use `chairforce_get_build_url()` and `chairforce_get_build_dir()`
+2. **Check Function Availability**: Always check for plugin functions before using
+3. **Use WordPress Standards**: Use WordPress sanitization and utility functions
+4. **Follow Naming Conventions**: Use `chairforce_` prefix for theme functions
+
+### **Function Usage Examples**
+```php
+// ✅ Good - Use build system helpers
+$asset_url = chairforce_get_build_url('style.css');
+
+// ❌ Bad - Don't hardcode paths
+$url = get_template_directory_uri() . '/build/style.css';
+
+// ✅ Good - Check function availability
+if (function_exists('blokki_acf_get_block_classname')) {
+    return blokki_acf_get_block_classname($block, $default_classname);
+}
+```
+
+## Debug Issues
+- **Build Files Missing**: Run `npm run build` in theme directory
+- **Helper Functions Not Available**: Check `helper-functions.php` is included
+- **Build System Integration Issues**: Verify build directory structure
+
+### **Debug Tools**
+```php
+// Use theme's built-in debug functions
+chairforce_write_log('Debug message');
+chairforce_dump($variable);
+
+// Check build paths
+$build_url = chairforce_get_build_url('test.js');
+chairforce_write_log("Build URL: $build_url");
+```
+
+## Related Rules
+- [PHP Architecture](07-php-architecture.mdc) - How helper functions integrate with class system
+- [Build System](03-build-system.mdc) - How helpers integrate with build process
+- [Block System](04-block-system.mdc) - How blocks use helper functions
+- [Directory Structure](02-directory-structure.mdc) - Where helper functions are located
+
