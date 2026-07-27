@@ -195,44 +195,9 @@
   font-size: 1.25rem;
 }
 
-.site-header__cart-icon {
-  font-size: 1.25rem;
-}
-
 .site-header__nav-chevron {
   @include cf-icon-before('chevron-down');
   margin-inline-start: 0.25rem;
-}
-
-.site-header__cart-link {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 2.5rem;
-  height: 2.5rem;
-
-  &:hover,
-  &:focus-visible {
-    color: $color-primary;
-    outline: 2px solid $color-primary;
-    outline-offset: 2px;
-  }
-}
-
-.site-header__cart-count {
-  position: absolute;
-  top: 0;
-  right: 0;
-  min-width: 1.125rem;
-  height: 1.125rem;
-  padding-inline: 0.25rem;
-  border-radius: $radius-pill;
-  background-color: $color-primary;
-  color: $color-white;
-  font-size: $font-size-x-small;
-  line-height: 1.125rem;
-  text-align: center;
 }
 
 .site-header__search-row {

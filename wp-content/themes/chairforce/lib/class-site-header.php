@@ -217,8 +217,6 @@ class Site_Header {
 
 		$phone_number = $this->get_option( 'phone_number', '1300 272 926' );
 		$phone_href   = $this->get_phone_href( (string) $phone_number );
-		$cart_count   = $this->get_cart_count();
-		$cart_url     = $this->get_cart_url();
 		$mobile_logo  = $this->get_mobile_logo_id();
 		$sticky_logo  = $this->get_mobile_sticky_logo_id();
 		?>
@@ -264,13 +262,7 @@ class Site_Header {
 				</a>
 			<?php endif; ?>
 
-			<a class="site-header__cart-link site-header__cart-link--mobile" href="<?php echo esc_url( $cart_url ); ?>">
-				<span class="site-header__cart-icon cf-icon-shopping-cart" aria-hidden="true"></span>
-				<span class="screen-reader-text"><?php esc_html_e( 'Cart', 'chairforce' ); ?></span>
-				<?php if ( $cart_count > 0 ) : ?>
-					<span class="site-header__cart-count" aria-hidden="true"><?php echo esc_html( (string) $cart_count ); ?></span>
-				<?php endif; ?>
-			</a>
+			<?php $this->render_mini_cart(); ?>
 
 			<button
 				class="site-header__menu-toggle"
@@ -300,28 +292,16 @@ class Site_Header {
 	}
 
 	/**
-	 * Cart item count when WooCommerce is active.
+	 * WooCommerce Mini Cart block (desktop + mobile header).
 	 */
-	public function get_cart_count(): int {
+	public function render_mini_cart(): void {
 
-		if ( ! function_exists( 'WC' ) || ! WC()->cart ) {
-			return 0;
+		if ( ! function_exists( 'do_blocks' ) || ! function_exists( 'WC' ) ) {
+			return;
 		}
 
-		return (int) WC()->cart->get_cart_contents_count();
-
-	}
-
-	/**
-	 * Cart URL when WooCommerce is active.
-	 */
-	public function get_cart_url(): string {
-
-		if ( function_exists( 'wc_get_cart_url' ) ) {
-			return wc_get_cart_url();
-		}
-
-		return home_url( '/cart/' );
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Block output is escaped by core.
+		echo do_blocks( '<!-- wp:woocommerce/mini-cart {"productCountVisibility":"always"} /-->' );
 
 	}
 

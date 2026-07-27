@@ -28,15 +28,7 @@ add_filter(
 				$class_array[] = 'site-header__nav-item--align-right';
 			}
 
-			$layout_variant = get_field( 'layout_variant', $item->ID );
-			if ( $layout_variant ) {
-				$class_array[] = 'site-header__layout-' . sanitize_html_class( $layout_variant );
-			}
-
 			$grid_columns = get_field( 'grid_columns', $item->ID );
-			if ( ! $grid_columns && $layout_variant ) {
-				$grid_columns = 'flat-grid' === $layout_variant ? '3' : '4';
-			}
 			if ( $grid_columns ) {
 				$class_array[] = 'site-header__grid-columns-' . (int) $grid_columns;
 			}

@@ -5,8 +5,10 @@
 @include site-header-menu {
   .site-header__nav-item--align-right {
     @include menu-desktop-only {
-      &:first-of-type {
-        margin-inline-start: auto;
+      margin-inline-start: auto;
+
+      & ~ .site-header__nav-item--align-right {
+        margin-inline-start: 0;
       }
     }
   }

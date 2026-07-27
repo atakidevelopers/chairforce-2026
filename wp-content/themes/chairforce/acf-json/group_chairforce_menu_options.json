@@ -47,28 +47,11 @@
             "layout": "horizontal"
         },
         {
-            "key": "field_chairforce_menu_layout_variant",
-            "label": "Layout Variant",
-            "name": "layout_variant",
-            "type": "button_group",
-            "instructions": "Top-level primary item with a mega menu panel.",
-            "required": 0,
-            "choices": {
-                "grouped-text": "A: Text",
-                "flat-grid": "B: Grid",
-                "grouped-thumbnails": "C: Groups"
-            },
-            "default_value": "",
-            "return_format": "value",
-            "allow_null": 1,
-            "layout": "horizontal"
-        },
-        {
             "key": "field_chairforce_menu_grid_columns",
             "label": "Grid Columns",
             "name": "grid_columns",
             "type": "button_group",
-            "instructions": "Number of equal columns in the desktop mega menu panel (Patterns A, B, C). Use 4 for Chairs (TYPE spans 2 cols).",
+            "instructions": "Number of equal columns in the desktop mega menu panel. Use 4 for Chairs (TYPE spans 2 cols).",
             "required": 0,
             "choices": {
                 "3": "3 col",
@@ -95,7 +78,7 @@
             "label": "Column Span",
             "name": "column_span",
             "type": "button_group",
-            "instructions": "Column span within a mega menu section (Patterns A/C, desktop).",
+            "instructions": "Column span within a mega menu section (desktop).",
             "required": 0,
             "choices": {
                 "1": "1",
@@ -113,7 +96,7 @@
             "label": "Child Columns",
             "name": "child_columns",
             "type": "button_group",
-            "instructions": "Sub-column count under a section heading (Patterns A/C, desktop).",
+            "instructions": "Sub-column count under a section heading (desktop).",
             "required": 0,
             "choices": {
                 "1": "1",
@@ -181,5 +164,5 @@
     "instruction_placement": "label",
     "active": true,
     "show_in_rest": 0,
-    "modified": 1737990000
+    "modified": 1772030000
 }

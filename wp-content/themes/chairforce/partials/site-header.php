@@ -20,8 +20,6 @@ $search_placeholder = $header->get_option(
 	__( 'Search chairs, tables, stools…', 'chairforce' )
 );
 $phone_href         = $header->get_phone_href( $phone_number );
-$cart_count         = $header->get_cart_count();
-$cart_url           = $header->get_cart_url();
 ?>
 <header class="site-header">
 
@@ -84,13 +82,7 @@ $cart_url           = $header->get_cart_url();
 
 			<nav class="site-header__utilities" aria-label="<?php esc_attr_e( 'Utility navigation', 'chairforce' ); ?>">
 				<?php $header->render_utility_nav(); ?>
-				<a class="site-header__cart-link site-header__cart-link--desktop" href="<?php echo esc_url( $cart_url ); ?>">
-					<span class="site-header__cart-icon cf-icon-shopping-cart" aria-hidden="true"></span>
-					<span class="screen-reader-text"><?php esc_html_e( 'Cart', 'chairforce' ); ?></span>
-					<?php if ( $cart_count > 0 ) : ?>
-						<span class="site-header__cart-count" aria-hidden="true"><?php echo esc_html( (string) $cart_count ); ?></span>
-					<?php endif; ?>
-				</a>
+				<?php $header->render_mini_cart(); ?>
 			</nav>
 		</div>
 

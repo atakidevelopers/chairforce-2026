@@ -19,7 +19,7 @@ printf(
 	esc_attr( $icon_slug )
 );
 
-echo '<span class="site-header__utility-icon cf-icon-' . esc_attr( $icon_slug ) . '" aria-hidden="true"></span>';
+echo '<span class="site-header__utility-icon cf-icon-preview cf-icon-' . esc_attr( $icon_slug ) . '" aria-hidden="true"></span>';
 echo '<span class="site-header__utility-label">';
 echo chairforce_menu_render_labels( $item );
 echo '</span>';

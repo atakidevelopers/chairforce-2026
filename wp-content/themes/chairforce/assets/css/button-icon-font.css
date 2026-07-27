@@ -86,7 +86,8 @@
 
 /**
  * Standalone icon preview swatch, used outside the Button block (e.g. in
- * the icon picker's ComboboxControl). Usage: <span class="cf-icon-preview cf-icon-{slug}" />
+ * the icon picker's ComboboxControl, header utility nav, cart icon).
+ * Usage: <span class="cf-icon-preview cf-icon-{slug}" />
  *
  * Uses an inline-flex 1em square box centered on its own ::before glyph
  * (pseudo-elements are treated as flex children), rather than relying on
