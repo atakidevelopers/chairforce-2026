@@ -10,3 +10,5 @@ $header-announcement-bg: $color-black;
 $header-announcement-color: $color-white;
 $header-border-color: $color-outline;
 $header-z-index: 100;
+
+$search-form-width: var( --chairforce-header-search-form-width, 32rem);

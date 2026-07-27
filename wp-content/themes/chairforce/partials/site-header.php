@@ -82,7 +82,8 @@ $phone_href         = $header->get_phone_href( $phone_number );
 
 			<nav class="site-header__utilities" aria-label="<?php esc_attr_e( 'Utility navigation', 'chairforce' ); ?>">
 				<?php $header->render_utility_nav(); ?>
-				<?php $header->render_mini_cart(); ?>
+				<?php $header->render_request_quote_widget(); ?>
+				<?php $header->render_mini_cart( 'desktop' ); ?>
 			</nav>
 		</div>
 

@@ -262,7 +262,7 @@ class Site_Header {
 				</a>
 			<?php endif; ?>
 
-			<?php $this->render_mini_cart(); ?>
+			<?php $this->render_mini_cart( 'mobile' ); ?>
 
 			<button
 				class="site-header__menu-toggle"
@@ -292,16 +292,78 @@ class Site_Header {
 	}
 
 	/**
-	 * WooCommerce Mini Cart block (desktop + mobile header).
+	 * Whether YITH Request a Quote mini widget is available.
 	 */
-	public function render_mini_cart(): void {
+	public function is_request_quote_available(): bool {
+
+		return shortcode_exists( 'yith_ywraq_mini_widget_quote' );
+
+	}
+
+	/**
+	 * YITH Request a Quote mini widget (desktop utilities only).
+	 */
+	public function render_request_quote_widget(): void {
+
+		if ( ! $this->is_request_quote_available() || ! function_exists( 'do_blocks' ) ) {
+			return;
+		}
+
+		$block = <<<'BLOCK'
+<!-- wp:yith/yith-ywraq-mini-widget-quote {"title":"Quotes"} -->
+[yith_ywraq_mini_widget_quote title="Quotes" item_name="item" item_plural_name="items" button_label="View list" show_title_inside="true" show_thumbnail="true" show_price="true" show_quantity="true" show_variations="true"]
+<!-- /wp:yith/yith-ywraq-mini-widget-quote -->
+BLOCK;
+
+		?>
+		<div class="site-header__utility-widget site-header__utility-widget--quotes">
+			<div class="site-header__utility-widget-control">
+				<?php
+				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Block/shortcode output is escaped by plugins.
+				echo do_shortcode( do_blocks( $block ) );
+				?>
+			</div>
+			<span class="site-header__utility-label">
+				<span class="site-header__menu-label site-header__menu-label--desktop"><?php esc_html_e( 'Quotes', 'chairforce' ); ?></span>
+			</span>
+		</div>
+		<?php
+
+	}
+
+	/**
+	 * WooCommerce Mini Cart block.
+	 *
+	 * @param string $context `desktop` shows a label under the icon; `mobile` is icon-only.
+	 */
+	public function render_mini_cart( string $context = 'desktop' ): void {
 
 		if ( ! function_exists( 'do_blocks' ) || ! function_exists( 'WC' ) ) {
 			return;
 		}
 
-		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Block output is escaped by core.
-		echo do_blocks( '<!-- wp:woocommerce/mini-cart {"productCountVisibility":"always"} /-->' );
+		$is_desktop = 'desktop' === $context;
+		$classes    = 'site-header__utility-widget site-header__utility-widget--cart';
+
+		if ( ! $is_desktop ) {
+			$classes .= ' site-header__utility-widget--mobile';
+		}
+
+		?>
+		<div class="<?php echo esc_attr( $classes ); ?>">
+			<div class="site-header__utility-widget-control">
+				<?php
+				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Block output is escaped by core.
+				echo do_blocks( '<!-- wp:woocommerce/mini-cart {"productCountVisibility":"always"} /-->' );
+				?>
+			</div>
+			<?php if ( $is_desktop ) : ?>
+				<span class="site-header__utility-label">
+					<span class="site-header__menu-label site-header__menu-label--desktop"><?php esc_html_e( 'Cart', 'chairforce' ); ?></span>
+				</span>
+			<?php endif; ?>
+		</div>
+		<?php
 
 	}
 

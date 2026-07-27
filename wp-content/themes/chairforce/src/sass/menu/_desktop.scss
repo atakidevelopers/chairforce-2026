@@ -42,6 +42,8 @@
   color: $menu-nav-link-color;
   cursor: pointer;
   text-decoration: none;
+  flex-wrap: wrap;
+  justify-content: center;
 
   @include menu-nav-interactive-states;
 }

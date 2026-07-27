@@ -104,6 +104,8 @@ $header-height-desktop-with-admin-bar: calc($header-height-desktop + $admin-bar-
 $header-height-mobile: 72px;
 $header-height-mobile-with-admin-bar: calc($header-height-mobile + $admin-bar-height-mobile);
 
+$header-log-min-width: 10rem;
+$header-log-max-height: 3rem;
 
 // Used for Media-Text Block (Alternate images) and Side-by-side Texts in Columns, only applies to Large Screens
 $constrained-content-width: 32rem;

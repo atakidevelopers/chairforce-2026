@@ -2,10 +2,14 @@
   display: flex;
   align-items: stretch;
   flex: 1;
-  max-width: 32rem;
+  max-width: $search-form-width;
   border: 1px solid $header-border-color;
   border-radius: $radius-sm;
   overflow: hidden;
+
+  @include menu-mobile-only{
+    max-width: unset;
+  }
 }
 
 .site-header__search-input {
