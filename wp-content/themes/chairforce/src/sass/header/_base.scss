@@ -20,15 +20,30 @@ header.site-header {
 
 .site-header__primary {
   @include menu-mobile-only {
-    position: sticky;
-    top: 0;
+    position: relative;
     z-index: $header-z-index;
     background-color: $color-background;
-    border-bottom: 1px solid $header-border-color;
 
-    body.admin-bar & {
-      top: $admin-bar-height-mobile;
+    &.site-header__primary--is-stuck {
+      position: fixed;
+      top: 0;
+      right: 0;
+      left: 0;
+      border-bottom: 1px solid $header-border-color;
+
+      //body.admin-bar & {
+      //  top: $admin-bar-height-mobile;
+      //}
     }
+  }
+}
+
+.site-header__primary-spacer {
+  display: none;
+
+  @include menu-mobile-only {
+    display: block;
+    height: var(--site-header-primary-spacer-height, 0);
   }
 }
 

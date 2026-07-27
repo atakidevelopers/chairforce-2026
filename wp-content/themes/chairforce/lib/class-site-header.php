@@ -58,6 +58,9 @@ class Site_Header {
 	 */
 	private function register_hooks(): void {
 
+		require_once get_theme_file_path( 'includes/header/header-acf.php' );
+		require_once get_theme_file_path( 'includes/menu/chairforce-lucide-icon-choices.php' );
+
 		add_filter( 'body_class', [ $this, 'filter_body_class' ] );
 
 	}
@@ -108,14 +111,56 @@ class Site_Header {
 	 */
 	public function hide_on_scroll_enabled(): bool {
 
+		return $this->get_boolean_option( 'header_hide_on_scroll', true );
+
+	}
+
+	/**
+	 * Whether the desktop quotes utility widget should render.
+	 */
+	public function display_quotes_enabled(): bool {
+
+		return $this->get_boolean_option( 'header_display_quotes', true );
+
+	}
+
+	/**
+	 * Whether the mini cart should render in the header.
+	 */
+	public function display_cart_enabled(): bool {
+
+		return $this->get_boolean_option( 'header_display_cart', true );
+
+	}
+
+	/**
+	 * Lucide icon slug for the announcement bar.
+	 */
+	public function get_announcement_icon_slug(): string {
+
+		$slug = (string) $this->get_option( 'announcement_icon', 'truck' );
+		$slug = chairforce_sanitize_lucide_icon_slug( $slug );
+
+		return $slug ?: 'truck';
+
+	}
+
+	/**
+	 * Read a boolean theme option with an explicit default.
+	 *
+	 * @param string $field_name ACF field name.
+	 * @param bool   $default    Default when unset or ACF unavailable.
+	 */
+	private function get_boolean_option( string $field_name, bool $default ): bool {
+
 		if ( ! function_exists( 'get_field' ) ) {
-			return true;
+			return $default;
 		}
 
-		$value = get_field( 'header_hide_on_scroll', 'option' );
+		$value = get_field( $field_name, 'option' );
 
 		if ( null === $value ) {
-			return true;
+			return $default;
 		}
 
 		return (bool) $value;
@@ -305,7 +350,7 @@ class Site_Header {
 	 */
 	public function render_request_quote_widget(): void {
 
-		if ( ! $this->is_request_quote_available() || ! function_exists( 'do_blocks' ) ) {
+		if ( ! $this->display_quotes_enabled() || ! $this->is_request_quote_available() || ! function_exists( 'do_blocks' ) ) {
 			return;
 		}
 
@@ -338,7 +383,7 @@ BLOCK;
 	 */
 	public function render_mini_cart( string $context = 'desktop' ): void {
 
-		if ( ! function_exists( 'do_blocks' ) || ! function_exists( 'WC' ) ) {
+		if ( ! $this->display_cart_enabled() || ! function_exists( 'do_blocks' ) || ! function_exists( 'WC' ) ) {
 			return;
 		}
 

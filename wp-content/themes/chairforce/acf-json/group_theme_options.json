@@ -179,6 +179,29 @@
             "return_format": "array"
         },
         {
+            "key": "field_chairforce_header_announcement_icon",
+            "label": "Announcement Icon",
+            "name": "announcement_icon",
+            "aria-label": "",
+            "type": "select",
+            "instructions": "Lucide icon shown beside the announcement text.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "choices": {},
+            "default_value": "truck",
+            "return_format": "value",
+            "multiple": 0,
+            "allow_null": 0,
+            "ui": 1,
+            "ajax": 0,
+            "placeholder": ""
+        },
+        {
             "key": "field_chairforce_header_logo",
             "label": "Logo",
             "name": "logo",
@@ -317,6 +340,46 @@
             "default_value": 1,
             "ui_on_text": "Enabled",
             "ui_off_text": "Disabled",
+            "ui": 1
+        },
+        {
+            "key": "field_chairforce_header_display_quotes",
+            "label": "Display Quotes Icon",
+            "name": "header_display_quotes",
+            "aria-label": "",
+            "type": "true_false",
+            "instructions": "Show the YITH Request a Quote mini widget in the desktop utility cluster. Requires the YITH Request a Quote plugin.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "message": "",
+            "default_value": 1,
+            "ui_on_text": "Show",
+            "ui_off_text": "Hide",
+            "ui": 1
+        },
+        {
+            "key": "field_chairforce_header_display_cart",
+            "label": "Display Cart",
+            "name": "header_display_cart",
+            "aria-label": "",
+            "type": "true_false",
+            "instructions": "Show the WooCommerce Mini Cart block in the header (desktop utilities and mobile primary row).",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "message": "",
+            "default_value": 1,
+            "ui_on_text": "Show",
+            "ui_off_text": "Hide",
             "ui": 1
         },
         {
@@ -496,5 +559,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1737985200
+    "modified": 1743091200
 }

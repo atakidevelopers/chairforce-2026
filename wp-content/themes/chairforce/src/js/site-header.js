@@ -267,41 +267,74 @@ function initMobileDrawer() {
 	window.addEventListener( 'scroll', updateMobileDrawerOffset, { passive: true } );
 }
 
-function initMobileStickyLogo() {
+function initMobileStickyPrimary() {
 	const primary = document.querySelector( '.site-header__primary' );
-	const stickyLogo = document.querySelector( '.site-header__logo-img--sticky' );
+	const mobileQuery = window.matchMedia( '(max-width: 767px)' );
 
-	if ( ! primary || ! stickyLogo ) {
+	if ( ! primary ) {
 		return;
 	}
 
 	const announcement = document.querySelector( '.site-header__announcement' );
+	const stickyLogo = document.querySelector( '.site-header__logo-img--sticky' );
 
-	const setCompact = ( isCompact ) => {
-		primary.classList.toggle( 'site-header__primary--compact', isCompact );
+	const updateSpacerHeight = () => {
+		const isStuck = primary.classList.contains( 'site-header__primary--is-stuck' );
+
+		document.documentElement.style.setProperty(
+			'--site-header-primary-spacer-height',
+			isStuck && mobileQuery.matches ? `${ primary.offsetHeight }px` : '0px'
+		);
+
+		updateMobileDrawerOffset();
+	};
+
+	const setStuckState = ( isStuck ) => {
+		if ( ! mobileQuery.matches ) {
+			primary.classList.remove( 'site-header__primary--is-stuck' );
+			primary.classList.remove( 'site-header__primary--compact' );
+			updateSpacerHeight();
+			return;
+		}
+
+		primary.classList.toggle( 'site-header__primary--is-stuck', isStuck );
+		primary.classList.toggle( 'site-header__primary--compact', isStuck && !! stickyLogo );
+		updateSpacerHeight();
+	};
+
+	const syncFromAnnouncement = ( isAnnouncementVisible ) => {
+		setStuckState( ! isAnnouncementVisible );
 	};
 
 	if ( ! announcement ) {
-		setCompact( true );
-		return;
+		syncFromAnnouncement( false );
+	} else if ( typeof IntersectionObserver !== 'undefined' ) {
+		const observer = new IntersectionObserver(
+			( [ entry ] ) => {
+				syncFromAnnouncement( entry.isIntersecting );
+			},
+			{ threshold: 0 }
+		);
+
+		observer.observe( announcement );
 	}
 
-	if ( typeof IntersectionObserver === 'undefined' ) {
-		return;
-	}
+	mobileQuery.addEventListener( 'change', () => {
+		if ( ! mobileQuery.matches ) {
+			setStuckState( false );
+			return;
+		}
 
-	const observer = new IntersectionObserver(
-		( [ entry ] ) => {
-			setCompact( ! entry.isIntersecting );
-		},
-		{ threshold: 0 }
-	);
+		if ( ! announcement ) {
+			syncFromAnnouncement( false );
+		}
+	} );
 
-	observer.observe( announcement );
+	window.addEventListener( 'resize', updateSpacerHeight, { passive: true } );
 }
 
 export function initSiteHeader() {
 	initDesktopMegaMenus();
 	initMobileDrawer();
-	initMobileStickyLogo();
+	initMobileStickyPrimary();
 }

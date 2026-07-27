@@ -26,7 +26,7 @@ $phone_href         = $header->get_phone_href( $phone_number );
 	<?php if ( $announcement ) : ?>
 		<div class="site-header__announcement">
 			<div class="site-header__announcement-inner alignwide">
-				<span class="site-header__announcement-icon" aria-hidden="true"></span>
+				<span class="site-header__announcement-icon cf-icon-preview cf-icon-<?php echo esc_attr( $header->get_announcement_icon_slug() ); ?>" aria-hidden="true"></span>
 				<?php if ( is_array( $announcement_link ) && ! empty( $announcement_link['url'] ) ) : ?>
 					<a class="site-header__announcement-text" href="<?php echo esc_url( $announcement_link['url'] ); ?>"
 						<?php echo ! empty( $announcement_link['target'] ) ? ' target="' . esc_attr( $announcement_link['target'] ) . '"' : ''; ?>>
@@ -90,9 +90,11 @@ $phone_href         = $header->get_phone_href( $phone_number );
 		<div class="site-header__primary-inner site-header__primary-inner--mobile alignwide">
 			<?php $header->render_mobile_primary_row(); ?>
 		</div>
-	</div>
+		</div>
 
-	<div class="site-header__search-row">
+		<div class="site-header__primary-spacer" aria-hidden="true"></div>
+
+		<div class="site-header__search-row">
 		<div class="site-header__search-row-inner alignwide">
 			<form class="site-header__search site-header__search--mobile-row" role="search" method="get" action="<?php echo esc_url( home_url( '/' ) ); ?>">
 				<label class="screen-reader-text" for="chairforce-header-search-mobile">
