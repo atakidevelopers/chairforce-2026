@@ -1,0 +1,1 @@
+{"version":3,"file":"tag/index.css","mappings":";;;AACA;EACE;AAAF,C","sources":["webpack://chairforce/./src-jsx-blocks/tag/editor.scss"],"sourcesContent":["// Editor-only tweaks. Block styles load via style.scss (style-index.css).\n.wp-block-chairforce-tag .cf-tag__label[data-rich-text-placeholder]::after {\n  opacity: 0.65;\n}\n"],"names":[],"sourceRoot":""}

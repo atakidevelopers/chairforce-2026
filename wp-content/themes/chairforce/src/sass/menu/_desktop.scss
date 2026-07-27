@@ -1,0 +1,106 @@
+.site-header__mega-menu {
+  @include menu-mega-panel-hidden;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 100%;
+  background-color: $menu-mega-panel-bg;
+  border-top: 1px solid $menu-panel-border;
+  box-shadow: $menu-mega-panel-shadow;
+  z-index: $menu-z-index - 1;
+
+  @include menu-mobile-only {
+    display: none;
+  }
+
+  &[hidden] {
+    display: none !important;
+  }
+}
+
+// Open only via JS (.is-open) — not :focus-within (Tab should move past closed triggers).
+.site-header__nav-item--has-mega.is-open > .site-header__mega-menu {
+  @include menu-mega-panel-visible;
+
+  &[hidden] {
+    display: block !important;
+  }
+}
+
+.site-header__nav {
+  position: relative;
+}
+
+.site-header__nav-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: $spacing-x-small 0;
+  border: 0;
+  background: transparent;
+  font: inherit;
+  color: $menu-nav-link-color;
+  cursor: pointer;
+  text-decoration: none;
+
+  @include menu-nav-interactive-states;
+}
+
+.site-header__mega-menu-inner {
+  padding-block: $spacing-large;
+  padding-inline: max(var(--wp--style--root--padding-right), var(--wp--style--root--padding-left));
+}
+
+.site-header__mega-menu-heading {
+  display: block;
+  margin: 0 0 $spacing-medium;
+  padding-bottom: $spacing-x-small;
+  border-bottom: 1px solid $menu-panel-border;
+  font-size: $font-size-small;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: $menu-mega-heading-color;
+}
+
+@include menu-desktop-only {
+  // Pattern C — grouped thumbnail sections in a row.
+  .site-header__layout-grouped-thumbnails > .site-header__mega-menu > .site-header__mega-menu-inner > .site-header__mega-menu-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $spacing-x-large;
+    align-items: flex-start;
+  }
+
+  // Pattern B — flat grid (explicit or default for unset layout variant).
+  .site-header__layout-flat-grid > .site-header__mega-menu > .site-header__mega-menu-inner > .site-header__mega-menu-list,
+  .site-header__nav-item--has-mega:not(.site-header__layout-grouped-text):not(.site-header__layout-grouped-thumbnails) > .site-header__mega-menu .site-header__mega-menu-list.site-header__mega-menu-depth-0 {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: $menu-mega-grid-gap;
+  }
+
+  .site-header__grid-columns-3 > .site-header__mega-menu > .site-header__mega-menu-inner > .site-header__mega-menu-list {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .site-header__grid-columns-4 > .site-header__mega-menu > .site-header__mega-menu-inner > .site-header__mega-menu-list {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .site-header__child-columns-3 > .site-header__mega-menu-sublist {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: $menu-mega-subgrid-gap-y $menu-mega-subgrid-gap-x;
+  }
+
+  // Pattern B/C — thumbnail above label.
+  .site-header__layout-flat-grid,
+  .site-header__layout-grouped-thumbnails {
+    .site-header__menu-thumb-link {
+      flex-direction: column;
+      align-items: flex-start;
+      text-align: left;
+    }
+  }
+}

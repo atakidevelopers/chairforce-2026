@@ -1,0 +1,80 @@
+/**
+ * Header shell — fixed positioning and main content offset.
+ */
+
+.wp-site-blocks > header.site-header,
+header.site-header {
+  position: sticky;
+  top: 0;
+  z-index: $header-z-index;
+  width: 100%;
+  background-color: $color-background;
+  border-bottom: 1px solid $header-border-color;
+
+  @include menu-mobile-only {
+    position: relative;
+    z-index: auto;
+    border-bottom: 0;
+  }
+}
+
+.site-header__primary {
+  @include menu-mobile-only {
+    position: sticky;
+    top: 0;
+    z-index: $header-z-index;
+    background-color: $color-background;
+    border-bottom: 1px solid $header-border-color;
+
+    body.admin-bar & {
+      top: $admin-bar-height-mobile;
+    }
+  }
+}
+
+.wp-site-blocks > main {
+  @include menu-desktop-only {
+    padding-top: 0;
+  }
+}
+
+.site-header__announcement-inner,
+.site-header__primary-inner,
+.site-header__search-row-inner,
+.site-header__nav-inner {
+  //width: 100%;
+  max-width: $grid-container-wide;
+  margin-inline: auto;
+  padding-inline: $grid-container-padding;
+}
+
+.site-header {
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  a {
+    text-decoration: none;
+    color: inherit;
+
+    &:hover,
+    &:focus-visible {
+      color: $color-primary;
+    }
+  }
+}
+
+.screen-reader-text {
+  border: 0;
+  clip: rect(1px, 1px, 1px, 1px);
+  clip-path: inset(50%);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+  word-wrap: normal !important;
+}

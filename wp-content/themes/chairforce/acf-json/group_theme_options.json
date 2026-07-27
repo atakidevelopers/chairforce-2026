@@ -125,6 +125,201 @@
             ]
         },
         {
+            "key": "field_chairforce_header_tab",
+            "label": "Header",
+            "name": "",
+            "aria-label": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "top",
+            "endpoint": 0,
+            "selected": 0
+        },
+        {
+            "key": "field_chairforce_header_announcement_text",
+            "label": "Announcement Text",
+            "name": "announcement_text",
+            "aria-label": "",
+            "type": "textarea",
+            "instructions": "Promotional bar copy shown above the header. Leave blank to hide the announcement bar.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "rows": 3,
+            "placeholder": "Free shipping on orders over $999 • Same-day dispatch on in-stock items",
+            "new_lines": ""
+        },
+        {
+            "key": "field_chairforce_header_announcement_link",
+            "label": "Announcement Link",
+            "name": "announcement_link",
+            "aria-label": "",
+            "type": "link",
+            "instructions": "Optional link for the announcement bar.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "return_format": "array"
+        },
+        {
+            "key": "field_chairforce_header_logo",
+            "label": "Logo",
+            "name": "logo",
+            "aria-label": "",
+            "type": "image",
+            "instructions": "Desktop header logo. Falls back to site title when empty.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "33",
+                "class": "",
+                "id": ""
+            },
+            "return_format": "id",
+            "library": "all",
+            "min_width": "",
+            "min_height": "",
+            "min_size": "",
+            "max_width": "",
+            "max_height": "",
+            "max_size": "",
+            "mime_types": "",
+            "preview_size": "medium"
+        },
+        {
+            "key": "field_chairforce_header_logo_mobile",
+            "label": "Mobile Logo",
+            "name": "logo_mobile",
+            "aria-label": "",
+            "type": "image",
+            "instructions": "Logo for the mobile header row. Falls back to the desktop logo when empty.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "33",
+                "class": "",
+                "id": ""
+            },
+            "return_format": "id",
+            "library": "all",
+            "preview_size": "medium"
+        },
+        {
+            "key": "field_chairforce_header_logo_mobile_sticky",
+            "label": "Mobile Sticky Logo",
+            "name": "logo_mobile_sticky",
+            "aria-label": "",
+            "type": "image",
+            "instructions": "Optional compact logo after the announcement bar scrolls away. Falls back to the mobile logo, then desktop logo.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "34",
+                "class": "",
+                "id": ""
+            },
+            "return_format": "id",
+            "library": "all",
+            "preview_size": "medium"
+        },
+        {
+            "key": "field_chairforce_header_phone_number",
+            "label": "Phone Number",
+            "name": "phone_number",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Display phone number for the header contact block.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "1300 272 926",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_chairforce_header_phone_hours",
+            "label": "Phone Hours",
+            "name": "phone_hours",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Hours label shown above the phone number.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "Mon–Fri 9–5",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_chairforce_header_search_placeholder",
+            "label": "Search Placeholder",
+            "name": "search_placeholder",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Placeholder text for the product search inputs.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "Search chairs, tables, stools…",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_chairforce_header_hide_on_scroll",
+            "label": "Hide Header On Scroll",
+            "name": "header_hide_on_scroll",
+            "aria-label": "",
+            "type": "true_false",
+            "instructions": "When enabled, the header hides when scrolling down and reappears when scrolling up.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "message": "",
+            "default_value": 1,
+            "ui_on_text": "Enabled",
+            "ui_off_text": "Disabled",
+            "ui": 1
+        },
+        {
             "key": "field_6147c9851039e",
             "label": "Misc",
             "name": "",
@@ -301,5 +496,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1784974707
+    "modified": 1737985200
 }

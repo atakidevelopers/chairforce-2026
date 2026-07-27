@@ -1,0 +1,37 @@
+/**
+ * Pattern A — grouped text sections (Chairs mega menu).
+ * Column count comes from the parent item's ACF grid_columns (site-header__grid-columns-3|4).
+ * TYPE may span two columns via column_span on the section heading item.
+ */
+
+@include menu-desktop-only {
+  .site-header__layout-grouped-text {
+    > .site-header__mega-menu > .site-header__mega-menu-inner > .site-header__mega-menu-list.site-header__mega-menu-depth-0 {
+      display: grid;
+      gap: $menu-mega-grid-gap;
+      align-items: start;
+    }
+
+    .site-header__col-span-2 {
+      grid-column: span 2;
+    }
+
+    .site-header__mega-menu-sublist {
+      display: flex;
+      flex-direction: column;
+      gap: $menu-mega-subgrid-gap-y;
+    }
+
+    .site-header__child-columns-2 > .site-header__mega-menu-sublist {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: $menu-mega-subgrid-gap-y $menu-mega-subgrid-gap-x;
+    }
+
+    .site-header__menu-thumb-link {
+      flex-direction: row;
+      align-items: center;
+      gap: $menu-link-gap;
+    }
+  }
+}

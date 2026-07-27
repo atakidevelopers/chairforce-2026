@@ -1,0 +1,36 @@
+/**
+ * Menu semantic tokens — reference global settings, not raw theme.json CSS vars.
+ */
+
+$menu-breakpoint-key: navigation;
+
+// Surfaces
+$menu-mega-panel-bg: $color-background;
+$menu-panel-border: $color-outline;
+$menu-mega-panel-shadow: 0 8px 16px -6px rgba($black, 0.08);
+$menu-drawer-bg: $color-background;
+$menu-backdrop-color: rgba($black, 0.3);
+
+// Typography colours
+$menu-mega-heading-color: $color-neutral;
+$menu-nav-link-color: inherit;
+$menu-nav-link-hover-color: $color-primary;
+$menu-sale-link-color: $color-primary;
+$menu-sale-link-hover-color: $color-secondary;
+$menu-thumb-link-hover-color: $color-primary;
+
+// Focus ring
+$menu-nav-link-focus-outline-color: $color-primary;
+$menu-nav-link-focus-outline-width: 2px;
+$menu-nav-link-focus-outline-offset: 2px;
+
+// Layout
+$menu-thumb-display-size: 54px;
+$menu-drawer-bar-height: 3rem;
+$menu-link-gap: $spacing-x-small;
+$menu-z-index: 100;
+
+// Desktop mega menu grid gaps (desktop-only layouts)
+$menu-mega-grid-gap: $spacing-medium;
+$menu-mega-subgrid-gap-y: $spacing-small;
+$menu-mega-subgrid-gap-x: $spacing-large;

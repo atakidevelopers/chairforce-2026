@@ -128,8 +128,9 @@ class Front {
 	public function get_localize_script_data() {
 
 		$localize_data = [
-			'site_url' => get_site_url(),
-			'nonce'    => wp_create_nonce( 'wp_rest' ),
+			'site_url'  => get_site_url(),
+			'nonce'     => wp_create_nonce( 'wp_rest' ),
+			'rest_url'  => rest_url( 'chairforce/v1/product-search' ),
 		];
 
 

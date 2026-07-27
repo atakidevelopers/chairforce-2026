@@ -109,7 +109,7 @@ All desktop layouts now documented in Figma:
 |---|---|
 | **Breakpoint** | **767px** (`$breakpoints.navigation`) — matches theme token; Figma 375 mobile / 1440 desktop |
 | **Utility links** | **Menu items** in `chairforce-utility-nav` location — URLs + labels via menu item ACF (`label_mobile`, etc.). Not theme option fields. **Cart** rendered separately (WooCommerce). |
-| **Header ACF** | **New group** `group_chairforce_header_options` on dedicated Header options sub-page (separate from general `group_theme_options`) |
+| **Header ACF** | **Header tab** in existing `group_theme_options` on Theme Options page — not a separate sub-page |
 | **Column layout** | Port shineon **`column_span`** + **`child_columns`** fields on menu items (Pattern A/C sub-columns) |
 | **Mega menu open** | **Click/tap** to open panels (touch-safe). Keyboard: Enter/Space opens, Escape closes. Not hover-primary. |
 | **Hide on scroll** | **Default on** — hide down, show up. `header_hide_on_scroll` toggle; revert if designer prefers always-visible. |
@@ -185,9 +185,9 @@ Target only prefixed/scoped hooks, e.g. `#chairforce-mobile-drawer`, `.site-head
 
 ## ACF data model
 
-### Header options (`group_chairforce_header_options`)
+### Header options (tab in `group_theme_options`)
 
-**New JSON group** + ACF options sub-page (register under Theme Options in `lib/class-acf.php`). Keep general theme settings in `group_theme_options` unchanged.
+Header fields live on the **Header tab** of the existing Theme Options page (`chairforce-theme-options`). General settings stay on General/Misc/Analytics tabs unchanged.
 
 | Field | Type | Purpose |
 |---|---|---|
@@ -292,9 +292,9 @@ All resolved images use the `chairforce-menu-thumb` size in `wp_get_attachment_i
 | `lib/class-init.php` | Instantiate `Site_Header`, `Mega_Menu` |
 | `includes/constants.php` | Add `CHAIRFORCE_MENU_PRIMARY`, `CHAIRFORCE_MENU_UTILITY` |
 | `lib/class-after-setup-theme.php` | Register menu locations via constants |
-| `lib/class-acf.php` | Register Header options sub-page |
+| `lib/class-acf.php` | No change — header fields on Theme Options **Header tab** |
 | `patterns/header.php` | Replace block markup with `chairforce_render_site_header()` |
-| `acf-json/group_chairforce_header_options.json` | New header options field group |
+| `acf-json/group_theme_options.json` | Add Header tab + header fields |
 | `acf-json/group_chairforce_menu_options.json` | New menu item field group (incl. shineon column fields) |
 
 ### New Sass
@@ -424,8 +424,7 @@ See [§ Submenu thumbnails (decided)](#submenu-thumbnails-decided).
 
 - [ ] Define `CHAIRFORCE_MENU_PRIMARY` / `CHAIRFORCE_MENU_UTILITY` constants; register menu locations
 - [ ] Create `Site_Header` class + `partials/site-header.php`
-- [ ] ACF header options sub-page + `group_chairforce_header_options` (announcement, logo, phone, search placeholder, scroll toggle)
-- [ ] Register Header options sub-page in `lib/class-acf.php`
+- [ ] Add Header tab + fields to `group_theme_options.json` (announcement, logo, phone, search placeholder, scroll toggle)
 - [ ] **Replace** `patterns/header.php` — remove the current placeholder block markup (`core/site-logo`, `core/navigation`, `core/buttons` “Get Started”) and repurpose the pattern to PHP-only: `chairforce_render_site_header();` only. Do not leave the FSE block header in place alongside the new PHP header (two render pipelines, duplicate nav, wrong layout).
 - [ ] Confirm `parts/header.html` still references only `chairforce/header` (no direct block markup in the template part)
 - [ ] Sass: announcement, primary row, utilities, mobile icon row, search row (`src/sass/header/`)

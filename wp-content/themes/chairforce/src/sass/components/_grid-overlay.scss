@@ -12,7 +12,7 @@
     width: $grid-container;
     transform: translateX(-50%);
     pointer-events: none;
-    padding: 0 $grid-container-padding;
+    //padding: 0 $grid-container-padding;
 
     @media screen and (min-width: #{$grid-container}) {
       padding: 0;
@@ -36,7 +36,7 @@
   &-lines,
   &-lines-wide,
   &-lines-root-padding {
-    z-index: 99;
+    z-index: 999;
 
     span {
       margin-left: -1px;

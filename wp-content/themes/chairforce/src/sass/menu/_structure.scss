@@ -1,0 +1,54 @@
+/**
+ * Shared menu layout skeleton — expanded in Phases 3–5.
+ */
+
+@include site-header-menu {
+  .site-header__nav-item--align-right {
+    @include menu-desktop-only {
+      &:first-of-type {
+        margin-inline-start: auto;
+      }
+    }
+  }
+}
+
+.site-header__menu-label {
+  &--desktop {
+    @include menu-mobile-only {
+      display: none;
+    }
+  }
+
+  &--mobile {
+    display: none;
+
+    @include menu-mobile-only {
+      display: inline;
+    }
+  }
+}
+
+.site-header__menu-thumb {
+  width: $menu-thumb-display-size;
+  height: $menu-thumb-display-size;
+  flex-shrink: 0;
+  object-fit: cover;
+
+  @include menu-mobile-only {
+    display: none;
+  }
+}
+
+.site-header__mega-menu,
+.site-header__mobile-drawer {
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    //padding: 0 $grid-container-padding;
+  }
+}
+
+//ul.site-header__mega-menu-list{
+//  padding: 0 $grid-container-padding;
+//}

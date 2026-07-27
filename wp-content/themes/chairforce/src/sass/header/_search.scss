@@ -1,0 +1,49 @@
+.site-header__search {
+  display: flex;
+  align-items: stretch;
+  flex: 1;
+  max-width: 32rem;
+  border: 1px solid $header-border-color;
+  border-radius: $radius-sm;
+  overflow: hidden;
+}
+
+.site-header__search-input {
+  flex: 1;
+  min-width: 0;
+  padding: $spacing-x-small $spacing-small;
+  border: 0;
+  background: transparent;
+  font: inherit;
+
+  &:focus-visible {
+    outline: 2px solid $color-primary;
+    outline-offset: -2px;
+  }
+}
+
+@import "../icon-font/mixins";
+
+.site-header__search-submit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  padding: 0;
+  border: 0;
+  background: $color-primary;
+  color: $color-white;
+  cursor: pointer;
+
+  &:hover,
+  &:focus-visible {
+    background: $color-secondary;
+    color: $color-white;
+    outline: 2px solid $color-primary;
+    outline-offset: -2px;
+  }
+}
+
+.site-header__search-submit-icon {
+  @include cf-icon-before('search');
+}

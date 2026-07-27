@@ -1,0 +1,303 @@
+/**
+ * Mobile drawer — root list + drill-down panels under sticky primary row.
+ */
+
+@import "../icon-font/mixins";
+
+.site-header__mobile-drawer {
+  display: none;
+
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
+
+  @include menu-mobile-only {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: $menu-z-index - 1;
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  &[aria-hidden='false'] {
+    visibility: visible;
+    pointer-events: auto;
+  }
+}
+
+.site-header__mobile-drawer-overlay {
+  position: absolute;
+  inset: 0;
+  background-color: $menu-backdrop-color;
+}
+
+.site-header__mobile-drawer-sheet {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: var(--site-header-primary-bottom, 4rem);
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
+  background-color: $menu-drawer-bg;
+  transform: translateY(-0.5rem);
+  opacity: 0;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+
+  .site-header__mobile-drawer[aria-hidden='false'] & {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.site-header__mobile-drawer-bar {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: space-between;
+  min-height: $menu-drawer-bar-height;
+  padding-inline: $spacing-medium;
+  border-bottom: 1px solid $menu-panel-border;
+  background-color: $menu-drawer-bg;
+}
+
+.site-header__mobile-drawer-bar-title {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: $color-neutral;
+}
+
+.site-header__mobile-drawer-close,
+.site-header__mobile-drawer-back {
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  color: inherit;
+
+  &:hover,
+  &:focus-visible {
+    color: $color-primary;
+    outline: 2px solid $color-primary;
+    outline-offset: 2px;
+  }
+}
+
+.site-header__mobile-drawer-close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  padding: 0;
+}
+
+.site-header__mobile-drawer-close-icon {
+  @include cf-icon-before('x');
+  font-size: 1.25rem;
+}
+
+.site-header__mobile-drawer-back {
+  display: inline-flex;
+  align-items: center;
+  gap: $spacing-xx-small;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.site-header__mobile-drawer-back-icon {
+  @include cf-icon-before('chevron-left');
+}
+
+.site-header__mobile-drawer-drill-title {
+  flex-shrink: 0;
+  margin: 0;
+  padding: $spacing-medium $spacing-medium $spacing-small;
+  font-size: inherit;
+  font-weight: 700;
+  line-height: 1.2;
+  color: $color-heading;
+}
+
+.site-header__mobile-drawer-body {
+  flex: 1;
+  min-width: 0;
+  width: 100%;
+  max-width: 100%;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding-bottom: $spacing-huge;
+  -webkit-overflow-scrolling: touch;
+}
+
+.site-header__mobile-drawer-nav {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.site-header__mobile-drawer-list {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  max-width: 100%;
+}
+
+// Root view — hide nested submenus until drill-down opens them.
+.site-header__mobile-drawer-list > .site-header__nav-item > .site-header__mega-menu-list {
+  display: none;
+}
+
+.site-header__mobile-drawer-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: $spacing-small;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  padding: $spacing-small $spacing-medium;
+  border: 0;
+  border-bottom: 1px solid $menu-panel-border;
+  background: transparent;
+  font: inherit;
+  font-weight: 500;
+  text-align: left;
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+
+  &:hover,
+  &:focus-visible {
+    background-color: $color-surface;
+    color: $color-primary;
+  }
+
+}
+
+// Top Level
+.site-header__mobile-drill-trigger{
+  > .site-header__menu-label--mobile{
+    font-weight: 700;
+  }
+}
+
+
+.site-header__mobile-drawer-link--sale {
+  color: $menu-sale-link-color;
+}
+
+.site-header__mobile-chevron {
+  @include cf-icon-before('chevron-right');
+  flex-shrink: 0;
+  color: $color-neutral;
+}
+
+.site-header__mobile-drawer-heading {
+  display: block;
+  margin: 0;
+  padding: $spacing-large $spacing-medium $spacing-x-small;
+  @include textStyleEyebrow;
+  //font-size: $font-size-x-small;
+  //font-weight: 700;
+  //letter-spacing: 0.06em;
+  //text-transform: uppercase;
+  //color: $menu-sale-link-color;
+}
+
+.site-header__mobile-drawer-list--utility {
+  margin-top: $spacing-medium;
+  border-top: 1px solid $menu-panel-border;
+
+  .site-header__utility-link {
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    gap: $spacing-small;
+    min-width: 0;
+    padding: $spacing-medium;
+    border-bottom: 1px solid $menu-panel-border;
+    font-size: $font-size-medium;
+    font-weight: 400;
+    text-align: left;
+    color: $color-neutral;
+  }
+}
+
+// Drill-down active — show only the selected submenu panel.
+.site-header__mobile-drawer.is-drill-active {
+  .site-header__mobile-drawer-bar--root {
+    display: none;
+  }
+
+  .site-header__mobile-drawer-bar--drill {
+    display: flex;
+  }
+
+  .site-header__mobile-drawer-drill-title {
+    display: block;
+  }
+
+  .site-header__mobile-drawer-list > .site-header__nav-item > .site-header__mobile-drawer-link,
+  .site-header__mobile-drawer-list--utility {
+    display: none;
+  }
+
+  .site-header__mobile-drawer-list > .site-header__nav-item:not(.is-drill-source) {
+    display: none;
+  }
+
+  .site-header__mobile-drawer-list > .site-header__nav-item.is-drill-source {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+  }
+
+  .site-header__mobile-drawer-list > .site-header__nav-item.is-drill-source > .site-header__mega-menu-list {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+
+    > .site-header__nav-item > .site-header__mobile-drawer-link {
+      display: flex;
+      min-width: 0;
+    }
+  }
+}
+
+.site-header__mobile-drawer-bar--drill {
+  display: none;
+}
+
+.site-header__mobile-drawer-drill-title[hidden] {
+  display: none !important;
+}
+
+.site-header__mobile-drawer.is-drill-active .site-header__mobile-drawer-drill-title[hidden] {
+  display: none !important;
+}
+
+.site-header__mobile-drawer.is-drill-active .site-header__mobile-drawer-drill-title:not([hidden]) {
+  display: block;
+}
+
+// Hide desktop mega menu chrome inside mobile drawer.
+.site-header__mobile-drawer {
+  .site-header__mega-menu,
+  .site-header__nav-chevron {
+    display: none !important;
+  }
+}

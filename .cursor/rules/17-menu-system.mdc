@@ -67,20 +67,13 @@ Import in main `src/sass/index.scss`:
 Define **menu-only** variables that **reference** Tier 1 — never duplicate raw hex/px from Figma here without mapping through globals:
 
 ```scss
-// Breakpoint key — single place to change mobile/desktop switch
-$menu-breakpoint-key: navigation; // → 767px in _settings.scss
-
-// Mega menu
-$menu-mega-panel-bg: $color-background;
-$menu-mega-heading-color: $color-neutral;
-$menu-thumb-display-size: 54px;
-
-// Mobile drawer
-$menu-drawer-bg: $color-background;
-$menu-drawer-bar-height: 3rem;
+// Interaction colours (nav links, sale, thumbs, backdrop)
+$menu-nav-link-hover-color: $color-primary;
+$menu-nav-link-focus-outline-color: $color-primary;
+$menu-sale-link-color: $color-primary;
 ```
 
-Component partials use **`$menu-*`** and **`$color-*`** from Tier 1/2 — **not** `var(--wp--preset--*)` directly.
+Component partials use **`$menu-*`** tokens for colours — **not** `$color-primary` directly in `_desktop.scss` / link-type partials.
 
 ### Tier 3 — Component partials
 

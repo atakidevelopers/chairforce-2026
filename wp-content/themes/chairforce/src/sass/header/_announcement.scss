@@ -1,0 +1,33 @@
+@import "../icon-font/mixins";
+
+.site-header__announcement {
+  background-color: $header-announcement-bg;
+  color: $header-announcement-color;
+}
+
+.site-header__announcement-inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: $spacing-small;
+  min-height: 2.5rem;
+  padding-block: $spacing-x-small;
+  text-align: center;
+}
+
+.site-header__announcement-icon {
+  @include cf-icon-before('truck');
+  flex-shrink: 0;
+}
+
+.site-header__announcement-text {
+  margin: 0;
+  font-size: $font-size-small;
+  color: inherit;
+
+  &:hover,
+  &:focus-visible {
+    color: inherit;
+    text-decoration: underline;
+  }
+}

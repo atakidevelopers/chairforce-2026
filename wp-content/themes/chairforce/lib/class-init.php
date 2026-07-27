@@ -52,6 +52,8 @@ class Init {
 		$this->define_blocks_jsx_hooks();
 		$this->define_editor_curation_hooks();
 		$this->define_lucide_icons_hooks();
+		$this->define_site_header_hooks();
+		$this->define_mega_menu_hooks();
 
 		do_action( 'chairforce_init_construct' );
 
@@ -162,6 +164,30 @@ class Init {
 	private function define_lucide_icons_hooks() {
 
 		new Lucide_Icons();
+
+	}
+
+	/**
+	 * Register site header render pipeline and header-specific hooks.
+	 *
+	 * @since 2.0.0
+	 * @access private
+	 */
+	private function define_site_header_hooks() {
+
+		new Site_Header();
+
+	}
+
+	/**
+	 * Register mega menu walker and menu item hooks.
+	 *
+	 * @since 2.0.0
+	 * @access private
+	 */
+	private function define_mega_menu_hooks() {
+
+		new Mega_Menu();
 
 	}
 

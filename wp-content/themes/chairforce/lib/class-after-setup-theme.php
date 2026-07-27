@@ -62,9 +62,17 @@ class After_Setup_Theme {
 		/**
 		 * Image Sizes
 		 */
-		// Example:
-		// add_image_size( 'hero', 2440, 1440 );
+		add_image_size( CHAIRFORCE_MENU_THUMB_SIZE, 108, 108, true );
 
+		/**
+		 * Navigation menu locations
+		 */
+		register_nav_menus(
+			[
+				CHAIRFORCE_MENU_PRIMARY => esc_html__( 'Primary Navigation', 'chairforce' ),
+				CHAIRFORCE_MENU_UTILITY => esc_html__( 'Utility Navigation', 'chairforce' ),
+			]
+		);
 
 	}
 

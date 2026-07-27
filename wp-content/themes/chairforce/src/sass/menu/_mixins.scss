@@ -1,0 +1,63 @@
+/**
+ * Menu breakpoint mixins — single control point for desktop nav vs mobile drawer.
+ * Chairforce uses $breakpoints.navigation (767px), not shineon's large breakpoint.
+ */
+
+@mixin breakpoint-menu-up {
+  @media screen and (min-width: #{map-get($breakpoints, $menu-breakpoint-key)}) {
+    @content;
+  }
+}
+
+@mixin breakpoint-menu-down {
+  @media screen and (max-width: #{map-get($breakpoints, $menu-breakpoint-key)}) {
+    @content;
+  }
+}
+
+@mixin menu-desktop-only {
+  @include breakpoint-menu-up {
+    @content;
+  }
+}
+
+@mixin menu-mobile-only {
+  @include breakpoint-menu-down {
+    @content;
+  }
+}
+
+@mixin menu-interactive-states {
+  &:hover,
+  &:focus-visible {
+    @content;
+  }
+}
+
+@mixin menu-nav-interactive-states {
+  &:hover {
+    color: $menu-nav-link-hover-color;
+  }
+
+  &:focus-visible {
+    color: $menu-nav-link-hover-color;
+    outline: $menu-nav-link-focus-outline-width solid $menu-nav-link-focus-outline-color;
+    outline-offset: $menu-nav-link-focus-outline-offset;
+  }
+}
+
+@mixin site-header-menu {
+  .site-header {
+    @content;
+  }
+}
+
+@mixin menu-mega-panel-hidden {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+@mixin menu-mega-panel-visible {
+  visibility: visible;
+  pointer-events: auto;
+}

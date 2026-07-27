@@ -330,3 +330,12 @@ function chairforce_trim_filename( string $name, int $limit = 40 ): string {
 
 	return mb_substr( $name, 0, $limit - 1 ) . '…';
 }
+
+/**
+ * Render the PHP site header (announcement, search, nav shell).
+ */
+function chairforce_render_site_header(): void {
+
+	Chairforce\Site_Header::render();
+
+}

@@ -1,0 +1,185 @@
+{
+    "key": "group_chairforce_menu_options",
+    "title": "Menu Item Options",
+    "fields": [
+        {
+            "key": "field_chairforce_menu_link_type",
+            "label": "Link Type",
+            "name": "link_type",
+            "type": "button_group",
+            "instructions": "Controls how this menu item renders in the header.",
+            "required": 0,
+            "choices": {
+                "default": "Link",
+                "heading": "Heading",
+                "thumbnail-link": "Thumb",
+                "highlight-link": "Sale",
+                "utility-link": "Utility",
+                "divider": "Divider"
+            },
+            "default_value": "default",
+            "return_format": "value",
+            "allow_null": 0,
+            "layout": "horizontal"
+        },
+        {
+            "key": "field_chairforce_menu_label_mobile",
+            "label": "Mobile Label",
+            "name": "label_mobile",
+            "type": "text",
+            "instructions": "Optional mobile label override. Leave empty to use the menu title on all breakpoints.",
+            "required": 0
+        },
+        {
+            "key": "field_chairforce_menu_nav_align",
+            "label": "Nav Align",
+            "name": "nav_align",
+            "type": "button_group",
+            "instructions": "Top-level primary nav only. Use Right for Shop by Space, New Arrivals, Sale.",
+            "required": 0,
+            "choices": {
+                "default": "Left",
+                "right": "Right"
+            },
+            "default_value": "default",
+            "return_format": "value",
+            "allow_null": 0,
+            "layout": "horizontal"
+        },
+        {
+            "key": "field_chairforce_menu_layout_variant",
+            "label": "Layout Variant",
+            "name": "layout_variant",
+            "type": "button_group",
+            "instructions": "Top-level primary item with a mega menu panel.",
+            "required": 0,
+            "choices": {
+                "grouped-text": "A: Text",
+                "flat-grid": "B: Grid",
+                "grouped-thumbnails": "C: Groups"
+            },
+            "default_value": "",
+            "return_format": "value",
+            "allow_null": 1,
+            "layout": "horizontal"
+        },
+        {
+            "key": "field_chairforce_menu_grid_columns",
+            "label": "Grid Columns",
+            "name": "grid_columns",
+            "type": "button_group",
+            "instructions": "Number of equal columns in the desktop mega menu panel (Patterns A, B, C). Use 4 for Chairs (TYPE spans 2 cols).",
+            "required": 0,
+            "choices": {
+                "3": "3 col",
+                "4": "4 col"
+            },
+            "default_value": "",
+            "return_format": "value",
+            "allow_null": 1,
+            "layout": "horizontal"
+        },
+        {
+            "key": "field_chairforce_menu_image",
+            "label": "Image Override",
+            "name": "image",
+            "type": "image",
+            "instructions": "Optional thumbnail override for thumbnail-link items.",
+            "required": 0,
+            "return_format": "id",
+            "preview_size": "thumbnail",
+            "library": "all"
+        },
+        {
+            "key": "field_chairforce_menu_column_span",
+            "label": "Column Span",
+            "name": "column_span",
+            "type": "button_group",
+            "instructions": "Column span within a mega menu section (Patterns A/C, desktop).",
+            "required": 0,
+            "choices": {
+                "1": "1",
+                "2": "2",
+                "3": "3",
+                "4": "4"
+            },
+            "default_value": "",
+            "return_format": "value",
+            "allow_null": 1,
+            "layout": "horizontal"
+        },
+        {
+            "key": "field_chairforce_menu_child_columns",
+            "label": "Child Columns",
+            "name": "child_columns",
+            "type": "button_group",
+            "instructions": "Sub-column count under a section heading (Patterns A/C, desktop).",
+            "required": 0,
+            "choices": {
+                "1": "1",
+                "2": "2",
+                "3": "3"
+            },
+            "default_value": "",
+            "return_format": "value",
+            "allow_null": 1,
+            "layout": "horizontal"
+        },
+        {
+            "key": "field_chairforce_menu_utility_icon",
+            "label": "Utility Icon",
+            "name": "utility_icon",
+            "type": "select",
+            "instructions": "Lucide icon for utility-link items. Auto-detected from title when empty.",
+            "required": 0,
+            "choices": {},
+            "default_value": "",
+            "return_format": "value",
+            "allow_null": 1,
+            "ui": 1,
+            "ajax": 0,
+            "placeholder": "Select icon…"
+        },
+        {
+            "key": "field_chairforce_menu_visibility",
+            "label": "Visibility",
+            "name": "visibility",
+            "type": "button_group",
+            "instructions": "Hide this item on a specific breakpoint. Choose None to show on all screen sizes.",
+            "required": 0,
+            "choices": {
+                "none": "None",
+                "hide-mobile": "Desktop only",
+                "hide-desktop": "Mobile only"
+            },
+            "default_value": "none",
+            "return_format": "value",
+            "allow_null": 1,
+            "layout": "horizontal"
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "nav_menu_item",
+                "operator": "==",
+                "value": "location/chairforce-primary-nav"
+            }
+        ],
+        [
+            {
+                "param": "nav_menu_item",
+                "operator": "==",
+                "value": "location/chairforce-utility-nav"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "active": true,
+    "show_in_rest": 0,
+    "modified": 1737990000
+}

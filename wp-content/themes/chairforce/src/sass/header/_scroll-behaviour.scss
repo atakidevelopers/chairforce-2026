@@ -1,0 +1,7 @@
+.site-header.site-header--is-hidden {
+  transform: translateY(-100%);
+}
+
+.site-header {
+  transition: transform 0.25s ease;
+}
