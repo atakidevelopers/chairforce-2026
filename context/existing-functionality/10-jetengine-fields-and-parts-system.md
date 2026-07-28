@@ -109,12 +109,19 @@ across: `care_tab` has non-empty content on 409 products, while the
 are not a subset of one another. **Practical implication**: some
 unknown number of products almost certainly show a **blank "Care" tab
 today** because their real care instructions are stranded under the dead
-`care_tab` key. **Recommend a pre-migration SQL audit** (`SELECT post_id
-FROM wp_postmeta WHERE meta_key='care_tab' AND meta_value != '' AND
-post_id NOT IN (SELECT post_id FROM wp_postmeta WHERE meta_key='care' AND
-meta_value != '')`) to find and backfill these before/during the rebuild —
-otherwise the new theme will faithfully reproduce a pre-existing content
-bug rather than fixing it.
+`care_tab` key.
+
+> **Decision (locked, per client discussion):** the rebuild will **not**
+> proactively backfill `care_tab` into `care`. We work only with whatever
+> is currently in the live `care` field, exactly as the existing site
+> does today — this is a pre-existing content gap on the *current* site,
+> not something the rebuild introduces or is responsible for fixing. The
+> `SELECT post_id FROM wp_postmeta WHERE meta_key='care_tab' AND
+> meta_value != '' AND post_id NOT IN (SELECT post_id FROM wp_postmeta
+> WHERE meta_key='care' AND meta_value != '')` audit query above is kept
+> in this doc purely as a reference in case the client later asks us to
+> investigate or backfill it — **flag it to the client, don't act on it
+> unless asked.**
 
 ### 1b. Other related per-product fields worth knowing about
 
@@ -280,10 +287,9 @@ every product, not something to migrate per-product.
   — zero migration needed for the currently-active data, this is genuine
   plain post meta. `additional_information` is barely used; consider
   dropping it rather than rebuilding it, subject to confirming with content
-  editors first. **Before migrating**, run the `care`/`care_tab` gap audit
-  from §1a and backfill any products whose real care content is stranded
-  under the dead `care_tab` key — otherwise the rebuild will faithfully
-  reproduce an existing (currently invisible) content bug.
+  editors first. **Do not** proactively run the `care`/`care_tab` backfill
+  from §1a — that's now a locked decision, not an open task; just flag the
+  gap to the client and only act on it if/when they ask.
 - **Parts**: rebuild as (a) a relationship field on the product edit screen
   (could be a plain ACF or JSX-block relationship field per this repo's own
   patterns) writing to the same `parts` meta key/array-of-IDs format, and
@@ -307,7 +313,16 @@ every product, not something to migrate per-product.
   accordion/tabs block) reading the JetEngine meta fields above for the
   per-product tabs, with "Delivery Information" and "Product Info" as
   static template copy (not per-product data) — no Elementor/JetEngine
-  Nested Tabs dependency needed.
+  Nested Tabs dependency needed. **Located, DB-confirmed**: "Delivery
+  Information" is actually stored, editable content via the
+  `delivery-information-for-product-page` JetEngine Options Page (see
+  file `14` §E — correction to the "static" assumption above, migrate its
+  current WYSIWYG value). "Product Info" genuinely is static template
+  copy, and its exact source text lives in two Woodmart `cms_block` posts
+  — "Product Info dynamic content" (ID `1063733`) and "Single product
+  description" (ID `1063673`) on the live `chairforce` site — just copy
+  their content into the new template once, no CPT/registration needed
+  for these two (see file `19` §1 for the full `cms_block` audit).
 - **Other Jet\* plugins**: `jet-woo-builder` and `jet-tabs` are now
   confirmed low-priority/effectively unused for this feature set (§4).
   `jet-smart-filters` is confirmed **not** the shop/category attribute

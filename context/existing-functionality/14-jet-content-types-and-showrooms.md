@@ -36,8 +36,8 @@ Builder query consumed by one or more Listing Grid widgets.
 | `showrooms` | 7 | `warehouse` (text), `time` (text), `phone` (text), `email` (text), `address` (text), `_description` (textarea), `map` (media), `showroom_gallery` (gallery), `location` (select: AU states + NZ), `id` (text, a slug-like short code e.g. `sydney`) | Physical store locations — see §B below for full detail |
 | `gallery-tabs` | 34 | `image_item` (media, cover image), `gallery_images` (gallery, stored as URLs not IDs — `value_format: url`), `_title` (text, optional), `_description` (text, optional) | Powers the `/gallery/` page — see new file `15` |
 | `category-silder-list` | 6 | `category_link` (text) | Homepage "shop by category" slider items (Chairs/Stools/Tables/Table Tops/Table Bases/Picnic Tables) — title + thumbnail (native post fields) + editor content + a manual category link |
-| `year-carousel` | 8+ | `year` (text), `_description` (text) | A "company history" year-by-year timeline/carousel (likely on an About page) |
-| `notification-bar-mes` | 3 | none beyond title | Rotating top-of-site announcement bar messages (e.g. "Next day dispatch when ordered by 4pm") |
+| `year-carousel` | 8 (confirmed: 2013, 2014, 2016, 2018, 2019, 2020, 2022, 2023) | `year` (text), `_description` (text) | A "company history" year-by-year timeline/carousel (likely on an About page). Real, small, cheap to register. |
+| `notification-bar-mes` | 3 (confirmed titles: "Next day dispatch when ordered by 4 pm!", "Visit Your Local Branch! Click to see more.", "Check out our LASTEST Catalogue! See now!") | none beyond title | Rotating top-of-site announcement bar messages. **Decision (locked, per chat): do NOT register this as a CPT.** Registering a whole post type to hold 3 lines of text + links isn't worth it. The new theme's Phase 1 header already ships a single `announcement_text` ACF field (one static line) — keep that as-is for launch. If the client specifically asks in UAT for multiple rotating messages, convert `announcement_text` to an ACF repeater at that point (not before) — the current Figma header design shows no chevron/arrow controls implying rotation, so there's no design signal this is needed yet. |
 | `review` | **14** (confirmed via wp-admin list, `chairforce.test/wp-admin/edit.php?post_type=review`) | `text` (textarea, required — the review body), `stars` (number 1–5, default 5, required — the rating) | Customer testimonials — see new file `20` for a full write-up of what this is and why it's a separate CPT rather than WooCommerce's native product reviews |
 
 ## B. Showrooms — full detail
@@ -131,10 +131,10 @@ full context, or `grep` the live theme's checkout/cart templates for
 |---|---|---|---|
 | `showroom-locations` | `showrooms` | none | State/region grouping for showrooms (see §B). **Confirmed actively used** — it's the data source for the "Select Filter - Showrooms Location - Contact Page" Smart Filter (§I below), i.e. the Contact page has a real state-picker filter driven by this taxonomy, not just the "Locations Listing" template guessed at previously. |
 | `gallery-category` | `gallery-tabs` | none | Category filter for the `/gallery/` page — see file `15` and §I below (confirmed live via "Gallery Category Filter") |
-| `venues` | `product` | `venue_image` (gallery) | Tags a product with venue(s) it's been used/displayed at (e.g. a tradeshow or hospitality venue) — each venue term itself carries a photo gallery. **Not among the 5 confirmed live Smart Filters (§I)** — no filter widget uses it, so it may only be used for internal/admin categorization or a template not yet identified. Confirm actual front-end display before committing to rebuild it. |
+| `venues` | `product` | `venue_image` (gallery) | Tags a product with venue(s)/space-type(s) it suits. **Correction (DB-confirmed via post-count query): this is heavily used, not dormant.** 29 real terms, each tagging real products — usage counts range from 2 up to **315** (`Cafe`: 315, `Bars & Pubs`: 133, `Restaurants`: 91, `Community Centers`: 60, etc.). The term list (Hospitality, Commercial, Education, Healthcare, Residential, Cafe, Hotels, Office, Laboratory...) is essentially identical to the mega menu's "Shop by Space" panel (Phase 1). Very likely this taxonomy is exactly what "Shop by Space" links to. **Not** among the 5 confirmed live Smart Filters, so it's not used as a *filter widget* — but it's almost certainly used as *archive/landing pages* (one per venue term). Upgraded from "confirm before rebuilding" to **confirmed important — needs a real taxonomy archive template**, not just wp-admin visibility. Double-check where "Shop by Space" mega-menu links currently point. |
 | `sales-by-location` | `product` | none | A regional-availability/sales classification on products. **Confirmed actively used** — it's the data source for the "Product sale by location filter" Smart Filter (§I below), a real checkbox filter, most likely on the shop/category archive (in addition to, or alongside, the color swatch filter in file `12`). **Upgrade this from file 09/earlier's "confirm before assuming" to "confirmed needed, but confirm exactly which archive page(s) show it."** |
 | `feature` | `product` | `thumbnail` (media) | Icon-badge taxonomy for products (e.g. "Stackable", "UV Resistant", "Made in Australia") — each term has its own icon image, rendered via Listing Grid template `"Product Feature Listing - Single Product Page"`. **Likely customer-visible and worth preserving** — check the single-product page for an icon-badge row to confirm. |
-| `review-option` | (none — not attached to any post type in its own definition) | none | Unclear purpose from the definition alone. **Not among the 5 confirmed live Smart Filters (§I) either** — likely a dormant/experimental taxonomy. Low priority; confirm live usage before deciding whether to rebuild. |
+| `review-option` | (none — not attached to any post type in its own definition) | none | **Confirmed dead via DB post-count query**: only 2 terms exist (`Lotion`, `White Coffee`), and both tag **zero posts** (`count: 0`). Not among the 5 confirmed live Smart Filters either. **Drop — do not rebuild, nothing to preserve.** |
 
 ## D. Relations (JetEngine's relational-field feature, distinct from the `parts` plain-meta approach)
 
@@ -155,7 +155,7 @@ relation ID 5 or 9) rather than assuming a post-meta array like `parts`.
 
 | Slug | Field(s) | Purpose |
 |---|---|---|
-| `catalogue-links` | not fully captured this pass — re-check if needed | Likely stores links to downloadable PDF catalogues (ties to the `notification-bar-mes` "Check out our LATEST Catalogue!" message) |
+| `catalogue-links` | **Confirmed live and active** (DB-verified): 4 fields — `catalogue_link_for_menu` (switcher, currently `false`), `catalogue_link_for_home_page` (text URL), `catalogue_link_for_footer` (text URL), `catalogue_link_for_` (text URL, labeled "...for Blog Page" — the field `name` itself is a truncated/buggy slug, worth renaming cleanly in the rebuild). The home/footer/blog fields all currently hold the **same real, live PDF URL** (`.../uploads/2026/01/Chairforce-Catalogue_14thJan_Clearance2026.pdf`, uploaded this January) — this is exactly the "Download Catalog" CTA button seen in the Home page Figma mockup. **Not speculative — register with confidence, migrate the current URL value.** The menu-link field is a documented non-dynamic manual workaround (its own description field says to edit the nav menu item directly instead) — safe to drop that specific sub-field, the new theme's menu items can just hold their own URL directly. | Downloadable PDF catalogue links, surfaced on Home/footer/blog and (per its own admin note) manually on one nav menu item |
 | `hero-banner-home-page` | Two full sets of `banner_title_N`/`banner_sub_title_N`/`banner_button_text_N`/`banner_button_link_N`/`banner_image_N` (N=1,2) | Homepage hero banner content — **editable marketing copy, not developer-hardcoded** |
 | `delivery-information-for-product-page` | `add_delivery_information_for_product_page` (wysiwyg) | The "Delivery Information" tab content on the single product page. **Correction to file `10`**, which assumed this was static template copy not worth migrating — it is actually **stored, editable content** (one global WYSIWYG field), just not tied to a specific product. Treat like the theme's global "options" pattern (`10-acf-integration.mdc`'s options page convention) — add an ACF Options Page field for this exact content and migrate the current value over once. |
 
@@ -250,12 +250,32 @@ impact**, not completeness-for-its-own-sake:
 1. **High** — Showrooms (store locator + pickup selector: real e-commerce
    functionality), Gallery page (file `15`, a whole distinct page),
    `feature` taxonomy icons (if confirmed visible on single-product pages),
-   Delivery Information content (real editable copy).
+   Delivery Information content (real editable copy), **`venues` taxonomy**
+   (re-confirmed via DB post-counts as heavily used — up to 315 products
+   per term, likely the "Shop by Space" mega-menu destination — moved up
+   from the earlier "low/confirm-before-building" bucket below).
 2. **Medium** — Reviews/testimonials, homepage hero banner, category
-   slider, catalogue links, notification bar messages — all standard
-   "marketing content block" rebuilds with plain data models, no urgency
-   beyond normal content-parity work.
-3. **Low / confirm-before-building** — `venues` / `sales-by-location` /
-   `review-option` taxonomies, `year-carousel` — verify these are actually
-   rendered anywhere live-visible before spending rebuild effort; they may
-   be dormant/experimental content types.
+   slider, `catalogue-links` (**re-confirmed live**: a real, currently-set
+   PDF URL feeding Home/footer/blog), `sales-by-location` taxonomy — all
+   standard "marketing content block" rebuilds with plain data models, no
+   urgency beyond normal content-parity work.
+3. **Low, but still register (schema is cheap)** — `year-carousel` (8 real
+   rows, small/cheap). **Notification bar messages: explicitly NOT
+   registering `notification-bar-mes` as a CPT** — decision made in chat:
+   3 lines of text don't justify a whole post type; keep the Phase 1
+   header's single `announcement_text` ACF field, only add a repeater if
+   the client asks for rotation in UAT.
+4. **Confirmed dead — drop, no further work** — `review-option` taxonomy
+   (2 terms, both tagging zero posts).
+
+**Separately (not JetEngine, out of this file's normal scope, but found
+during the same DB pass):** Woodmart-core's own internal CPTs
+(`woodmart_woo_fbt`, `woodmart_size_guide`, `woodmart_sidebar` — zero
+posts, confirmed dead; `woodmart_slide` — 2 posts, still in draft, never
+published; `woodmart_layout` — 5 published posts, but they're just
+Elementor Theme-Builder layout assignments fully superseded by this
+theme's own FSE templates, nothing to port; `cms_block` — 13 published
+posts, 11 of which are Phase 1 header/mega-menu content already rebuilt,
+the other 2 hold the single-product "Product Info"/"Delivery" static
+copy referenced in file `10` §4) are all detailed in the master checklist,
+file `19` §1.
