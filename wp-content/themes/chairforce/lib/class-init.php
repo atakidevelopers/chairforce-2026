@@ -57,6 +57,8 @@ class Init {
 		$this->define_content_types_hooks();
 		$this->define_legacy_options_storage_hooks();
 		$this->define_woocommerce_hooks();
+		$this->define_admin_style_fixes_hooks();
+		$this->define_attribute_swatch_preview_column_hooks();
 
 		do_action( 'chairforce_init_construct' );
 
@@ -227,6 +229,32 @@ class Init {
 	private function define_woocommerce_hooks() {
 
 		new WooCommerce();
+
+	}
+
+	/**
+	 * Register small, permanent wp-admin CSS overrides for third-party
+	 * plugin conflicts (e.g. Verifone Hosted's unscoped button styling).
+	 *
+	 * @since 2.0.0
+	 * @access private
+	 */
+	private function define_admin_style_fixes_hooks() {
+
+		new Admin_Style_Fixes();
+
+	}
+
+	/**
+	 * Register the "Preview" swatch column on attribute taxonomy term-list
+	 * screens (edit-tags.php?taxonomy=pa_*).
+	 *
+	 * @since 2.0.0
+	 * @access private
+	 */
+	private function define_attribute_swatch_preview_column_hooks() {
+
+		new Attribute_Swatch_Preview_Column();
 
 	}
 

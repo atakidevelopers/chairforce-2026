@@ -7,8 +7,10 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'Chairforce\\Acf' => $baseDir . '/lib/class-acf.php',
+    'Chairforce\\Admin_Style_Fixes' => $baseDir . '/lib/class-admin-style-fixes.php',
     'Chairforce\\After_Setup_Theme' => $baseDir . '/lib/class-after-setup-theme.php',
     'Chairforce\\Api' => $baseDir . '/lib/class-api.php',
+    'Chairforce\\Attribute_Swatch_Preview_Column' => $baseDir . '/lib/class-attribute-swatch-preview-column.php',
     'Chairforce\\Blocks_Jsx' => $baseDir . '/lib/class-blocks-jsx.php',
     'Chairforce\\Content_Types' => $baseDir . '/lib/class-content-types.php',
     'Chairforce\\Editor_Curation' => $baseDir . '/lib/class-editor-curation.php',

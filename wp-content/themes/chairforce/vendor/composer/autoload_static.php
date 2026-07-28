@@ -12,8 +12,10 @@ class ComposerStaticInit0b930fbfa8635b3843fecc3493015433
 
     public static $classMap = array (
         'Chairforce\\Acf' => __DIR__ . '/../..' . '/lib/class-acf.php',
+        'Chairforce\\Admin_Style_Fixes' => __DIR__ . '/../..' . '/lib/class-admin-style-fixes.php',
         'Chairforce\\After_Setup_Theme' => __DIR__ . '/../..' . '/lib/class-after-setup-theme.php',
         'Chairforce\\Api' => __DIR__ . '/../..' . '/lib/class-api.php',
+        'Chairforce\\Attribute_Swatch_Preview_Column' => __DIR__ . '/../..' . '/lib/class-attribute-swatch-preview-column.php',
         'Chairforce\\Blocks_Jsx' => __DIR__ . '/../..' . '/lib/class-blocks-jsx.php',
         'Chairforce\\Content_Types' => __DIR__ . '/../..' . '/lib/class-content-types.php',
         'Chairforce\\Editor_Curation' => __DIR__ . '/../..' . '/lib/class-editor-curation.php',
