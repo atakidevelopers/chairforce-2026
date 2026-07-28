@@ -20,6 +20,10 @@ return array(
     'Chairforce\\Plugins_Manager' => $baseDir . '/lib/class-plugins-manager.php',
     'Chairforce\\Site_Header' => $baseDir . '/lib/class-site-header.php',
     'Chairforce\\Theme_Style_Switcher' => $baseDir . '/lib/class-theme-style-switcher.php',
+    'Chairforce\\WooCommerce' => $baseDir . '/lib/class-woocommerce.php',
+    'Chairforce\\WooCommerce_Admin' => $baseDir . '/lib/class-woocommerce-admin.php',
+    'Chairforce\\WooCommerce_Archive' => $baseDir . '/lib/class-woocommerce-archive.php',
+    'Chairforce\\WooCommerce_Single_Product' => $baseDir . '/lib/class-woocommerce-single-product.php',
     'Chairforce\\Zip_Archive' => $baseDir . '/lib/class-zip-archive.php',
     'Composer\\InstalledVersions' => $vendorDir . '/composer/InstalledVersions.php',
 );

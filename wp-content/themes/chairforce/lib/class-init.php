@@ -56,6 +56,7 @@ class Init {
 		$this->define_mega_menu_hooks();
 		$this->define_content_types_hooks();
 		$this->define_legacy_options_storage_hooks();
+		$this->define_woocommerce_hooks();
 
 		do_action( 'chairforce_init_construct' );
 
@@ -214,6 +215,18 @@ class Init {
 	private function define_legacy_options_storage_hooks() {
 
 		new Legacy_Options_Storage();
+
+	}
+
+	/**
+	 * Register WooCommerce integration (admin, archive, single product).
+	 *
+	 * @since 2.0.0
+	 * @access private
+	 */
+	private function define_woocommerce_hooks() {
+
+		new WooCommerce();
 
 	}
 

@@ -25,6 +25,10 @@ class ComposerStaticInit0b930fbfa8635b3843fecc3493015433
         'Chairforce\\Plugins_Manager' => __DIR__ . '/../..' . '/lib/class-plugins-manager.php',
         'Chairforce\\Site_Header' => __DIR__ . '/../..' . '/lib/class-site-header.php',
         'Chairforce\\Theme_Style_Switcher' => __DIR__ . '/../..' . '/lib/class-theme-style-switcher.php',
+        'Chairforce\\WooCommerce' => __DIR__ . '/../..' . '/lib/class-woocommerce.php',
+        'Chairforce\\WooCommerce_Admin' => __DIR__ . '/../..' . '/lib/class-woocommerce-admin.php',
+        'Chairforce\\WooCommerce_Archive' => __DIR__ . '/../..' . '/lib/class-woocommerce-archive.php',
+        'Chairforce\\WooCommerce_Single_Product' => __DIR__ . '/../..' . '/lib/class-woocommerce-single-product.php',
         'Chairforce\\Zip_Archive' => __DIR__ . '/../..' . '/lib/class-zip-archive.php',
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
     );
