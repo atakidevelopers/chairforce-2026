@@ -1,5 +1,17 @@
 # 19 — Master Checklist: What Must Be Re-Registered When Elementor/Jet\*/Woodmart Are Deactivated
 
+**Schema registration status: ✅ Complete (28 Jul 2026).** Every row below
+tagged "Schema: now (Phase 3)" — all bucket-2 CPTs, taxonomies, options
+pages, and product-level field groups in §1–§4 — has been implemented,
+committed, and verified against real live data. See
+`context/plans/registration-and-acf-schema-plan.md`'s status table for the
+exact chunk → commit mapping, and `context/PROGRESS.md` for the
+project-wide phase tracker. **Frontend rendering/consumption** of this data
+(the "Phase 3" swatches/filters/gallery/Quick View work, and Phases 4–6)
+is unaffected by this note and still tracked per-row below. The one
+excluded item — the `gallery-tabs`↔`product` relationship **data**
+migration (§3) — remains not started.
+
 Resolves QA question: *"Have we made sure that we are dumping all the
 plugins like Elementor, Jet plugins, Woodmart theme — have we made the
 list of what we shall need to register once we deactivate these

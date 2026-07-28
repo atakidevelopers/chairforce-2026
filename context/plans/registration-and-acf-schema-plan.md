@@ -1,5 +1,19 @@
 # Registration + ACF Schema Pass — Implementation Plan
 
+## Status: ✅ Complete (chunks 1–4), verified 28 Jul 2026
+
+All four chunks are implemented, committed, and passed the universal
+verification rule. See `context/PROGRESS.md` for the project-wide phase
+tracker; the summary here is scoped to this plan only.
+
+| Chunk | Status | Commit(s) | Notes |
+|---|---|---|---|
+| 1. CPT + taxonomy schema | ✅ Done | `54a203a` | Row/term counts confirmed matching file `14` |
+| 2. ACF field groups (chunk 1 entities) | ✅ Done | `520dcbd` | |
+| 3. ACF Options Pages | ✅ Done | `855af91` | Legacy blob-storage bridge (`class-legacy-options-storage.php`) |
+| 4. Product-level field groups | ✅ Done (revised) | `0f60d12`, `99d7ab2` | Dimensions/Care/Additional Info/Parts and variation gallery all confirmed. **First pass used ACF on `product_variation`, which has no wp-admin UI (`show_ui: false`) — fixed in `99d7ab2` by switching Parts + variation gallery to native WooCommerce admin hooks** (see `lib/class-woocommerce-admin.php` and `.cursor/skills/chairforce-woocommerce/`) |
+| *(excluded)* Relationship data migration | ⏳ Not started | — | `gallery-tabs`↔`product` rows, `wp_jet_rel_default` relation IDs 5 & 9 — still a separate, unscheduled effort |
+
 ## Goal
 
 Execute the Phase 3 "registration/backend pass" from

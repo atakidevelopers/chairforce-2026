@@ -1,5 +1,8 @@
 # Woodmart Color/Attribute Swatches — Existing Functionality Research
 
+**Looking for overall rebuild progress/status?** See `context/PROGRESS.md`
+(project-wide phase tracker) — this README only indexes the research docs.
+
 This folder documents, in detail, how the **attribute swatches system** (color
 swatches, image swatches, text swatches) currently works in:
 
