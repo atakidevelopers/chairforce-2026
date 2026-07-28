@@ -1,0 +1,80 @@
+.site-footer {
+	&__bottom {
+		border-top: 1px solid $color-outline;
+		padding-top: $spacing-medium;
+		padding-bottom: $spacing-medium;
+	}
+
+	&__bottom-inner {
+		align-items: center;
+		gap: $spacing-medium;
+		justify-content: space-between;
+
+		@include breakpoint-medium-down {
+			align-items: flex-start;
+			flex-direction: column;
+		}
+	}
+
+	&__copyright {
+		align-items: center;
+		color: $color-neutral;
+		display: flex;
+		flex-wrap: wrap;
+		font-size: $font-size-x-small;
+		gap: 0.25em;
+		margin: 0;
+
+		.wp-block-chairforce-copyright-date-block,
+		p {
+			color: inherit;
+			font-size: inherit;
+			margin: 0;
+		}
+	}
+
+	&__legal {
+		align-items: center;
+		display: flex;
+		flex-wrap: wrap;
+		gap: $spacing-medium;
+		justify-content: center;
+
+		@include breakpoint-medium-down {
+			justify-content: flex-start;
+		}
+
+		p {
+			margin: 0;
+		}
+
+		a {
+			color: $color-neutral;
+			font-size: $font-size-x-small;
+			text-decoration: none;
+
+			&:hover,
+			&:focus-visible {
+				color: $color-primary;
+				text-decoration: underline;
+			}
+		}
+	}
+
+	&__payments {
+		align-items: center;
+		display: flex;
+		flex-wrap: wrap;
+		gap: $spacing-small;
+
+		.wp-block-image {
+			margin: 0;
+		}
+
+		img {
+			display: block;
+			height: 1rem;
+			width: auto;
+		}
+	}
+}

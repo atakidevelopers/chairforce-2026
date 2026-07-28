@@ -107,4 +107,25 @@
     align-items: center;
     gap: $menu-link-gap;
   }
+
+  .site-header__menu-label--desktop{
+    font-weight: 500;
+    font-size: 13.5px;
+  }
+
+  // Top Level menu items
+  .site-header__nav-list{
+    > li {
+      //> .site-header__nav-link{
+        .site-header__menu-label--desktop{
+          font-weight: 600;
+          font-size: $font-size-small;
+        }
+
+      //}
+    }
+  }
+
+
+
 }
