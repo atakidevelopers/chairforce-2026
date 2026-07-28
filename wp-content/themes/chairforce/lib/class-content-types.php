@@ -43,8 +43,9 @@ class Content_Types {
 	 */
 	private function register_jetengine_gallery_storage_filters(): void {
 		$id_gallery_fields = [
-			'showroom_gallery' => 'post',
-			'venue_image'      => 'term',
+			'showroom_gallery'                   => 'post',
+			'venue_image'                        => 'term',
+			'wd_additional_variation_images_data' => 'post',
 		];
 
 		foreach ( $id_gallery_fields as $field_name => $object_type ) {
@@ -69,6 +70,29 @@ class Content_Types {
 
 		add_filter( 'acf/load_value/name=gallery_images', [ $this, 'load_jetengine_url_gallery_value' ], 10, 3 );
 		add_filter( 'acf/update_value/name=gallery_images', [ $this, 'save_jetengine_url_gallery_value' ], 10, 3 );
+
+		add_filter( 'acf/update_value/name=parts', [ $this, 'save_jetengine_parts_value' ], 10, 3 );
+	}
+
+	/**
+	 * Preserve JetEngine parts relationship storage (serialized array of string product IDs).
+	 *
+	 * @param mixed $value Relationship post IDs from ACF.
+	 * @return array<int|string>|mixed
+	 */
+	public function save_jetengine_parts_value( $value ) {
+		if ( ! is_array( $value ) ) {
+			return $value;
+		}
+
+		return array_values(
+			array_map(
+				'strval',
+				array_filter(
+					array_map( 'intval', $value )
+				)
+			)
+		);
 	}
 
 	/**

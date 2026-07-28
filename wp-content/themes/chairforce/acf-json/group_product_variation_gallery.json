@@ -1,0 +1,34 @@
+{
+    "key": "group_product_variation_gallery",
+    "title": "Additional Variation Images",
+    "fields": [
+        {
+            "key": "field_wd_additional_variation_images_data",
+            "label": "Additional Variation Images",
+            "name": "wd_additional_variation_images_data",
+            "type": "gallery",
+            "instructions": "Extra gallery images for this variation (Woodmart wd_additional_variation_images_data). Stored as comma-separated attachment IDs on the variation post.",
+            "required": 0,
+            "return_format": "id",
+            "library": "all",
+            "preview_size": "medium",
+            "insert": "append"
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "post_type",
+                "operator": "==",
+                "value": "product_variation"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "active": true,
+    "modified": 1753709002
+}

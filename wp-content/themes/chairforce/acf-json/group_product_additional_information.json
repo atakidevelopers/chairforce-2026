@@ -1,0 +1,52 @@
+{
+    "key": "group_product_additional_information",
+    "title": "Product Additional Information",
+    "fields": [
+        {
+            "key": "field_product_dimensions",
+            "label": "Dimensions",
+            "name": "dimensions",
+            "type": "wysiwyg",
+            "tabs": "all",
+            "toolbar": "full",
+            "media_upload": 1,
+            "delay": 0
+        },
+        {
+            "key": "field_product_care",
+            "label": "Care",
+            "name": "care",
+            "type": "wysiwyg",
+            "tabs": "all",
+            "toolbar": "full",
+            "media_upload": 1,
+            "delay": 0
+        },
+        {
+            "key": "field_product_additional_information",
+            "label": "Additional Information",
+            "name": "additional_information",
+            "type": "wysiwyg",
+            "tabs": "all",
+            "toolbar": "full",
+            "media_upload": 1,
+            "delay": 0
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "post_type",
+                "operator": "==",
+                "value": "product"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "active": true,
+    "modified": 1753709000
+}
