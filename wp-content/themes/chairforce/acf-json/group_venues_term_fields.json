@@ -1,0 +1,33 @@
+{
+    "key": "group_venues_term_fields",
+    "title": "Venue Fields",
+    "fields": [
+        {
+            "key": "field_venues_venue_image",
+            "label": "Venue Image",
+            "name": "venue_image",
+            "type": "gallery",
+            "required": 0,
+            "return_format": "id",
+            "library": "all",
+            "preview_size": "medium",
+            "insert": "append"
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "taxonomy",
+                "operator": "==",
+                "value": "venues"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "active": true,
+    "modified": 1753708804
+}

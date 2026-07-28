@@ -1,0 +1,57 @@
+{
+    "key": "group_gallery_tabs_fields",
+    "title": "Gallery Item Fields",
+    "fields": [
+        {
+            "key": "field_gallery_tabs_image_item",
+            "label": "Cover Gallery Image",
+            "name": "image_item",
+            "type": "image",
+            "required": 0,
+            "return_format": "id",
+            "library": "all",
+            "preview_size": "medium"
+        },
+        {
+            "key": "field_gallery_tabs_gallery_images",
+            "label": "Gallery Images",
+            "name": "gallery_images",
+            "type": "gallery",
+            "required": 0,
+            "return_format": "url",
+            "library": "all",
+            "preview_size": "medium",
+            "insert": "append"
+        },
+        {
+            "key": "field_gallery_tabs_title",
+            "label": "Title (Optional)",
+            "name": "_title",
+            "type": "text",
+            "required": 0
+        },
+        {
+            "key": "field_gallery_tabs_description",
+            "label": "Description (optional)",
+            "name": "_description",
+            "type": "text",
+            "required": 0
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "post_type",
+                "operator": "==",
+                "value": "gallery-tabs"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "active": true,
+    "modified": 1753708801
+}

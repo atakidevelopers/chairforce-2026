@@ -1,0 +1,124 @@
+{
+    "key": "group_showrooms_fields",
+    "title": "Showroom Fields",
+    "fields": [
+        {
+            "key": "field_showrooms_warehouse",
+            "label": "Warehouse",
+            "name": "warehouse",
+            "type": "text",
+            "required": 0
+        },
+        {
+            "key": "field_showrooms_time",
+            "label": "Time",
+            "name": "time",
+            "type": "text",
+            "required": 0
+        },
+        {
+            "key": "field_showrooms_phone",
+            "label": "Phone",
+            "name": "phone",
+            "type": "text",
+            "required": 0
+        },
+        {
+            "key": "field_showrooms_email",
+            "label": "Email",
+            "name": "email",
+            "type": "text",
+            "required": 0
+        },
+        {
+            "key": "field_showrooms_address",
+            "label": "Address",
+            "name": "address",
+            "type": "text",
+            "required": 0
+        },
+        {
+            "key": "field_showrooms_description",
+            "label": "Description",
+            "name": "_description",
+            "type": "textarea",
+            "required": 0,
+            "rows": 4,
+            "new_lines": ""
+        },
+        {
+            "key": "field_showrooms_map",
+            "label": "Map (check for delete in the futre)",
+            "name": "map",
+            "type": "image",
+            "required": 0,
+            "return_format": "id",
+            "library": "all",
+            "preview_size": "medium"
+        },
+        {
+            "key": "field_showrooms_gallery",
+            "label": "Showroom Gallery",
+            "name": "showroom_gallery",
+            "type": "gallery",
+            "required": 0,
+            "return_format": "id",
+            "library": "all",
+            "preview_size": "medium",
+            "insert": "append"
+        },
+        {
+            "key": "field_showrooms_location",
+            "label": "Location",
+            "name": "location",
+            "type": "select",
+            "required": 0,
+            "choices": {
+                "New South Wales": "New South Wales",
+                "Queensland": "Queensland",
+                "South Australia": "South Australia",
+                "Tasmania": "Tasmania",
+                "Victoria": "Victoria",
+                "Western Australia": "Western Australia",
+                "Australian Capital Territory": "Australian Capital Territory",
+                "Northern Territory": "Northern Territory",
+                "New Zealand": "New Zealand"
+            },
+            "default_value": false,
+            "allow_null": 1,
+            "ui": 0,
+            "return_format": "value"
+        },
+        {
+            "key": "field_showrooms_id",
+            "label": "Id",
+            "name": "id",
+            "type": "text",
+            "required": 0
+        },
+        {
+            "key": "field_showrooms_state",
+            "label": "State",
+            "name": "state",
+            "type": "text",
+            "required": 0,
+            "instructions": "Legacy ad-hoc meta key (not in JetEngine field list). Kept for pickup-selector compatibility."
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "post_type",
+                "operator": "==",
+                "value": "showrooms"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "active": true,
+    "modified": 1753708800
+}

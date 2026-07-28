@@ -1,0 +1,32 @@
+{
+    "key": "group_feature_term_fields",
+    "title": "Feature Fields",
+    "fields": [
+        {
+            "key": "field_feature_thumbnail",
+            "label": "Thumbnail",
+            "name": "thumbnail",
+            "type": "image",
+            "required": 0,
+            "return_format": "id",
+            "library": "all",
+            "preview_size": "medium"
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "taxonomy",
+                "operator": "==",
+                "value": "feature"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "active": true,
+    "modified": 1753708805
+}

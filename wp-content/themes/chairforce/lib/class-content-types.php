@@ -32,6 +32,220 @@ class Content_Types {
 	private function register_hooks(): void {
 		add_action( 'init', [ $this, 'register_post_types' ] );
 		add_action( 'init', [ $this, 'register_taxonomies' ], 11 );
+		$this->register_jetengine_gallery_storage_filters();
+	}
+
+	/**
+	 * Bridge JetEngine comma-separated gallery meta and ACF gallery fields.
+	 *
+	 * JetEngine stored gallery fields as a single comma-separated string (attachment
+	 * IDs or URLs depending on value_format). ACF expects an array of attachment IDs.
+	 */
+	private function register_jetengine_gallery_storage_filters(): void {
+		$id_gallery_fields = [
+			'showroom_gallery' => 'post',
+			'venue_image'      => 'term',
+		];
+
+		foreach ( $id_gallery_fields as $field_name => $object_type ) {
+			add_filter(
+				"acf/load_value/name={$field_name}",
+				function ( $value, $post_id ) use ( $field_name, $object_type ) {
+					return $this->load_jetengine_id_gallery_value( $value, $post_id, $field_name, $object_type );
+				},
+				10,
+				3
+			);
+
+			add_filter(
+				"acf/update_value/name={$field_name}",
+				function ( $value ) {
+					return $this->save_jetengine_id_gallery_value( $value );
+				},
+				10,
+				3
+			);
+		}
+
+		add_filter( 'acf/load_value/name=gallery_images', [ $this, 'load_jetengine_url_gallery_value' ], 10, 3 );
+		add_filter( 'acf/update_value/name=gallery_images', [ $this, 'save_jetengine_url_gallery_value' ], 10, 3 );
+	}
+
+	/**
+	 * Load a JetEngine ID gallery stored as comma-separated attachment IDs.
+	 *
+	 * @param mixed  $value       Current ACF value.
+	 * @param mixed  $object_ref  Post ID or `term_{id}` reference.
+	 * @param string $meta_key    Meta key name.
+	 * @param string $object_type Either `post` or `term`.
+	 * @return array<int>|mixed
+	 */
+	private function load_jetengine_id_gallery_value( $value, $object_ref, string $meta_key, string $object_type ) {
+		if ( is_array( $value ) && ! empty( $value ) ) {
+			return $value;
+		}
+
+		$raw = $this->get_legacy_meta_value( $object_ref, $meta_key, $object_type );
+		if ( ! is_string( $raw ) || $raw === '' ) {
+			return $value;
+		}
+
+		if ( str_starts_with( $raw, 'a:' ) ) {
+			return $value;
+		}
+
+		return array_values(
+			array_filter(
+				array_map( 'intval', explode( ',', $raw ) )
+			)
+		);
+	}
+
+	/**
+	 * Save a JetEngine ID gallery as comma-separated attachment IDs.
+	 *
+	 * @param mixed $value ACF gallery value.
+	 * @return string|mixed
+	 */
+	private function save_jetengine_id_gallery_value( $value ) {
+		if ( ! is_array( $value ) ) {
+			return $value;
+		}
+
+		$ids = array_values(
+			array_filter(
+				array_map( 'intval', $value )
+			)
+		);
+
+		return implode( ',', $ids );
+	}
+
+	/**
+	 * Load gallery_images stored as comma-separated URLs.
+	 *
+	 * @param mixed $value   Current ACF value.
+	 * @param mixed $post_id Post ID.
+	 * @return array<int>|mixed
+	 */
+	public function load_jetengine_url_gallery_value( $value, $post_id ) {
+		if ( is_array( $value ) && ! empty( $value ) ) {
+			return $value;
+		}
+
+		$raw = $this->get_legacy_meta_value( $post_id, 'gallery_images', 'post' );
+		if ( ! is_string( $raw ) || $raw === '' || ! str_contains( $raw, 'http' ) ) {
+			return $value;
+		}
+
+		$urls = array_values(
+			array_filter(
+				array_map( 'trim', explode( ',', $raw ) )
+			)
+		);
+
+		$ids = [];
+		foreach ( $urls as $url ) {
+			$attachment_id = $this->resolve_attachment_id_from_url( $url );
+			if ( $attachment_id ) {
+				$ids[] = $attachment_id;
+			}
+		}
+
+		return $ids;
+	}
+
+	/**
+	 * Resolve an attachment ID from a stored media URL.
+	 *
+	 * JetEngine gallery_images stores full URLs that may use a different domain than
+	 * the current site (e.g. production URL in meta on a local clone). Fall back to
+	 * filename lookup when attachment_url_to_postid misses.
+	 *
+	 * @param string $url Media URL.
+	 */
+	private function resolve_attachment_id_from_url( string $url ): int {
+		$attachment_id = attachment_url_to_postid( $url );
+		if ( $attachment_id ) {
+			return $attachment_id;
+		}
+
+		$path = wp_parse_url( $url, PHP_URL_PATH );
+		if ( ! is_string( $path ) || $path === '' ) {
+			return 0;
+		}
+
+		$filename = basename( $path );
+		if ( $filename === '' ) {
+			return 0;
+		}
+
+		global $wpdb;
+
+		$attachment_id = (int) $wpdb->get_var(
+			$wpdb->prepare(
+				"SELECT post_id FROM {$wpdb->postmeta} WHERE meta_key = '_wp_attached_file' AND meta_value LIKE %s LIMIT 1",
+				'%' . $wpdb->esc_like( $filename )
+			)
+		);
+
+		return $attachment_id;
+	}
+
+	/**
+	 * Save gallery_images as comma-separated URLs (JetEngine value_format: url).
+	 *
+	 * @param mixed $value ACF gallery value (attachment IDs).
+	 * @return string|mixed
+	 */
+	public function save_jetengine_url_gallery_value( $value ) {
+		if ( ! is_array( $value ) ) {
+			return $value;
+		}
+
+		$urls = [];
+		foreach ( $value as $attachment_id ) {
+			$url = wp_get_attachment_url( (int) $attachment_id );
+			if ( $url ) {
+				$urls[] = $url;
+			}
+		}
+
+		return implode( ',', $urls );
+	}
+
+	/**
+	 * Read raw legacy meta for post or term objects.
+	 *
+	 * @param mixed  $object_ref  Post ID or `term_{id}` reference.
+	 * @param string $meta_key    Meta key.
+	 * @param string $object_type Either `post` or `term`.
+	 * @return mixed
+	 */
+	private function get_legacy_meta_value( $object_ref, string $meta_key, string $object_type ) {
+		if ( $object_type === 'term' ) {
+			$term_id = $this->resolve_term_id( $object_ref );
+			if ( ! $term_id ) {
+				return null;
+			}
+
+			return get_term_meta( $term_id, $meta_key, true );
+		}
+
+		return get_post_meta( (int) $object_ref, $meta_key, true );
+	}
+
+	/**
+	 * Resolve an ACF term reference to a numeric term ID.
+	 *
+	 * @param mixed $object_ref Post ID or `term_{id}` reference.
+	 */
+	private function resolve_term_id( $object_ref ): int {
+		if ( is_string( $object_ref ) && str_starts_with( $object_ref, 'term_' ) ) {
+			return (int) substr( $object_ref, 5 );
+		}
+
+		return (int) $object_ref;
 	}
 
 	/**

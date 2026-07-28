@@ -1,0 +1,36 @@
+{
+    "key": "group_year_carousel_fields",
+    "title": "Year Carousel Fields",
+    "fields": [
+        {
+            "key": "field_year_carousel_year",
+            "label": "Year",
+            "name": "year",
+            "type": "text",
+            "required": 0
+        },
+        {
+            "key": "field_year_carousel_description",
+            "label": "Description",
+            "name": "_description",
+            "type": "text",
+            "required": 0
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "post_type",
+                "operator": "==",
+                "value": "year-carousel"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "active": true,
+    "modified": 1753708802
+}

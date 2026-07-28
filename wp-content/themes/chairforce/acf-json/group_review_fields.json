@@ -1,0 +1,42 @@
+{
+    "key": "group_review_fields",
+    "title": "Review Fields",
+    "fields": [
+        {
+            "key": "field_review_text",
+            "label": "Text",
+            "name": "text",
+            "type": "textarea",
+            "required": 1,
+            "rows": 4,
+            "new_lines": "br"
+        },
+        {
+            "key": "field_review_stars",
+            "label": "Stars",
+            "name": "stars",
+            "type": "number",
+            "required": 1,
+            "default_value": 5,
+            "min": 1,
+            "max": 5,
+            "step": 1
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "post_type",
+                "operator": "==",
+                "value": "review"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "active": true,
+    "modified": 1753708803
+}
