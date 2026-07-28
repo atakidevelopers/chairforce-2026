@@ -95,6 +95,49 @@ class Acf {
 			]
 		);
 
+		$this->register_jetengine_options_pages();
+
+	}
+
+	/**
+	 * Register JetEngine-era ACF options pages (legacy blob storage).
+	 */
+	private function register_jetengine_options_pages(): void {
+		acf_add_options_page(
+			[
+				'page_title'  => esc_html__( 'Hero Banner Home Page', 'chairforce' ),
+				'menu_title'  => esc_html__( 'Hero Banner', 'chairforce' ),
+				'menu_slug'   => 'hero-banner-home-page',
+				'post_id'     => 'hero-banner-home-page',
+				'capability'  => 'manage_options',
+				'redirect'    => false,
+				'parent_slug' => 'chairforce-theme-options',
+			]
+		);
+
+		acf_add_options_page(
+			[
+				'page_title'  => esc_html__( 'Delivery Information', 'chairforce' ),
+				'menu_title'  => esc_html__( 'Delivery Information', 'chairforce' ),
+				'menu_slug'   => 'delivery-information-for-product-page',
+				'post_id'     => 'delivery-information-for-product-page',
+				'capability'  => 'manage_options',
+				'redirect'    => false,
+				'parent_slug' => 'chairforce-theme-options',
+			]
+		);
+
+		acf_add_options_page(
+			[
+				'page_title'  => esc_html__( 'Catalogue Links', 'chairforce' ),
+				'menu_title'  => esc_html__( 'Catalogue Links', 'chairforce' ),
+				'menu_slug'   => 'catalogue-links',
+				'post_id'     => 'catalogue-links',
+				'capability'  => 'manage_options',
+				'redirect'    => false,
+				'parent_slug' => 'chairforce-theme-options',
+			]
+		);
 	}
 
 	/**

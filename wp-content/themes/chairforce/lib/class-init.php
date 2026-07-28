@@ -55,6 +55,7 @@ class Init {
 		$this->define_site_header_hooks();
 		$this->define_mega_menu_hooks();
 		$this->define_content_types_hooks();
+		$this->define_legacy_options_storage_hooks();
 
 		do_action( 'chairforce_init_construct' );
 
@@ -201,6 +202,18 @@ class Init {
 	private function define_content_types_hooks() {
 
 		new Content_Types();
+
+	}
+
+	/**
+	 * Bridge ACF options UI to JetEngine single-blob wp_options storage.
+	 *
+	 * @since 2.0.0
+	 * @access private
+	 */
+	private function define_legacy_options_storage_hooks() {
+
+		new Legacy_Options_Storage();
 
 	}
 

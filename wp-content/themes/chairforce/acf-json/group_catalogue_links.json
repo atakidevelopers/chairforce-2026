@@ -1,0 +1,49 @@
+{
+    "key": "group_catalogue_links",
+    "title": "Catalogue Links",
+    "fields": [
+        {
+            "key": "field_catalogue_link_for_menu",
+            "label": "Catalogue Link For Menu",
+            "name": "catalogue_link_for_menu",
+            "type": "true_false",
+            "instructions": "Since the menu is not dynamic, we can't update it programmatically. Edit the nav menu item directly instead.",
+            "ui": 1,
+            "default_value": 0
+        },
+        {
+            "key": "field_catalogue_link_for_home_page",
+            "label": "Catalogue Link For Home Page",
+            "name": "catalogue_link_for_home_page",
+            "type": "url"
+        },
+        {
+            "key": "field_catalogue_link_for_footer",
+            "label": "Catalogue Link For Footer",
+            "name": "catalogue_link_for_footer",
+            "type": "url"
+        },
+        {
+            "key": "field_catalogue_link_for_blog_page",
+            "label": "Catalogue Link for Blog Page",
+            "name": "catalogue_link_for_blog_page",
+            "type": "url"
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "options_page",
+                "operator": "==",
+                "value": "catalogue-links"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "active": true,
+    "modified": 1753708902
+}

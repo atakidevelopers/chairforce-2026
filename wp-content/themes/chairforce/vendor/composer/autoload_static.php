@@ -19,6 +19,7 @@ class ComposerStaticInit0b930fbfa8635b3843fecc3493015433
         'Chairforce\\Editor_Curation' => __DIR__ . '/../..' . '/lib/class-editor-curation.php',
         'Chairforce\\Front' => __DIR__ . '/../..' . '/lib/class-front.php',
         'Chairforce\\Init' => __DIR__ . '/../..' . '/lib/class-init.php',
+        'Chairforce\\Legacy_Options_Storage' => __DIR__ . '/../..' . '/lib/class-legacy-options-storage.php',
         'Chairforce\\Lucide_Icons' => __DIR__ . '/../..' . '/lib/class-lucide-icons.php',
         'Chairforce\\Mega_Menu' => __DIR__ . '/../..' . '/lib/class-mega-menu.php',
         'Chairforce\\Plugins_Manager' => __DIR__ . '/../..' . '/lib/class-plugins-manager.php',
