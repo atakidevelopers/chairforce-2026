@@ -54,6 +54,7 @@ class Init {
 		$this->define_lucide_icons_hooks();
 		$this->define_site_header_hooks();
 		$this->define_mega_menu_hooks();
+		$this->define_content_types_hooks();
 
 		do_action( 'chairforce_init_construct' );
 
@@ -188,6 +189,18 @@ class Init {
 	private function define_mega_menu_hooks() {
 
 		new Mega_Menu();
+
+	}
+
+	/**
+	 * Register JetEngine-era custom post types and taxonomies.
+	 *
+	 * @since 2.0.0
+	 * @access private
+	 */
+	private function define_content_types_hooks() {
+
+		new Content_Types();
 
 	}
 

@@ -10,6 +10,7 @@ return array(
     'Chairforce\\After_Setup_Theme' => $baseDir . '/lib/class-after-setup-theme.php',
     'Chairforce\\Api' => $baseDir . '/lib/class-api.php',
     'Chairforce\\Blocks_Jsx' => $baseDir . '/lib/class-blocks-jsx.php',
+    'Chairforce\\Content_Types' => $baseDir . '/lib/class-content-types.php',
     'Chairforce\\Editor_Curation' => $baseDir . '/lib/class-editor-curation.php',
     'Chairforce\\Front' => $baseDir . '/lib/class-front.php',
     'Chairforce\\Init' => $baseDir . '/lib/class-init.php',
