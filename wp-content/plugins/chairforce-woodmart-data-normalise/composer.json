@@ -1,0 +1,29 @@
+{
+    "name": "chairforce/woodmart-data-normalise",
+    "description": "Temporary batch-processing plugin for one-time normalisation of legacy Woodmart-era data during the theme rebuild. Bundles lambry/batchpress so the whole tool ships/removes as a single unit. Deactivate + delete once all jobs have been run (on each environment).",
+    "type": "wordpress-plugin",
+    "license": "GPL-2.0-or-later",
+    "require": {
+        "php": ">=7.4",
+        "composer/installers": "^1.0 || ^2.0",
+        "lambry/batchpress": "^0.4"
+    },
+    "extra": {
+        "installer-paths": {
+            "vendor/batchpress/": [
+                "type:wordpress-plugin"
+            ]
+        }
+    },
+    "autoload": {
+        "classmap": [
+            "includes",
+            "jobs"
+        ]
+    },
+    "config": {
+        "allow-plugins": {
+            "composer/installers": true
+        }
+    }
+}

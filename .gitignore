@@ -20,7 +20,10 @@ wp-content/themes/*
 !wp-content/themes/chairforce/
 wp-content/themes/*/node_modules
 
-
+#ignore Project Specific plugins
+!wp-content/plugins/
+wp-content/plugins/*
+!wp-content/plugins/chairforce-woodmart-data-normalise/
 
 # Ignore default themes
 wp-content/themes/twenty*/
