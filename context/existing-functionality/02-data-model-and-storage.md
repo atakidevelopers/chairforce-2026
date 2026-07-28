@@ -47,6 +47,45 @@ layered on top by Woodmart. Deleting Woodmart removes the metabox UI (the
 `get_term_meta( $term_id, 'color', true )` immediately, with zero migration,
 and just needs to rebuild an equivalent admin UI for editing them.
 
+### Fourth QA addendum — DB-verified field scope + exact shapes for a `pa_colour` admin-UI rebuild
+
+A follow-up pass counted real usage of all four fields **scoped specifically
+to `pa_colour`** (the only attribute that actually renders swatches — see
+§K/file `11`), to determine exactly which fields a rebuilt admin UI needs to
+support, and their exact live data shape. Checked against both DDEV
+projects (`chairforce-2026` and the live `chairforce` reference) —
+identical results in both.
+
+**Only 2 of the 4 fields carry real data on `pa_colour` (81 terms total);
+the other 2 are confirmed universally empty and need no admin UI at all:**
+
+| Meta key | Real/populated | Confirmed exact shape (from raw `wp_termmeta` values) |
+|---|---|---|
+| `color` | **68 / 81** | Plain string, always `rgb(r,g,b)` — e.g. `rgb(0,0,0)`, `rgb(42,142,205)`. Zero terms use hex or `rgba()`; every populated value follows this exact pattern (checked all 8+ samples). |
+| `image` | **13 / 81** ⚠️ (see correction below) | PHP-serialized array with exactly two string keys: `a:2:{s:3:"url";s:N:"https://.../uploads/.../file.png";s:2:"id";s:N:"1502845";}` — i.e. `['url' => <full attachment URL string>, 'id' => <attachment ID, as a numeric **string**, not int>]`. |
+| `not_dropdown` | **0 / 80** | Confirmed universally empty on `pa_colour` — no admin field needed. |
+| `pa_term_hint` | **0 / 81** (and 0 / 109 across *every* attribute, not just `pa_colour`) | Confirmed universally empty site-wide — no admin field needed. |
+
+**⚠️ Correction to an earlier same-day count**: `image` was first reported
+as "81/81 populated" — that was a false positive from checking only
+`meta_value != ''`. Every `pa_colour` term has an `image` meta *row*, but
+**68 of those 81 rows are just the field's empty-shell default**,
+`a:2:{s:3:"url";s:0:"";s:2:"id";s:0:"";}` (a non-empty *string*, but with
+blank `url`/`id` inside it) — not real data. The corrected, meaningful count
+is **13 real image swatches**, confirmed by excluding that exact empty-shell
+pattern.
+
+**Clean split, no overlap or gaps**: cross-referencing both fields per-term
+confirms every one of the 81 `pa_colour` terms has **exactly one** of
+`color` (68 terms) or `image` (13 terms) populated — zero terms have both,
+and zero terms have neither. Woodmart's documented `color > image > text`
+fallback precedence (line above) is real code but never actually exercised
+by this site's data — no term currently relies on it.
+
+**Net field scope for any rebuilt `pa_colour` admin UI**: just `color` and
+`image`, in the exact shapes above. `not_dropdown` and `pa_term_hint` can be
+dropped from scope entirely — confirmed no data to preserve or expose.
+
 ## 2. Per-attribute styling — `wp_options` (NOT term meta!)
 
 This is a common point of confusion: swatch **style/shape/size** are not
