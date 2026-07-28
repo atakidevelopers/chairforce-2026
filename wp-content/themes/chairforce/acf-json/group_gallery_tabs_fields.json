@@ -10,7 +10,7 @@
             "required": 0,
             "return_format": "id",
             "library": "all",
-            "preview_size": "medium"
+            "preview_size": "thumbnail"
         },
         {
             "key": "field_gallery_tabs_gallery_images",
@@ -20,7 +20,7 @@
             "required": 0,
             "return_format": "url",
             "library": "all",
-            "preview_size": "medium",
+            "preview_size": "thumbnail",
             "insert": "append"
         },
         {
@@ -50,8 +50,8 @@
     "menu_order": 0,
     "position": "normal",
     "style": "default",
-    "label_placement": "top",
-    "instruction_placement": "label",
+    "label_placement": "left",
+    "instruction_placement": "field",
     "active": true,
-    "modified": 1753708801
+    "modified": 1753710301
 }

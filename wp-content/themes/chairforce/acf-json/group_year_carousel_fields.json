@@ -29,8 +29,8 @@
     "menu_order": 0,
     "position": "normal",
     "style": "default",
-    "label_placement": "top",
-    "instruction_placement": "label",
+    "label_placement": "left",
+    "instruction_placement": "field",
     "active": true,
-    "modified": 1753708802
+    "modified": 1753710302
 }
