@@ -1,6 +1,13 @@
 import { initProductSearchForms } from './product-search';
 import { initSiteHeader } from './site-header';
 
+export {
+	CONTENT_UPDATED_EVENT,
+	delegateDocument,
+	delegateOn,
+	dispatchContentUpdated,
+} from './shared/delegated-events';
+
 document.addEventListener( 'DOMContentLoaded', () => {
 	initSiteHeader();
 	initProductSearchForms();

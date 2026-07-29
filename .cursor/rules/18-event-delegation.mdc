@@ -1,0 +1,85 @@
+# Event Delegation Rules (Load More / AJAX Grid Safety)
+
+Mandatory pattern for every grid/card interaction in the Chairforce rebuild
+(shop archives, product collections, filters, Load More when it lands).
+
+## Source
+
+`context/existing-functionality/17-load-more-and-event-delegation.md`
+
+## Shared module
+
+`wp-content/themes/chairforce/src/js/shared/delegated-events.js`
+
+- `delegateDocument( eventType, selector, handler )` — bind once on
+  `document`; handler receives `( event, matchedElement )`.
+- `delegateOn( root, eventType, selector, handler )` — same, on another
+  stable ancestor when document is too broad.
+- `dispatchContentUpdated( detail )` — fires `chairforce:content-updated`
+  on `document` after AJAX appends new grid nodes (Load More, filters, etc.).
+- `CONTENT_UPDATED_EVENT` — event name constant.
+
+Import from `src/js/index.js` or block `view.js` files as needed.
+
+## Two rules — apply both everywhere
+
+### 1. Delegate repeatable interactions
+
+Click, hover, keyboard handlers for product cards, swatches, pagination
+controls, etc. **must never** call `addEventListener` directly on elements
+inside a grid at page-load time.
+
+```js
+// ✅ Load-More-safe
+import { delegateDocument } from './shared/delegated-events';
+
+delegateDocument( 'click', '.cf-swatch', ( event, swatch ) => {
+  // ...
+} );
+
+// ❌ Breaks on page 2+
+document.querySelectorAll( '.cf-swatch' ).forEach( ( el ) => {
+  el.addEventListener( 'click', handler );
+} );
+```
+
+JSX/React blocks: prefer React synthetic events on components, or delegate at
+a parent level when mixing with server-rendered WooCommerce markup.
+
+### 2. Idempotent lazy init for real per-element setup
+
+Features that need one-time library init (Swiper, `wc_variation_form()`,
+etc.) must:
+
+1. Guard with a class/data flag (`.cf-initialized`, `data-cf-initialized`).
+2. Re-scan after AJAX via `chairforce:content-updated` (or feature-specific
+   events), not by re-binding interaction handlers.
+
+```js
+import {
+  CONTENT_UPDATED_EVENT,
+  dispatchContentUpdated,
+} from './shared/delegated-events';
+
+document.addEventListener( CONTENT_UPDATED_EVENT, initCarousels );
+
+function initCarousels() {
+  document.querySelectorAll( '.cf-carousel:not(.cf-initialized)' ).forEach( ( el ) => {
+    el.classList.add( 'cf-initialized' );
+    // new Swiper( el, ... )
+  } );
+}
+
+// Call after Load More append:
+dispatchContentUpdated( { source: 'load-more' } );
+```
+
+Pure delegated handlers (grid swatch image swap, limit-swatches expand) do
+**not** need `chairforce:content-updated` — delegation covers new nodes
+automatically.
+
+## Related Rules
+
+- [Build System](03-build-system.mdc) — where `src/js/` compiles to `build/public.js`
+- [JSX Blocks](06-jsx-blocks.mdc) — block `viewScript` front-end JS
+- `context/plans/3b-3d-event-pattern-and-grid-swatches-plan.md` — first consumer (3d swatches)
