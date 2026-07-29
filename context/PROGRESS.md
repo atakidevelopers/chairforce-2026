@@ -328,12 +328,23 @@ Black swatch → full variation gallery rebuild, Clear → default gallery) and
 
 #### 3h. Quick View rebuild
 
-**Status: ⏳ Not started**
+**Status: ✅ Done (29 Jul 2026)** — `61630e0`, `0685c9c`, `aff0297`, `c21dfaf`.
+Plan: `context/plans/3h-quick-view-plan.md` chunks 1–4. Verified on
+`/product-category/chairs/cafe-chairs/` (drawer — eye trigger, Breeze Armchair
+popup with swatch→gallery swap inside popup; Escape → different product reopen;
+modal skin after ACF switch). REST verified for Breeze Chair (#1000290). Page-2
+pagination trigger works; Load More AJAX append not tested.
 
-- Confirms full rebuild needed (Woodmart-native, no plugin dependency) but
-  **zero new swatch/gallery logic** — reuses the same single-product
-  component via a `wdQuickViewOpen` event contract: file `16`.
-- Depends on 3e existing first (the component it mounts).
+- Full spec: file `16` (AJAX reuse of single-product markup — rebuilt as REST +
+  vanilla JS shell, not Woodmart/Magnific).
+- **Shipped:** `GET /wp-json/chairforce/v1/quick-view/{id}` (WooCommerce
+  `before_single_product_summary` + wrapped `single_product_summary` only —
+  no tabs/related); ACF `quick_view_display` (`Modal`|`Drawer`, default
+  `drawer`); `chairforce/quick-view-button` block in `cf-card-media` wrapper;
+  `src/js/quick-view.js` lazy shell + `primeVariationForms()` on inject; Sass
+  `--modal`/`--drawer` skins + eye icon (`0xe0ba`).
+- **Deploy note:** DB-customized `archive-product` template must be synced from
+  theme file (dev: post ID 1514388) for buttons to appear on shop/archive grids.
 
 ### Phase 4 — Home page assembly — Team
 
@@ -495,6 +506,7 @@ Carried from checklist file `19` §8 — resolve before/during the phase noted:
 | `context/plans/registration-and-acf-schema-plan.md` | Execution plan + status for Phase 3a specifically |
 | `context/plans/3b-3d-event-pattern-and-grid-swatches-plan.md` | Execution plan + status for Phase 3b (event-delegation convention, narrowed scope) and 3d (product card/grid swatches) |
 | `context/plans/3e-single-product-swatches-and-gallery-plan.md` | Execution plan for Phase 3e (single-product swatches + gallery swap) — includes the WooCommerce-native-canary-feature and Swiper-narrowing findings |
+| `context/plans/3h-quick-view-plan.md` | Execution plan for Phase 3h (Quick View rebuild — modal/drawer shell, REST endpoint, reuses 3e swatch/gallery component) |
 | `context/plans/header-mega-menu-plan.md`, `header-mega-menu-cleanup-notes.md` | Phase 1 implementation |
 | `context/plans/lucide-icon-system-plan.md`, `icon-block-plugin-integration-plan.md` | Icon system infrastructure (done) |
 | `context/decisions/jetengine-and-jet-smart-filters-vs-native-rebuild.md` | Locked decision: no Jet\* plugins as live dependencies, native rebuild throughout |
