@@ -91,10 +91,10 @@ class WooCommerce_Single_Product {
 		}
 
 		$gallery_html = wc_get_product_gallery_html( $product, $image_ids );
-		$wrapper_html = Product_Swatches::extract_gallery_wrapper_html( $gallery_html );
 
-		if ( '' !== $wrapper_html ) {
-			$data['cf_variation_gallery_html'] = $wrapper_html;
+		if ( '' !== $gallery_html ) {
+			// Full gallery root HTML — required by wc_variations_gallery_replace().
+			$data['cf_variation_gallery_html'] = $gallery_html;
 		}
 
 		return $data;

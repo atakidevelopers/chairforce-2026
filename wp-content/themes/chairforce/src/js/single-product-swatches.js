@@ -13,7 +13,7 @@ import jQuery from 'jquery';
 
 import { delegateDocument } from './shared/delegated-events';
 
-/** @type {WeakMap<Element, { gallery: Element|null, defaultWrapperHtml: string, galleryReplaced: boolean }>} */
+/** @type {WeakMap<Element, { defaultGalleryHtml: string, galleryReplaced: boolean }>} */
 const formState = new WeakMap();
 
 /**
@@ -22,13 +22,9 @@ const formState = new WeakMap();
 function getFormState( form ) {
 	if ( ! formState.has( form ) ) {
 		const gallery = getGalleryForForm( form );
-		const wrapper = gallery?.querySelector(
-			'.woocommerce-product-gallery__wrapper'
-		);
 
 		formState.set( form, {
-			gallery: gallery || null,
-			defaultWrapperHtml: wrapper?.outerHTML || '',
+			defaultGalleryHtml: gallery?.outerHTML || '',
 			galleryReplaced: false,
 		} );
 	}
@@ -58,15 +54,52 @@ function getGalleryForForm( form ) {
 }
 
 /**
- * @param {Element|null|undefined} gallery
+ * @param {Element} form
+ * @param {string} galleryHtml
+ * @param {Record<string, unknown>|false} variation
+ * @returns {boolean}
  */
-function reinitProductGallery( gallery ) {
-	if ( ! gallery ) {
-		return;
+function replaceProductGallery( form, galleryHtml, variation ) {
+	const $form = jQuery( form );
+
+	if (
+		typeof $form.wc_variations_gallery_replace === 'function' &&
+		galleryHtml
+	) {
+		return Boolean(
+			$form.wc_variations_gallery_replace( galleryHtml, variation )
+		);
 	}
 
-	jQuery( gallery ).wc_product_gallery();
+	const gallery = getGalleryForForm( form );
+
+	if ( ! gallery || ! galleryHtml ) {
+		return false;
+	}
+
+	const template = document.createElement( 'template' );
+	template.innerHTML = galleryHtml.trim();
+	const newGallery = template.content.querySelector(
+		'.woocommerce-product-gallery'
+	);
+
+	if ( ! newGallery ) {
+		return false;
+	}
+
+	gallery.replaceWith( newGallery );
+	jQuery( newGallery ).wc_product_gallery();
 	window.dispatchEvent( new Event( 'resize' ) );
+
+	if ( variation && variation.image_id ) {
+		$form.attr( 'current-image', String( variation.image_id ) );
+		$form.attr( 'data-product_gallery_active', 'yes' );
+	} else {
+		$form.removeAttr( 'data-product_gallery_active' );
+		$form.attr( 'current-image', '' );
+	}
+
+	return true;
 }
 
 /**
@@ -170,6 +203,9 @@ function handleSwatchClick( event, swatch ) {
 }
 
 /**
+ * Runs after WooCommerce's onFoundVariation (document bubble) so the full
+ * gallery root is replaced via wc_variations_gallery_replace().
+ *
  * @param {JQuery.TriggeredEvent} event
  * @param {Record<string, unknown>} variation
  */
@@ -181,17 +217,13 @@ function handleFoundVariation( event, variation ) {
 	}
 
 	const state = getFormState( form );
-	const wrapper = state.gallery?.querySelector(
-		'.woocommerce-product-gallery__wrapper'
+	const replaced = replaceProductGallery(
+		form,
+		String( variation.cf_variation_gallery_html ),
+		variation
 	);
 
-	if ( ! wrapper ) {
-		return;
-	}
-
-	wrapper.outerHTML = String( variation.cf_variation_gallery_html );
-	state.galleryReplaced = true;
-	reinitProductGallery( state.gallery );
+	state.galleryReplaced = replaced;
 	syncActiveSwatches( form );
 	syncSwatchDisabledState( form );
 }
@@ -208,17 +240,9 @@ function handleResetData( event ) {
 
 	const state = getFormState( form );
 
-	if ( state.galleryReplaced && state.defaultWrapperHtml && state.gallery ) {
-		const wrapper = state.gallery.querySelector(
-			'.woocommerce-product-gallery__wrapper'
-		);
-
-		if ( wrapper ) {
-			wrapper.outerHTML = state.defaultWrapperHtml;
-		}
-
+	if ( state.galleryReplaced && state.defaultGalleryHtml ) {
+		replaceProductGallery( form, state.defaultGalleryHtml, false );
 		state.galleryReplaced = false;
-		reinitProductGallery( state.gallery );
 	}
 
 	form.querySelectorAll( '.cf-swatch--active' ).forEach( ( swatch ) => {
