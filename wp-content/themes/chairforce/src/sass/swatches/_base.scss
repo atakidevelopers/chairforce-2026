@@ -1,0 +1,91 @@
+.cf-swatch {
+	position: relative;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	box-sizing: border-box;
+	width: var(--cf-swatch-w);
+	height: var(--cf-swatch-h);
+	padding: 0;
+	border: none;
+	background: transparent;
+	color: $color-body;
+	vertical-align: middle;
+	text-align: center;
+	font-weight: 600;
+	font-size: var(--cf-swatch-size);
+	line-height: 1;
+	cursor: pointer;
+	transition: border-color 0.25s ease, opacity 0.25s ease;
+
+	:is(img, picture) {
+		display: block;
+		width: inherit;
+		height: inherit;
+		max-height: 100%;
+		border-radius: inherit;
+		object-fit: cover;
+	}
+
+	&--bg {
+		.cf-swatch__text {
+			display: none;
+		}
+	}
+
+	&--text {
+		min-width: 1em;
+		min-height: 1em;
+		width: auto;
+		height: auto;
+
+		.cf-swatch__text {
+			padding: 0 calc(var(--cf-swatch-size) / 5);
+			font-size: var(--cf-swatch-text-size);
+		}
+	}
+}
+
+.cf-swatch__bg {
+	display: inherit;
+	align-items: inherit;
+	justify-content: inherit;
+	width: 100%;
+	height: 100%;
+	border-radius: inherit;
+}
+
+.cf-swatches--shape-round {
+	.cf-swatch,
+	.cf-swatch__bg,
+	.cf-swatch :is(img, picture) {
+		border-radius: 1em;
+	}
+}
+
+// Dark-mode border fix for white/unset color swatches.
+:is(body:not(.global-color-scheme-light), .color-scheme-dark) {
+	.cf-swatch--bg .cf-swatch__bg:is(
+		:not([style*="background-color"]),
+		[style*="#ffffff"],
+		[style*="#FFFFFF"],
+		[style*="rgb(255"],
+		[style*="rgb(255,"]
+	)::before {
+		content: "";
+		position: absolute;
+		inset: 0;
+		border: 1px solid rgb(0 0 0 / 8%);
+		border-radius: inherit;
+		pointer-events: none;
+	}
+}
+
+// Loading state while a swatch image swap is in flight.
+.cf-loading-image {
+	.wc-block-components-product-image img,
+	.product-image-link img {
+		opacity: 0.55;
+		transition: opacity 0.25s ease;
+	}
+}

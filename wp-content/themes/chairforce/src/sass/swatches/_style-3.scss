@@ -1,0 +1,53 @@
+// Active style 3 — plain 1px border, gray-500 on hover/active.
+.cf-swatches--style-3 {
+	.cf-swatch--bg,
+	.cf-swatch--text {
+		border: 1px solid var(--cf-swatch-brd-color);
+	}
+
+	.cf-swatch--bg {
+		padding: var(--cf-swatch-inn-sp);
+	}
+
+	.cf-swatch--text .cf-swatch__text {
+		font-size: calc(var(--cf-swatch-text-size) - 2px);
+	}
+
+	@media (hover: hover) {
+		.cf-swatch--bg:hover:not(.cf-swatch--out-of-stock),
+		.cf-swatch--text:hover:not(.cf-swatch--out-of-stock) {
+			--cf-swatch-brd-color: #{$color-neutral};
+		}
+	}
+
+	.cf-swatch--active.cf-swatch--bg,
+	.cf-swatch--active.cf-swatch--text {
+		--cf-swatch-brd-color: #{$color-neutral};
+	}
+}
+
+// Disabled style 3 — 40% opacity + single gray diagonal line.
+.cf-swatches--dis-style-3 {
+	.cf-swatch--out-of-stock {
+		opacity: 0.4;
+		cursor: default;
+		--cf-swatch-brd-color: #{$color-neutral};
+
+		&::before {
+			content: "";
+			position: absolute;
+			inset: 0;
+			border-radius: inherit;
+			background-image: linear-gradient(
+				to top left,
+				transparent calc(50% - 1px),
+				var(--cf-swatch-brd-color) 50%,
+				transparent calc(50% + 1px)
+			);
+			opacity: 1;
+			transition: opacity 0.2s ease;
+			z-index: 2;
+			pointer-events: none;
+		}
+	}
+}
