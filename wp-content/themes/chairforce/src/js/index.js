@@ -1,4 +1,5 @@
 import { initProductSearchForms } from './product-search';
+import { initQuickView } from './quick-view';
 import { initSingleProductSwatches } from './single-product-swatches';
 import { initSiteHeader } from './site-header';
 
@@ -13,6 +14,7 @@ document.addEventListener( 'DOMContentLoaded', () => {
 	initSiteHeader();
 	initProductSearchForms();
 	initSingleProductSwatches();
+	initQuickView();
 } );
 
 /* Grid Guide overlay */

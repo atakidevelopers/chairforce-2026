@@ -1,0 +1,32 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "chairforce/quick-view-button",
+  "version": "1.0.0",
+  "title": "Quick View Button",
+  "category": "woocommerce",
+  "description": "Eye icon trigger that opens the quick view popup for a product card.",
+  "keywords": [
+    "woocommerce",
+    "product",
+    "quick view",
+    "popup"
+  ],
+  "textdomain": "chairforce",
+  "ancestor": [
+    "woocommerce/product-template"
+  ],
+  "usesContext": [
+    "postId"
+  ],
+  "supports": {
+    "html": false,
+    "inserter": true,
+    "reusable": false,
+    "lock": false
+  },
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css",
+  "render": "file:./render.php"
+}
