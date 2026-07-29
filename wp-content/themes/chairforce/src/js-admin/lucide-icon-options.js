@@ -43,5 +43,6 @@ export const CHAIRFORCE_LUCIDE_ICON_OPTIONS = [
 	{ slug: 'tag', label: 'Tag' },
 	{ slug: 'filter', label: 'Filter' },
 	{ slug: 'sliders-horizontal', label: 'Sliders Horizontal' },
-	{ slug: 'grid-2x2', label: 'Grid' }
+	{ slug: 'grid-2x2', label: 'Grid' },
+	{ slug: 'eye', label: 'Eye' }
 ];

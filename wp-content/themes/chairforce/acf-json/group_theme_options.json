@@ -401,6 +401,29 @@
             "selected": 0
         },
         {
+            "key": "field_chairforce_quick_view_display",
+            "label": "Quick View Display",
+            "name": "quick_view_display",
+            "aria-label": "",
+            "type": "button_group",
+            "instructions": "Choose how the quick view popup opens on product cards.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "modal": "Modal",
+                "drawer": "Drawer"
+            },
+            "default_value": "drawer",
+            "return_format": "value",
+            "allow_null": 0,
+            "layout": "horizontal"
+        },
+        {
             "key": "field_63411c4d1cfff",
             "label": "Enable Grid Guides",
             "name": "enable_grid_guides",

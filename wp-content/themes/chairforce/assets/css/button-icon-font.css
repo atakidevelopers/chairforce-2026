@@ -291,3 +291,9 @@
 .cf-icon-preview.cf-icon-grid-2x2::before {
   content: "\e4ff";
 }
+
+.wp-block-button.cf-icon-eye .wp-block-button__link::before,
+.editor-styles-wrapper .wp-block-button.cf-icon-eye .wp-block-button__link::before,
+.cf-icon-preview.cf-icon-eye::before {
+  content: "\e0ba";
+}

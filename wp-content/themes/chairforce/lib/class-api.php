@@ -38,6 +38,7 @@ class Api {
 	public function register_hooks() {
 
 		require_once get_theme_file_path( 'includes/rest-api/product-search.php' );
+		require_once get_theme_file_path( 'includes/rest-api/quick-view.php' );
 
 	}
 

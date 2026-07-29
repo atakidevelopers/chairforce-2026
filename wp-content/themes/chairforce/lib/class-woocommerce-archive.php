@@ -26,7 +26,26 @@ class WooCommerce_Archive {
 	 * Register archive hooks.
 	 */
 	private function register_hooks(): void {
-		// Phase 3: shop filters, attribute swatches, etc.
+		add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_quick_view_assets' ], 20 );
+	}
+
+	/**
+	 * Enqueue WooCommerce single-product scripts/styles needed inside quick view.
+	 */
+	public function enqueue_quick_view_assets(): void {
+		if ( ! is_shop() && ! is_product_taxonomy() && ! is_post_type_archive( 'product' ) ) {
+			return;
+		}
+
+		if ( ! function_exists( 'WC' ) ) {
+			return;
+		}
+
+		wp_enqueue_script( 'wc-add-to-cart-variation' );
+		wp_enqueue_script( 'wc-single-product' );
+
+		wp_enqueue_style( 'photoswipe-default-skin' );
+		wp_enqueue_style( 'photoswipe' );
 	}
 
 }
