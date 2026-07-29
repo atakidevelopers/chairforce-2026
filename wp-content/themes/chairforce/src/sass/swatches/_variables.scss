@@ -31,7 +31,7 @@
 
 // Single-product variation form — larger absolute scale than grid (file 05).
 .cf-swatches-single {
-	--cf-swatch-size: 25px;
+	--cf-swatch-size: 34px;
 	--cf-swatch-text-size: 16px;
 	--cf-swatch-w: 1em;
 	--cf-swatch-h: 1em;
@@ -44,9 +44,15 @@
 	flex-wrap: wrap;
 	align-items: center;
 	gap: var(--cf-swatch-v-sp) var(--cf-swatch-h-sp);
-	margin-bottom: $spacing-x-small;
+	//margin-bottom: $spacing-x-small;
 
 	+ select {
-		display: none;
+		display: none !important;
 	}
+}
+
+.woocommerce table.variations tr td{
+	display: flex;
+	flex-wrap: wrap;
+	gap: $block-gap;
 }

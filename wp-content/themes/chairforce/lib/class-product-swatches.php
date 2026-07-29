@@ -526,40 +526,6 @@ class Product_Swatches {
 	}
 
 	/**
-	 * Extract the gallery wrapper element from `wc_get_product_gallery_html()` output.
-	 *
-	 * @param string $gallery_html Full product-image template HTML.
-	 * @return string Wrapper outer HTML, or empty when not found.
-	 */
-	public static function extract_gallery_wrapper_html( string $gallery_html ): string {
-		if ( '' === trim( $gallery_html ) ) {
-			return '';
-		}
-
-		$previous = libxml_use_internal_errors( true );
-		$dom      = new \DOMDocument();
-		$loaded   = $dom->loadHTML(
-			'<?xml encoding="utf-8" ?>' . $gallery_html,
-			LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD
-		);
-		libxml_clear_errors();
-		libxml_use_internal_errors( $previous );
-
-		if ( ! $loaded ) {
-			return '';
-		}
-
-		$xpath = new \DOMXPath( $dom );
-		$nodes = $xpath->query( "//div[contains(concat(' ', normalize-space(@class), ' '), ' woocommerce-product-gallery__wrapper ')]" );
-
-		if ( ! $nodes || 0 === $nodes->length ) {
-			return '';
-		}
-
-		return $dom->saveHTML( $nodes->item( 0 ) ) ?: '';
-	}
-
-	/**
 	 * @param mixed $image_meta Term `image` meta (attachment ID, legacy array, or URL).
 	 * @return string Image HTML or empty string.
 	 */
