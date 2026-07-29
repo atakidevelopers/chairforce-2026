@@ -1,0 +1,33 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "chairforce/product-swatches",
+  "version": "1.0.0",
+  "title": "Product Swatches",
+  "category": "woocommerce",
+  "description": "Color swatches for variable products in product grids (Mode A image swap).",
+  "keywords": [
+    "woocommerce",
+    "product",
+    "swatches",
+    "colour",
+    "color"
+  ],
+  "textdomain": "chairforce",
+  "ancestor": [
+    "woocommerce/product-template"
+  ],
+  "usesContext": [
+    "postId"
+  ],
+  "supports": {
+    "html": false,
+    "inserter": true,
+    "reusable": false,
+    "lock": false
+  },
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css",
+  "render": "file:./render.php"
+}
