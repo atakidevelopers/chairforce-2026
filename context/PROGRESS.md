@@ -88,7 +88,8 @@ recommended by file `11`'s "Suggested sequencing" section.
 
 #### 3b. Foundational rendering infrastructure — build before the features below depend on it
 
-**Status: 📝 Planned** — `context/plans/3b-3d-event-pattern-and-grid-swatches-plan.md`
+**Status: ✅ Done (29 Jul 2026)** — event-delegation convention only (`50ab984`).
+Plan: `context/plans/3b-3d-event-pattern-and-grid-swatches-plan.md` chunk 1.
 
 Per file `11` §6 ("do early rather than late") — nearly every feature in
 3c–3g depends on these two shared pieces:
@@ -96,6 +97,9 @@ Per file `11` §6 ("do early rather than late") — nearly every feature in
 - **Load More / infinite-scroll / AJAX-filter event architecture** —
   document-level event delegation + idempotent, event-triggered lazy init.
   Mandatory reading before building any grid/pagination feature: file `17`.
+  **Convention shipped:** `src/js/shared/delegated-events.js` +
+  `.cursor/rules/18-event-delegation.mdc` (`chairforce:content-updated`
+  custom event included for future carousel/lazy-init consumers).
 - **Shared carousel component** — Swiper is the confirmed only library in
   use (product gallery, testimonials, category slider, etc.); build one
   shared component, not five ad-hoc initializers: file `18`.
@@ -107,7 +111,7 @@ referenced anywhere yet. The plan above narrows 3b to just the event-
 delegation **convention** (needed by 3d's click handler now); the actual
 Load More UI and the shared Swiper component are deferred to whichever
 phase first needs them — see that plan's "Scope decision" section and the
-new open-decision item below.
+open-decision item below.
 
 #### 3c. Term swatch admin UI (`pa_colour` term meta)
 
@@ -242,18 +246,23 @@ migration needed for `color`).
 
 #### 3d. Product card / grid swatches
 
-**Status: 📝 Planned** — `context/plans/3b-3d-event-pattern-and-grid-swatches-plan.md`
+**Status: ✅ Done (29 Jul 2026)** — `52847e0`, `6e6c1b0`, `83393c0`.
+Plan: `context/plans/3b-3d-event-pattern-and-grid-swatches-plan.md` chunks
+2–4. Verified on `/product-category/chairs/cafe-chairs/` (variable
+`pa_colour` products — color swatches, hover image swap-and-stay, +N
+collapse/expand, delegated handlers).
 
-- Full spec: file `03` (rendering modes, click/hover → image-swap JS).
+- Full spec: file `03` (Mode A / `select_options` only — image swap, no
+  quick-shop form on card).
 - Styling: file `05`, hardcoded to the one confirmed combo (`style 3`/
   `dis-style 3`/`round`/`m`) per file `09` §3 — no admin config needed.
-- Plan above also covers the architecture decision (new dynamic JSX block
-  `chairforce/product-swatches`, inserted into a new theme-owned
-  `templates/archive-product.html` override — none exists yet, archives
-  currently render via WooCommerce's own bundled block template) and two
-  open UX questions: "Limit swatches" +N collapse vs. always-expanded, and
-  whether the grid-hover gallery-preview feature is wanted independent of
-  swatches.
+- **Shipped:** dynamic JSX block `chairforce/product-swatches`
+  (`src-jsx-blocks/product-swatches/`, PHP helpers in
+  `lib/class-product-swatches.php`), theme-owned
+  `templates/archive-product.html` override (swatches under product image),
+  hover-triggered image swap on desktop (`mouseenter`, no revert on
+  `mouseleave`), click fallback on touch, limit-swatches +N collapse
+  (hardcoded count `3`).
 
 #### 3e. Single-product swatches + gallery swap
 

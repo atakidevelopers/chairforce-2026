@@ -1,6 +1,16 @@
 # 3b + 3d — Event Delegation Pattern & Product Card/Grid Swatches — Implementation Plan
 
-## Status: 📝 Planned, not started
+## Status: ✅ Done (29 Jul 2026)
+
+| Chunk | Scope | Commit |
+|---|---|---|
+| 1 (3b) | Event delegation convention | `50ab984` |
+| 2 (3d-i) | PHP swatch helpers + `chairforce/product-swatches` block | `52847e0` |
+| 3 (3d-ii) | Hover/click image swap + limit-swatches JS | `6e6c1b0` |
+| 4 (3d-iii) | Sass (style 3/M/round) + `archive-product.html` | `83393c0` |
+
+Verified on `/product-category/chairs/cafe-chairs/` against variable
+`pa_colour` products (Eros Chair hover swap, +N expand, delegated handlers).
 
 ## Goal
 
