@@ -1,4 +1,5 @@
 import { initProductSearchForms } from './product-search';
+import { initSingleProductSwatches } from './single-product-swatches';
 import { initSiteHeader } from './site-header';
 
 export {
@@ -11,6 +12,7 @@ export {
 document.addEventListener( 'DOMContentLoaded', () => {
 	initSiteHeader();
 	initProductSearchForms();
+	initSingleProductSwatches();
 } );
 
 /* Grid Guide overlay */
