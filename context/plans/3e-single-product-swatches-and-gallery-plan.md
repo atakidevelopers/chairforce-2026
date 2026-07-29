@@ -1,6 +1,18 @@
 # 3e — Single-Product Swatches + Gallery Swap — Implementation Plan
 
-## Status: ⏳ Not started
+## Status: ✅ Done (29 Jul 2026)
+
+| Chunk | Scope | Commit |
+|---|---|---|
+| 1 | PHP single-product swatch markup + dropdown filter | `adf0788` |
+| 2 | Gallery data filter + WC gallery theme support | `bfa2d53` |
+| 3 | JS click proxy + gallery swap/reset | `57601c5` |
+| 4 | Sass (single size scale + hide select) + verification | `CHUNK4` |
+
+Verified on `/product/breeze-chair/` (Breeze Chair — 14 `pa_colour` swatches,
+Black click → 7-image gallery rebuild, Clear → default gallery restored) and
+`/product/dario-kitchen-stool/` (no `wd_additional_variation_images_data` —
+swatch click uses WC default single-image swap, gallery rail unchanged).
 
 ## Goal
 

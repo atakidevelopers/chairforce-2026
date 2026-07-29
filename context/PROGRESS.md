@@ -266,7 +266,11 @@ collapse/expand, delegated handlers).
 
 #### 3e. Single-product swatches + gallery swap
 
-**Status: ⏳ Not started** — plan ready: `context/plans/3e-single-product-swatches-and-gallery-plan.md`.
+**Status: ✅ Done (29 Jul 2026)** — `adf0788`, `bfa2d53`, `57601c5`, `CHUNK4`.
+Plan: `context/plans/3e-single-product-swatches-and-gallery-plan.md` chunks
+1–4. Verified on `/product/breeze-chair/` (swatches above hidden select,
+Black swatch → full variation gallery rebuild, Clear → default gallery) and
+`/product/dario-kitchen-stool/` (no gallery meta — WC default image swap only).
 
 - Full spec: file `04` (variation form, swatch → `found_variation`/
   `show_variation` wiring, main gallery + "additional variation images"
