@@ -7,6 +7,11 @@
 import jQuery from 'jquery';
 
 import { delegateDocument } from './shared/delegated-events';
+import {
+	bindQuickViewGalleryListeners,
+	initQuickViewGalleries,
+} from './quick-view-gallery';
+import { initQuickViewDetails } from './quick-view-details';
 import { primeVariationForms } from './single-product-swatches';
 
 /** @type {HTMLElement|null} */
@@ -63,7 +68,7 @@ function ensureShell() {
 			<button type="button" class="cf-quick-view__close" data-cf-quick-view-close aria-label="Close quick view">
 				<span aria-hidden="true">&times;</span>
 			</button>
-			<div class="cf-quick-view__content"></div>
+			<div class="cf-quick-view__content woocommerce"></div>
 		</div>
 	`.trim();
 
@@ -121,6 +126,17 @@ function injectContent( html ) {
 }
 
 /**
+ * Initialize variation forms and Swiper gallery after content is injected.
+ *
+ * @param {HTMLElement} content
+ */
+function finalizeQuickViewContent( content ) {
+	primeVariationForms( content );
+	initQuickViewGalleries( content );
+	initQuickViewDetails( content );
+}
+
+/**
  * Initialize WooCommerce variation form + gallery inside injected markup.
  *
  * @param {HTMLElement} root
@@ -139,24 +155,6 @@ function initQuickViewProductScripts( root ) {
 
 		if ( typeof $form.wc_variation_form === 'function' ) {
 			$form.wc_variation_form();
-		}
-	} );
-
-	$root.find( '.woocommerce-product-gallery' ).each( function initGallery() {
-		const $gallery = jQuery( this );
-
-		if ( $gallery.data( 'cf_gallery_initialized' ) ) {
-			return;
-		}
-
-		$gallery.data( 'cf_gallery_initialized', true );
-
-		if ( typeof $gallery.wc_product_gallery === 'function' ) {
-			$gallery.wc_product_gallery(
-				typeof wc_single_product_params !== 'undefined'
-					? wc_single_product_params
-					: undefined
-			);
 		}
 	} );
 }
@@ -211,7 +209,7 @@ async function handleTriggerClick( event, trigger ) {
 		const content = getContentEl();
 
 		if ( content ) {
-			primeVariationForms( content );
+			finalizeQuickViewContent( content );
 		}
 
 		setLoading( false );
@@ -334,5 +332,6 @@ function handleTransitionEnd( event ) {
  * Bind delegated quick-view triggers and prepare for lazy shell creation.
  */
 export function initQuickView() {
+	bindQuickViewGalleryListeners();
 	delegateDocument( 'click', '.cf-quick-view-trigger', handleTriggerClick );
 }

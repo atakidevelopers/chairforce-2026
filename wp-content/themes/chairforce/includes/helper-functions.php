@@ -339,3 +339,24 @@ function chairforce_render_site_header(): void {
 	Chairforce\Site_Header::render();
 
 }
+
+/**
+ * Markup for the quick-view eye trigger on a product card.
+ *
+ * @param int $product_id Product post ID.
+ * @return string
+ */
+function chairforce_get_quick_view_button_html( int $product_id ): string {
+	if ( $product_id <= 0 ) {
+		return '';
+	}
+
+	$label = esc_html__( 'Quick view', 'chairforce' );
+
+	return sprintf(
+		'<div class="cf-quick-view-button wp-block-chairforce-quick-view-button"><button type="button" class="cf-quick-view-trigger" data-product-id="%1$d" aria-label="%2$s"><span class="screen-reader-text">%3$s</span></button></div>',
+		$product_id,
+		esc_attr( $label ),
+		$label
+	);
+}

@@ -1,0 +1,134 @@
+// Quick view gallery — Swiper replaces WC flexslider/thumbnail grid.
+
+.cf-quick-view__content {
+	// Match WC selector weight: .woocommerce div.product div.images { float; width: 48% }
+	.woocommerce div.product div.images,
+	.woocommerce-page div.product div.images,
+	div.product div.images,
+	div.product .woocommerce-product-gallery {
+		float: none;
+		width: 100%;
+		max-width: 100%;
+		margin: 0;
+		clear: none;
+	}
+
+	.woocommerce div.product div.summary,
+	.woocommerce-page div.product div.summary,
+	div.product div.summary,
+	div.product .summary.entry-summary {
+		float: none;
+		width: 100%;
+		max-width: 100%;
+		margin: 0;
+		clear: none;
+	}
+
+	// Drop legacy clearfix floats from classic WooCommerce product layout.
+	div.product {
+		&::before,
+		&::after {
+			content: none;
+			display: none;
+		}
+	}
+
+	// Hide SKU, categories, tags block if any plugin re-adds product meta.
+	.product_meta {
+		display: none;
+	}
+}
+
+.cf-quick-view-gallery {
+	position: relative;
+	width: 100%;
+	margin: 0;
+	opacity: 1;
+
+	// Suppress any residual WC gallery chrome before Swiper init.
+	.flex-viewport,
+	.flex-control-nav,
+	.flex-control-thumbs,
+	.woocommerce-product-gallery__trigger {
+		display: none !important;
+	}
+}
+
+.cf-quick-view-gallery__swiper {
+	position: relative;
+	width: 100%;
+	overflow: hidden;
+	background: $color-white;
+}
+
+// Swiper ships `.swiper-slide { display: block }` — beat it with scope + both classes.
+.cf-quick-view__content .cf-quick-view-gallery .swiper-slide.cf-quick-view-gallery__slide {
+	display: flex !important;
+	align-items: center;
+	justify-content: center;
+	aspect-ratio: 1 / 1;
+	height: auto;
+	background: $color-white;
+
+	img {
+		display: block;
+		width: 100%;
+		height: 100%;
+		max-height: 100%;
+		object-fit: contain;
+	}
+}
+
+.cf-quick-view-gallery__nav {
+	position: absolute;
+	top: 50%;
+	z-index: 2;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 2.25rem;
+	height: 2.25rem;
+	padding: 0;
+	border: 0;
+	border-radius: $radius-sm;
+	background: rgb(255 255 255 / 92%);
+	color: $color-body;
+	box-shadow: 0 2px 8px rgb(0 0 0 / 12%);
+	transform: translateY(-50%);
+	cursor: pointer;
+
+	&::after {
+		content: none;
+	}
+
+	&.swiper-button-disabled {
+		opacity: 0.35;
+		cursor: default;
+	}
+}
+
+.cf-quick-view-gallery__nav--prev {
+	left: $spacing-x-small;
+
+	@include cf-icon-before('chevron-left');
+}
+
+.cf-quick-view-gallery__nav--next {
+	right: $spacing-x-small;
+
+	@include cf-icon-before('chevron-right');
+}
+
+.cf-quick-view-gallery__pagination {
+	position: static;
+	margin-top: $spacing-x-small;
+
+	.swiper-pagination-bullet {
+		background: $color-outline;
+		opacity: 1;
+	}
+
+	.swiper-pagination-bullet-active {
+		background: $color-primary;
+	}
+}

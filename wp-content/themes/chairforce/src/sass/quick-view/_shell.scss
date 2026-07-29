@@ -58,20 +58,84 @@ $cf-quick-view-transition: transform 0.4s ease, opacity 0.4s ease;
 .cf-quick-view__content {
 	flex: 1 1 auto;
 	overflow: auto;
+	padding: $spacing-xxxx-large;
+
+ 	table.variations tbody{
+		display: flex;
+		flex-direction: column;
+		gap: $spacing-medium;
+
+		td{
+			gap: $spacing-small;
+		}
+		.label{
+			padding-bottom: $spacing-xxx-small;
+		}
+	}
+}
+
+// Drawer — vertical stack (gallery full width, details below).
+.cf-quick-view--drawer .cf-quick-view__content .product {
+	display: flex;
+	flex-direction: column;
+	gap: $spacing-medium;
+}
+
+// Modal — side-by-side gallery + details on medium+ viewports.
+.cf-quick-view--modal {
+	display: flex;
+	align-items: center;
+	justify-content: center;
 	padding: $spacing-medium;
 
-	.product {
+	.cf-quick-view__panel {
+		width: min(100%, 56rem);
+		max-height: calc(100vh - #{$spacing-large});
+		border-radius: $radius-sm;
+		opacity: 0;
+		transform: translateY(1rem) scale(0.98);
+		transition: $cf-quick-view-transition;
+	}
+
+	&.is-open .cf-quick-view__panel {
+		opacity: 1;
+		transform: translateY(0) scale(1);
+	}
+
+	.cf-quick-view__content .product {
 		display: flex;
 		flex-direction: column;
 		gap: $spacing-medium;
 	}
 
-	.woocommerce-product-gallery {
-		width: 100%;
-	}
+	@include breakpoint(medium) {
+		.cf-quick-view__content {
+			padding: $spacing-large;
+		}
 
-	.summary.entry-summary {
-		width: 100%;
+		.cf-quick-view__content .product {
+			display: grid;
+			grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+			align-items: start;
+			column-gap: $spacing-large;
+			row-gap: 0;
+		}
+
+		.cf-quick-view__content .product > .woocommerce-product-gallery,
+		.cf-quick-view__content .product > div.images {
+			grid-column: 1;
+			grid-row: 1;
+			position: sticky;
+			top: 0;
+		}
+
+		.cf-quick-view__content .product > .summary.entry-summary {
+			grid-column: 2;
+			grid-row: 1;
+			max-height: min(calc(100vh - 8rem), 48rem);
+			overflow-y: auto;
+			padding-right: $spacing-x-small;
+		}
 	}
 }
 
@@ -112,28 +176,6 @@ $cf-quick-view-transition: transform 0.4s ease, opacity 0.4s ease;
 
 	&.is-open .cf-quick-view__panel {
 		transform: translateX(0);
-	}
-}
-
-// Centered modal skin.
-.cf-quick-view--modal {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	padding: $spacing-medium;
-
-	.cf-quick-view__panel {
-		width: min(100%, 48rem);
-		max-height: calc(100vh - #{$spacing-large});
-		border-radius: $radius-sm;
-		opacity: 0;
-		transform: translateY(1rem) scale(0.98);
-		transition: $cf-quick-view-transition;
-	}
-
-	&.is-open .cf-quick-view__panel {
-		opacity: 1;
-		transform: translateY(0) scale(1);
 	}
 }
 

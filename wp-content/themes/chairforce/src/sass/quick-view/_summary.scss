@@ -1,0 +1,94 @@
+// Quick view summary text — dimensions (plain) or short description (collapsible).
+
+.cf-quick-view-details {
+	margin: 0;
+
+	&__label {
+		margin: 0 0 $spacing-x-small;
+		color: $color-primary;
+		font-size: $font-size-small;
+		font-weight: 600;
+		line-height: 1.4;
+	}
+
+	&__content {
+		margin: 0;
+		color: $color-body;
+		font-size: $font-size-small;
+		line-height: 1.5;
+
+		p {
+			margin: 0 0 $spacing-x-small;
+
+			&:last-child {
+				margin-bottom: 0;
+			}
+		}
+	}
+
+	&__inner {
+		margin: 0;
+	}
+
+	// Dimensions — always show full content, no gradient/collapse.
+	&--dimensions .cf-quick-view-details__content {
+		position: static;
+	}
+}
+
+// Short description only — 3-line clamp + gradient, expand on click.
+.cf-quick-view-details--description {
+	.cf-quick-view-details__content {
+		position: relative;
+	}
+
+	.cf-quick-view-details__content--measuring .cf-quick-view-details__inner {
+		display: -webkit-box;
+		overflow: hidden;
+		-webkit-box-orient: vertical;
+		-webkit-line-clamp: 3;
+		line-clamp: 3;
+	}
+
+	.cf-quick-view-details__content--collapsible:not(.is-expanded) {
+		cursor: pointer;
+
+		.cf-quick-view-details__inner {
+			display: -webkit-box;
+			overflow: hidden;
+			-webkit-box-orient: vertical;
+			-webkit-line-clamp: 3;
+			line-clamp: 3;
+		}
+
+		&::after {
+			content: "";
+			position: absolute;
+			right: 0;
+			bottom: 0;
+			left: 0;
+			height: 2.75rem;
+			background: linear-gradient(
+				to bottom,
+				rgb(255 255 255 / 0%) 0%,
+				$color-white 85%
+			);
+			pointer-events: none;
+		}
+	}
+
+	.cf-quick-view-details__content--collapsible.is-expanded {
+		cursor: default;
+
+		.cf-quick-view-details__inner {
+			display: block;
+			overflow: visible;
+			-webkit-line-clamp: unset;
+			line-clamp: unset;
+		}
+
+		&::after {
+			content: none;
+		}
+	}
+}

@@ -128,9 +128,11 @@ class Front {
 	public function get_localize_script_data() {
 
 		$quick_view_display = 'drawer';
+		$quick_view_content = 'dimensions';
 
 		if ( function_exists( 'get_field' ) ) {
 			$quick_view_display = get_field( 'quick_view_display', 'option' ) ?: 'drawer';
+			$quick_view_content = get_field( 'quick_view_content', 'option' ) ?: 'dimensions';
 		}
 
 		$localize_data = [
@@ -139,6 +141,7 @@ class Front {
 			'rest_url'           => rest_url( 'chairforce/v1/product-search' ),
 			'quickViewRestUrl'   => rest_url( 'chairforce/v1/quick-view' ),
 			'quickViewDisplay'   => in_array( $quick_view_display, [ 'modal', 'drawer' ], true ) ? $quick_view_display : 'drawer',
+			'quickViewContent'   => in_array( $quick_view_content, [ 'dimensions', 'short_description' ], true ) ? $quick_view_content : 'dimensions',
 		];
 
 

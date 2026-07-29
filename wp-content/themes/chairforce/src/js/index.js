@@ -2,6 +2,7 @@ import { initProductSearchForms } from './product-search';
 import { initQuickView } from './quick-view';
 import { initSingleProductSwatches } from './single-product-swatches';
 import { initSiteHeader } from './site-header';
+import { initWooCommerceQuantity } from './woocommerce-quantity';
 
 export {
 	CONTENT_UPDATED_EVENT,
@@ -15,6 +16,7 @@ document.addEventListener( 'DOMContentLoaded', () => {
 	initProductSearchForms();
 	initSingleProductSwatches();
 	initQuickView();
+	initWooCommerceQuantity();
 } );
 
 /* Grid Guide overlay */

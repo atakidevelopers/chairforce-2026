@@ -25,6 +25,7 @@ return array(
     'Chairforce\\WooCommerce' => $baseDir . '/lib/class-woocommerce.php',
     'Chairforce\\WooCommerce_Admin' => $baseDir . '/lib/class-woocommerce-admin.php',
     'Chairforce\\WooCommerce_Archive' => $baseDir . '/lib/class-woocommerce-archive.php',
+    'Chairforce\\WooCommerce_Quantity' => $baseDir . '/lib/class-woocommerce-quantity.php',
     'Chairforce\\WooCommerce_Single_Product' => $baseDir . '/lib/class-woocommerce-single-product.php',
     'Chairforce\\Zip_Archive' => $baseDir . '/lib/class-zip-archive.php',
     'Composer\\InstalledVersions' => $vendorDir . '/composer/InstalledVersions.php',

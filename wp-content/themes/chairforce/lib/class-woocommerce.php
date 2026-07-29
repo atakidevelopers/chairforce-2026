@@ -26,6 +26,7 @@ class WooCommerce {
 		new WooCommerce_Admin();
 		new WooCommerce_Archive();
 		new WooCommerce_Single_Product();
+		new WooCommerce_Quantity();
 		new Product_Swatches();
 	}
 

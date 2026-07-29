@@ -424,6 +424,29 @@
             "layout": "horizontal"
         },
         {
+            "key": "field_chairforce_quick_view_content",
+            "label": "Quick View Content",
+            "name": "quick_view_content",
+            "aria-label": "",
+            "type": "button_group",
+            "instructions": "Choose which product text appears below the price in quick view.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "dimensions": "Dimensions",
+                "short_description": "Short Description"
+            },
+            "default_value": "dimensions",
+            "return_format": "value",
+            "allow_null": 0,
+            "layout": "horizontal"
+        },
+        {
             "key": "field_63411c4d1cfff",
             "label": "Enable Grid Guides",
             "name": "enable_grid_guides",

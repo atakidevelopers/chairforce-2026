@@ -38,6 +38,29 @@ function getFormState( form ) {
 
 /**
  * @param {Element} form
+ * @returns {boolean}
+ */
+function isQuickViewForm( form ) {
+	return Boolean( form.closest( '.cf-quick-view__content' ) );
+}
+
+/**
+ * Notify quick-view gallery module that gallery markup changed.
+ *
+ * @param {Element} form
+ */
+function dispatchQuickViewGalleryChanged( form ) {
+	if ( ! isQuickViewForm( form ) ) {
+		return;
+	}
+
+	form.dispatchEvent(
+		new CustomEvent( 'cf:quick-view-gallery-changed', { bubbles: true } )
+	);
+}
+
+/**
+ * @param {Element} form
  * @returns {Element|null}
  */
 function getGalleryForForm( form ) {
@@ -70,9 +93,15 @@ function replaceProductGallery( form, galleryHtml, variation ) {
 		typeof $form.wc_variations_gallery_replace === 'function' &&
 		galleryHtml
 	) {
-		return Boolean(
+		const replaced = Boolean(
 			$form.wc_variations_gallery_replace( galleryHtml, variation )
 		);
+
+		if ( replaced ) {
+			dispatchQuickViewGalleryChanged( form );
+		}
+
+		return replaced;
 	}
 
 	const gallery = getGalleryForForm( form );
@@ -92,7 +121,11 @@ function replaceProductGallery( form, galleryHtml, variation ) {
 	}
 
 	gallery.replaceWith( newGallery );
-	jQuery( newGallery ).wc_product_gallery();
+
+	if ( ! isQuickViewForm( form ) ) {
+		jQuery( newGallery ).wc_product_gallery();
+	}
+
 	window.dispatchEvent( new Event( 'resize' ) );
 
 	if ( variation && variation.image_id ) {
@@ -102,6 +135,8 @@ function replaceProductGallery( form, galleryHtml, variation ) {
 		$form.removeAttr( 'data-product_gallery_active' );
 		$form.attr( 'current-image', '' );
 	}
+
+	dispatchQuickViewGalleryChanged( form );
 
 	return true;
 }
