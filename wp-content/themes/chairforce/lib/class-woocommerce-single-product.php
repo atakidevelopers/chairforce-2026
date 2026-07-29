@@ -34,6 +34,13 @@ class WooCommerce_Single_Product {
 			10,
 			2
 		);
+
+		add_filter(
+			'woocommerce_available_variation',
+			[ $this, 'add_variation_gallery_html' ],
+			10,
+			3
+		);
 	}
 
 	/**
@@ -58,5 +65,38 @@ class WooCommerce_Single_Product {
 		}
 
 		return $swatches . $html;
+	}
+
+	/**
+	 * Expose variation gallery wrapper HTML for frontend gallery swap.
+	 *
+	 * @param array<string, mixed> $data     Variation JSON payload.
+	 * @param \WC_Product            $product Parent variable product.
+	 * @param \WC_Product_Variation  $variation Variation product.
+	 * @return array<string, mixed>
+	 */
+	public function add_variation_gallery_html( array $data, $product, $variation ): array {
+		if ( ! $variation instanceof \WC_Product_Variation || ! $product instanceof \WC_Product ) {
+			return $data;
+		}
+
+		if ( ! function_exists( 'wc_get_product_gallery_html' ) ) {
+			return $data;
+		}
+
+		$image_ids = Product_Swatches::get_variation_gallery_image_ids( $variation );
+
+		if ( count( $image_ids ) < 2 ) {
+			return $data;
+		}
+
+		$gallery_html = wc_get_product_gallery_html( $product, $image_ids );
+		$wrapper_html = Product_Swatches::extract_gallery_wrapper_html( $gallery_html );
+
+		if ( '' !== $wrapper_html ) {
+			$data['cf_variation_gallery_html'] = $wrapper_html;
+		}
+
+		return $data;
 	}
 }

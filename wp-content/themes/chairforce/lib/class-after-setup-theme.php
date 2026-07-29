@@ -74,6 +74,12 @@ class After_Setup_Theme {
 			]
 		);
 
+		if ( class_exists( 'WooCommerce' ) ) {
+			add_theme_support( 'wc-product-gallery-slider' );
+			add_theme_support( 'wc-product-gallery-zoom' );
+			add_theme_support( 'wc-product-gallery-lightbox' );
+		}
+
 	}
 
 	/**

@@ -294,17 +294,7 @@ class WooCommerce_Admin {
 	 * @return int[]
 	 */
 	private function get_variation_gallery_attachment_ids( int $variation_id ): array {
-		$value = get_post_meta( $variation_id, self::VARIATION_GALLERY_META_KEY, true );
-
-		if ( ! is_string( $value ) || $value === '' ) {
-			return [];
-		}
-
-		return array_values(
-			array_filter(
-				array_map( 'absint', explode( ',', $value ) )
-			)
-		);
+		return Product_Swatches::get_variation_gallery_attachment_ids( $variation_id );
 	}
 
 	/**
