@@ -28,6 +28,9 @@ class Product_Swatches {
 	/** @var string Hardcoded grid attribute (live Theme Setting value). */
 	public const DEFAULT_GRID_ATTRIBUTE = 'pa_colour';
 
+	/** @var string Woodmart variation gallery meta (CSV attachment IDs). */
+	public const VARIATION_GALLERY_META_KEY = 'wd_additional_variation_images_data';
+
 	/**
 	 * Visible swatch count before "+N" collapse (live `swatches_limit_count`).
 	 *
@@ -325,6 +328,178 @@ class Product_Swatches {
 		$out .= '</div>';
 
 		return $out;
+	}
+
+	/**
+	 * Read variation gallery attachment IDs from legacy post meta.
+	 *
+	 * @param int $variation_id Variation post ID.
+	 * @return int[]
+	 */
+	public static function get_variation_gallery_attachment_ids( int $variation_id ): array {
+		$value = get_post_meta( $variation_id, self::VARIATION_GALLERY_META_KEY, true );
+
+		if ( ! is_string( $value ) || '' === $value ) {
+			return [];
+		}
+
+		return array_values(
+			array_filter(
+				array_map( 'absint', explode( ',', $value ) )
+			)
+		);
+	}
+
+	/**
+	 * Whether any option of this attribute row has swatch term meta.
+	 *
+	 * @param int          $product_id     Product post ID.
+	 * @param string       $attribute_name Full taxonomy name.
+	 * @param array<mixed> $option_slugs   Term slugs for this product/attribute.
+	 */
+	public static function attribute_has_swatches( int $product_id, string $attribute_name, array $option_slugs ): bool {
+		foreach ( $option_slugs as $slug ) {
+			if ( ! empty( self::has_swatch( $product_id, $attribute_name, (string) $slug ) ) ) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * Render single-product swatches for one attribute row (prepended before the real `<select>`).
+	 *
+	 * @param \WC_Product $product        Variable product.
+	 * @param string      $attribute_name Full taxonomy name (e.g. `pa_colour`).
+	 * @param array<mixed> $args          `wc_dropdown_variation_attribute_options()` args.
+	 * @return string Empty when this attribute has no swatch data.
+	 */
+	public static function render_single_product_swatches( \WC_Product $product, string $attribute_name, array $args ): string {
+		$options = $args['options'] ?? [];
+
+		if ( empty( $options ) ) {
+			$attributes = $product->get_variation_attributes();
+			$options    = $attributes[ $attribute_name ] ?? [];
+		}
+
+		if ( empty( $options ) || ! self::attribute_has_swatches( $product->get_id(), $attribute_name, $options ) ) {
+			return '';
+		}
+
+		$select_id = ! empty( $args['id'] ) ? (string) $args['id'] : sanitize_title( $attribute_name );
+		$selected  = $args['selected'] ?? '';
+
+		if ( false === $selected ) {
+			$selected = '';
+		}
+
+		$wrapper_classes = [
+			'cf-swatches-product',
+			'cf-swatches-single',
+			'cf-swatches-attr',
+			'cf-swatches--style-3',
+			'cf-swatches--dis-style-3',
+			'cf-swatches--size-single',
+			'cf-swatches--shape-round',
+		];
+
+		$out = sprintf(
+			'<div class="%s" data-id="%s">',
+			esc_attr( implode( ' ', $wrapper_classes ) ),
+			esc_attr( $select_id )
+		);
+
+		if ( taxonomy_exists( $attribute_name ) ) {
+			$terms = wc_get_product_terms(
+				$product->get_id(),
+				$attribute_name,
+				[ 'fields' => 'all' ]
+			);
+
+			foreach ( $terms as $term ) {
+				if ( ! in_array( $term->slug, $options, true ) ) {
+					continue;
+				}
+
+				$out .= self::render_single_product_swatch_button(
+					$product->get_id(),
+					$attribute_name,
+					$term->slug,
+					$term->name,
+					$selected
+				);
+			}
+		} else {
+			foreach ( $options as $option ) {
+				$out .= self::render_single_product_swatch_button(
+					$product->get_id(),
+					$attribute_name,
+					(string) $option,
+					(string) $option,
+					$selected
+				);
+			}
+		}
+
+		$out .= '</div>';
+
+		return $out;
+	}
+
+	/**
+	 * Build one single-product swatch button.
+	 *
+	 * Disabled/enabled state is synced client-side after attribute changes.
+	 */
+	private static function render_single_product_swatch_button(
+		int $product_id,
+		string $attribute_name,
+		string $slug,
+		string $label,
+		$selected
+	): string {
+		$swatch  = self::has_swatch( $product_id, $attribute_name, $slug );
+		$classes = [ 'cf-swatch' ];
+		$style   = '';
+		$image   = '';
+
+		if ( ! empty( $swatch['color'] ) ) {
+			$style     = 'background-color:' . $swatch['color'];
+			$classes[] = 'cf-swatch--bg';
+		} elseif ( ! empty( $swatch['image'] ) ) {
+			$image     = self::get_term_swatch_image_html( $swatch['image'] );
+			$classes[] = 'cf-swatch--bg';
+		} else {
+			$classes[] = 'cf-swatch--text';
+		}
+
+		if ( $selected && sanitize_title( (string) $selected ) === $slug ) {
+			$classes[] = 'cf-swatch--active';
+		}
+
+		$button = sprintf(
+			'<button type="button" class="%1$s" data-value="%2$s" title="%3$s">',
+			esc_attr( implode( ' ', $classes ) ),
+			esc_attr( $slug ),
+			esc_attr( $label )
+		);
+
+		if ( $style || $image ) {
+			$button .= sprintf(
+				'<span class="cf-swatch__bg" style="%s">%s</span>',
+				esc_attr( $style ),
+				$image // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			);
+		}
+
+		$button .= sprintf(
+			'<span class="cf-swatch__text">%s</span>',
+			esc_html( $label )
+		);
+		$button .= '</button>';
+
+		return $button;
 	}
 
 	/**
