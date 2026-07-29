@@ -1,0 +1,42 @@
+@import "../icon-font/mixins";
+
+.cf-quick-view-button {
+	position: absolute;
+	top: calc(#{$spacing-x-small} + 2.5rem);
+	right: $spacing-x-small;
+	z-index: 3;
+}
+
+.cf-quick-view-trigger {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 2.25rem;
+	height: 2.25rem;
+	padding: 0;
+	border: 0;
+	border-radius: $radius-sm;
+	background: rgb(255 255 255 / 92%);
+	color: $color-body;
+	box-shadow: 0 1px 4px rgb(0 0 0 / 12%);
+	cursor: pointer;
+	transition: background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+
+	@include cf-icon-before('eye');
+
+	&::before {
+		font-size: 1.125rem;
+	}
+
+	&:hover,
+	&:focus-visible {
+		background: $color-primary;
+		color: $color-white;
+		box-shadow: 0 2px 8px rgb(0 0 0 / 16%);
+	}
+
+	&:focus-visible {
+		outline: 2px solid $color-primary;
+		outline-offset: 2px;
+	}
+}

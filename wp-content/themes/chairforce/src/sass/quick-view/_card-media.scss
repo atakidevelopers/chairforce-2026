@@ -1,0 +1,9 @@
+// Product card image corner — positions quick-view trigger (and future wishlist).
+.cf-card-media {
+	position: relative;
+}
+
+.cf-card-media .wp-block-woocommerce-product-image,
+.cf-card-media .wc-block-components-product-image {
+	position: relative;
+}

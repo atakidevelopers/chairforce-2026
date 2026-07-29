@@ -1,0 +1,148 @@
+$cf-quick-view-panel-width: 32rem;
+$cf-quick-view-transition: transform 0.4s ease, opacity 0.4s ease;
+
+.cf-quick-view {
+	position: fixed;
+	inset: 0;
+	z-index: 100000;
+	pointer-events: none;
+
+	&.is-open {
+		pointer-events: auto;
+	}
+}
+
+.cf-quick-view__backdrop {
+	position: absolute;
+	inset: 0;
+	background: rgb(0 0 0 / 45%);
+	opacity: 0;
+	transition: opacity 0.4s ease;
+}
+
+.cf-quick-view.is-open .cf-quick-view__backdrop {
+	opacity: 1;
+}
+
+.cf-quick-view__panel {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	max-height: 100%;
+	background: $color-white;
+	box-shadow: 0 12px 40px rgb(0 0 0 / 18%);
+	outline: none;
+	overflow: hidden;
+}
+
+.cf-quick-view__close {
+	position: absolute;
+	top: $spacing-x-small;
+	right: $spacing-x-small;
+	z-index: 2;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 2.25rem;
+	height: 2.25rem;
+	padding: 0;
+	border: 0;
+	border-radius: $radius-sm;
+	background: rgb(255 255 255 / 92%);
+	color: $color-body;
+	font-size: 1.5rem;
+	line-height: 1;
+	cursor: pointer;
+}
+
+.cf-quick-view__content {
+	flex: 1 1 auto;
+	overflow: auto;
+	padding: $spacing-medium;
+
+	.product {
+		display: flex;
+		flex-direction: column;
+		gap: $spacing-medium;
+	}
+
+	.woocommerce-product-gallery {
+		width: 100%;
+	}
+
+	.summary.entry-summary {
+		width: 100%;
+	}
+}
+
+.cf-quick-view__loader {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	min-height: 12rem;
+
+	&::after {
+		content: "";
+		width: 2rem;
+		height: 2rem;
+		border: 2px solid $color-outline;
+		border-top-color: $color-primary;
+		border-radius: 50%;
+		animation: cf-quick-view-spin 0.8s linear infinite;
+	}
+}
+
+@keyframes cf-quick-view-spin {
+	to {
+		transform: rotate(360deg);
+	}
+}
+
+// Drawer skin — adapts confirmed live Woodmart panel CSS to our shell.
+.cf-quick-view--drawer {
+	.cf-quick-view__panel {
+		position: absolute;
+		top: 0;
+		right: 0;
+		width: min(100%, $cf-quick-view-panel-width);
+		height: 100%;
+		transform: translateX(100%);
+		transition: $cf-quick-view-transition;
+	}
+
+	&.is-open .cf-quick-view__panel {
+		transform: translateX(0);
+	}
+}
+
+// Centered modal skin.
+.cf-quick-view--modal {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: $spacing-medium;
+
+	.cf-quick-view__panel {
+		width: min(100%, 48rem);
+		max-height: calc(100vh - #{$spacing-large});
+		border-radius: $radius-sm;
+		opacity: 0;
+		transform: translateY(1rem) scale(0.98);
+		transition: $cf-quick-view-transition;
+	}
+
+	&.is-open .cf-quick-view__panel {
+		opacity: 1;
+		transform: translateY(0) scale(1);
+	}
+}
+
+html.cf-quick-view-open {
+	overflow: hidden;
+}
+
+@include breakpoint(medium) {
+	.cf-quick-view--drawer .cf-quick-view__panel {
+		width: min(100%, 36rem);
+	}
+}
