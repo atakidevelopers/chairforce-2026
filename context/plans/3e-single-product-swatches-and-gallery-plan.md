@@ -7,7 +7,7 @@
 | 1 | PHP single-product swatch markup + dropdown filter | `adf0788` |
 | 2 | Gallery data filter + WC gallery theme support | `bfa2d53` |
 | 3 | JS click proxy + gallery swap/reset | `57601c5` |
-| 4 | Sass (single size scale + hide select) + verification | `CHUNK4` |
+| 4 | Sass (single size scale + hide select) + verification | `7532023` |
 
 Verified on `/product/breeze-chair/` (Breeze Chair — 14 `pa_colour` swatches,
 Black click → 7-image gallery rebuild, Clear → default gallery restored) and

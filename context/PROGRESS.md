@@ -266,7 +266,7 @@ collapse/expand, delegated handlers).
 
 #### 3e. Single-product swatches + gallery swap
 
-**Status: ✅ Done (29 Jul 2026)** — `adf0788`, `bfa2d53`, `57601c5`, `CHUNK4`.
+**Status: ✅ Done (29 Jul 2026)** — `adf0788`, `bfa2d53`, `57601c5`, `7532023`.
 Plan: `context/plans/3e-single-product-swatches-and-gallery-plan.md` chunks
 1–4. Verified on `/product/breeze-chair/` (swatches above hidden select,
 Black swatch → full variation gallery rebuild, Clear → default gallery) and
