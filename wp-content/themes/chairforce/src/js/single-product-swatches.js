@@ -7,6 +7,7 @@
  * exception — those events are jQuery-only in WooCommerce core.
  *
  * @see context/plans/3e-single-product-swatches-and-gallery-plan.md
+ * @see context/plans/3h-quick-view-plan.md
  */
 
 import jQuery from 'jquery';
@@ -15,6 +16,9 @@ import { delegateDocument } from './shared/delegated-events';
 
 /** @type {WeakMap<Element, { defaultGalleryHtml: string, galleryReplaced: boolean }>} */
 const formState = new WeakMap();
+
+let swatchListenersBound = false;
+let singleProductSwatchesInitialized = false;
 
 /**
  * @param {Element} form
@@ -283,18 +287,14 @@ function handleResetVariationsClick( event ) {
 }
 
 /**
- * Cache default gallery markup and bind delegated handlers for every form.
+ * Bind delegated swatch + jQuery variation handlers once (Load-More-safe).
  */
-export function initSingleProductSwatches() {
-	const forms = document.querySelectorAll( '.variations_form' );
-
-	if ( ! forms.length ) {
+export function bindSingleProductSwatchListeners() {
+	if ( swatchListenersBound ) {
 		return;
 	}
 
-	forms.forEach( ( form ) => {
-		getFormState( form );
-	} );
+	swatchListenersBound = true;
 
 	delegateDocument(
 		'click',
@@ -318,6 +318,24 @@ export function initSingleProductSwatches() {
 		'.variations_form .reset_variations',
 		handleResetVariationsClick
 	);
+}
+
+/**
+ * Cache default gallery markup for variation forms within `root`.
+ * Safe to call again after AJAX/quick-view injects new forms.
+ *
+ * @param {ParentNode} [root]
+ */
+export function primeVariationForms( root = document ) {
+	const forms = root.querySelectorAll( '.variations_form' );
+
+	if ( ! forms.length ) {
+		return;
+	}
+
+	forms.forEach( ( form ) => {
+		getFormState( form );
+	} );
 
 	// WC fires the first availability pass during its own init — defer so we
 	// register listeners first, then sync once its option classes are settled.
@@ -328,4 +346,17 @@ export function initSingleProductSwatches() {
 			} );
 		}, 0 );
 	} );
+}
+
+/**
+ * One-time init for page load — binds listeners and primes existing forms.
+ */
+export function initSingleProductSwatches() {
+	if ( singleProductSwatchesInitialized ) {
+		return;
+	}
+
+	singleProductSwatchesInitialized = true;
+	bindSingleProductSwatchListeners();
+	primeVariationForms( document );
 }
