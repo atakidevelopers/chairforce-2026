@@ -88,7 +88,7 @@ recommended by file `11`'s "Suggested sequencing" section.
 
 #### 3b. Foundational rendering infrastructure — build before the features below depend on it
 
-**Status: ⏳ Not started**
+**Status: 📝 Planned** — `context/plans/3b-3d-event-pattern-and-grid-swatches-plan.md`
 
 Per file `11` §6 ("do early rather than late") — nearly every feature in
 3c–3g depends on these two shared pieces:
@@ -99,6 +99,15 @@ Per file `11` §6 ("do early rather than late") — nearly every feature in
 - **Shared carousel component** — Swiper is the confirmed only library in
   use (product gallery, testimonials, category slider, etc.); build one
   shared component, not five ad-hoc initializers: file `18`.
+
+**Scoping note (from the plan above):** checked the codebase before
+planning 3d — no page currently uses Load More/infinite-scroll (existing
+templates use numbered `query-pagination`), and Swiper isn't installed or
+referenced anywhere yet. The plan above narrows 3b to just the event-
+delegation **convention** (needed by 3d's click handler now); the actual
+Load More UI and the shared Swiper component are deferred to whichever
+phase first needs them — see that plan's "Scope decision" section and the
+new open-decision item below.
 
 #### 3c. Term swatch admin UI (`pa_colour` term meta)
 
@@ -233,11 +242,18 @@ migration needed for `color`).
 
 #### 3d. Product card / grid swatches
 
-**Status: ⏳ Not started**
+**Status: 📝 Planned** — `context/plans/3b-3d-event-pattern-and-grid-swatches-plan.md`
 
 - Full spec: file `03` (rendering modes, click/hover → image-swap JS).
 - Styling: file `05`, hardcoded to the one confirmed combo (`style 3`/
   `dis-style 3`/`round`/`m`) per file `09` §3 — no admin config needed.
+- Plan above also covers the architecture decision (new dynamic JSX block
+  `chairforce/product-swatches`, inserted into a new theme-owned
+  `templates/archive-product.html` override — none exists yet, archives
+  currently render via WooCommerce's own bundled block template) and two
+  open UX questions: "Limit swatches" +N collapse vs. always-expanded, and
+  whether the grid-hover gallery-preview feature is wanted independent of
+  swatches.
 
 #### 3e. Single-product swatches + gallery swap
 
@@ -394,6 +410,24 @@ Carried from checklist file `19` §8 — resolve before/during the phase noted:
   new `image` field (3c) — ask the client whether they still want these
   material-texture icons; if yes, it's a 2-term manual backfill, not a
   batch job.
+- **Load More UI + shared Swiper carousel component, deferred out of 3b**
+  (found while scoping `3b-3d-event-pattern-and-grid-swatches-plan.md`) —
+  no page currently uses Load More/infinite-scroll (existing templates use
+  numbered pagination) and Swiper isn't installed/referenced anywhere yet,
+  so building either now would be speculative. Build the actual Load More
+  button/infinite-scroll feature whenever a page's design calls for it
+  instead of numbered pagination; build the shared carousel component when
+  **3e** (single-product gallery) starts — that's the first real consumer.
+- ~~**"Limit swatches" (+N collapse) vs. always-expanded** and **whether
+  the grid-hover gallery-preview feature is wanted independent of
+  swatches**~~ — ✅ Resolved (client decision, both in the 3d plan's
+  chunk 3): **+N collapse, yes** — hardcoded limit count, not an
+  admin-configurable setting (code change on request if the client wants
+  a different number later); grid-hover gallery-preview feature — **not
+  needed**. Also resolved: the swatch **interaction trigger is hover, not
+  click** (matches the live child-theme customization, file `07` §1) —
+  swap on `mouseenter`/desktop, no auto-revert on `mouseleave`, click
+  fallback for touch devices.
 - ~~**Attribute term-list "Preview" column"**~~ — ✅ Done. Rebuilt as
   `Chairforce\Attribute_Swatch_Preview_Column`
   (`lib/class-attribute-swatch-preview-column.php`), registered in
@@ -422,6 +456,7 @@ Carried from checklist file `19` §8 — resolve before/during the phase noted:
 | `context/existing-functionality/11-recommendation-and-implementation-plan.md` | The research's own conclusion + feature-by-feature plan + sequencing — this file's main source |
 | `context/existing-functionality/19-master-rebuild-registration-checklist.md` | Full registration checklist + two-bucket rule (source of the phase legend) |
 | `context/plans/registration-and-acf-schema-plan.md` | Execution plan + status for Phase 3a specifically |
+| `context/plans/3b-3d-event-pattern-and-grid-swatches-plan.md` | Execution plan + status for Phase 3b (event-delegation convention, narrowed scope) and 3d (product card/grid swatches) |
 | `context/plans/header-mega-menu-plan.md`, `header-mega-menu-cleanup-notes.md` | Phase 1 implementation |
 | `context/plans/lucide-icon-system-plan.md`, `icon-block-plugin-integration-plan.md` | Icon system infrastructure (done) |
 | `context/decisions/jetengine-and-jet-smart-filters-vs-native-rebuild.md` | Locked decision: no Jet\* plugins as live dependencies, native rebuild throughout |
