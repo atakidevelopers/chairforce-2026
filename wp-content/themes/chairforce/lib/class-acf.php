@@ -90,25 +90,26 @@ class Acf {
 				'menu_title' => esc_html__( 'Theme Options', 'chairforce' ),
 				'menu_slug'  => 'chairforce-theme-options', // after changing the slug, update Fields Group location as well
 				'capability' => 'manage_options',
+				'redirect'   => false,
 				// N&C infinity mark, derived from assets/images/nc-favicon.svg (cropped + recolored for the dark admin-menu background).
 				'icon_url'   => 'data:image/svg+xml;base64,' . base64_encode( file_get_contents( get_theme_file_path( 'assets/images/nc-menu-icon.svg' ) ) ),
 			]
 		);
 
-		$this->register_jetengine_options_pages();
+		$this->register_theme_sub_options_pages();
 
 	}
 
 	/**
-	 * Register JetEngine-era ACF options pages (legacy blob storage).
+	 * Register sub-pages under Theme Options (native ACF storage post_id slugs).
 	 */
-	private function register_jetengine_options_pages(): void {
+	private function register_theme_sub_options_pages(): void {
 		acf_add_options_page(
 			[
 				'page_title'  => esc_html__( 'Hero Banner Home Page', 'chairforce' ),
 				'menu_title'  => esc_html__( 'Hero Banner', 'chairforce' ),
-				'menu_slug'   => 'hero-banner-home-page',
-				'post_id'     => 'hero-banner-home-page',
+				'menu_slug'   => 'cf-opt-hero',
+				'post_id'     => 'cf-opt-hero',
 				'capability'  => 'manage_options',
 				'redirect'    => false,
 				'parent_slug' => 'chairforce-theme-options',
@@ -117,10 +118,10 @@ class Acf {
 
 		acf_add_options_page(
 			[
-				'page_title'  => esc_html__( 'Delivery Information', 'chairforce' ),
-				'menu_title'  => esc_html__( 'Delivery Information', 'chairforce' ),
-				'menu_slug'   => 'delivery-information-for-product-page',
-				'post_id'     => 'delivery-information-for-product-page',
+				'page_title'  => esc_html__( 'WooCommerce', 'chairforce' ),
+				'menu_title'  => esc_html__( 'WooCommerce', 'chairforce' ),
+				'menu_slug'   => 'cf-opt-wc',
+				'post_id'     => 'cf-opt-wc',
 				'capability'  => 'manage_options',
 				'redirect'    => false,
 				'parent_slug' => 'chairforce-theme-options',
@@ -131,8 +132,8 @@ class Acf {
 			[
 				'page_title'  => esc_html__( 'Catalogue Links', 'chairforce' ),
 				'menu_title'  => esc_html__( 'Catalogue Links', 'chairforce' ),
-				'menu_slug'   => 'catalogue-links',
-				'post_id'     => 'catalogue-links',
+				'menu_slug'   => 'cf-opt-catalogue',
+				'post_id'     => 'cf-opt-catalogue',
 				'capability'  => 'manage_options',
 				'redirect'    => false,
 				'parent_slug' => 'chairforce-theme-options',

@@ -16,7 +16,6 @@ return array(
     'Chairforce\\Editor_Curation' => $baseDir . '/lib/class-editor-curation.php',
     'Chairforce\\Front' => $baseDir . '/lib/class-front.php',
     'Chairforce\\Init' => $baseDir . '/lib/class-init.php',
-    'Chairforce\\Legacy_Options_Storage' => $baseDir . '/lib/class-legacy-options-storage.php',
     'Chairforce\\Lucide_Icons' => $baseDir . '/lib/class-lucide-icons.php',
     'Chairforce\\Mega_Menu' => $baseDir . '/lib/class-mega-menu.php',
     'Chairforce\\Plugins_Manager' => $baseDir . '/lib/class-plugins-manager.php',

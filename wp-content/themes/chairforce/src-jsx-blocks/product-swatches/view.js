@@ -173,7 +173,18 @@ function initProductSwatches() {
 	} );
 
 	if ( ! isTouchDevice() ) {
-		delegateDocument( 'mouseenter', SWATCH_SELECTOR, ( event, swatch ) => {
+		// `mouseenter` doesn't bubble, so a plain document-level listener
+		// only ever fires once (when the pointer first enters the page) —
+		// it never re-fires when moving between sibling elements already
+		// inside the document. `mouseover` bubbles; guarding on
+		// `relatedTarget` (the element the pointer came FROM) re-derives
+		// "entered this swatch from outside it" semantics without
+		// re-triggering on internal moves between a swatch's own children.
+		delegateDocument( 'mouseover', SWATCH_SELECTOR, ( event, swatch ) => {
+			if ( swatch.contains( event.relatedTarget ) ) {
+				return;
+			}
+
 			if ( swatch.classList.contains( 'cf-swatch--hidden' ) ) {
 				return;
 			}

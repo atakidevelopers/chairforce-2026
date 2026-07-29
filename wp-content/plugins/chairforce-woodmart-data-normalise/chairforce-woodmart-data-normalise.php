@@ -2,6 +2,14 @@
 /**
  * Plugin Name:       ChairForce Old (Woodmart) Data Normalise
  * Description:       Temporary batch-processing tool for one-time normalisation of legacy Woodmart/JetEngine-era data during the theme rebuild. Bundles lambry/batchpress (Tools → BatchPress). Deactivate + delete once every job below has been run on an environment.
+ *
+ * Jobs:
+ * - Normalise attribute swatch image term meta (pa_colour + 12 other pa_* taxonomies)
+ * - Normalise showrooms showroom_gallery meta
+ * - Normalise venues venue_image term meta
+ * - Report gallery-tabs gallery_images URL inventory (read-only)
+ * - Normalise gallery-tabs gallery_images meta
+ * - Normalise JetEngine options pages to native ACF storage
  * Version:           1.0.0
  * Requires PHP:      7.4
  * Requires at least: 6.0
@@ -54,6 +62,11 @@ add_filter(
 	'batchpress/jobs',
 	function ( array $jobs ): array {
 		$jobs[] = ChairforceDataNormalise\Jobs\Normalise_Attribute_Swatch_Images::class;
+		$jobs[] = ChairforceDataNormalise\Jobs\Normalise_Showroom_Gallery::class;
+		$jobs[] = ChairforceDataNormalise\Jobs\Normalise_Venue_Image::class;
+		$jobs[] = ChairforceDataNormalise\Jobs\Report_Gallery_Tabs_Images::class;
+		$jobs[] = ChairforceDataNormalise\Jobs\Normalise_Gallery_Tabs_Images::class;
+		$jobs[] = ChairforceDataNormalise\Jobs\Normalise_Jetengine_Options_Pages::class;
 
 		return $jobs;
 	}
