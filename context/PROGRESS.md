@@ -266,7 +266,7 @@ collapse/expand, delegated handlers).
 
 #### 3e. Single-product swatches + gallery swap
 
-**Status: ⏳ Not started**
+**Status: ⏳ Not started** — plan ready: `context/plans/3e-single-product-swatches-and-gallery-plan.md`.
 
 - Full spec: file `04` (variation form, swatch → `found_variation`/
   `show_variation` wiring, main gallery + "additional variation images"
@@ -275,6 +275,25 @@ collapse/expand, delegated handlers).
   `wd_additional_variation_images_data` on `product_variation`, native WC
   hooks in `lib/class-woocommerce-admin.php`.
 - Frontend scaffold waiting for this work: `lib/class-woocommerce-single-product.php`.
+- **Key findings from planning this phase** (full detail in the plan doc):
+  - No template override needed — swatches inject via the
+    `woocommerce_dropdown_variation_attribute_options_html` core filter.
+  - This vendored WooCommerce (10.9.x) ships its own **native, first-party
+    "Variation Gallery" feature**, but it's an experimental **canary**
+    toggle (off by default, `Settings → Advanced → Features`), stores data
+    under a different meta key (`_product_image_gallery`), and its own
+    legacy-migration targets a different, already-confirmed-dead key
+    (`_wc_additional_variation_images`, not our real data). **Decision:
+    don't adopt it yet** — keep reading `wd_additional_variation_images_data`
+    directly via our own filter; revisit as a future BatchPress migration
+    if/when that core feature graduates out of canary.
+  - The Swiper shared-carousel open item (below) is **narrowed, not
+    resolved**: this phase's actual gallery (WooCommerce's classic
+    `.woocommerce-product-gallery` markup) gets a complete carousel/zoom/
+    lightbox story for free via three `add_theme_support()` flags
+    (`wc-product-gallery-slider`/`-zoom`/`-lightbox`) — no Swiper needed
+    for *this* feature. Swiper remains deferred to its first real future
+    consumer (testimonials, category sliders, etc.).
 
 #### 3f. Shop/category "filter by color" sidebar widget
 
@@ -425,8 +444,13 @@ Carried from checklist file `19` §8 — resolve before/during the phase noted:
   numbered pagination) and Swiper isn't installed/referenced anywhere yet,
   so building either now would be speculative. Build the actual Load More
   button/infinite-scroll feature whenever a page's design calls for it
-  instead of numbered pagination; build the shared carousel component when
-  **3e** (single-product gallery) starts — that's the first real consumer.
+  instead of numbered pagination. **Update from 3e planning:** Swiper is
+  *not* needed for the single-product gallery after all — that gallery is
+  WooCommerce's own classic markup, which gets a full carousel/zoom/
+  lightbox story for free via three `add_theme_support()` flags (see 3e
+  above). The shared Swiper component remains deferred to whichever future
+  feature is its first *real* consumer (testimonials, category sliders,
+  etc.) — still not started, no page needs it yet.
 - ~~**"Limit swatches" (+N collapse) vs. always-expanded** and **whether
   the grid-hover gallery-preview feature is wanted independent of
   swatches**~~ — ✅ Resolved (client decision, both in the 3d plan's
@@ -466,6 +490,7 @@ Carried from checklist file `19` §8 — resolve before/during the phase noted:
 | `context/existing-functionality/19-master-rebuild-registration-checklist.md` | Full registration checklist + two-bucket rule (source of the phase legend) |
 | `context/plans/registration-and-acf-schema-plan.md` | Execution plan + status for Phase 3a specifically |
 | `context/plans/3b-3d-event-pattern-and-grid-swatches-plan.md` | Execution plan + status for Phase 3b (event-delegation convention, narrowed scope) and 3d (product card/grid swatches) |
+| `context/plans/3e-single-product-swatches-and-gallery-plan.md` | Execution plan for Phase 3e (single-product swatches + gallery swap) — includes the WooCommerce-native-canary-feature and Swiper-narrowing findings |
 | `context/plans/header-mega-menu-plan.md`, `header-mega-menu-cleanup-notes.md` | Phase 1 implementation |
 | `context/plans/lucide-icon-system-plan.md`, `icon-block-plugin-integration-plan.md` | Icon system infrastructure (done) |
 | `context/decisions/jetengine-and-jet-smart-filters-vs-native-rebuild.md` | Locked decision: no Jet\* plugins as live dependencies, native rebuild throughout |
