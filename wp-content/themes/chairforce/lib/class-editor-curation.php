@@ -57,6 +57,8 @@ class Editor_Curation {
 		 */
 		add_filter( 'should_load_remote_block_patterns', '__return_false' );
 
+		add_filter( 'register_block_type_args', [ $this, 'curate_chairforce_blocks' ], 10, 2 );
+
 	}
 
 	/**
@@ -110,5 +112,22 @@ class Editor_Curation {
 		}
 
 		return $settings;
+	}
+
+	/**
+	 * Theme block registration tweaks (inserter visibility, etc.).
+	 *
+	 * @param array  $args       Block type registration args.
+	 * @param string $block_type Block name.
+	 *
+	 * @return array
+	 */
+	public function curate_chairforce_blocks( array $args, string $block_type ): array {
+
+		if ( 'chairforce/editor-placeholder' === $block_type ) {
+			$args['supports']['inserter'] = false;
+		}
+
+		return $args;
 	}
 }

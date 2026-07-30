@@ -1,0 +1,50 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "chairforce/editor-placeholder",
+  "version": "1.0.0",
+  "title": "Editor Placeholder",
+  "category": "theme",
+  "description": "Site Editor notice for PHP-driven template areas (header, menus, etc.).",
+  "keywords": [
+    "placeholder",
+    "dynamic",
+    "header",
+    "chrome"
+  ],
+  "textdomain": "chairforce",
+  "attributes": {
+    "title": {
+      "type": "string",
+      "default": ""
+    },
+    "description": {
+      "type": "string",
+      "default": ""
+    },
+    "modifier": {
+      "type": "string",
+      "default": ""
+    },
+    "links": {
+      "type": "array",
+      "default": []
+    },
+    "align": {
+      "type": "string",
+      "default": "wide"
+    }
+  },
+  "supports": {
+    "html": false,
+    "inserter": false,
+    "reusable": false,
+    "lock": false,
+    "multiple": false,
+    "align": [
+      "wide"
+    ]
+  },
+  "editorScript": "file:./index.js",
+  "render": "file:./render.php"
+}

@@ -16,10 +16,6 @@
   @import "../sass/cpt/index";
   //@import "../sass/components/index";
 
-  //@include allHeadings {
-  //  font-weight: 400; // TODO: this should match with theme.json
-  //}
-
   .acf-block-preview {
     @include alertBoxStyling;
   }
