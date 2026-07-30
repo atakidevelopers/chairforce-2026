@@ -25,7 +25,6 @@ class ComposerStaticInit0b930fbfa8635b3843fecc3493015433
         'Chairforce\\Lucide_Icons' => __DIR__ . '/../..' . '/lib/class-lucide-icons.php',
         'Chairforce\\Mega_Menu' => __DIR__ . '/../..' . '/lib/class-mega-menu.php',
         'Chairforce\\Plugins_Manager' => __DIR__ . '/../..' . '/lib/class-plugins-manager.php',
-        'Chairforce\\Product_Card' => __DIR__ . '/../..' . '/lib/class-product-card.php',
         'Chairforce\\Product_Swatches' => __DIR__ . '/../..' . '/lib/class-product-swatches.php',
         'Chairforce\\Site_Header' => __DIR__ . '/../..' . '/lib/class-site-header.php',
         'Chairforce\\Theme_Style_Switcher' => __DIR__ . '/../..' . '/lib/class-theme-style-switcher.php',

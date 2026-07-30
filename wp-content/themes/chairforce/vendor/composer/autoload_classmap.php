@@ -20,7 +20,6 @@ return array(
     'Chairforce\\Lucide_Icons' => $baseDir . '/lib/class-lucide-icons.php',
     'Chairforce\\Mega_Menu' => $baseDir . '/lib/class-mega-menu.php',
     'Chairforce\\Plugins_Manager' => $baseDir . '/lib/class-plugins-manager.php',
-    'Chairforce\\Product_Card' => $baseDir . '/lib/class-product-card.php',
     'Chairforce\\Product_Swatches' => $baseDir . '/lib/class-product-swatches.php',
     'Chairforce\\Site_Header' => $baseDir . '/lib/class-site-header.php',
     'Chairforce\\Theme_Style_Switcher' => $baseDir . '/lib/class-theme-style-switcher.php',

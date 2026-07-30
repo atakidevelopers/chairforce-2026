@@ -1,6 +1,6 @@
 <?php
 /**
- * Load More helpers — query replay + product-collection template part render.
+ * Load More helpers — query replay + product-card template part render.
  *
  * Page-1 Load More only.
  *
@@ -382,33 +382,10 @@ function chairforce_get_load_more_max_pages( int $found_posts, ?int $per_page = 
 }
 
 /**
- * Find a block by name in a parsed block tree.
+ * Parsed product-card blocks from the shared template part (Option A).
  *
- * @param array<int, array<string, mixed>> $blocks     Parsed blocks.
- * @param string                            $block_name Target block name.
- * @return array<string, mixed>|null
- */
-function chairforce_find_parsed_block( array $blocks, string $block_name ): ?array {
-
-	foreach ( $blocks as $block ) {
-		if ( $block_name === ( $block['blockName'] ?? '' ) ) {
-			return $block;
-		}
-
-		if ( ! empty( $block['innerBlocks'] ) && is_array( $block['innerBlocks'] ) ) {
-			$found = chairforce_find_parsed_block( $block['innerBlocks'], $block_name );
-
-			if ( null !== $found ) {
-				return $found;
-			}
-		}
-	}
-
-	return null;
-}
-
-/**
- * Parsed product-template block from the product-collection template part.
+ * Root blocks from `parts/product-card.html` are wrapped in a synthetic
+ * `core/null` parent so WP_Block renders the same markup as the archive grid.
  *
  * @return array<string, mixed>
  */
@@ -420,32 +397,39 @@ function chairforce_get_product_card_template_parsed_block(): array {
 		return $parsed_block;
 	}
 
-	$template_path = get_theme_file_path( 'parts/product-collection.html' );
+	$template_path = get_theme_file_path( 'parts/product-card.html' );
 
 	if ( ! is_readable( $template_path ) ) {
 		return [
-			'blockName'    => 'woocommerce/product-template',
+			'blockName'    => 'core/null',
 			'attrs'        => [],
 			'innerBlocks'  => [],
 			'innerContent' => [],
 		];
 	}
 
-	$blocks = parse_blocks( (string) file_get_contents( $template_path ) );
-	$found  = chairforce_find_parsed_block( $blocks, 'woocommerce/product-template' );
+	$inner_blocks = parse_blocks( (string) file_get_contents( $template_path ) );
+	$inner_blocks = array_values(
+		array_filter(
+			$inner_blocks,
+			static function ( $block ) {
+				return ! empty( $block['blockName'] );
+			}
+		)
+	);
 
-	$parsed_block = $found ?? [
-		'blockName'    => 'woocommerce/product-template',
+	$parsed_block = [
+		'blockName'    => 'core/null',
 		'attrs'        => [],
-		'innerBlocks'  => [],
-		'innerContent' => [],
+		'innerBlocks'  => $inner_blocks,
+		'innerContent' => array_fill( 0, count( $inner_blocks ), null ),
 	];
 
 	return $parsed_block;
 }
 
 /**
- * Render one product card as `<li class="wc-block-product">` via template part blocks.
+ * Render one product card as `<li class="wc-block-product">` via product-card blocks.
  *
  * `core/post-title` reads global `$post` during its render callback — not just
  * block context `postId`. Always set/restore global post around WP_Block render.
@@ -467,9 +451,8 @@ function chairforce_render_product_template_item( int $post_id, array $context )
 	$previous_post = ( $post instanceof \WP_Post ) ? $post : null;
 	$post          = $loop_post;
 
-	$block_instance              = chairforce_get_product_card_template_parsed_block();
-	$block_instance['blockName'] = 'core/null';
-	$available_context           = array_merge(
+	$block_instance    = chairforce_get_product_card_template_parsed_block();
+	$available_context = array_merge(
 		$context,
 		[
 			'postType' => $loop_post->post_type,

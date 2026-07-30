@@ -734,6 +734,21 @@
 			"area": "uncategorized",
 			"name": "product-collection",
 			"title": "Product Collection"
+		},
+		{
+			"area": "uncategorized",
+			"name": "product-card",
+			"title": "Product Card"
+		},
+		{
+			"area": "uncategorized",
+			"name": "product-upsells",
+			"title": "Product Upsells"
+		},
+		{
+			"area": "uncategorized",
+			"name": "product-related",
+			"title": "Product Related"
 		}
 	]
 }

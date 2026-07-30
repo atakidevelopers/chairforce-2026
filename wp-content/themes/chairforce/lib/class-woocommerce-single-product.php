@@ -28,6 +28,8 @@ class WooCommerce_Single_Product {
 	 * Register single-product hooks.
 	 */
 	private function register_hooks(): void {
+		add_action( 'init', [ $this, 'remove_legacy_upsell_grid' ], 20 );
+
 		add_filter(
 			'woocommerce_dropdown_variation_attribute_options_html',
 			[ $this, 'prepend_attribute_swatches_html' ],
@@ -41,6 +43,13 @@ class WooCommerce_Single_Product {
 			10,
 			3
 		);
+	}
+
+	/**
+	 * Drop legacy PHP upsell loop — single product template uses block upsells.
+	 */
+	public function remove_legacy_upsell_grid(): void {
+		remove_action( 'woocommerce_after_single_product_summary', 'woocommerce_upsell_display', 15 );
 	}
 
 	/**
