@@ -422,6 +422,23 @@ proactively backfill).
   `sales-by-location`/`feature` taxonomy archives are built, to confirm
   they render through this same path (or get their own dedicated template).
 
+- **TODO: `chairforce/quick-view-button` block is dead code** — found during
+  the 3h audit. `WooCommerce_Archive::inject_quick_view_button()` (added in
+  the 3h "polish" commit, `0a19143`) now auto-injects the trigger sitewide via
+  a `render_block` filter on `woocommerce/product-image`, which replaced the
+  original plan of placing the `chairforce/quick-view-button` block explicitly
+  in `archive-product.html` (that line was removed in the same commit). The
+  block itself (`src-jsx-blocks/quick-view-button/`, incl. its own
+  `render.php`) is still registered/insertable in the editor, but the real
+  frontend path never calls it — button markup now has two independent
+  sources of truth (`render.php` and the new
+  `chairforce_get_quick_view_button_html()` helper in
+  `includes/helper-functions.php`) that currently match but can drift.
+  **Revisit alongside the Block Hooks rework below** — if that lands, decide
+  whether to delete the block entirely or repurpose it as the Block-Hooks
+  target (in which case its `render.php` becomes the single source of truth
+  again and the helper function goes away).
+
 ## Open decisions blocking future phases
 
 Carried from checklist file `19` §8 — resolve before/during the phase noted:
@@ -466,6 +483,18 @@ Carried from checklist file `19` §8 — resolve before/during the phase noted:
   above). The shared Swiper component remains deferred to whichever future
   feature is its first *real* consumer (testimonials, category sliders,
   etc.) — still not started, no page needs it yet.
+- **Card composition mechanism (swatches + quick view) is being reworked to
+  Block Hooks, superseding the manual-template-edit approach 3d/3h shipped
+  with** — see `context/notes/product-grid-cards-and-load-more.md`
+  (client direction, 30 Jul 2026: use WooCommerce/WordPress Block Hooks
+  rather than editing every Product Collection template/pattern by hand).
+  Blocks **Load More** (any AJAX partial-render endpoint must render
+  whatever the final card-composition mechanism is) and should land before
+  the dead-code cleanup noted above. Not started — needs a small
+  verification spike first (see notes file §3.4) since Block Hooks have no
+  first-party WooCommerce precedent for `product-template`/`product-image`/
+  `product-button` anchors in this codebase's WC version, only for header
+  areas (Mini Cart/Customer Account).
 - ~~**"Limit swatches" (+N collapse) vs. always-expanded** and **whether
   the grid-hover gallery-preview feature is wanted independent of
   swatches**~~ — ✅ Resolved (client decision, both in the 3d plan's
@@ -505,6 +534,7 @@ Carried from checklist file `19` §8 — resolve before/during the phase noted:
 | `context/existing-functionality/19-master-rebuild-registration-checklist.md` | Full registration checklist + two-bucket rule (source of the phase legend) |
 | `context/plans/registration-and-acf-schema-plan.md` | Execution plan + status for Phase 3a specifically |
 | `context/plans/3b-3d-event-pattern-and-grid-swatches-plan.md` | Execution plan + status for Phase 3b (event-delegation convention, narrowed scope) and 3d (product card/grid swatches) |
+| `context/notes/product-grid-cards-and-load-more.md` | Card-composition parity problem (swatches/quick-view only on `archive-product.html`, not related/upsell grids) + Block Hooks direction for the fix + Load More findings |
 | `context/plans/3e-single-product-swatches-and-gallery-plan.md` | Execution plan for Phase 3e (single-product swatches + gallery swap) — includes the WooCommerce-native-canary-feature and Swiper-narrowing findings |
 | `context/plans/3h-quick-view-plan.md` | Execution plan for Phase 3h (Quick View rebuild — modal/drawer shell, REST endpoint, reuses 3e swatch/gallery component) |
 | `context/plans/header-mega-menu-plan.md`, `header-mega-menu-cleanup-notes.md` | Phase 1 implementation |

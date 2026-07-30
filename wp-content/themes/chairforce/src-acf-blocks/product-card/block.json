@@ -1,0 +1,33 @@
+{
+  "name": "chairforce/product-card",
+  "title": "Product Card",
+  "description": "Renders one product card via WooCommerce's classic loop hooks (woocommerce_before_shop_loop_item, etc.) instead of separate block-editor sub-blocks. Structure is locked — extend via add_action(), not the block editor.",
+  "category": "woocommerce",
+  "icon": "cart",
+  "apiVersion": 2,
+  "keywords": [
+    "woocommerce",
+    "product",
+    "card"
+  ],
+  "textdomain": "chairforce",
+  "ancestor": [
+    "woocommerce/product-template"
+  ],
+  "usesContext": [
+    "postId",
+    "postType",
+    "queryId"
+  ],
+  "acf": {
+    "mode": "preview",
+    "renderTemplate": "render.php"
+  },
+  "supports": {
+    "html": false,
+    "inserter": true,
+    "reusable": false,
+    "lock": false,
+    "multiple": false
+  }
+}

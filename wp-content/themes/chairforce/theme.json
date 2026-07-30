@@ -729,6 +729,11 @@
 			"area": "uncategorized",
 			"name": "sidebar",
 			"title": "Sidebar"
+		},
+		{
+			"area": "uncategorized",
+			"name": "product-collection",
+			"title": "Product Collection"
 		}
 	]
 }
