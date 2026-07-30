@@ -39,6 +39,7 @@ class Api {
 
 		require_once get_theme_file_path( 'includes/rest-api/product-search.php' );
 		require_once get_theme_file_path( 'includes/rest-api/quick-view.php' );
+		require_once get_theme_file_path( 'includes/rest-api/load-more.php' );
 
 	}
 

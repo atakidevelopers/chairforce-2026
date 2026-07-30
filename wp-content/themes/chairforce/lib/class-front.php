@@ -139,6 +139,7 @@ class Front {
 			'site_url'           => get_site_url(),
 			'nonce'              => wp_create_nonce( 'wp_rest' ),
 			'rest_url'           => rest_url( 'chairforce/v1/product-search' ),
+			'loadMoreRestUrl'    => rest_url( 'chairforce/v1/load-more' ),
 			'quickViewRestUrl'   => rest_url( 'chairforce/v1/quick-view' ),
 			'quickViewDisplay'   => in_array( $quick_view_display, [ 'modal', 'drawer' ], true ) ? $quick_view_display : 'drawer',
 			'quickViewContent'   => in_array( $quick_view_content, [ 'dimensions', 'short_description' ], true ) ? $quick_view_content : 'dimensions',

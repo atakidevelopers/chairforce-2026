@@ -1,0 +1,21 @@
+@import "../settings";
+@import "../mixins";
+
+// Page-1 Load More button (core/query-pagination extension).
+.cf-load-more {
+	display: flex;
+	justify-content: center;
+	margin-top: $spacing-large;
+	width: 100%;
+}
+
+.cf-load-more__button {
+	@include breakpoint(medium) {
+		min-width: 12rem;
+	}
+
+	&.is-loading {
+		cursor: wait;
+		opacity: 0.75;
+	}
+}

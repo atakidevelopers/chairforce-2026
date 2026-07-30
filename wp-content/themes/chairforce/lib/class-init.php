@@ -56,6 +56,7 @@ class Init {
 		$this->define_mega_menu_hooks();
 		$this->define_content_types_hooks();
 		$this->define_woocommerce_hooks();
+		$this->define_load_more_hooks();
 		$this->define_admin_style_fixes_hooks();
 		$this->define_attribute_swatch_preview_column_hooks();
 
@@ -216,6 +217,18 @@ class Init {
 	private function define_woocommerce_hooks() {
 
 		new WooCommerce();
+
+	}
+
+	/**
+	 * Register page-1 Load More for Product Collection pagination.
+	 *
+	 * @since 2.0.0
+	 * @access private
+	 */
+	private function define_load_more_hooks() {
+
+		new Load_More();
 
 	}
 
