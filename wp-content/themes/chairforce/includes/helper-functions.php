@@ -334,7 +334,7 @@ function chairforce_trim_filename( string $name, int $limit = 40 ): string {
 /**
  * Render the PHP site header (announcement, search, nav shell).
  *
- * Frontend: chairforce/editor-placeholder block render.php (modifier: header).
+ * Frontend: chairforce/site-header block render.php (parts/header.html).
  */
 function chairforce_render_site_header(): void {
 

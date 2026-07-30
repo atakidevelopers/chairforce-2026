@@ -1,17 +1,12 @@
 {
   "$schema": "https://schemas.wp.org/trunk/block.json",
   "apiVersion": 3,
-  "name": "chairforce/editor-placeholder",
+  "name": "chairforce/site-header",
   "version": "1.0.0",
-  "title": "Editor Placeholder",
+  "title": "Site Header",
   "category": "theme",
-  "description": "Site Editor notice for PHP-driven template areas. Pass title, description, and links as attributes.",
-  "keywords": [
-    "placeholder",
-    "dynamic",
-    "header",
-    "chrome"
-  ],
+  "description": "PHP site header on the frontend; editor notice in wp-admin.",
+  "keywords": [ "header", "navigation", "menu" ],
   "textdomain": "chairforce",
   "attributes": {
     "title": {
@@ -25,10 +20,6 @@
     "links": {
       "type": "array",
       "default": []
-    },
-    "align": {
-      "type": "string",
-      "default": "wide"
     }
   },
   "supports": {
@@ -36,10 +27,7 @@
     "inserter": false,
     "reusable": false,
     "lock": false,
-    "multiple": false,
-    "align": [
-      "wide"
-    ]
+    "multiple": false
   },
   "editorScript": "file:./index.js",
   "render": "file:./render.php"

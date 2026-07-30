@@ -1,31 +1,13 @@
-import { __ } from '@wordpress/i18n';
-
-const HEADER_LINKS = [
-	{
-		label: __( 'Appearance → Menus', 'chairforce' ),
-		url: '/wp-admin/nav-menus.php',
-	},
-	{
-		label: __( 'Theme Options → Header', 'chairforce' ),
-		url: '/wp-admin/admin.php?page=chairforce-theme-options',
-	},
-];
-
 /**
- * Resolve admin links for a placeholder modifier.
+ * Resolve admin links saved on the block.
  *
- * @param {string} modifier Block modifier slug.
- * @param {Array}  links    Links saved on the block, if any.
+ * @param {Array} links Links from block attributes.
  * @return {Array}
  */
-export function getEditorPlaceholderLinks( modifier, links = [] ) {
-	if ( Array.isArray( links ) && links.length > 0 ) {
-		return links.filter( ( link ) => link?.label && link?.url );
+export function getEditorPlaceholderLinks( links = [] ) {
+	if ( ! Array.isArray( links ) ) {
+		return [];
 	}
 
-	if ( modifier === 'header' ) {
-		return HEADER_LINKS;
-	}
-
-	return [];
+	return links.filter( ( link ) => link?.label && link?.url );
 }

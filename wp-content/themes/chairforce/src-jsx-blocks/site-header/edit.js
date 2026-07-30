@@ -1,7 +1,7 @@
 import { useBlockProps } from '@wordpress/block-editor';
 
-import EditorPlaceholderNotice from './notice';
-import { getEditorPlaceholderLinks } from './utils';
+import EditorPlaceholderNotice from '../editor-placeholder/notice';
+import { getEditorPlaceholderLinks } from '../editor-placeholder/utils';
 
 export default function Edit( { attributes } ) {
 	const { title, description, links } = attributes;

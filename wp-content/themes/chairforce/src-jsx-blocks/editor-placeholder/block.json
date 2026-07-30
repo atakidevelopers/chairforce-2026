@@ -5,7 +5,7 @@
   "version": "1.0.0",
   "title": "Editor Placeholder",
   "category": "theme",
-  "description": "Site Editor notice for PHP-driven template areas (header, menus, etc.).",
+  "description": "Site Editor notice for PHP-driven template areas. Pass title, description, and links as attributes.",
   "keywords": [
     "placeholder",
     "dynamic",
@@ -19,10 +19,6 @@
       "default": ""
     },
     "description": {
-      "type": "string",
-      "default": ""
-    },
-    "modifier": {
       "type": "string",
       "default": ""
     },
