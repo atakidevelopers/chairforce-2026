@@ -377,6 +377,19 @@ scheduled as immediate follow-up (see Known open issues below).
   appended cards rendered from the same `parts/product-card.html` source as the
   initial grid (no markup drift). `query-loop-load-more` plugin superseded.
 
+#### 3j. Wishlist (logged-in only, custom table)
+
+**Status: ⏳ Not started** — Plan: `context/plans/3j-wishlist-plan.md`.
+
+- Investigation: file `13` (Woodmart native — 3 empty shells, 0 products; no
+  migration). **Locked:** logged-in users only; single list; custom table
+  `{prefix}chairforce_wishlist_items`; no header badge; no guest cookies.
+- **Theme options (WooCommerce tab):** `wishlist_enabled` (master + account
+  endpoint), `wishlist_loop_enabled` (heart on product cards).
+- **Surfaces:** product loop (`parts/product-card.html`), single product,
+  My Account `wishlist` endpoint — **endpoint UI deferred** to plan chunk 5.
+- **Depends on:** 3h card corner layout (heart slot above quick-view eye).
+
 ### Phase 4 — Home page assembly — Team
 
 **Status: ⏳ Not started**
@@ -397,9 +410,8 @@ Phase 3 built.
 
 **Status: ⏳ Not started**
 
-- Wishlist rebuild folds in here: Woodmart's native 2-table wishlist,
-  confirmed near-empty live data (3 shells, 0 products) — zero real
-  migration burden, free to design fresh — file `13`.
+- Wishlist **core + card/single surfaces** moved to **3j**; My Account wishlist
+  page UI is 3j chunk 5 (may overlap Phase 5 polish) — file `13`.
 - Blog archive filters (Post Tag/Category — checklist file `19` §4a) are
   out of scope for the swatch/gallery research, just standard blog
   filtering.
@@ -546,6 +558,7 @@ Carried from checklist file `19` §8 — resolve before/during the phase noted:
 | `context/plans/3e-single-product-swatches-and-gallery-plan.md` | Execution plan for Phase 3e (single-product swatches + gallery swap) — includes the WooCommerce-native-canary-feature and Swiper-narrowing findings |
 | `context/plans/3h-quick-view-plan.md` | Execution plan for Phase 3h (Quick View rebuild — modal/drawer shell, REST endpoint, reuses 3e swatch/gallery component) |
 | `context/plans/3i-load-more-plan.md` | Execution plan for Phase 3i (page-1 Load More on Product Collection archives) |
+| `context/plans/3j-wishlist-plan.md` | Execution plan for Phase 3j (logged-in wishlist — custom table, loop + single; account endpoint deferred) |
 | `context/notes/load-more-findings.md` | Load More investigation, rejected plugin, architecture notes |
 | `context/plans/header-mega-menu-plan.md`, `header-mega-menu-cleanup-notes.md` | Phase 1 implementation |
 | `context/plans/lucide-icon-system-plan.md`, `icon-block-plugin-integration-plan.md` | Icon system infrastructure (done) |
