@@ -383,6 +383,72 @@
             "ui": 1
         },
         {
+            "key": "field_chairforce_tab_woocommerce",
+            "label": "WooCommerce",
+            "name": "",
+            "aria-label": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "top",
+            "endpoint": 0,
+            "selected": 0
+        },
+        {
+            "key": "field_chairforce_wishlist_enabled",
+            "label": "Enable Wishlist",
+            "name": "wishlist_enabled",
+            "aria-label": "",
+            "type": "true_false",
+            "instructions": "Enable wishlist for logged-in customers (single product, product loop when enabled below, and My Account endpoint when built).",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "message": "",
+            "default_value": 1,
+            "ui_on_text": "Enabled",
+            "ui_off_text": "Disabled",
+            "ui": 1
+        },
+        {
+            "key": "field_chairforce_wishlist_loop_enabled",
+            "label": "Show on Product Loop",
+            "name": "wishlist_loop_enabled",
+            "aria-label": "",
+            "type": "true_false",
+            "instructions": "Show the wishlist heart on product cards in grids and archives.",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_chairforce_wishlist_enabled",
+                        "operator": "==",
+                        "value": "1"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "message": "",
+            "default_value": 1,
+            "ui_on_text": "Show",
+            "ui_off_text": "Hide",
+            "ui": 1
+        },
+        {
             "key": "field_6147c9851039e",
             "label": "Misc",
             "name": "",

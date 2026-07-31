@@ -23,6 +23,7 @@ return array(
     'Chairforce\\Product_Swatches' => $baseDir . '/lib/class-product-swatches.php',
     'Chairforce\\Site_Header' => $baseDir . '/lib/class-site-header.php',
     'Chairforce\\Theme_Style_Switcher' => $baseDir . '/lib/class-theme-style-switcher.php',
+    'Chairforce\\Wishlist' => $baseDir . '/lib/class-wishlist.php',
     'Chairforce\\WooCommerce' => $baseDir . '/lib/class-woocommerce.php',
     'Chairforce\\WooCommerce_Admin' => $baseDir . '/lib/class-woocommerce-admin.php',
     'Chairforce\\WooCommerce_Archive' => $baseDir . '/lib/class-woocommerce-archive.php',

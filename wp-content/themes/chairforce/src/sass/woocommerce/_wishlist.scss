@@ -1,0 +1,79 @@
+@import "../icon-font/mixins";
+
+// Product card — heart stacked above quick-view eye (see quick-view/_trigger.scss).
+.cf-wishlist-button {
+	position: absolute;
+	top: $spacing-x-small;
+	right: $spacing-x-small;
+	z-index: 3;
+}
+
+.cf-wishlist-trigger {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 2.25rem;
+	height: 2.25rem;
+	padding: 0;
+	border: 0;
+	border-radius: $radius-sm;
+	background: rgb(255 255 255 / 92%);
+	color: $color-body;
+	box-shadow: 0 1px 4px rgb(0 0 0 / 12%);
+	cursor: pointer;
+	transition: background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+
+	@include cf-icon-before('heart');
+
+	&::before {
+		font-size: 1.125rem;
+	}
+
+	&:hover,
+	&:focus-visible {
+		background: $color-primary;
+		color: $color-white;
+		box-shadow: 0 2px 8px rgb(0 0 0 / 16%);
+	}
+
+	&:focus-visible {
+		outline: 2px solid $color-primary;
+		outline-offset: 2px;
+	}
+
+	&[aria-busy="true"] {
+		opacity: 0.65;
+		cursor: wait;
+	}
+}
+
+.cf-wishlist-button.is-active .cf-wishlist-trigger {
+	background: $color-primary;
+	color: $color-white;
+}
+
+// Single product summary row.
+.cf-wishlist-button--summary {
+	position: static;
+	margin-top: $spacing-small;
+
+	.cf-wishlist-trigger {
+		width: auto;
+		min-height: 2.75rem;
+		padding: 0.625rem 1rem;
+		gap: 0.5em;
+		font-size: $font-size-small;
+		font-weight: 600;
+		line-height: 1.2;
+	}
+
+	.cf-wishlist-trigger__label {
+		display: inline;
+	}
+}
+
+.single-product .cf-wishlist-button--summary.is-active .cf-wishlist-trigger {
+	background: rgb(255 255 255 / 92%);
+	color: $color-primary;
+	border: 1px solid $color-primary;
+}

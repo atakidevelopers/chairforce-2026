@@ -147,6 +147,16 @@ class Front {
 			'quickViewRestUrl'   => rest_url( 'chairforce/v1/quick-view' ),
 			'quickViewDisplay'   => in_array( $quick_view_display, [ 'modal', 'drawer' ], true ) ? $quick_view_display : 'drawer',
 			'quickViewContent'   => in_array( $quick_view_content, [ 'dimensions', 'short_description' ], true ) ? $quick_view_content : 'dimensions',
+			'wishlistEnabled'    => chairforce_is_wishlist_enabled(),
+			'wishlistLoopEnabled' => chairforce_is_wishlist_loop_enabled(),
+			'wishlistIsLoggedIn' => is_user_logged_in(),
+			'wishlistToggleUrl'  => rest_url( 'chairforce/v1/wishlist/toggle' ),
+			'wishlistStatusUrl'  => rest_url( 'chairforce/v1/wishlist/status' ),
+			'wishlistLoginUrl'   => function_exists( 'wc_get_page_permalink' )
+				? wc_get_page_permalink( 'myaccount' )
+				: wp_login_url(),
+			'wishlistAddLabel'   => __( 'Add to wishlist', 'chairforce' ),
+			'wishlistRemoveLabel' => __( 'Remove from wishlist', 'chairforce' ),
 		];
 
 

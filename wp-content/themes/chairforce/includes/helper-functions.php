@@ -459,3 +459,41 @@ function chairforce_render_site_header(): void {
 	Chairforce\Site_Header::render();
 
 }
+
+/**
+ * Whether the wishlist feature is enabled (master theme option).
+ */
+function chairforce_is_wishlist_enabled(): bool {
+	if ( ! function_exists( 'get_field' ) ) {
+		return false;
+	}
+
+	$value = get_field( 'wishlist_enabled', 'option' );
+
+	if ( null === $value || '' === $value ) {
+		return true;
+	}
+
+	return (bool) $value;
+}
+
+/**
+ * Whether the wishlist heart should render on product loop cards.
+ */
+function chairforce_is_wishlist_loop_enabled(): bool {
+	if ( ! chairforce_is_wishlist_enabled() ) {
+		return false;
+	}
+
+	if ( ! function_exists( 'get_field' ) ) {
+		return false;
+	}
+
+	$value = get_field( 'wishlist_loop_enabled', 'option' );
+
+	if ( null === $value || '' === $value ) {
+		return true;
+	}
+
+	return (bool) $value;
+}

@@ -1,0 +1,39 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "chairforce/wishlist-button",
+  "version": "1.0.0",
+  "title": "Wishlist Button",
+  "category": "woocommerce",
+  "description": "Heart icon toggle for adding or removing a product from the customer wishlist.",
+  "keywords": [
+    "woocommerce",
+    "product",
+    "wishlist",
+    "heart"
+  ],
+  "textdomain": "chairforce",
+  "attributes": {
+    "context": {
+      "type": "string",
+      "default": "card",
+      "enum": [
+        "card",
+        "summary"
+      ]
+    }
+  },
+  "usesContext": [
+    "postId"
+  ],
+  "supports": {
+    "html": false,
+    "inserter": true,
+    "reusable": false,
+    "lock": false
+  },
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css",
+  "render": "file:./render.php"
+}
