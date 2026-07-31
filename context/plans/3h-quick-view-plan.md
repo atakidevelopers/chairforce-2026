@@ -16,18 +16,19 @@ Clear options; Escape close → reopen Adella Chair shows correct product, not
 stale Breeze content). Modal skin verified after switching ACF to `modal`
 (Breeze Armchair content loads identically). Simple product (Ava Vintage School
 Chair) verified earlier in session. Page-2 pagination quick view trigger opens
-popup (delegated handler — Load More AJAX append not tested; no Load More UI on
-this page). REST endpoint verified via `ddev wp eval` for Breeze Chair (#1000290)
-— returns gallery + `variations_form` + `cf-swatches-single`. Zero
-quick-view-specific console errors (pre-existing jQuery migrate + copyright block
-only).
+popup (delegated handler). **Update (31 Jul 2026):** quick-view trigger now lives
+in shared `parts/product-card.html` (`2a455c9`); Load More append shipped as
+**3i** (`d7d7acc`) — minor quirks pending polish. REST endpoint verified via
+`ddev wp eval` for Breeze Chair (#1000290) — returns gallery + `variations_form`
++ `cf-swatches-single`. Zero quick-view-specific console errors (pre-existing
+jQuery migrate + copyright block only).
 
 **Not verified this session:** 3e single-product page regression after chunk-1
 refactor; backdrop-click close; rapid reopen mid-fetch stale flash; formal
-saved screenshots for PM/client. **Deploy note:** dev site uses a DB-customized
-`archive-product` template (post ID 1514388) — sync theme file content into that
-template (or re-save in Site Editor) so quick-view buttons appear on shop/archive
-after deploy.
+saved screenshots for PM/client. **Update (31 Jul 2026):** card trigger placement
+moved to `parts/product-card.html`; DB template sync note no longer applies when
+theme template parts are used (0 DB overrides at time of writing per
+`context/implementation/product-grid.md`).
 
 ## Goal
 

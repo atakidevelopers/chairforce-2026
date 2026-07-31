@@ -15,7 +15,8 @@ Related docs:
   legacy Woodmart behaviour + mandatory delegated-events rule.
 - `.cursor/rules/18-event-delegation.mdc` — theme module
   (`src/js/shared/delegated-events.js`).
-- `context/PROGRESS.md` — 3b event-delegation shipped; Load More UI deferred.
+- `context/PROGRESS.md` — 3b event-delegation shipped; **3i Load More shipped**
+  (`d7d7acc`, minor quirks pending polish).
 
 ---
 
@@ -274,17 +275,18 @@ Theme implementation should **replace** pagination with Load More in the templat
 | 30 Jul 2026 | Classic `content-product.php` — spike only; block-template render is the real path. |
 | 30 Jul 2026 | Must dispatch `chairforce:content-updated` after append (3b delegated-events). |
 | 30 Jul 2026 | Optional plugin patch acceptable as 1–2 hr spike only; do not maintain a fork. |
+| 31 Jul 2026 | Theme Load More **shipped** as 3i (`d7d7acc`); minor quirks pending polish. |
 
 ---
 
-## 8. Implementation checklist (when started)
+## 8. Implementation checklist
 
-- [ ] Spec REST route `chairforce/v1/load-more` (or chosen name).
-- [ ] Implement main-query reconstruction + paged increment.
-- [ ] Render product-template items HTML (canonical markup source TBD).
-- [ ] Frontend: delegated click, append, loading state, hide button at last page.
-- [ ] Dispatch `chairforce:content-updated`.
-- [ ] Replace / hide standard pagination in archive template when Load More enabled.
-- [ ] Verify: shop, category archive, sort change, appended card interactions.
+- [x] Spec REST route `chairforce/v1/load-more`.
+- [x] Implement main-query reconstruction + paged increment.
+- [x] Render product cards from `parts/product-card.html` (canonical source).
+- [x] Frontend: delegated click, append, loading state, hide button at last page.
+- [x] Dispatch `chairforce:content-updated`.
+- [x] Page-1 Load More via `core/query-pagination` `loadMore` attribute.
+- [x] Update `context/PROGRESS.md` + plan doc.
+- [ ] **Follow-up:** minor quirks polish + full browser verification.
 - [ ] Deactivate `query-loop-load-more`.
-- [ ] Update `context/PROGRESS.md` when done.

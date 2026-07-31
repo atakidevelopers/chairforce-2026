@@ -40,6 +40,95 @@ $block_classes = chairforce_get_acf_block_classname($block, 'my-block');
 $primary_category = chairforce_get_taxonomy_terms_for_post('category');
 ```
 
+## Programmatic Buttons in PHP
+
+When PHP code needs to output theme-styled buttons (Load More, header CTAs,
+dynamic system UI, etc.), **always use `chairforce_get_buttons_markup()`** in
+`/includes/helper-functions.php` — do **not** hand-roll
+`<div class="wp-block-button">` / `<a class="wp-block-button__link">` markup.
+
+The helper builds real `core/buttons` + `core/button` block comments and renders
+them via `do_blocks()`, so output matches the Site Editor: block styles
+(`is-style-primary`, `is-style-ghost`, etc.), layout classes
+(`is-layout-flex`, `is-content-justification-center`, `wp-container-core-buttons-*`),
+and Lucide icon classes (`cf-has-icon`, `cf-icon-{slug}`).
+
+### When to use
+
+- **Use** for dynamic/system UI authored in PHP classes (`Load_More`, header
+  fragments, REST-driven shells, etc.).
+- **Do not use** for content CTAs in patterns/templates — those stay normal
+  editor blocks.
+- **Avoid** calling it in tight loops (e.g. per card in a grid); `do_blocks()`
+  has a per-call cost.
+
+### Example — link with Ghost style + Lucide icon
+
+```php
+echo chairforce_get_buttons_markup(
+    [
+        [
+            'label' => __( 'Shop now', 'chairforce' ),
+            'url'   => home_url( '/shop/' ),
+            'style' => 'is-style-ghost',
+            'icon'  => 'shopping-cart',
+        ],
+    ],
+    [
+        'layout' => [
+            'type'           => 'flex',
+            'justifyContent' => 'center',
+        ],
+    ]
+);
+```
+
+### Example — `<button>` for JS-driven actions (Load More)
+
+```php
+echo chairforce_get_buttons_markup(
+    [
+        [
+            'label'           => __( 'Load More', 'chairforce' ),
+            'style'           => 'is-style-ghost',
+            'element_class'   => 'cf-load-more__button',
+            'tag'             => 'button',
+            'html_attributes' => [
+                'data-next-page' => '2',
+                'aria-busy'      => 'false',
+            ],
+        ],
+    ],
+    [
+        'layout' => [
+            'type'           => 'flex',
+            'justifyContent' => 'center',
+        ],
+    ]
+);
+```
+
+### Button config keys
+
+| Key | Purpose |
+|---|---|
+| `label` | Button text (required) |
+| `url` | Required when `tag` is `a` (default) |
+| `tag` | `a` or `button` (maps to core/button `tagName`) |
+| `style` | Block style class, e.g. `is-style-ghost` |
+| `class` | Extra classes on `.wp-block-button` wrapper |
+| `element_class` | Extra classes on the `<a>` / `<button>` element |
+| `icon` | Lucide slug → `cf-has-icon` / `cf-icon-{slug}` on wrapper |
+| `icon_position` | `left` (default) or `right` |
+| `html_attributes` | Extra attrs on the element (`data-*`, `aria-*`, etc.) |
+| `external` | Opens link in new tab |
+
+**Args:** `wrapper_class`, `default_style` (default `is-style-primary`), `default_icon`, `layout` (flex/center JSON for `core/buttons`).
+
+**Reference implementation:** `lib/class-load-more.php`.
+
+**Related:** [Icon System](16-icon-system.mdc) — Lucide on buttons (editor vs PHP vs Sass mixins).
+
 ## Debug & Development Helpers
 ```php
 // Logging & variable dumping
@@ -69,6 +158,12 @@ $asset_url = chairforce_get_build_url('style.css');
 // ❌ Bad - Don't hardcode paths
 $url = get_template_directory_uri() . '/build/style.css';
 
+// ✅ Good - Programmatic buttons via helper (consistent block styles + icons)
+echo chairforce_get_buttons_markup( [ [ 'label' => 'Load More', 'tag' => 'button', 'style' => 'is-style-ghost' ] ] );
+
+// ❌ Bad - Hand-rolled wp-block-button markup in PHP
+echo '<div class="wp-block-button is-style-ghost"><button class="wp-block-button__link">Load More</button></div>';
+
 // ✅ Good - Check function availability
 if (function_exists('blokki_acf_get_block_classname')) {
     return blokki_acf_get_block_classname($block, $default_classname);
@@ -95,5 +190,6 @@ chairforce_write_log("Build URL: $build_url");
 - [PHP Architecture](07-php-architecture.mdc) - How helper functions integrate with class system
 - [Build System](03-build-system.mdc) - How helpers integrate with build process
 - [Block System](04-block-system.mdc) - How blocks use helper functions
+- [Icon System](16-icon-system.mdc) - Lucide icons on programmatic PHP buttons
 - [Directory Structure](02-directory-structure.mdc) - Where helper functions are located
 

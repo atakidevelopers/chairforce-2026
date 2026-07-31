@@ -52,6 +52,10 @@ active?" second-guess was raised and rejected —
   `lucide-icon-system-task-list.md`; rules: `.cursor/rules/16-icon-system.mdc`.
 - Icon Block plugin integration (same curated icon set, inline SVG) —
   `context/plans/icon-block-plugin-integration-plan.md`.
+- Site Editor header placeholders — `chairforce/site-header` +
+  `chairforce/editor-placeholder` JSX blocks (`c7c9205`, `e482633`); PHP header
+  renders on frontend, locked notice in editor. Hidden from inserter via
+  `Editor_Curation::curate_chairforce_blocks()`.
 
 ### Phase 2 — Static/content patterns — Team
 
@@ -108,10 +112,9 @@ Per file `11` §6 ("do early rather than late") — nearly every feature in
 planning 3d — no page currently uses Load More/infinite-scroll (existing
 templates use numbered `query-pagination`), and Swiper isn't installed or
 referenced anywhere yet. The plan above narrows 3b to just the event-
-delegation **convention** (needed by 3d's click handler now); the actual
-Load More UI and the shared Swiper component are deferred to whichever
-phase first needs them — see that plan's "Scope decision" section and the
-open-decision item below.
+delegation **convention** (needed by 3d's click handler now); the shared
+Swiper component is deferred to whichever phase first needs it. **Update
+(31 Jul 2026):** Load More UI shipped as **3i** (`d7d7acc`).
 
 #### 3c. Term swatch admin UI (`pa_colour` term meta)
 
@@ -332,8 +335,7 @@ Black swatch → full variation gallery rebuild, Clear → default gallery) and
 Plan: `context/plans/3h-quick-view-plan.md` chunks 1–4. Verified on
 `/product-category/chairs/cafe-chairs/` (drawer — eye trigger, Breeze Armchair
 popup with swatch→gallery swap inside popup; Escape → different product reopen;
-modal skin after ACF switch). REST verified for Breeze Chair (#1000290). Page-2
-pagination trigger works; Load More AJAX append not tested.
+modal skin after ACF switch). REST verified for Breeze Chair (#1000290).
 
 - Full spec: file `16` (AJAX reuse of single-product markup — rebuilt as REST +
   vanilla JS shell, not Woodmart/Magnific).
@@ -343,8 +345,37 @@ pagination trigger works; Load More AJAX append not tested.
   `drawer`); `chairforce/quick-view-button` block in `cf-card-media` wrapper;
   `src/js/quick-view.js` lazy shell + `primeVariationForms()` on inject; Sass
   `--modal`/`--drawer` skins + eye icon (`0xe0ba`).
-- **Deploy note:** DB-customized `archive-product` template must be synced from
-  theme file (dev: post ID 1514388) for buttons to appear on shop/archive grids.
+
+#### Product grid card parity (3d/3h follow-up)
+
+**Status: ✅ Done (31 Jul 2026)** — `2a455c9`.
+
+- Tracker: `context/implementation/product-grid.md`.
+- Notes/decision history: `context/notes/product-grid-cards-and-load-more.md`.
+- **Shipped:** canonical card in `parts/product-card.html` (swatches + quick
+  view blocks inside `cf-card-media` / `cf-wrapp-swatches` wrappers), referenced
+  from `parts/product-collection.html`, `parts/product-related.html`, and
+  `parts/product-upsells.html`. Removed `WooCommerce_Archive::inject_quick_view_button()`
+  and the short-lived locked ACF `chairforce/product-card` experiment (`785febf`,
+  reverted in `2a455c9`). Block Hooks approach (spiked 30 Jul 2026) superseded by
+  the shared template-part strategy — same outcome, simpler maintenance.
+- **Templates:** `archive-product.html` → `product-collection` part;
+  `templates/single-product.html` → upsell + related parts (legacy WC hook grids
+  removed).
+
+#### 3i. Page-1 Load More (WooCommerce Product Collection archives)
+
+**Status: ✅ Done (31 Jul 2026)** — `d7d7acc`. Plan:
+`context/plans/3i-load-more-plan.md`. **Minor quirks remain** — polish pass
+scheduled as immediate follow-up (see Known open issues below).
+
+- Full spec: file `17` (delegated-events architecture); investigation:
+  `context/notes/load-more-findings.md`.
+- **Shipped:** REST `GET /wp-json/chairforce/v1/load-more`; `Load_More` class
+  extending `core/query-pagination` with `loadMore` attribute (page 1 only —
+  page 2+ keeps crawlable numbered pagination); `src/js/shared/load-more.js`;
+  appended cards rendered from the same `parts/product-card.html` source as the
+  initial grid (no markup drift). `query-loop-load-more` plugin superseded.
 
 ### Phase 4 — Home page assembly — Team
 
@@ -422,22 +453,13 @@ proactively backfill).
   `sales-by-location`/`feature` taxonomy archives are built, to confirm
   they render through this same path (or get their own dedicated template).
 
-- **TODO: `chairforce/quick-view-button` block is dead code** — found during
-  the 3h audit. `WooCommerce_Archive::inject_quick_view_button()` (added in
-  the 3h "polish" commit, `0a19143`) now auto-injects the trigger sitewide via
-  a `render_block` filter on `woocommerce/product-image`, which replaced the
-  original plan of placing the `chairforce/quick-view-button` block explicitly
-  in `archive-product.html` (that line was removed in the same commit). The
-  block itself (`src-jsx-blocks/quick-view-button/`, incl. its own
-  `render.php`) is still registered/insertable in the editor, but the real
-  frontend path never calls it — button markup now has two independent
-  sources of truth (`render.php` and the new
-  `chairforce_get_quick_view_button_html()` helper in
-  `includes/helper-functions.php`) that currently match but can drift.
-  **Revisit alongside the Block Hooks rework below** — if that lands, decide
-  whether to delete the block entirely or repurpose it as the Block-Hooks
-  target (in which case its `render.php` becomes the single source of truth
-  again and the helper function goes away).
+- **Load More — minor quirks pending** — core feature shipped (`d7d7acc`) and
+  marked complete in docs; a short polish pass remains before calling it fully
+  verified in browser. Track fixes in the next session, then close this item.
+- ~~**`chairforce/quick-view-button` block is dead code**~~ — ✅ Resolved
+  (`2a455c9`). Block is live again via explicit placement in
+  `parts/product-card.html`; runtime `render_block` injection and the duplicate
+  `chairforce_get_quick_view_button_html()` helper removed.
 
 ## Open decisions blocking future phases
 
@@ -470,31 +492,16 @@ Carried from checklist file `19` §8 — resolve before/during the phase noted:
   new `image` field (3c) — ask the client whether they still want these
   material-texture icons; if yes, it's a 2-term manual backfill, not a
   batch job.
-- **Load More UI + shared Swiper carousel component, deferred out of 3b**
-  (found while scoping `3b-3d-event-pattern-and-grid-swatches-plan.md`) —
-  no page currently uses Load More/infinite-scroll (existing templates use
-  numbered pagination) and Swiper isn't installed/referenced anywhere yet,
-  so building either now would be speculative. Build the actual Load More
-  button/infinite-scroll feature whenever a page's design calls for it
-  instead of numbered pagination. **Update from 3e planning:** Swiper is
-  *not* needed for the single-product gallery after all — that gallery is
-  WooCommerce's own classic markup, which gets a full carousel/zoom/
-  lightbox story for free via three `add_theme_support()` flags (see 3e
-  above). The shared Swiper component remains deferred to whichever future
-  feature is its first *real* consumer (testimonials, category sliders,
-  etc.) — still not started, no page needs it yet.
-- **Card composition mechanism (swatches + quick view) is being reworked to
-  Block Hooks, superseding the manual-template-edit approach 3d/3h shipped
-  with** — see `context/notes/product-grid-cards-and-load-more.md`
-  (client direction, 30 Jul 2026: use WooCommerce/WordPress Block Hooks
-  rather than editing every Product Collection template/pattern by hand).
-  Blocks **Load More** (any AJAX partial-render endpoint must render
-  whatever the final card-composition mechanism is) and should land before
-  the dead-code cleanup noted above. Not started — needs a small
-  verification spike first (see notes file §3.4) since Block Hooks have no
-  first-party WooCommerce precedent for `product-template`/`product-image`/
-  `product-button` anchors in this codebase's WC version, only for header
-  areas (Mini Cart/Customer Account).
+- ~~**Load More UI, deferred out of 3b**~~ — ✅ Done as **3i** (`d7d7acc`).
+  Page-1 Load More on inherited Product Collection archives; minor quirks
+  pending polish (see Known open issues). **Shared Swiper carousel** remains
+  deferred — not needed for single-product gallery (see 3e); first real consumer
+  still TBD (testimonials, category sliders, etc.).
+- ~~**Card composition mechanism (swatches + quick view) — Block Hooks rework**~~
+  — ✅ Done via shared **`parts/product-card.html` template part** (`2a455c9`),
+  not Block Hooks. Block Hooks spike passed (30 Jul 2026) but implementation
+  chose the template-part approach instead — see
+  `context/notes/product-grid-cards-and-load-more.md` §6 decision log.
 - ~~**"Limit swatches" (+N collapse) vs. always-expanded** and **whether
   the grid-hover gallery-preview feature is wanted independent of
   swatches**~~ — ✅ Resolved (client decision, both in the 3d plan's
@@ -534,9 +541,12 @@ Carried from checklist file `19` §8 — resolve before/during the phase noted:
 | `context/existing-functionality/19-master-rebuild-registration-checklist.md` | Full registration checklist + two-bucket rule (source of the phase legend) |
 | `context/plans/registration-and-acf-schema-plan.md` | Execution plan + status for Phase 3a specifically |
 | `context/plans/3b-3d-event-pattern-and-grid-swatches-plan.md` | Execution plan + status for Phase 3b (event-delegation convention, narrowed scope) and 3d (product card/grid swatches) |
-| `context/notes/product-grid-cards-and-load-more.md` | Card-composition parity problem (swatches/quick-view only on `archive-product.html`, not related/upsell grids) + Block Hooks direction for the fix + Load More findings |
+| `context/notes/product-grid-cards-and-load-more.md` | Card-composition parity problem + decision history (Block Hooks spike → template-part solution) |
+| `context/implementation/product-grid.md` | Short tracker for shared product card, quick view, swatches, and Load More wiring |
 | `context/plans/3e-single-product-swatches-and-gallery-plan.md` | Execution plan for Phase 3e (single-product swatches + gallery swap) — includes the WooCommerce-native-canary-feature and Swiper-narrowing findings |
 | `context/plans/3h-quick-view-plan.md` | Execution plan for Phase 3h (Quick View rebuild — modal/drawer shell, REST endpoint, reuses 3e swatch/gallery component) |
+| `context/plans/3i-load-more-plan.md` | Execution plan for Phase 3i (page-1 Load More on Product Collection archives) |
+| `context/notes/load-more-findings.md` | Load More investigation, rejected plugin, architecture notes |
 | `context/plans/header-mega-menu-plan.md`, `header-mega-menu-cleanup-notes.md` | Phase 1 implementation |
 | `context/plans/lucide-icon-system-plan.md`, `icon-block-plugin-integration-plan.md` | Icon system infrastructure (done) |
 | `context/decisions/jetengine-and-jet-smart-filters-vs-native-rebuild.md` | Locked decision: no Jet\* plugins as live dependencies, native rebuild throughout |

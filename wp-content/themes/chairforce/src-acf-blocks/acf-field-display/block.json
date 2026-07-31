@@ -4,7 +4,7 @@
   "description": "Display any ACF field value with a chosen tag.",
   "category": "theme",
   "icon": "editor-textcolor",
-  "apiVersion": 2,
+  "apiVersion": 3,
   "keywords": [
     "acf",
     "field",

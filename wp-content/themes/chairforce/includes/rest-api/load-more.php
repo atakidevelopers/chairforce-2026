@@ -114,12 +114,14 @@ function chairforce_rest_load_more( \WP_REST_Request $request ) {
 
 	return new \WP_REST_Response(
 		[
-			'html'     => $html,
-			'nextPage' => $page + 1,
-			'hasMore'  => $page < $max_pages,
-			'maxPages' => $max_pages,
-			'perPage'  => $per_page,
-			'offset'   => ( $page - 1 ) * $per_page,
+			'html'         => $html,
+			'nextPage'     => $page + 1,
+			'hasMore'      => $page < $max_pages,
+			'maxPages'     => $max_pages,
+			'perPage'      => $per_page,
+			'offset'       => ( $page - 1 ) * $per_page,
+			'total'        => (int) $query->found_posts,
+			'viewingCount' => min( $page * $per_page, (int) $query->found_posts ),
 		],
 		200
 	);

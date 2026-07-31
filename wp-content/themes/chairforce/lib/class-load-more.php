@@ -116,16 +116,20 @@ class Load_More {
 
 		global $wp_query;
 
-		$per_page  = chairforce_get_loop_shop_per_page();
+		$per_page = chairforce_get_loop_shop_per_page();
+		$total    = 0;
 		$max_pages = 0;
 
 		if ( $wp_query instanceof \WP_Query ) {
-			$max_pages = chairforce_get_load_more_max_pages( (int) $wp_query->found_posts, $per_page );
+			$total     = (int) $wp_query->found_posts;
+			$max_pages = chairforce_get_load_more_max_pages( $total, $per_page );
 		}
 
 		if ( $max_pages <= 1 ) {
 			return '';
 		}
+
+		$viewing = min( $per_page, $total );
 
 		$load_more_text = ! empty( $attributes['loadMoreText'] )
 			? (string) $attributes['loadMoreText']
@@ -139,23 +143,67 @@ class Load_More {
 
 		$wrapper_attributes = get_block_wrapper_attributes(
 			[
-				'class' => 'cf-load-more wp-block-query-pagination',
+				'class'      => 'cf-load-more wp-block-query-pagination',
+				'data-total' => (string) $total,
 			]
 		);
 
-		$button_attributes = sprintf(
-			'class="cf-load-more__button wp-element-button" type="button" data-next-page="2" data-max-pages="%1$d" data-per-page="%2$d" data-query-vars="%3$s" data-loading-text="%4$s" aria-busy="false"',
-			esc_attr( (string) $max_pages ),
-			esc_attr( (string) $per_page ),
-			esc_attr( wp_json_encode( $query_vars ) ),
-			esc_attr( $loading_text )
+		$progress_percent = $total > 0 ? round( ( $viewing / $total ) * 100, 2 ) : 0;
+
+		$status_text = sprintf(
+			/* translators: 1: number of products currently visible, 2: total products in the query */
+			__( 'Viewing %1$s of %2$s', 'chairforce' ),
+			number_format_i18n( $viewing ),
+			number_format_i18n( $total )
+		);
+
+		$button_markup = chairforce_get_buttons_markup(
+			[
+				[
+					'label'           => $load_more_text,
+					'style'           => 'is-style-ghost',
+					'element_class'   => 'cf-load-more__button',
+					'tag'             => 'button',
+					'html_attributes' => [
+						'data-next-page'     => '2',
+						'data-max-pages'     => (string) $max_pages,
+						'data-per-page'      => (string) $per_page,
+						'data-query-vars'    => wp_json_encode( $query_vars ),
+						'data-loading-text'  => $loading_text,
+						'aria-busy'          => 'false',
+					],
+				],
+			],
+			[
+				'layout' => [
+					'type'            => 'flex',
+					'justifyContent'  => 'center',
+				],
+			]
 		);
 
 		return sprintf(
-			'<nav %1$s><button %2$s>%3$s</button></nav>',
+			'<div %1$s>
+				<div class="cf-load-more__progress" role="progressbar" aria-valuemin="0" aria-valuemax="%2$d" aria-valuenow="%3$d" aria-label="%7$s">
+					<span class="cf-load-more__progress-bar" style="width:%4$s%%"></span>
+				</div>
+				<p class="cf-load-more__status">%5$s</p>
+				%6$s
+			</div>',
 			$wrapper_attributes,
-			$button_attributes,
-			esc_html( $load_more_text )
+			esc_attr( (string) $total ),
+			esc_attr( (string) $viewing ),
+			esc_attr( (string) $progress_percent ),
+			esc_html( $status_text ),
+			$button_markup,
+			esc_attr(
+				sprintf(
+					/* translators: 1: number of products currently visible, 2: total products in the query */
+					__( 'Viewing %1$s of %2$s products', 'chairforce' ),
+					number_format_i18n( $viewing ),
+					number_format_i18n( $total )
+				)
+			)
 		);
 	}
 }

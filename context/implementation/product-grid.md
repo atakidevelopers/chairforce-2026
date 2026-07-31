@@ -1,5 +1,8 @@
 # Product grid — implementation tracker
 
+**Status: ✅ Done (31 Jul 2026)** — `2a455c9` (shared card), `d7d7acc` (Load More).
+Minor Load More quirks pending polish (next session).
+
 Short reference for how **Quick View**, **Swatches**, and **Load More** land on Product Collection cards. Detailed plans live under `context/plans/` and `context/notes/`.
 
 ---

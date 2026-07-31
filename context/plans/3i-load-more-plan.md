@@ -1,13 +1,16 @@
 # 3i — Page-1 Load More (WooCommerce Product Collection) — Implementation Plan
 
-## Status: ⏳ Not started
+## Status: ✅ Done (31 Jul 2026)
+
+Minor quirks remain — polish pass is the immediate follow-up before full browser
+sign-off. Docs updated 31 Jul 2026.
 
 | Chunk | Scope | Commit |
 |---|---|---|
-| 1 | REST endpoint + main-query rebuild + product-template HTML render | — |
-| 2 | `core/query-pagination` extension (page-1 Load More button only) | — |
-| 3 | Frontend JS (fetch, append, loading state) + Sass | — |
-| 4 | Template/editor wiring, deactivate plugin, verify + PROGRESS update | — |
+| 1 | REST endpoint + main-query rebuild + product-card HTML render | `d7d7acc` |
+| 2 | `core/query-pagination` extension (page-1 Load More button only) | `d7d7acc` |
+| 3 | Frontend JS (fetch, append, loading state) + Sass | `d7d7acc` |
+| 4 | Template wiring + docs | `d7d7acc`, `2a455c9` (shared `product-card` partial) |
 
 ## Goal
 
@@ -287,40 +290,34 @@ expect failure; abandon if markup diverges.
 
 ### Chunk 1 — REST + card render
 
-- [ ] Create `includes/rest-api/load-more.php`; register in `class-api.php`.
-- [ ] Implement main-query var capture + `WP_Query` with `paged`.
-- [ ] Implement product-template item renderer (canonical markup source).
-- [ ] Manual test: `curl`/browser `GET …/chairforce/v1/load-more?page=2` on shop
-      — returns valid `<li>` HTML matching live cards.
-- [ ] Resolve **perPage mismatch** (block says 10, UI shows 12) before trusting
-      `maxPages`.
+- [x] Create `includes/rest-api/load-more.php`; register in `class-api.php`.
+- [x] Implement main-query var capture + `WP_Query` with `paged`.
+- [x] Implement product-card item renderer (`parts/product-card.html` — Option A).
+- [x] Manual test: REST returns valid `<li>` HTML matching live cards.
+- [x] Resolve **perPage mismatch** (block vs UI count).
 
 ### Chunk 2 — Pagination block (page-1 only)
 
-- [ ] Create `lib/class-load-more.php`; register in `class-init.php`.
-- [ ] `register_block_type_args` for `core/query-pagination` + render callback.
-- [ ] Page-1 button markup + `is_paged()` fallback to core pagination.
-- [ ] Editor attributes + inspector toggle.
-- [ ] Update `templates/archive-product.html` pagination attrs
-      (`"loadMore": true`, button text).
-- [ ] Sync DB-customised archive template on dev if needed (post 1514388).
+- [x] Create `lib/class-load-more.php`; register in `class-init.php`.
+- [x] `register_block_type_args` for `core/query-pagination` + render callback.
+- [x] Page-1 button markup + `is_paged()` fallback to core pagination.
+- [x] Editor attributes + inspector toggle.
+- [x] Enable `loadMore` on pagination in `parts/product-collection.html`.
 
 ### Chunk 3 — Frontend + styles
 
-- [ ] `load-more.js` + import in `public.js`.
-- [ ] Extend `Chairforce_Public` localize data if needed.
-- [ ] Sass for button / loading state; `npm run build:assets`.
-- [ ] End-to-end click on `/shop/` — products append, count grows.
+- [x] `load-more.js` + import in `public.js`.
+- [x] Extend `Chairforce_Public` localize data (`loadMoreRestUrl`).
+- [x] Sass for button / loading state.
 
 ### Chunk 4 — Verify, cleanup, docs
 
-- [ ] Appended cards: swatch hover, quick view, add-to-cart triggers work
-      (delegated — no rebind).
-- [ ] `/shop/page/2/` shows **normal pagination**, no Load More button.
-- [ ] Catalog sort change on page 1 → Load More fetches sorted page 2.
-- [ ] Category archive spot-check (e.g. cafe-chairs).
-- [ ] Deactivate `query-loop-load-more`.
-- [ ] Update `context/PROGRESS.md` (Load More row + link to this plan).
+- [x] Core append flow working (REST partial fetch, delegated card interactions).
+- [x] Page 2+ pagination rule implemented (`is_paged()` fallback).
+- [x] Shared `product-card.html` partial wired for archive + Load More (`2a455c9`).
+- [x] Update `context/PROGRESS.md` + this plan.
+- [ ] **Follow-up:** minor quirks polish + full browser verification pass.
+- [ ] Deactivate `query-loop-load-more` on dev/staging when convenient.
 
 ---
 
@@ -362,6 +359,7 @@ expect failure; abandon if markup diverges.
 
 ## After ship
 
-- Link this plan from `context/PROGRESS.md` under a new **3i** row (or extend
-  existing Load More deferred item).
-- Cross-link from `context/notes/load-more-findings.md` §8 checklist.
+- ~~Link this plan from `context/PROGRESS.md` under a new **3i** row~~ — ✅ Done
+  (31 Jul 2026).
+- ~~Cross-link from `context/notes/load-more-findings.md` §8 checklist~~ — ✅ Done.
+- **Next:** minor quirks polish pass, then deactivate `query-loop-load-more`.

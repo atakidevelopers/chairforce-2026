@@ -1,6 +1,10 @@
 # Product grid cards & Product Collection overrides — discussion notes
 
-Captured: 30 Jul 2026.
+Captured: 30 Jul 2026. **Resolved: 31 Jul 2026** — shared
+`parts/product-card.html` template part (`2a455c9`). See
+`context/implementation/product-grid.md` for the current wiring tracker.
+Block Hooks plan (§3.2) was spiked but not shipped; template-part approach
+chosen instead.
 
 How to get the **same product card markup** on every Product Collection grid
 (shop, related, upsells, etc.) — swatches, quick view, and template strategy.
@@ -399,27 +403,22 @@ than the original "decide one trigger strategy" framing:
 
 ## 5. Action checklist
 
-**Superseded 30 Jul 2026** — replaced by the Block Hooks plan (§3.2b–e):
+**Superseded 31 Jul 2026** — Block Hooks plan replaced by shared template part:
 
-- [x] Verification spike (§3.2e): disposable `hooked_block_types` test in
-      `functions.php`, confirmed firing on archive + the plugin-owned
-      related-products pattern. **Passed 30 Jul 2026** — proceed with the
-      real implementation below.
-- [ ] Add the two real `blockHooks` declarations (`chairforce/quick-view-button`
-      → `woocommerce/product-image`/`after`; `chairforce/product-swatches` →
-      `core/post-title`/`before`) in each block's `block.json`.
-- [ ] Add global `.wc-block-product { position: relative; }` CSS rule
-      (`src/sass/quick-view/_card-media.scss` or a new shared partial).
-- [ ] Move `.cf-wrapp-swatches`'s flex/center CSS onto
-      `.wp-block-chairforce-product-swatches` directly.
-- [ ] Remove `cf-card-media`/`cf-wrapp-swatches` Group wrappers from
-      `archive-product.html`.
-- [ ] Remove `WooCommerce_Archive::inject_quick_view_button()` (the
-      `render_block` filter) once the hook is confirmed covering the same
-      surfaces — resolves the dead-code TODO in `context/PROGRESS.md`.
-- [ ] Sync DB-customised archive template with theme file if needed.
-- [ ] Re-verify quick view + swatches on: shop, category archive,
-      single-product related pattern, and post–Load More append.
+- [x] Verification spike (§3.2e): Block Hooks firing confirmed on archive +
+      related-products pattern. **Passed 30 Jul 2026.**
+- [x] **Shipped instead:** `parts/product-card.html` shared partial with explicit
+      `chairforce/quick-view-button` + `chairforce/product-swatches` blocks
+      (`2a455c9`). Referenced from `product-collection`, `product-related`, and
+      `product-upsells` template parts.
+- [x] Remove `WooCommerce_Archive::inject_quick_view_button()` (`2a455c9`).
+- [x] Load More renders the same partial via REST (`d7d7acc`).
+- [x] Update `context/PROGRESS.md` + related docs (31 Jul 2026).
+
+**Not done (Block Hooks path — dropped):**
+
+- ~~Add `blockHooks` declarations to swatches/quick-view blocks~~
+- ~~Remove `cf-card-media`/`cf-wrapp-swatches` wrappers~~ — kept; layout unchanged
 
 ---
 
@@ -432,4 +431,5 @@ than the original "decide one trigger strategy" framing:
 | 30 Jul 2026 | Quick view already cross-grid via `render_block`; swatches need the same *outcome* via pattern/template strategy (not necessarily the same mechanism). |
 | 30 Jul 2026 | Block Hooks `before product-button` rejected for current layout (swatches belong under image in `cf-wrapp-swatches`). |
 | 30 Jul 2026 | **Superseded the above** — client direction: use Block Hooks as the primary mechanism, not manual template/pattern edits. Unblocked by discovering WooCommerce's own `.wc-block-product` per-card wrapper class removes the need for a `cf-wrapp-swatches`/`cf-card-media` Group wrapper entirely (§3.2b) — split into two narrow anchors (`product-image`/`after` for quick view, `post-title`/`before` for swatches) instead of one shared `product-button` hook (§3.2c). Not yet implemented — needs the §3.2e verification spike first (no first-party WooCommerce precedent for hooking into `product-template`'s inner blocks specifically, only header areas). |
-| 30 Jul 2026 | **Spike passed** (§3.2e) — a disposable `core/paragraph` hook anchored to `woocommerce/product-image`/`after` fired correctly on both `archive-product.html` and the WooCommerce-plugin-owned `related-products` pattern. Root cause of "why patterns work too" traced to `WP_Block_Patterns_Registry` baking hooks into every registered pattern's content at registration time — not something `render_block_core_pattern()` itself does. Cleared to proceed with the real `blockHooks` declarations for `chairforce/quick-view-button` and `chairforce/product-swatches`. |
+| 30 Jul 2026 | **Spike passed** (§3.2e) — Block Hooks confirmed viable on archive + related-products pattern. |
+| 31 Jul 2026 | **Block Hooks not shipped** — chose shared `parts/product-card.html` template part instead (`2a455c9`). Same parity outcome; Load More reads the same partial (`d7d7acc`). |

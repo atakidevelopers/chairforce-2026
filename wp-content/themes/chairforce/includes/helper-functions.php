@@ -215,97 +215,215 @@ function chairforce_get_post_count_for_terms_and_post_types( array $term_ids, ar
 
 
 /**
- * Render a "button bar" for given links.
+ * Sanitize a space-separated HTML class list.
  *
- * @param array $buttons Each item: [
- *   'label'    => (string) Button text (required),
- *   'url'      => (string) HREF (required),
- *   'external' => (bool)   Open in new tab (adds target and rel),
- *   'class'    => (string) Extra classes for the button wrapper (optional),
- *   'style'    => (string) Style class, defaults to 'is-style-primary-right-icon' (optional),
- *   'icon'     => (string) Font Awesome icon class (e.g., 'fa-eye', 'fa-download') (optional),
- * ]
- * @param array $args Optional: [
- *   'wrapper_class' => (string) extra classes for the buttons container,
- *   'default_style' => (string) default style class (overrides the hard default),
- *   'default_icon'  => (string) default Font Awesome icon class (optional),
- * ]
- *
- * @return string Gutenberg buttons markup (rendered via do_blocks).
+ * @param string $classes Class names.
+ * @return string
  */
-function chairforce_get_buttons_markup( array $buttons, array $args = [] ): string {
+function chairforce_sanitize_html_classes( string $classes ): string {
+	$out = [];
 
-	if ( empty( $buttons ) ) {
+	foreach ( preg_split( '/\s+/', trim( $classes ) ) as $class_name ) {
+		if ( '' !== $class_name ) {
+			$out[] = sanitize_html_class( $class_name );
+		}
+	}
+
+	return implode( ' ', array_unique( $out ) );
+}
+
+/**
+ * Lucide icon class names for programmatic core/button blocks.
+ *
+ * Mirrors src/js-admin/button-icons.js getIconClassNames().
+ *
+ * @param string $icon_slug     Lucide slug (e.g. shopping-cart).
+ * @param string $icon_position left|right.
+ * @return string
+ */
+function chairforce_get_button_icon_class_names( string $icon_slug, string $icon_position = 'left' ): string {
+
+	if ( '' === trim( $icon_slug ) ) {
 		return '';
 	}
-	$wrapper_extra = trim( (string) ( $args['wrapper_class'] ?? '' ) );
-	$default_style = trim( (string) ( $args['default_style'] ?? 'is-style-fill' ) );
 
-	$sanitize_classes = static function ( string $classes ): string {
-		$out = [];
-		foreach ( preg_split( '/\s+/', trim( $classes ) ) as $c ) {
-			if ( $c !== '' ) {
-				$out[] = sanitize_html_class( $c );
-			}
-		}
+	$icon_slug      = sanitize_html_class( $icon_slug );
+	$position_class = 'right' === $icon_position ? 'cf-icon-right' : 'cf-icon-left';
 
-		return implode( ' ', array_unique( $out ) );
-	};
+	return "cf-has-icon {$position_class} cf-icon-{$icon_slug}";
+}
 
-	$wrapper_extra_attr = $sanitize_classes( $wrapper_extra );
+/**
+ * Build an HTML attribute string from an associative array.
+ *
+ * @param array<string, scalar|null> $attributes Attribute names and values.
+ * @return string
+ */
+function chairforce_build_html_attributes_string( array $attributes ): string {
+	$parts = [];
 
-	ob_start();
-
-	// Container (optionally add className to the block JSON if wrapper classes provided)
-	if ( $wrapper_extra_attr !== '' ) {
-		printf(
-			'<!-- wp:buttons {"className":"%1$s"} --><div class="wp-block-buttons %1$s">',
-			esc_attr( $wrapper_extra_attr )
-		);
-	} else {
-		echo '<!-- wp:buttons --><div class="wp-block-buttons">';
-	}
-
-	foreach ( $buttons as $btn ) {
-		$label = isset( $btn['label'] ) ? (string) $btn['label'] : '';
-		$url   = isset( $btn['url'] ) ? (string) $btn['url'] : '';
-		if ( $label === '' || $url === '' ) {
+	foreach ( $attributes as $name => $value ) {
+		if ( null === $value || false === $value ) {
 			continue;
 		}
 
-		$external    = ! empty( $btn['external'] );
-		$extra_class = $sanitize_classes( (string) ( $btn['class'] ?? '' ) );
-		$style_class = $sanitize_classes( (string) ( $btn['style'] ?? $default_style ) );
-		$button_cls  = trim( $style_class . ( $extra_class ? ' ' . $extra_class : '' ) );
+		$name = preg_replace( '/[^a-z0-9_\-]/i', '', (string) $name );
 
-		// Build rel attribute for external links
-		$rel_tokens = [];
-		if ( $external ) {
-			$rel_tokens[] = 'noopener';
-			$rel_tokens[] = 'noreferrer';
+		if ( '' === $name ) {
+			continue;
 		}
-		$rel_attr = $rel_tokens ? ' rel="' . esc_attr( implode( ' ', array_unique( $rel_tokens ) ) ) . '"' : '';
-		$target   = $external ? ' target="_blank"' : '';
 
-		// Handle Font Awesome icon
-		$icon_class = isset( $btn['icon'] ) ? (string) $btn['icon'] : ( $args['default_icon'] ?? '' );
-		$label_html = wp_kses_post( $label );
-		if ( $icon_class ) {
-			$icon_class = sanitize_html_class( $icon_class );
-			$label_html = sprintf( '%s <i class="fa-sharp fa-light %s"></i>', $label_html, $icon_class );
+		$parts[] = sprintf( '%s="%s"', esc_attr( $name ), esc_attr( (string) $value ) );
+	}
+
+	return implode( ' ', $parts );
+}
+
+/**
+ * Render a buttons group via core/buttons + core/button (do_blocks).
+ *
+ * @param array<int, array<string, mixed>> $buttons Each item: [
+ *   'label'           => (string) Button text (required),
+ *   'url'             => (string) HREF (required when tag is "a"),
+ *   'external'        => (bool)   Open in new tab (adds target and rel),
+ *   'class'           => (string) Extra classes for the .wp-block-button wrapper,
+ *   'element_class'   => (string) Extra classes for the a/button element,
+ *   'style'           => (string) Block style class (e.g. is-style-ghost),
+ *   'icon'            => (string) Lucide icon slug (optional),
+ *   'icon_position'   => (string) left|right (optional, default left),
+ *   'tag'             => (string) a|button (optional, default a),
+ *   'html_attributes' => (array) Extra attributes for the a/button element,
+ * ]
+ * @param array<string, mixed>             $args Optional: [
+ *   'wrapper_class' => (string) Extra classes for the buttons container,
+ *   'default_style' => (string) Default style class when button style omitted,
+ *   'default_icon'  => (string) Default Lucide icon slug,
+ *   'layout'        => (array)  core/buttons layout attribute (e.g. flex + justifyContent),
+ * ]
+ *
+ * @return string Rendered buttons markup.
+ */
+function chairforce_get_buttons_markup( array $buttons, array $args = [] ): string {
+
+	if ( empty( $buttons ) || ! function_exists( 'do_blocks' ) ) {
+		return '';
+	}
+
+	$wrapper_extra = chairforce_sanitize_html_classes( (string) ( $args['wrapper_class'] ?? '' ) );
+	$default_style = chairforce_sanitize_html_classes( (string) ( $args['default_style'] ?? 'is-style-primary' ) );
+	$layout        = isset( $args['layout'] ) && is_array( $args['layout'] ) ? $args['layout'] : null;
+
+	$buttons_attrs = [];
+
+	if ( null !== $layout ) {
+		$buttons_attrs['layout'] = $layout;
+	}
+
+	if ( '' !== $wrapper_extra ) {
+		$buttons_attrs['className'] = $wrapper_extra;
+	}
+
+	$buttons_json = ! empty( $buttons_attrs )
+		? wp_json_encode( $buttons_attrs, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES )
+		: '';
+
+	ob_start();
+
+	if ( '' !== $buttons_json ) {
+		printf( '<!-- wp:buttons %s -->', $buttons_json );
+	} else {
+		echo '<!-- wp:buttons -->';
+	}
+
+	echo '<div class="wp-block-buttons">';
+
+	foreach ( $buttons as $btn ) {
+		$label    = isset( $btn['label'] ) ? (string) $btn['label'] : '';
+		$url      = isset( $btn['url'] ) ? (string) $btn['url'] : '';
+		$tag_name = isset( $btn['tag'] ) && 'button' === $btn['tag'] ? 'button' : 'a';
+
+		if ( '' === $label ) {
+			continue;
 		}
+
+		if ( 'a' === $tag_name && '' === $url ) {
+			continue;
+		}
+
+		$external       = ! empty( $btn['external'] );
+		$wrapper_class  = chairforce_sanitize_html_classes( (string) ( $btn['class'] ?? '' ) );
+		$style_class      = chairforce_sanitize_html_classes( (string) ( $btn['style'] ?? $default_style ) );
+		$element_class    = chairforce_sanitize_html_classes( (string) ( $btn['element_class'] ?? '' ) );
+		$icon_slug        = isset( $btn['icon'] ) ? sanitize_key( (string) $btn['icon'] ) : sanitize_key( (string) ( $args['default_icon'] ?? '' ) );
+		$icon_position    = isset( $btn['icon_position'] ) && 'right' === $btn['icon_position'] ? 'right' : 'left';
+		$icon_classes     = chairforce_get_button_icon_class_names( $icon_slug, $icon_position );
+		$wrapper_classes  = chairforce_sanitize_html_classes(
+			trim( implode( ' ', array_filter( [ $style_class, $wrapper_class, $icon_classes ] ) ) )
+		);
+
+		$block_attrs = [
+			'tagName' => $tag_name,
+		];
+
+		if ( '' !== $wrapper_classes ) {
+			$block_attrs['className'] = $wrapper_classes;
+		}
+
+		if ( '' !== $icon_slug ) {
+			$block_attrs['chairforceIcon'] = $icon_slug;
+
+			if ( 'right' === $icon_position ) {
+				$block_attrs['chairforceIconPosition'] = 'right';
+			}
+		}
+
+		$element_attrs = [
+			'class' => chairforce_sanitize_html_classes(
+				trim( 'wp-block-button__link wp-element-button ' . $element_class )
+			),
+		];
+
+		if ( 'button' === $tag_name ) {
+			$element_attrs['type'] = 'button';
+		} else {
+			$element_attrs['href'] = $url;
+
+			if ( $external ) {
+				$element_attrs['target'] = '_blank';
+				$element_attrs['rel']    = 'noopener noreferrer';
+			}
+		}
+
+		if ( ! empty( $btn['html_attributes'] ) && is_array( $btn['html_attributes'] ) ) {
+			foreach ( $btn['html_attributes'] as $attr_name => $attr_value ) {
+				if ( null === $attr_value || false === $attr_value ) {
+					continue;
+				}
+
+				if ( 'class' === $attr_name ) {
+					$element_attrs['class'] = chairforce_sanitize_html_classes(
+						trim( $element_attrs['class'] . ' ' . (string) $attr_value )
+					);
+					continue;
+				}
+
+				$element_attrs[ (string) $attr_name ] = $attr_value;
+			}
+		}
+
+		$block_json = wp_json_encode( $block_attrs, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES );
 
 		printf(
-			'<!-- wp:button {"className":"%1$s"} -->
-					<div class="wp-block-button %1$s">
-						<a class="wp-block-button__link wp-element-button" href="%2$s"%3$s%4$s>%5$s</a>
-					</div>
-					<!-- /wp:button -->',
-			esc_attr( $button_cls ),
-			esc_url( $url ),
-			$target,
-			$rel_attr,
-			$label_html
+			'<!-- wp:button %1$s -->
+<div class="wp-block-button %2$s">
+	<%3$s %4$s>%5$s</%3$s>
+</div>
+<!-- /wp:button -->',
+			$block_json,
+			esc_attr( $wrapper_classes ),
+			$tag_name,
+			chairforce_build_html_attributes_string( $element_attrs ),
+			wp_kses_post( $label )
 		);
 	}
 

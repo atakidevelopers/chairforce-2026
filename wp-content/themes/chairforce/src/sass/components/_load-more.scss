@@ -1,19 +1,48 @@
 @import "../settings";
 @import "../mixins";
 
-// Page-1 Load More button (core/query-pagination extension).
+// Page-1 Load More — progress, status, and ghost button (Figma: Load More Design).
 .cf-load-more {
 	display: flex;
-	justify-content: center;
+	flex-direction: column;
+	align-items: center;
+	gap: $spacing-medium;
 	margin-top: $spacing-large;
 	width: 100%;
 }
 
-.cf-load-more__button {
-	@include breakpoint(medium) {
-		min-width: 12rem;
-	}
+.cf-load-more__progress {
+	background-color: color-mix(in srgb, $color-body 15%, transparent);
+	border-radius: 999px;
+	height: 2px;
+	max-width: 18rem;
+	overflow: hidden;
+	position: relative;
+	width: 100%;
+}
 
+.cf-load-more__progress-bar {
+	background-color: $color-body;
+	border-radius: inherit;
+	display: block;
+	height: 100%;
+	transition: width 0.3s ease;
+	width: 0;
+}
+
+.cf-load-more__status {
+	color: color-mix(in srgb, $color-body 72%, transparent);
+	font-size: $font-size-small;
+	margin: 0;
+	text-align: center;
+}
+
+.cf-load-more .wp-block-buttons {
+	margin: 0;
+	width: 100%;
+}
+
+.cf-load-more__button {
 	&.is-loading {
 		cursor: wait;
 		opacity: 0.75;
