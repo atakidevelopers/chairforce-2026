@@ -26,7 +26,11 @@ function getLoginRedirectUrl( fallback ) {
 
 	try {
 		const url = new URL( loginUrl, window.location.origin );
-		url.searchParams.set( 'redirect_to', fallback );
+		const redirectParam =
+			url.pathname.includes( 'my-account' ) || url.pathname.includes( 'myaccount' )
+				? 'redirect'
+				: 'redirect_to';
+		url.searchParams.set( redirectParam, fallback );
 		return url.toString();
 	} catch {
 		return loginUrl;

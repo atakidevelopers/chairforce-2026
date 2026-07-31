@@ -2,9 +2,9 @@
 /**
  * Wishlist toggle button — server render.
  *
- * @var array    $attributes Block attributes.
- * @var string   $content    Block content.
- * @var WP_Block $block      Block instance.
+ * @var array $attributes Block attributes.
+ * @var string $content Block content.
+ * @var WP_Block $block Block instance.
  */
 
 use Chairforce\Wishlist;
@@ -66,6 +66,7 @@ if ( 'summary' === $display_context ) {
 		$label,
 		esc_html( $in_wishlist ? __( 'Remove from wishlist', 'chairforce' ) : __( 'Add to wishlist', 'chairforce' ) )
 	);
+
 	return;
 }
 

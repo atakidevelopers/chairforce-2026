@@ -1,13 +1,5 @@
 @import "../icon-font/mixins";
 
-// Product card — heart stacked above quick-view eye (see quick-view/_trigger.scss).
-.cf-wishlist-button {
-	position: absolute;
-	top: $spacing-x-small;
-	right: $spacing-x-small;
-	z-index: 3;
-}
-
 .cf-wishlist-trigger {
 	display: inline-flex;
 	align-items: center;

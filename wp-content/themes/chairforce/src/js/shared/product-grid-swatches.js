@@ -1,9 +1,20 @@
-import { delegateDocument } from '../../src/js/shared/delegated-events';
+/**
+ * Product grid color swatches — hover/click image swap (Mode A).
+ *
+ * Loaded globally via public.js so Load More batches work when page 1
+ * products omit swatch markup (block viewScript would never enqueue).
+ *
+ * @see context/plans/3b-3d-event-pattern-and-grid-swatches-plan.md
+ */
+
+import { delegateDocument } from './delegated-events';
 
 const SWATCH_SELECTOR = '.cf-swatches-grid .cf-swatch';
 const DIVIDER_SELECTOR = '.cf-swatches-grid .cf-swatch-divider';
 const PRODUCT_CARD_SELECTOR =
 	'.wc-block-product, .product-grid-item, .product-teaser';
+
+let productGridSwatchesInitialized = false;
 
 /**
  * @returns {boolean}
@@ -161,7 +172,16 @@ function handleSwatchActivate( swatch ) {
 	swapProductImage( swatch );
 }
 
-function initProductSwatches() {
+/**
+ * Bind delegated grid swatch handlers (safe to call once).
+ */
+export function initProductGridSwatches() {
+	if ( productGridSwatchesInitialized ) {
+		return;
+	}
+
+	productGridSwatchesInitialized = true;
+
 	delegateDocument( 'click', DIVIDER_SELECTOR, ( event, divider ) => {
 		event.preventDefault();
 		expandSwatches( divider );
@@ -173,13 +193,6 @@ function initProductSwatches() {
 	} );
 
 	if ( ! isTouchDevice() ) {
-		// `mouseenter` doesn't bubble, so a plain document-level listener
-		// only ever fires once (when the pointer first enters the page) —
-		// it never re-fires when moving between sibling elements already
-		// inside the document. `mouseover` bubbles; guarding on
-		// `relatedTarget` (the element the pointer came FROM) re-derives
-		// "entered this swatch from outside it" semantics without
-		// re-triggering on internal moves between a swatch's own children.
 		delegateDocument( 'mouseover', SWATCH_SELECTOR, ( event, swatch ) => {
 			if ( swatch.contains( event.relatedTarget ) ) {
 				return;
@@ -193,5 +206,3 @@ function initProductSwatches() {
 		} );
 	}
 }
-
-initProductSwatches();

@@ -1,6 +1,7 @@
 import { initProductSearchForms } from './product-search';
 import { initQuickView } from './quick-view';
 import { initLoadMore } from './shared/load-more';
+import { initProductGridSwatches } from './shared/product-grid-swatches';
 import { initWishlist } from './shared/wishlist';
 import { initSingleProductSwatches } from './single-product-swatches';
 import { initSiteHeader } from './site-header';
@@ -16,6 +17,7 @@ export {
 document.addEventListener( 'DOMContentLoaded', () => {
 	initSiteHeader();
 	initProductSearchForms();
+	initProductGridSwatches();
 	initSingleProductSwatches();
 	initQuickView();
 	initLoadMore();

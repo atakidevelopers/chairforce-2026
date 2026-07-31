@@ -152,9 +152,7 @@ class Front {
 			'wishlistIsLoggedIn' => is_user_logged_in(),
 			'wishlistToggleUrl'  => rest_url( 'chairforce/v1/wishlist/toggle' ),
 			'wishlistStatusUrl'  => rest_url( 'chairforce/v1/wishlist/status' ),
-			'wishlistLoginUrl'   => function_exists( 'wc_get_page_permalink' )
-				? wc_get_page_permalink( 'myaccount' )
-				: wp_login_url(),
+			'wishlistLoginUrl'   => chairforce_get_wishlist_login_url(),
 			'wishlistAddLabel'   => __( 'Add to wishlist', 'chairforce' ),
 			'wishlistRemoveLabel' => __( 'Remove from wishlist', 'chairforce' ),
 		];

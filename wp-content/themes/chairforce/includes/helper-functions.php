@@ -497,3 +497,41 @@ function chairforce_is_wishlist_loop_enabled(): bool {
 
 	return (bool) $value;
 }
+
+/**
+ * URL for guest wishlist clicks (WooCommerce My Account login).
+ *
+ * wc_get_page_permalink( 'myaccount' ) can resolve to the site home when the
+ * WC page option is missing or misconfigured; /my-account/ is used as fallback.
+ */
+function chairforce_get_wishlist_login_url(): string {
+	$home_url = trailingslashit( home_url( '/' ) );
+
+	if ( function_exists( 'WC' ) ) {
+		$page_id = absint( get_option( 'woocommerce_myaccount_page_id' ) );
+
+		if ( $page_id > 0 ) {
+			$permalink = get_permalink( $page_id );
+
+			if ( is_string( $permalink ) && $permalink !== '' && trailingslashit( $permalink ) !== $home_url ) {
+				return $permalink;
+			}
+		}
+	}
+
+	if ( function_exists( 'wc_get_page_permalink' ) ) {
+		$permalink = wc_get_page_permalink( 'myaccount' );
+
+		if ( is_string( $permalink ) && $permalink !== '' && trailingslashit( $permalink ) !== $home_url ) {
+			return $permalink;
+		}
+	}
+
+	$fallback = home_url( '/my-account/' );
+
+	if ( trailingslashit( $fallback ) !== $home_url ) {
+		return $fallback;
+	}
+
+	return wp_login_url();
+}

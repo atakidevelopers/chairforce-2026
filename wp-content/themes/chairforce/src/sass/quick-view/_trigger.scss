@@ -1,12 +1,5 @@
 @import "../icon-font/mixins";
 
-.cf-quick-view-button {
-	position: absolute;
-	top: calc(#{$spacing-x-small} + 2.5rem);
-	right: $spacing-x-small;
-	z-index: 3;
-}
-
 .cf-quick-view-trigger {
 	display: inline-flex;
 	align-items: center;
