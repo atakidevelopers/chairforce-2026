@@ -3,20 +3,29 @@
  * Active catalog filter chips.
  *
  * @package Chairforce
+ *
+ * @var string $context Display context: `chrome` (bar area) or `panel` (filter drawer).
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-$chips     = chairforce_get_active_filter_chips();
+$context = isset( $args['context'] ) ? (string) $args['context'] : 'chrome';
+$chips   = chairforce_get_active_filter_chips();
 $clear_url = chairforce_get_clear_catalog_filters_url();
 
 if ( empty( $chips ) ) {
 	return;
 }
+
+$wrapper_class = 'cf-active-filters';
+
+if ( 'panel' === $context ) {
+	$wrapper_class .= ' cf-active-filters--panel';
+}
 ?>
-<div class="cf-active-filters">
+<div class="<?php echo esc_attr( $wrapper_class ); ?>">
 	<ul class="cf-active-filters__list">
 		<?php foreach ( $chips as $chip ) : ?>
 			<li class="cf-active-filters__item">

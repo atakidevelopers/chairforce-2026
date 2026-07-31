@@ -18,7 +18,7 @@ if ( empty( $filter_groups ) ) {
 }
 ?>
 <div class="cf-product-filters__bar">
-	<div class="cf-product-filters__bar-scroll" role="toolbar" aria-label="<?php esc_attr_e( 'Product filters', 'chairforce' ); ?>">
+	<div class="cf-product-filters__bar-scroll cf-scrollbar" role="toolbar" aria-label="<?php esc_attr_e( 'Product filters', 'chairforce' ); ?>">
 		<?php foreach ( $filter_groups as $group ) : ?>
 			<?php
 			$slug  = (string) ( $group['slug'] ?? '' );

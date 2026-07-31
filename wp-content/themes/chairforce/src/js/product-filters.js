@@ -17,6 +17,9 @@ const BAR_BUTTON_SELECTOR = '.cf-product-filters__bar-button';
 const PANEL_SELECTOR = '.cf-filters-panel';
 const PANEL_INNER_SELECTOR = '.cf-filters-panel__inner';
 const PANEL_CLOSE_SELECTOR = '[data-cf-filters-close]';
+const ACCORDION_TRIGGER_SELECTOR = '.cf-filter-accordion__trigger';
+const ACCORDION_TOGGLE_SELECTOR = '[data-cf-filters-accordion-toggle]';
+const FILTER_SECTION_SELECTOR = '.cf-filter-section';
 const TERM_SELECTOR = '.cf-filter-term, .cf-swatch.cf-filter-term';
 const CHIP_SELECTOR = '.cf-active-filters__chip';
 const CLEAR_SELECTOR = '.cf-active-filters__clear';
@@ -25,7 +28,8 @@ const SORT_SELECT_SELECTOR =
 	'.wp-block-woocommerce-catalog-sorting select.orderby, .wc-block-catalog-sorting select.orderby';
 const OPEN_CLASS = 'is-open';
 const LAYOUT_OPEN_CLASS = 'is-filters-open';
-const FOCUSED_CARD_CLASS = 'is-focused';
+const ACCORDION_OPEN_CLASS = 'is-accordion-open';
+const ACCORDION_ALL_EXPANDED_CLASS = 'is-all-expanded';
 const VERTICAL_OPEN_HTML_CLASS = 'cf-filters-vertical-open';
 const SWAPPING_HTML_CLASS = 'cf-filters-swapping';
 const ARCHIVE_SHELL_QUERY_ARG = '_cf_archive';
@@ -377,7 +381,7 @@ function getPanelRestoreState( root ) {
 	const wasOpen = Boolean( panel?.classList.contains( OPEN_CLASS ) );
 	const activeCard =
 		root.querySelector( `${ BAR_BUTTON_SELECTOR }.is-active` )?.getAttribute( 'data-filter-card' )
-		|| panel?.querySelector( `.cf-filter-section.${ FOCUSED_CARD_CLASS }` )?.getAttribute( 'data-filter-card' )
+		|| panel?.querySelector( `${ FILTER_SECTION_SELECTOR }.${ ACCORDION_OPEN_CLASS }` )?.getAttribute( 'data-filter-card' )
 		|| null;
 
 	return { wasOpen, activeCard };
@@ -420,7 +424,9 @@ function applyArchiveShellHtml( html, options = {} ) {
 			setPanelOpen( nextRoot, true );
 
 			if ( activeCard ) {
-				focusFilterCard( nextRoot, activeCard );
+				openAccordionForCard( nextRoot, activeCard );
+			} else {
+				syncAccordionToggleState( getFilterPanel() );
 			}
 		}
 	}
@@ -472,33 +478,133 @@ function setPanelOpen( root, isOpen ) {
 	syncVerticalOverlayHtmlClass( isOpen );
 
 	if ( isOpen ) {
-		panel.querySelector( PANEL_INNER_SELECTOR )?.focus();
+		panel.querySelector( PANEL_INNER_SELECTOR )?.focus( { preventScroll: true } );
 	}
 }
 
 /**
- * @param {HTMLElement} root
- * @param {string} cardSlug
+ * @param {HTMLElement} section
+ * @return {HTMLElement|null}
  */
-function focusFilterCard( root, cardSlug ) {
-	const panel = getFilterPanel();
+function getAccordionBody( section ) {
+	return section.querySelector( '.cf-filter-accordion__body' );
+}
 
+/**
+ * @param {HTMLElement} section
+ * @return {HTMLElement|null}
+ */
+function getAccordionTrigger( section ) {
+	return section.querySelector( ACCORDION_TRIGGER_SELECTOR );
+}
+
+/**
+ * @param {HTMLElement} section
+ * @param {boolean} isOpen
+ */
+function setAccordionSectionOpen( section, isOpen ) {
+	const trigger = getAccordionTrigger( section );
+	const body = getAccordionBody( section );
+
+	section.classList.toggle( ACCORDION_OPEN_CLASS, isOpen );
+
+	if ( trigger ) {
+		trigger.setAttribute( 'aria-expanded', isOpen ? 'true' : 'false' );
+	}
+
+	if ( body ) {
+		body.hidden = ! isOpen;
+	}
+}
+
+/**
+ * @param {HTMLElement|null} panel
+ */
+function syncAccordionToggleState( panel ) {
+	const toggle = panel?.querySelector( ACCORDION_TOGGLE_SELECTOR );
+
+	if ( ! toggle || ! panel ) {
+		return;
+	}
+
+	const sections = panel.querySelectorAll( FILTER_SECTION_SELECTOR );
+	const allOpen = sections.length > 0
+		&& [ ...sections ].every( ( section ) => section.classList.contains( ACCORDION_OPEN_CLASS ) );
+
+	toggle.classList.toggle( ACCORDION_ALL_EXPANDED_CLASS, allOpen );
+	toggle.setAttribute( 'aria-expanded', allOpen ? 'true' : 'false' );
+	toggle.setAttribute(
+		'aria-label',
+		allOpen ? 'Collapse all filter sections' : 'Expand all filter sections'
+	);
+}
+
+/**
+ * @param {HTMLElement|null} panel
+ */
+function collapseAllAccordions( panel ) {
 	if ( ! panel ) {
 		return;
 	}
 
-	panel.querySelectorAll( '.cf-filter-section' ).forEach( ( section ) => {
-		section.classList.toggle(
-			FOCUSED_CARD_CLASS,
-			section.getAttribute( 'data-filter-card' ) === cardSlug
-		);
+	panel.querySelectorAll( FILTER_SECTION_SELECTOR ).forEach( ( section ) => {
+		setAccordionSectionOpen( section, false );
 	} );
 
-	const target = panel.querySelector(
-		`[data-filter-card="${ CSS.escape( cardSlug ) }"]`
-	);
+	syncAccordionToggleState( panel );
+}
 
-	target?.scrollIntoView( { block: 'nearest', behavior: 'smooth' } );
+/**
+ * @param {HTMLElement|null} panel
+ */
+function expandAllAccordions( panel ) {
+	if ( ! panel ) {
+		return;
+	}
+
+	panel.querySelectorAll( FILTER_SECTION_SELECTOR ).forEach( ( section ) => {
+		setAccordionSectionOpen( section, true );
+	} );
+
+	syncAccordionToggleState( panel );
+}
+
+/**
+ * @param {HTMLElement|null} root
+ * @param {string} cardSlug
+ * @param {{ closeOthers?: boolean }} [options]
+ */
+function openAccordionForCard( root, cardSlug, options = {} ) {
+	const panel = getFilterPanel();
+	const closeOthers = options.closeOthers !== false;
+
+	if ( ! panel || ! cardSlug ) {
+		return;
+	}
+
+	panel.querySelectorAll( FILTER_SECTION_SELECTOR ).forEach( ( section ) => {
+		const isMatch = section.getAttribute( 'data-filter-card' ) === cardSlug;
+
+		if ( isMatch ) {
+			setAccordionSectionOpen( section, true );
+			return;
+		}
+
+		if ( closeOthers ) {
+			setAccordionSectionOpen( section, false );
+		}
+	} );
+
+	syncAccordionToggleState( panel );
+
+	if ( root ) {
+		root.querySelectorAll( BAR_BUTTON_SELECTOR ).forEach( ( button ) => {
+			button.classList.toggle(
+				'is-active',
+				button.getAttribute( 'data-filter-card' ) === cardSlug
+			);
+		} );
+	}
 }
 
 /**
@@ -519,7 +625,7 @@ function openPanelForCard( root, cardSlug ) {
 
 	syncFilterPanelPortal( root );
 	setPanelOpen( root, true );
-	focusFilterCard( root, cardSlug );
+	openAccordionForCard( root, cardSlug );
 }
 
 /**
@@ -753,6 +859,47 @@ async function handlePriceApplyClick( event, button ) {
  * @param {Event} event
  * @param {HTMLElement} target
  */
+function handleAccordionTriggerClick( event, trigger ) {
+	event.preventDefault();
+
+	const section = trigger.closest( FILTER_SECTION_SELECTOR );
+
+	if ( ! section ) {
+		return;
+	}
+
+	setAccordionSectionOpen(
+		section,
+		! section.classList.contains( ACCORDION_OPEN_CLASS )
+	);
+	syncAccordionToggleState( getFilterPanel() );
+}
+
+/**
+ * @param {Event} event
+ * @param {HTMLElement} button
+ */
+function handleAccordionToggleClick( event, button ) {
+	event.preventDefault();
+
+	const panel = getFilterPanel();
+
+	if ( ! panel ) {
+		return;
+	}
+
+	if ( button.classList.contains( ACCORDION_ALL_EXPANDED_CLASS ) ) {
+		collapseAllAccordions( panel );
+		return;
+	}
+
+	expandAllAccordions( panel );
+}
+
+/**
+ * @param {Event} event
+ * @param {HTMLElement} target
+ */
 function handlePanelCloseClick( event, target ) {
 	event.preventDefault();
 
@@ -870,6 +1017,7 @@ export function initProductFilters() {
 	if ( root ) {
 		syncFilterPanelPortal( root );
 		syncPanelAccessibility( root, false );
+		syncAccordionToggleState( getFilterPanel() );
 
 		const mq = getDesktopBreakpoint();
 		mq?.addEventListener( 'change', () => {
@@ -895,6 +1043,8 @@ export function initProductFilters() {
 	delegateDocument( 'click', CLEAR_SELECTOR, handleClearClick );
 	delegateDocument( 'click', PRICE_APPLY_SELECTOR, handlePriceApplyClick );
 	delegateDocument( 'click', PANEL_CLOSE_SELECTOR, handlePanelCloseClick );
+	delegateDocument( 'click', ACCORDION_TRIGGER_SELECTOR, handleAccordionTriggerClick );
+	delegateDocument( 'click', ACCORDION_TOGGLE_SELECTOR, handleAccordionToggleClick );
 
 	document.addEventListener( 'click', handleDocumentClick );
 	document.addEventListener( 'keydown', handleEscapeKey );
