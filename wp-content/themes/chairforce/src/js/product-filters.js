@@ -1,6 +1,9 @@
 /**
  * Product archive filters — panel UI + archive shell partial reload (PJAX-style).
  *
+ * Vertical drawer panel is portaled to document.body (Quick View pattern) so fixed
+ * positioning is not trapped by alignwide shell / opacity stacking contexts.
+ *
  * @see context/existing-functionality/12A-woodmart-ajax-shop-filtering.md
  */
 
@@ -19,16 +22,32 @@ const SORT_SELECT_SELECTOR =
 	'.wp-block-woocommerce-catalog-sorting select.orderby, .wc-block-catalog-sorting select.orderby';
 const OPEN_CLASS = 'is-open';
 const FOCUSED_CARD_CLASS = 'is-focused';
+const VERTICAL_OPEN_HTML_CLASS = 'cf-filters-vertical-open';
+const SWAPPING_HTML_CLASS = 'cf-filters-swapping';
 const ARCHIVE_SHELL_QUERY_ARG = '_cf_archive';
 const ARCHIVE_SHELL_QUERY_VALUE = 'shell';
 
 let activeFetchController = null;
 
 /**
+ * @return {HTMLElement|null}
+ */
+function getFiltersRoot() {
+	return document.querySelector( ROOT_SELECTOR );
+}
+
+/**
+ * @return {HTMLElement|null}
+ */
+function getFilterPanel() {
+	return document.querySelector( PANEL_SELECTOR );
+}
+
+/**
  * @return {boolean}
  */
 function isProductArchivePage() {
-	return Boolean( document.querySelector( ROOT_SELECTOR ) );
+	return Boolean( getFiltersRoot() );
 }
 
 /**
@@ -58,7 +77,7 @@ function getActivePanelOrientation( root ) {
  * @param {HTMLElement} root
  */
 function syncPanelOrientationClasses( root ) {
-	const panel = root.querySelector( PANEL_SELECTOR );
+	const panel = getFilterPanel();
 
 	if ( ! panel ) {
 		return;
@@ -71,6 +90,68 @@ function syncPanelOrientationClasses( root ) {
 		'cf-filters-panel--horizontal'
 	);
 	panel.classList.add( `cf-filters-panel--${ orientation }` );
+}
+
+/**
+ * Move the panel back into the filters root (before shell swap destroys it).
+ *
+ * @param {HTMLElement|null} root
+ */
+function embedFilterPanelInRoot( root ) {
+	const panel = getFilterPanel();
+
+	if ( ! panel || ! root || root.contains( panel ) ) {
+		return;
+	}
+
+	root.appendChild( panel );
+}
+
+/**
+ * Vertical drawer: portal to body. Horizontal dropdown: keep in root.
+ *
+ * @param {HTMLElement|null} root
+ */
+function syncFilterPanelPortal( root ) {
+	const panel = getFilterPanel();
+
+	if ( ! panel || ! root ) {
+		return;
+	}
+
+	syncPanelOrientationClasses( root );
+
+	if ( getActivePanelOrientation( root ) === 'vertical' ) {
+		if ( panel.parentElement !== document.body ) {
+			document.body.appendChild( panel );
+		}
+
+		return;
+	}
+
+	if ( ! root.contains( panel ) ) {
+		root.appendChild( panel );
+	}
+}
+
+/**
+ * @param {boolean} isOpen
+ */
+function syncVerticalOverlayHtmlClass( isOpen ) {
+	const panel = getFilterPanel();
+	const isVertical = Boolean( panel?.classList.contains( 'cf-filters-panel--vertical' ) );
+
+	document.documentElement.classList.toggle(
+		VERTICAL_OPEN_HTML_CLASS,
+		isOpen && isVertical
+	);
+}
+
+/**
+ * @param {boolean} swapping
+ */
+function setFiltersSwapping( swapping ) {
+	document.documentElement.classList.toggle( SWAPPING_HTML_CLASS, swapping );
 }
 
 /**
@@ -116,16 +197,17 @@ function getCatalogBasePath() {
 }
 
 /**
- * Build a catalog URL from params; drops sort params when no filters remain.
+ * Build a catalog URL from params.
  *
  * @param {URLSearchParams} params
+ * @param {{ stripSort?: boolean }} [options] Pass stripSort when clearing filters entirely.
  * @return {string}
  */
-function buildCatalogUrl( params ) {
+function buildCatalogUrl( params, options = {} ) {
 	const next = new URLSearchParams( params );
 	stripArchiveShellParam( next );
 
-	if ( ! hasActiveCatalogFilters( next ) ) {
+	if ( options.stripSort ) {
 		next.delete( 'orderby' );
 		next.delete( 'order' );
 	}
@@ -198,11 +280,11 @@ function getPanelRestoreState( root ) {
 		return { wasOpen: false, activeCard: null };
 	}
 
-	const panel = root.querySelector( PANEL_SELECTOR );
+	const panel = getFilterPanel();
 	const wasOpen = Boolean( panel?.classList.contains( OPEN_CLASS ) );
 	const activeCard =
 		root.querySelector( `${ BAR_BUTTON_SELECTOR }.is-active` )?.getAttribute( 'data-filter-card' )
-		|| root.querySelector( `.cf-filter-section.${ FOCUSED_CARD_CLASS }` )?.getAttribute( 'data-filter-card' )
+		|| panel?.querySelector( `.cf-filter-section.${ FOCUSED_CARD_CLASS }` )?.getAttribute( 'data-filter-card' )
 		|| null;
 
 	return { wasOpen, activeCard };
@@ -216,24 +298,27 @@ function getPanelRestoreState( root ) {
  */
 function applyArchiveShellHtml( html, options = {} ) {
 	const currentShell = document.querySelector( SHELL_SELECTOR );
-	const root = document.querySelector( ROOT_SELECTOR );
+	const root = getFiltersRoot();
 	const newShell = parseArchiveShellFromHtml( html );
 	const { wasOpen, activeCard } = getPanelRestoreState( root );
 
 	if ( ! currentShell || ! newShell ) {
+		setFiltersSwapping( false );
 		return;
 	}
 
 	if ( wasOpen ) {
 		document.documentElement.classList.add( 'cf-filters-open' );
+		setFiltersSwapping( true );
 	}
 
+	embedFilterPanelInRoot( root );
 	currentShell.outerHTML = newShell.outerHTML;
 
-	const nextRoot = document.querySelector( ROOT_SELECTOR );
+	const nextRoot = getFiltersRoot();
 
 	if ( nextRoot ) {
-		syncPanelOrientationClasses( nextRoot );
+		syncFilterPanelPortal( nextRoot );
 
 		if ( wasOpen ) {
 			setPanelOpen( nextRoot, true );
@@ -243,6 +328,8 @@ function applyArchiveShellHtml( html, options = {} ) {
 			}
 		}
 	}
+
+	setFiltersSwapping( false );
 
 	if ( options.push && options.replaceUrl ) {
 		window.history.pushState( { cfFilters: true }, '', options.replaceUrl );
@@ -256,7 +343,7 @@ function applyArchiveShellHtml( html, options = {} ) {
  * @param {boolean} isOpen
  */
 function setPanelOpen( root, isOpen ) {
-	const panel = root.querySelector( PANEL_SELECTOR );
+	const panel = getFilterPanel();
 
 	if ( ! panel ) {
 		return;
@@ -282,6 +369,7 @@ function setPanelOpen( root, isOpen ) {
 	} );
 
 	document.documentElement.classList.toggle( 'cf-filters-open', isOpen );
+	syncVerticalOverlayHtmlClass( isOpen );
 
 	if ( isOpen ) {
 		panel.querySelector( '.cf-filters-panel__inner' )?.focus();
@@ -293,7 +381,7 @@ function setPanelOpen( root, isOpen ) {
  * @param {string} cardSlug
  */
 function focusFilterCard( root, cardSlug ) {
-	const panel = root.querySelector( PANEL_SELECTOR );
+	const panel = getFilterPanel();
 
 	if ( ! panel ) {
 		return;
@@ -329,6 +417,7 @@ function openPanelForCard( root, cardSlug ) {
 		);
 	} );
 
+	syncFilterPanelPortal( root );
 	setPanelOpen( root, true );
 	focusFilterCard( root, cardSlug );
 }
@@ -339,7 +428,7 @@ function openPanelForCard( root, cardSlug ) {
  * @param {{ push?: boolean, replaceUrl?: string }} [options]
  */
 async function refreshCatalogFromUrl( options = {} ) {
-	const root = document.querySelector( ROOT_SELECTOR );
+	const root = getFiltersRoot();
 	let catalogUrl = options.replaceUrl || buildCatalogUrl( getCatalogParamsFromUrl() );
 
 	if ( ! root || ! document.querySelector( SHELL_SELECTOR ) ) {
@@ -347,6 +436,7 @@ async function refreshCatalogFromUrl( options = {} ) {
 	}
 
 	const fetchUrl = buildArchiveShellFetchUrl( catalogUrl );
+	const panelWasOpen = Boolean( getFilterPanel()?.classList.contains( OPEN_CLASS ) );
 
 	if ( activeFetchController ) {
 		activeFetchController.abort();
@@ -354,6 +444,10 @@ async function refreshCatalogFromUrl( options = {} ) {
 
 	activeFetchController = new AbortController();
 	root.classList.add( 'is-loading' );
+
+	if ( panelWasOpen ) {
+		setFiltersSwapping( true );
+	}
 
 	try {
 		const headers = {
@@ -386,8 +480,10 @@ async function refreshCatalogFromUrl( options = {} ) {
 			// eslint-disable-next-line no-console
 			console.error( '[chairforce product-filters]', error );
 		}
+
+		setFiltersSwapping( false );
 	} finally {
-		document.querySelector( ROOT_SELECTOR )?.classList.remove( 'is-loading' );
+		getFiltersRoot()?.classList.remove( 'is-loading' );
 		activeFetchController = null;
 	}
 }
@@ -439,7 +535,7 @@ function handleBarButtonClick( event, button ) {
 		return;
 	}
 
-	const panel = root.querySelector( PANEL_SELECTOR );
+	const panel = getFilterPanel();
 	const isOpen = panel?.classList.contains( OPEN_CLASS );
 	const isSame = button.classList.contains( 'is-active' );
 
@@ -560,7 +656,7 @@ async function handlePriceApplyClick( event, button ) {
 function handlePanelCloseClick( event, target ) {
 	event.preventDefault();
 
-	const root = target.closest( ROOT_SELECTOR );
+	const root = getFiltersRoot();
 
 	if ( root ) {
 		setPanelOpen( root, false );
@@ -590,7 +686,7 @@ function handleDocumentClick( event ) {
 		return;
 	}
 
-	const root = panel.closest( ROOT_SELECTOR );
+	const root = getFiltersRoot();
 
 	if ( root ) {
 		setPanelOpen( root, false );
@@ -606,7 +702,7 @@ function handleEscapeKey( event ) {
 	}
 
 	const panel = document.querySelector( `${ PANEL_SELECTOR }.${ OPEN_CLASS }` );
-	const root = panel?.closest( ROOT_SELECTOR );
+	const root = getFiltersRoot();
 
 	if ( root && panel ) {
 		setPanelOpen( root, false );
@@ -615,17 +711,19 @@ function handleEscapeKey( event ) {
 
 /**
  * @param {Event} event
+ * @param {HTMLElement} select
  */
-async function handleSortChange( event ) {
-	const select = event.target;
+async function handleSortChange( event, select ) {
+	if ( ! isProductArchivePage() ) {
+		return;
+	}
 
 	if ( ! ( select instanceof HTMLSelectElement ) ) {
 		return;
 	}
 
-	if ( ! select.closest( '.wp-block-woocommerce-catalog-sorting, .wc-block-catalog-sorting' ) ) {
-		return;
-	}
+	event.preventDefault();
+	event.stopPropagation();
 
 	const params = getCatalogParamsFromUrl();
 	const parsed = parseCatalogOrderby( select.value, params.get( 'order' ) );
@@ -667,13 +765,13 @@ export function initProductFilters() {
 		return;
 	}
 
-	const root = document.querySelector( ROOT_SELECTOR );
+	const root = getFiltersRoot();
 
 	if ( root ) {
-		syncPanelOrientationClasses( root );
+		syncFilterPanelPortal( root );
 
 		const mq = getDesktopBreakpoint();
-		mq?.addEventListener( 'change', () => syncPanelOrientationClasses( root ) );
+		mq?.addEventListener( 'change', () => syncFilterPanelPortal( root ) );
 	}
 
 	delegateDocument( 'click', BAR_BUTTON_SELECTOR, handleBarButtonClick );
@@ -685,7 +783,7 @@ export function initProductFilters() {
 
 	document.addEventListener( 'click', handleDocumentClick );
 	document.addEventListener( 'keydown', handleEscapeKey );
-	document.addEventListener( 'change', handleSortChange );
+	delegateDocument( 'change', SORT_SELECT_SELECTOR, handleSortChange, true );
 	delegateDocument(
 		'submit',
 		'.wp-block-woocommerce-catalog-sorting form, .wc-block-catalog-sorting form',

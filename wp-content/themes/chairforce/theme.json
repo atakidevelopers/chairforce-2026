@@ -732,6 +732,11 @@
 		},
 		{
 			"area": "uncategorized",
+			"name": "shop-archive-shell",
+			"title": "Shop Archive Shell"
+		},
+		{
+			"area": "uncategorized",
 			"name": "product-collection",
 			"title": "Product Collection"
 		},

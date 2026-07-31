@@ -2,15 +2,31 @@
 @import "../theme-json-variable";
 
 $cf-filters-panel-width: 32rem;
+$cf-filters-overlay-z: 99999;
+$cf-filters-panel-z: 100000;
 $cf-filters-transition: transform 0.4s ease, opacity 0.4s ease;
+
+// Full-viewport overlay on <html> — not inside alignwide shell / opacity ancestors.
+html.cf-filters-vertical-open::before,
+html.cf-filters-swapping::before {
+	content: "";
+	position: fixed;
+	inset: 0;
+	z-index: $cf-filters-overlay-z;
+	background: rgb(0 0 0 / 45%);
+	pointer-events: auto;
+}
 
 .cf-product-filters {
 	position: relative;
 	margin-block: $spacing-small $spacing-medium;
 
 	&.is-loading {
-		opacity: 0.7;
-		pointer-events: none;
+		.cf-product-filters__bar,
+		.cf-active-filters {
+			opacity: 0.7;
+			pointer-events: none;
+		}
 	}
 }
 
@@ -95,15 +111,19 @@ $cf-filters-transition: transform 0.4s ease, opacity 0.4s ease;
 	font: inherit;
 }
 
-// Drawer shell — mirrors Quick View drawer pattern.
+// Drawer shell — mirrors Quick View drawer pattern (panel portaled to body in JS).
 .cf-filters-panel {
 	position: fixed;
 	inset: 0;
-	z-index: 100000;
+	z-index: $cf-filters-panel-z;
 	pointer-events: none;
 
 	&.is-open {
 		pointer-events: auto;
+	}
+
+	&--vertical.is-open .cf-filters-panel__backdrop {
+		background: transparent;
 	}
 
 	&__backdrop {

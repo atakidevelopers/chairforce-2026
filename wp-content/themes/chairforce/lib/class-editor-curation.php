@@ -124,7 +124,11 @@ class Editor_Curation {
 	 */
 	public function curate_chairforce_blocks( array $args, string $block_type ): array {
 
-		if ( 'chairforce/editor-placeholder' === $block_type || 'chairforce/site-header' === $block_type ) {
+		if (
+			'chairforce/editor-placeholder' === $block_type
+			|| 'chairforce/site-header' === $block_type
+			|| 'chairforce/product-filters' === $block_type
+		) {
 			$args['supports']['inserter'] = false;
 		}
 

@@ -1,0 +1,7 @@
+.wp-site-blocks{
+  > main{
+    > .wp-block-template-part{
+      max-width: $grid-container-wide;
+    }
+  }
+}
