@@ -302,28 +302,23 @@ Black swatch → full variation gallery rebuild, Clear → default gallery) and
     for *this* feature. Swiper remains deferred to its first real future
     consumer (testimonials, category sliders, etc.).
 
-#### 3f. Shop/category "filter by color" sidebar widget
+#### 3f. Shop/category product archive filters (Figma bar + AJAX)
 
 **Status: ⏳ Not started**
 
-- Confirmed mechanism (Woodmart's own `WOODMART_Widget_Layered_Nav`, an
-  extended WC native attribute filter — **not** `jet-smart-filters`): file
-  `12`.
-- Can be built any time after 3c (term swatch admin UI) — no other
-  dependency.
-- Frontend scaffold waiting for this work: `lib/class-woocommerce-archive.php`.
-- Also covers the `venues`/`sales-by-location` taxonomy filters registered
-  in 3a — checklist file `19` §2/§4a.
-- **Resolved (31 Jul 2026):**
-  - **Product sale by location archive** — existing taxonomy archives at
-    `/sales-by-location/{term-slug}/` (e.g.
-    `/sales-by-location/act-sale-products/`). These do **not** use the
-    WooCommerce Product Collection archive template yet — dedicated
-    templates are a separate, later pass.
-  - **Shop by Space mega-menu links** — top-level **`venues`** archives
-    (e.g. `/venue/hospitality/`). Populated dynamically in
-    `bin/setup-primary-nav-menu.php` from live `venues` terms; editors can
-    adjust in WP-Admin.
+- Investigation: `context/notes/product-filters-findings.md`.
+- Implementation plan: `context/plans/3f-product-filters-plan.md`.
+- Mechanism (Woodmart extended WC layered nav — **not** `jet-smart-filters`):
+  file `12`.
+- Frontend scaffold: `lib/class-woocommerce-archive.php`.
+- **Locked:** dynamic filter buttons; card-grid panel (all filters); AJAX +
+  `pushState` (no reload); native WC `Filterer` only (no WPGB); panel
+  orientation theme options **`vertical` | `horizontal`** (default desktop
+  **vertical**; mobile **vertical**); **extend `load-more` REST** with required
+  **`mode=replace|append`** (one route, one Load More button — no `archive-products`).
+- Also covers filter UX on archives where `venues` / `sales-by-location` are
+  the main query (taxonomy archives), not as sidebar filter widgets — see
+  findings doc §1.
 
 #### 3g. Parts (related spare-parts) section + single-product tabs
 
@@ -577,6 +572,8 @@ Carried from checklist file `19` §8 — resolve before/during the phase noted:
 | `context/implementation/product-grid.md` | Short tracker for shared product card, quick view, swatches, and Load More wiring |
 | `context/plans/3e-single-product-swatches-and-gallery-plan.md` | Execution plan for Phase 3e (single-product swatches + gallery swap) — includes the WooCommerce-native-canary-feature and Swiper-narrowing findings |
 | `context/plans/3h-quick-view-plan.md` | Execution plan for Phase 3h (Quick View rebuild — modal/drawer shell, REST endpoint, reuses 3e swatch/gallery component) |
+| `context/notes/product-filters-findings.md` | Phase 3f investigation + locked UX/engine decisions |
+| `context/plans/3f-product-filters-plan.md` | Execution plan for Phase 3f (archive filters) |
 | `context/plans/3i-load-more-plan.md` | Execution plan for Phase 3i (page-1 Load More on Product Collection archives) |
 | `context/plans/3j-wishlist-plan.md` | Execution plan for Phase 3j (logged-in wishlist — custom table, loop + single; account endpoint deferred) |
 | `context/notes/load-more-findings.md` | Load More investigation, rejected plugin, architecture notes |
