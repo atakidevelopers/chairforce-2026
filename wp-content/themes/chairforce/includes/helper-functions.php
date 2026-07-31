@@ -335,7 +335,14 @@ function chairforce_get_buttons_markup( array $buttons, array $args = [] ): stri
 		echo '<!-- wp:buttons -->';
 	}
 
-	echo '<div class="wp-block-buttons">';
+	$buttons_wrapper_classes = chairforce_sanitize_html_classes(
+		trim( 'wp-block-buttons ' . $wrapper_extra )
+	);
+
+	printf(
+		'<div class="%s">',
+		esc_attr( $buttons_wrapper_classes )
+	);
 
 	foreach ( $buttons as $btn ) {
 		$label    = isset( $btn['label'] ) ? (string) $btn['label'] : '';

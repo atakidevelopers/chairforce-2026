@@ -464,9 +464,15 @@ function setPanelOpen( root, isOpen ) {
 	}
 
 	root.querySelectorAll( BAR_BUTTON_SELECTOR ).forEach( ( button ) => {
+		if ( ! isOpen ) {
+			button.classList.remove( 'is-active' );
+			button.setAttribute( 'aria-expanded', 'false' );
+			return;
+		}
+
 		button.setAttribute(
 			'aria-expanded',
-			isOpen && button.classList.contains( 'is-active' ) ? 'true' : 'false'
+			button.classList.contains( 'is-active' ) ? 'true' : 'false'
 		);
 	} );
 

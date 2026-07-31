@@ -363,6 +363,33 @@ function chairforce_get_filter_group_icon_slug( string $slug ): string {
 }
 
 /**
+ * Number of active selections within one filter group (bar button context).
+ *
+ * Price counts as 1 when min/max is set; attributes count chosen terms.
+ *
+ * @param array<string, mixed> $group Filter group from chairforce_get_archive_filter_groups().
+ * @return int
+ */
+function chairforce_get_filter_group_applied_count( array $group ): int {
+
+	if ( 'price' === ( $group['type'] ?? '' ) ) {
+		$params = chairforce_parse_catalog_filter_params();
+
+		return ( ! empty( $params['min_price'] ) || ! empty( $params['max_price'] ) ) ? 1 : 0;
+	}
+
+	$count = 0;
+
+	foreach ( (array) ( $group['terms'] ?? [] ) as $term ) {
+		if ( ! empty( $term['chosen'] ) ) {
+			++$count;
+		}
+	}
+
+	return $count;
+}
+
+/**
  * Visible attribute filter groups for the current product archive.
  *
  * @return array<int, array<string, mixed>>

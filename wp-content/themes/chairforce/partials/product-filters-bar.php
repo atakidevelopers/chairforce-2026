@@ -27,17 +27,25 @@ foreach ( $filter_groups as $group ) {
 		continue;
 	}
 
+	$applied_count   = chairforce_get_filter_group_applied_count( $group );
+	$element_class   = 'cf-product-filters__bar-button';
+	$html_attributes = [
+		'data-filter-card' => $slug,
+		'aria-expanded'    => 'false',
+		'aria-controls'    => 'cf-filter-card-' . $slug,
+	];
+
+	if ( $applied_count > 0 ) {
+		$element_class .= ' cf-product-filters__bar-button--applied';
+	}
+
 	$bar_buttons[] = [
 		'label'           => $label,
 		'tag'             => 'button',
 		'style'           => 'is-style-light',
 		'icon'            => chairforce_get_filter_group_icon_slug( $slug ),
-		'element_class'   => 'cf-product-filters__bar-button',
-		'html_attributes' => [
-			'data-filter-card' => $slug,
-			'aria-expanded'    => 'false',
-			'aria-controls'    => 'cf-filter-card-' . $slug,
-		],
+		'element_class'   => $element_class,
+		'html_attributes' => $html_attributes,
 	];
 }
 ?>

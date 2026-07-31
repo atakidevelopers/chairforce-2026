@@ -45,26 +45,42 @@ html.cf-filters-swapping::before {
 	}
 }
 
+// Horizontal scroll row for filter bar buttons.
+// core/buttons layout attrs add WP-generated classes such as
+// `.wp-container-core-buttons-is-layout-{hash}` — a stable hash for the
+// block's flex layout preset, not theme-authored CSS.
 .cf-product-filters__bar-scroll {
 	overflow-x: auto;
-	padding-block: $spacing-xxx-small;
-}
+	overflow-y: hidden;
+	padding-block: $spacing-x-small;
+	-webkit-overflow-scrolling: touch;
+	scrollbar-gutter: stable;
 
-.cf-product-filters__bar-buttons {
-	flex-wrap: nowrap;
-	gap: $spacing-x-small;
-	margin: 0;
-
-	.wp-block-button {
-		flex: 0 0 auto;
+	// Scope all bar button layout here so WP layout classes cannot shrink
+	// buttons to ~1 character width (vertical letter stacking).
+	.wp-block-buttons,
+	.cf-product-filters__bar-buttons {
+		display: flex;
+		flex-flow: row nowrap;
+		align-items: stretch;
+		gap: $spacing-x-small;
+		width: max-content;
+		max-width: none;
 		margin: 0;
+
+		> .wp-block-button {
+			flex: 0 0 auto;
+			width: auto;
+			max-width: none;
+			margin: 0;
+		}
 	}
 
 	.cf-product-filters__bar-button.wp-block-button__link {
 		white-space: nowrap;
 		gap: $spacing-x-small;
-		padding-block: $spacing-x-small;
-		padding-inline: $spacing-small $spacing-medium;
+		padding-block: $spacing-xxx-small;
+		padding-inline: $spacing-x-small $spacing-x-small;
 		font-size: $font-size-small;
 
 		@include cf-icon-after("chevron-down");
@@ -75,25 +91,86 @@ html.cf-filters-swapping::before {
 			opacity: 0.85;
 		}
 
-		&.is-active {
-			border-color: $color-neutral;
+		// Selections active in this filter group (distinct from is-active = panel open).
+		&.cf-product-filters__bar-button--applied {
+			background-color: $color-white;
+
+			&:hover,
+			&:focus {
+				background-color: $color-white;
+			}
+		}
+	}
+
+	.cf-product-filters__bar-button.wp-block-button__link.is-active {
+		background-color: $color-outline;
+		border-color: $color-body;
+		color: $color-body;
+
+		&:hover,
+		&:focus {
+			background-color: $color-outline;
+			border-color: $color-body;
+			color: $color-body;
 		}
 	}
 }
 
+.cf-product-filters__chrome {
+	display: flex;
+	flex-direction: column;
+}
+
+// Chrome active-filters slot — always in DOM; collapses when empty to reduce layout jump.
+.cf-active-filters--chrome {
+	display: grid;
+	grid-template-rows: 0fr;
+	margin: 0;
+	transition: grid-template-rows 0.25s ease, margin-block 0.25s ease;
+	pointer-events: none;
+	visibility: hidden;
+
+	&:not(.is-empty) {
+		grid-template-rows: 1fr;
+		margin-block: $spacing-x-small $spacing-small;
+		pointer-events: auto;
+		visibility: visible;
+	}
+
+	.cf-active-filters__inner {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: $spacing-x-small $spacing-small;
+		overflow: hidden;
+		min-height: 0;
+	}
+}
+
 .cf-active-filters {
+	&--panel {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: $spacing-x-small $spacing-small;
+		flex: 0 0 auto;
+		margin: 0;
+		padding: $spacing-small $spacing-large;
+		border-bottom: 1px solid $color-outline;
+
+		@include breakpoint(medium) {
+			display: none;
+		}
+	}
+}
+
+// Legacy/shared rules for non-chrome, non-panel chip rows (if any).
+.cf-active-filters:not(.cf-active-filters--chrome):not(.cf-active-filters--panel) {
 	display: flex;
 	flex-wrap: wrap;
 	align-items: center;
 	gap: $spacing-x-small $spacing-small;
 	margin-block: $spacing-x-small $spacing-small;
-
-	&--panel {
-		flex: 0 0 auto;
-		margin: 0;
-		padding: $spacing-small $spacing-large;
-		border-bottom: 1px solid $color-outline;
-	}
 }
 
 .cf-active-filters__label {
@@ -105,10 +182,18 @@ html.cf-filters-swapping::before {
 }
 
 .cf-active-filters__chips {
+	display: flex;
+	flex-flow: row wrap;
+	align-items: center;
 	gap: $spacing-x-small;
 	margin: 0;
+	width: auto;
+	max-width: none;
 
-	.wp-block-button {
+	> .wp-block-button {
+		flex: 0 0 auto;
+		width: auto;
+		max-width: none;
 		margin: 0;
 	}
 
@@ -118,6 +203,7 @@ html.cf-filters-swapping::before {
 		padding-inline: $spacing-x-small;
 		font-size: $font-size-x-small;
 		line-height: 1.2;
+		text-transform: unset;
 
 		&::before,
 		&::after {
