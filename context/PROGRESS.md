@@ -313,9 +313,17 @@ Black swatch → full variation gallery rebuild, Clear → default gallery) and
   dependency.
 - Frontend scaffold waiting for this work: `lib/class-woocommerce-archive.php`.
 - Also covers the `venues`/`sales-by-location` taxonomy filters registered
-  in 3a — checklist file `19` §2/§4a; open question: exact archive page for
-  "Product sale by location" (§8) and where "Shop by Space" should link
-  (likely the `venues` archive).
+  in 3a — checklist file `19` §2/§4a.
+- **Resolved (31 Jul 2026):**
+  - **Product sale by location archive** — existing taxonomy archives at
+    `/sales-by-location/{term-slug}/` (e.g.
+    `/sales-by-location/act-sale-products/`). These do **not** use the
+    WooCommerce Product Collection archive template yet — dedicated
+    templates are a separate, later pass.
+  - **Shop by Space mega-menu links** — top-level **`venues`** archives
+    (e.g. `/venue/hospitality/`). Populated dynamically in
+    `bin/setup-primary-nav-menu.php` from live `venues` terms; editors can
+    adjust in WP-Admin.
 
 #### 3g. Parts (related spare-parts) section + single-product tabs
 
@@ -365,9 +373,9 @@ modal skin after ACF switch). REST verified for Breeze Chair (#1000290).
 
 #### 3i. Page-1 Load More (WooCommerce Product Collection archives)
 
-**Status: ✅ Done (31 Jul 2026)** — `d7d7acc`. Plan:
-`context/plans/3i-load-more-plan.md`. **Minor quirks remain** — polish pass
-scheduled as immediate follow-up (see Known open issues below).
+**Status: ✅ Done (31 Jul 2026)** — `d7d7acc`, `fe21084`, `3e2546a`. Plan:
+`context/plans/3i-load-more-plan.md`. **Minor quirks may remain** — polish
+pass optional (see Known open issues below).
 
 - Full spec: file `17` (delegated-events architecture); investigation:
   `context/notes/load-more-findings.md`.
@@ -376,19 +384,27 @@ scheduled as immediate follow-up (see Known open issues below).
   page 2+ keeps crawlable numbered pagination); `src/js/shared/load-more.js`;
   appended cards rendered from the same `parts/product-card.html` source as the
   initial grid (no markup drift). `query-loop-load-more` plugin superseded.
+- **Follow-up fixes:** WC catalog ordering for `?orderby=price` /
+  `price-desc` (`fe21084`); grid swatch JS moved to global `public.js` so
+  Load More batches get hover image swap when page 1 omits swatches
+  (`3e2546a`).
 
 #### 3j. Wishlist (logged-in only, custom table)
 
-**Status: ⏳ Not started** — Plan: `context/plans/3j-wishlist-plan.md`.
+**Status: ✅ Done (31 Jul 2026)** — `6e7b485`, `3e2546a`. Plan:
+`context/plans/3j-wishlist-plan.md` chunks 1–4.
 
 - Investigation: file `13` (Woodmart native — 3 empty shells, 0 products; no
   migration). **Locked:** logged-in users only; single list; custom table
   `{prefix}chairforce_wishlist_items`; no header badge; no guest cookies.
-- **Theme options (WooCommerce tab):** `wishlist_enabled` (master + account
-  endpoint), `wishlist_loop_enabled` (heart on product cards).
-- **Surfaces:** product loop (`parts/product-card.html`), single product,
-  My Account `wishlist` endpoint — **endpoint UI deferred** to plan chunk 5.
-- **Depends on:** 3h card corner layout (heart slot above quick-view eye).
+- **Theme options (WooCommerce tab):** `wishlist_enabled` (master),
+  `wishlist_loop_enabled` (heart on product cards).
+- **Shipped:** `Chairforce\Wishlist` + REST toggle/list/status;
+  `chairforce/wishlist-button` on product cards + single product; guest click
+  → My Account login with `redirect` back (`chairforce_get_wishlist_login_url()`);
+  `cf-card-actions` wrapper for heart + quick-view stack.
+- **Deferred to Phase 5 (My Account):** account endpoint UI + wishlist list
+  page (plan chunk 5) — endpoint registration can ship with account work.
 
 ### Phase 4 — Home page assembly — Team
 
@@ -410,8 +426,8 @@ Phase 3 built.
 
 **Status: ⏳ Not started**
 
-- Wishlist **core + card/single surfaces** moved to **3j**; My Account wishlist
-  page UI is 3j chunk 5 (may overlap Phase 5 polish) — file `13`.
+- **My Account wishlist page** (3j plan chunk 5 — list UI + endpoint template)
+  ships here, not as part of 3j closure.
 - Blog archive filters (Post Tag/Category — checklist file `19` §4a) are
   out of scope for the swatch/gallery research, just standard blog
   filtering.
@@ -479,10 +495,14 @@ Carried from checklist file `19` §8 — resolve before/during the phase noted:
 
 - Which page renders the showroom "pickup selector" (file `14` §B) —
   blocks part of **Phase 4**.
-- Exact archive page for the "Product sale by location" filter (file `14`
-  §I) — blocks **3f**.
-- Where the mega-menu's "Shop by Space" link should point (likely `venues`
-  taxonomy archive) — blocks **3f**/**Phase 4**.
+- ~~Exact archive page for the "Product sale by location" filter (file `14`
+  §I) — blocks **3f**.~~ — ✅ Resolved (31 Jul 2026): existing
+  `/sales-by-location/{term-slug}/` archives; WC Product Collection template
+  alignment deferred.
+- ~~Where the mega-menu's "Shop by Space" link should point (likely `venues`
+  taxonomy archive) — blocks **3f**/**Phase 4**.~~ — ✅ Resolved (31 Jul
+  2026): top-level **`venues`** archives (e.g. `/venue/hospitality/`); menu
+  builder script populates from live terms.
 - "Checkout notice popup" — confirm still wanted, zero live trigger found
   (file `14` §J) — blocks nothing yet, just needs a yes/no.
 - `/gallery/` page's exact pagination mode (infinite-scroll vs. load-more) —

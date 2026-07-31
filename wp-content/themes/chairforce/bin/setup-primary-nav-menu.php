@@ -2,6 +2,10 @@
 /**
  * Build Primary Nav + Utility Nav menus per Figma mega menu specs.
  *
+ * Synced with wp-admin menus (31 Jul 2026):
+ * - Primary Nav (term_id 1356, location chairforce-primary-nav)
+ * - Top Bar Utility Nav (term_id 1357, location chairforce-utility-nav)
+ *
  * Usage: ddev wp eval-file wp-content/themes/chairforce/bin/setup-primary-nav-menu.php
  *
  * @package Chairforce
@@ -382,7 +386,7 @@ chairforce_menu_setup_build_top_level_term(
 );
 
 // -------------------------------------------------------------------------
-// Shop by Space — Pattern B (4 columns, custom top-level).
+// Shop by Space — Pattern B (4 columns); top-level `venues` taxonomy terms.
 // -------------------------------------------------------------------------
 chairforce_menu_setup_build_top_level_custom(
 	$primary_menu_id,
@@ -394,23 +398,29 @@ chairforce_menu_setup_build_top_level_custom(
 		'nav_align'      => 'right',
 	],
 	function ( int $menu_id, int $parent_id ): void {
-		chairforce_menu_setup_add_thumbnail_items(
-			$menu_id,
-			$parent_id,
+		$venue_terms = get_terms(
 			[
-				[ 1179, 'Cafe & Restaurant' ],
-				[ 1178, 'Residential' ],
-				[ 1264, 'Event & Conference' ],
-				[ 1266, 'Hotel' ],
-				[ 1175, 'Bar & Pub' ],
-				[ 1246, 'Retail & Service' ],
-				[ 1265, 'Healthcare' ],
-				[ 1232, 'Commercial & Office' ],
-				[ 1262, 'Education' ],
-				[ 1159, 'Laboratory' ],
+				'taxonomy'   => 'venues',
+				'parent'     => 0,
+				'hide_empty' => false,
+				'orderby'    => 'name',
+				'order'      => 'ASC',
 			]
 		);
-	}
+
+		if ( is_wp_error( $venue_terms ) || empty( $venue_terms ) ) {
+			WP_CLI::warning( 'No top-level venues terms found; Shop by Space children skipped.' );
+			return;
+		}
+
+		$items = array_map(
+			static fn( $term ) => [ (int) $term->term_id, $term->name ],
+			$venue_terms
+		);
+
+		chairforce_menu_setup_add_thumbnail_items( $menu_id, $parent_id, $items, 'venues' );
+	},
+	true
 );
 
 // -------------------------------------------------------------------------
@@ -462,7 +472,7 @@ if ( ! $sale_id ) {
 }
 
 // -------------------------------------------------------------------------
-// Utility Nav — Showrooms, Get a Quote, Account.
+// Utility Nav — Showrooms, Account (Get a Quote removed in wp-admin, Jul 2026).
 // -------------------------------------------------------------------------
 $utility_items = wp_get_nav_menu_items( $utility_menu_id, [ 'post_status' => 'any' ] );
 
@@ -472,9 +482,8 @@ if ( is_array( $utility_items ) ) {
 	}
 }
 
-$quote_url    = get_permalink( 1044831 ) ?: home_url( '/request-a-quote/' );
-$account_url  = get_permalink( 198 ) ?: ( function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permalink( 'myaccount' ) : home_url( '/my-account/' ) );
-$showroom_url = get_permalink( 980 ) ?: home_url( '/contact/' );
+$showroom_url = home_url( '/showrooms/' );
+$account_url  = home_url( '/my-account/' );
 
 chairforce_menu_setup_add_custom(
 	$utility_menu_id,
@@ -485,18 +494,6 @@ chairforce_menu_setup_add_custom(
 		'link_type'     => 'utility-link',
 		'utility_icon'  => 'map-pin',
 		'label_mobile'  => 'Showrooms',
-	]
-);
-
-chairforce_menu_setup_add_custom(
-	$utility_menu_id,
-	0,
-	'Get a Quote',
-	$quote_url,
-	[
-		'link_type'     => 'utility-link',
-		'utility_icon'  => 'file-text',
-		'label_mobile'  => 'Get a Quote',
 	]
 );
 

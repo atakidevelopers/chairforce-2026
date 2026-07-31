@@ -40,16 +40,18 @@ function chairforce_menu_setup_set_fields( int $item_id, array $fields ): void {
  *
  * @param int                  $menu_id   Nav menu term ID.
  * @param int                  $parent_id Parent menu item ID.
- * @param int                  $term_id   Product category term ID.
+ * @param int                  $term_id   Taxonomy term ID.
  * @param string               $title     Menu item title.
  * @param array<string, mixed> $fields    Extra ACF fields.
+ * @param string               $taxonomy  Taxonomy slug (default product_cat).
  */
 function chairforce_menu_setup_add_term(
 	int $menu_id,
 	int $parent_id,
 	int $term_id,
 	string $title,
-	array $fields = []
+	array $fields = [],
+	string $taxonomy = 'product_cat'
 ): int {
 
 	$item_id = wp_update_nav_menu_item(
@@ -57,7 +59,7 @@ function chairforce_menu_setup_add_term(
 		0,
 		[
 			'menu-item-object-id' => $term_id,
-			'menu-item-object'    => 'product_cat',
+			'menu-item-object'    => $taxonomy,
 			'menu-item-type'      => 'taxonomy',
 			'menu-item-status'    => 'publish',
 			'menu-item-title'     => $title,
@@ -254,6 +256,64 @@ function chairforce_menu_setup_has_children( int $menu_id, int $item_id ): bool 
 }
 
 /**
+ * Delete a menu item and all of its descendants.
+ *
+ * @param int $menu_id Nav menu term ID.
+ * @param int $item_id Root menu item post ID.
+ */
+function chairforce_menu_setup_delete_item_subtree( int $menu_id, int $item_id ): void {
+
+	$items = wp_get_nav_menu_items( $menu_id, [ 'post_status' => 'any' ] );
+
+	if ( ! is_array( $items ) ) {
+		return;
+	}
+
+	$children_by_parent = [];
+
+	foreach ( $items as $item ) {
+		$parent = (int) $item->menu_item_parent;
+
+		if ( ! isset( $children_by_parent[ $parent ] ) ) {
+			$children_by_parent[ $parent ] = [];
+		}
+
+		$children_by_parent[ $parent ][] = (int) $item->ID;
+	}
+
+	$delete_recursive = static function ( int $id ) use ( &$delete_recursive, $children_by_parent ): void {
+		foreach ( $children_by_parent[ $id ] ?? [] as $child_id ) {
+			$delete_recursive( $child_id );
+		}
+
+		wp_delete_post( $id, true );
+	};
+
+	$delete_recursive( $item_id );
+}
+
+/**
+ * Delete direct children of a menu item (keep the parent).
+ *
+ * @param int $menu_id   Nav menu term ID.
+ * @param int $parent_id Parent menu item post ID.
+ */
+function chairforce_menu_setup_delete_children( int $menu_id, int $parent_id ): void {
+
+	$items = wp_get_nav_menu_items( $menu_id, [ 'post_status' => 'any' ] );
+
+	if ( ! is_array( $items ) ) {
+		return;
+	}
+
+	foreach ( $items as $item ) {
+		if ( (int) $item->menu_item_parent === $parent_id ) {
+			chairforce_menu_setup_delete_item_subtree( $menu_id, (int) $item->ID );
+		}
+	}
+}
+
+/**
  * Create or reuse a top-level taxonomy menu item and run a child builder.
  *
  * @param int                  $menu_id        Nav menu term ID.
@@ -323,18 +383,20 @@ function chairforce_menu_setup_build_top_level_term(
  * @param string               $url            Item URL.
  * @param array<string, mixed> $fields         ACF fields for the top-level item.
  * @param callable             $build_children Callback receiving ( menu_id, parent_id ).
+ * @param bool                 $force_rebuild  When true, replace existing children.
  */
 function chairforce_menu_setup_build_top_level_custom(
 	int $menu_id,
 	string $title,
 	string $url,
 	array $fields,
-	callable $build_children
+	callable $build_children,
+	bool $force_rebuild = false
 ): int {
 
 	$parent_id = chairforce_menu_setup_find_top_level_title( $menu_id, $title );
 
-	if ( $parent_id && chairforce_menu_setup_has_children( $menu_id, $parent_id ) ) {
+	if ( $parent_id && chairforce_menu_setup_has_children( $menu_id, $parent_id ) && ! $force_rebuild ) {
 		WP_CLI::log( sprintf( 'Skipping %s — already built (ID %d).', $title, $parent_id ) );
 		return $parent_id;
 	}
@@ -342,7 +404,13 @@ function chairforce_menu_setup_build_top_level_custom(
 	if ( ! $parent_id ) {
 		$parent_id = chairforce_menu_setup_add_custom( $menu_id, 0, $title, $url, $fields );
 	} else {
-		WP_CLI::log( sprintf( 'Rebuilding children for %s (ID %d).', $title, $parent_id ) );
+		if ( $force_rebuild ) {
+			WP_CLI::log( sprintf( 'Force rebuilding children for %s (ID %d).', $title, $parent_id ) );
+			chairforce_menu_setup_delete_children( $menu_id, $parent_id );
+		} else {
+			WP_CLI::log( sprintf( 'Rebuilding children for %s (ID %d).', $title, $parent_id ) );
+		}
+
 		chairforce_menu_setup_set_fields( $parent_id, $fields );
 	}
 
@@ -357,8 +425,14 @@ function chairforce_menu_setup_build_top_level_custom(
  * @param int                                                       $menu_id Nav menu term ID.
  * @param int                                                       $parent_id Parent menu item ID.
  * @param array<int, array{0: int, 1: string}>|array<int, string> $items   term_id/title pairs or map.
+ * @param string                                                    $taxonomy Taxonomy slug (default product_cat).
  */
-function chairforce_menu_setup_add_thumbnail_items( int $menu_id, int $parent_id, array $items ): void {
+function chairforce_menu_setup_add_thumbnail_items(
+	int $menu_id,
+	int $parent_id,
+	array $items,
+	string $taxonomy = 'product_cat'
+): void {
 
 	foreach ( $items as $key => $value ) {
 		if ( is_array( $value ) ) {
@@ -368,6 +442,6 @@ function chairforce_menu_setup_add_thumbnail_items( int $menu_id, int $parent_id
 			$title   = (string) $value;
 		}
 
-		chairforce_menu_setup_add_term( $menu_id, $parent_id, (int) $term_id, $title );
+		chairforce_menu_setup_add_term( $menu_id, $parent_id, (int) $term_id, $title, [], $taxonomy );
 	}
 }
