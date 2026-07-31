@@ -26,7 +26,56 @@ class WooCommerce_Archive {
 	 * Register archive hooks.
 	 */
 	private function register_hooks(): void {
+		add_action( 'template_redirect', 'chairforce_maybe_render_archive_shell_fragment', 5 );
 		add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_quick_view_assets' ], 20 );
+		add_filter( 'render_block', [ $this, 'append_product_filters_after_store_notices' ], 10, 2 );
+		add_filter( 'render_block', [ $this, 'close_archive_shell_after_product_collection' ], 10, 2 );
+	}
+
+	/**
+	 * Inject filter bar markup after store notices on product archives.
+	 *
+	 * @param string $block_content Rendered block HTML.
+	 * @param array<string, mixed> $block Block data.
+	 * @return string
+	 */
+	public function append_product_filters_after_store_notices( string $block_content, array $block ): string {
+
+		if ( 'woocommerce/store-notices' !== ( $block['blockName'] ?? '' ) ) {
+			return $block_content;
+		}
+
+		if ( ! chairforce_is_product_filter_archive() ) {
+			return $block_content;
+		}
+
+		$filters_markup = chairforce_render_product_filters_html();
+
+		if ( '' === $filters_markup ) {
+			return $block_content;
+		}
+
+		return $block_content . '<div class="cf-shop-archive-shell">' . $filters_markup;
+	}
+
+	/**
+	 * Close the archive shell wrapper after the product collection block.
+	 *
+	 * @param string               $block_content Rendered block HTML.
+	 * @param array<string, mixed> $block         Block data.
+	 * @return string
+	 */
+	public function close_archive_shell_after_product_collection( string $block_content, array $block ): string {
+
+		if ( 'woocommerce/product-collection' !== ( $block['blockName'] ?? '' ) ) {
+			return $block_content;
+		}
+
+		if ( ! chairforce_is_product_filter_archive() ) {
+			return $block_content;
+		}
+
+		return $block_content . '</div><!-- /.cf-shop-archive-shell -->';
 	}
 
 	/**

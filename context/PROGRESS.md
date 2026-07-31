@@ -304,18 +304,31 @@ Black swatch → full variation gallery rebuild, Clear → default gallery) and
 
 #### 3f. Shop/category product archive filters (Figma bar + AJAX)
 
-**Status: ⏳ Not started**
+**Status: 🔄 In progress (31 Jul 2026)** — implementation landed locally; browser QA
+ongoing.
 
 - Investigation: `context/notes/product-filters-findings.md`.
-- Implementation plan: `context/plans/3f-product-filters-plan.md`.
-- Mechanism (Woodmart extended WC layered nav — **not** `jet-smart-filters`):
-  file `12`.
-- Frontend scaffold: `lib/class-woocommerce-archive.php`.
+- Implementation plan: `context/plans/3f-product-filters-plan.md` (plan still
+  references old `mode=replace`; live code uses **archive shell partial reload**
+  — see `12A-woodmart-ajax-shop-filtering.md`).
+- Mechanism (Woodmart PJAX-style shell reload + Load More append REST — **not**
+  `jet-smart-filters`): files `12`, `12A`.
+- **Shipped (uncommitted):** filter bar/panel/chips partials;
+  `includes/archive-shell-functions.php` (`?_cf_archive=shell` fragment);
+  `src/js/product-filters.js` (shell swap + `pushState`); Load More REST
+  append-only (no `mode`); `lib/class-woocommerce-archive.php` shell wrapper.
+- **Fixed (31 Jul 2026):** post-filter single-column grid — shell now renders
+  product collection via `do_blocks()` on `parts/product-collection.html` so
+  `wc-block-product-template__responsive` classes match SSR.
+- **Browser QA (31 Jul 2026):** filter apply (Arms), faceted counts, chip +
+  Clear all, 3-column grid after shell swap, Load More append after filter — ✅.
+  Still to verify: sort change, `popstate`, price filter, multi-filter stack,
+  Quick View/wishlist on post-swap cards.
 - **Locked:** dynamic filter buttons; card-grid panel (all filters); AJAX +
   `pushState` (no reload); native WC `Filterer` only (no WPGB); panel
   orientation theme options **`vertical` | `horizontal`** (default desktop
-  **vertical**; mobile **vertical**); **extend `load-more` REST** with required
-  **`mode=replace|append`** (one route, one Load More button — no `archive-products`).
+  **vertical**; mobile **vertical**); Load More stays append-only REST (filter
+  refresh = shell reload, not REST replace).
 - Also covers filter UX on archives where `venues` / `sales-by-location` are
   the main query (taxonomy archives), not as sidebar filter widgets — see
   findings doc §1.

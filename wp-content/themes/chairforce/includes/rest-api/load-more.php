@@ -1,6 +1,6 @@
 <?php
 /**
- * REST: Load More product cards for WooCommerce Product Collection (page 1).
+ * REST: Load More — append product cards (page 2+ only).
  *
  * @package Chairforce
  */
@@ -28,9 +28,6 @@ function chairforce_register_load_more_route(): void {
 					'required'          => true,
 					'type'              => 'integer',
 					'sanitize_callback' => 'absint',
-					'validate_callback' => static function ( $value ) {
-						return is_numeric( $value ) && (int) $value >= 2;
-					},
 				],
 				'query_vars' => [
 					'required'          => false,
@@ -47,6 +44,16 @@ function chairforce_register_load_more_route(): void {
 					'type'              => 'string',
 					'sanitize_callback' => 'sanitize_key',
 				],
+				'min_price' => [
+					'required'          => false,
+					'type'              => 'string',
+					'sanitize_callback' => 'sanitize_text_field',
+				],
+				'max_price' => [
+					'required'          => false,
+					'type'              => 'string',
+					'sanitize_callback' => 'sanitize_text_field',
+				],
 			],
 		]
 	);
@@ -56,14 +63,24 @@ function chairforce_register_load_more_route(): void {
 add_action( 'rest_api_init', 'chairforce_register_load_more_route' );
 
 /**
- * Load More — return server-rendered product-template `<li>` HTML.
+ * Load More — append server-rendered product-template `<li>` HTML.
+ *
+ * Filter/sort refresh uses archive shell partial reload (`_cf_archive=shell`), not this route.
  *
  * @param \WP_REST_Request $request Request object.
  * @return \WP_REST_Response|\WP_Error
  */
 function chairforce_rest_load_more( \WP_REST_Request $request ) {
 
-	$page = max( 2, (int) $request->get_param( 'page' ) );
+	$page = max( 1, (int) $request->get_param( 'page' ) );
+
+	if ( $page < 2 ) {
+		return new \WP_Error(
+			'chairforce_load_more_invalid_page',
+			__( 'Load More requests must use page 2 or higher.', 'chairforce' ),
+			[ 'status' => 400 ]
+		);
+	}
 
 	$client_vars = [];
 
@@ -77,27 +94,11 @@ function chairforce_rest_load_more( \WP_REST_Request $request ) {
 		}
 	}
 
-	$orderby = $request->get_param( 'orderby' );
-	$order   = $request->get_param( 'order' );
-
-	if ( is_string( $orderby ) && '' !== $orderby ) {
-		$parsed = chairforce_parse_catalog_orderby(
-			$orderby,
-			is_string( $order ) ? $order : ''
-		);
-
-		$client_vars['orderby'] = $parsed['orderby'];
-
-		if ( '' !== $parsed['order'] ) {
-			$client_vars['order'] = $parsed['order'];
-		}
-	} elseif ( is_string( $order ) && in_array( strtoupper( $order ), [ 'ASC', 'DESC' ], true ) ) {
-		$client_vars['order'] = strtoupper( $order );
-	}
+	$filter_params = chairforce_parse_catalog_filter_params_from_request( $request );
 
 	$client_vars = chairforce_normalize_load_more_ordering( $client_vars );
 
-	$query_args = chairforce_build_load_more_query_args( $client_vars, $page );
+	$query_args = chairforce_build_load_more_query_args( $client_vars, $page, $filter_params );
 	$post_types = (array) ( $query_args['post_type'] ?? 'product' );
 
 	foreach ( $post_types as $post_type ) {
@@ -110,16 +111,37 @@ function chairforce_rest_load_more( \WP_REST_Request $request ) {
 		}
 	}
 
-	$per_page   = chairforce_get_loop_shop_per_page();
-	$query      = new \WP_Query( $query_args );
-	$post_type  = chairforce_get_load_more_post_type_from_vars( $query_args );
+	$per_page = chairforce_get_loop_shop_per_page();
+	$backup_get = $_GET; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 
-	$html = chairforce_render_product_template_items(
+	foreach ( $filter_params as $key => $value ) {
+		$_GET[ $key ] = $value; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+	}
+
+	$price_filter_callback = null;
+
+	if ( function_exists( 'WC' ) && WC()->query instanceof \WC_Query ) {
+		$price_filter_callback = [ WC()->query, 'price_filter_post_clauses' ];
+		add_filter( 'posts_clauses', $price_filter_callback, 10, 2 );
+	}
+
+	$query = new \WP_Query( $query_args );
+
+	if ( $price_filter_callback ) {
+		remove_filter( 'posts_clauses', $price_filter_callback, 10 );
+	}
+
+	$_GET = $backup_get; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+
+	$post_type = chairforce_get_load_more_post_type_from_vars( $query_args );
+	$html      = chairforce_render_product_template_items(
 		$query,
 		chairforce_get_load_more_block_context( $post_type )
 	);
 
 	$max_pages = chairforce_get_load_more_max_pages( (int) $query->found_posts, $per_page );
+	$total     = (int) $query->found_posts;
+	$viewing   = min( $page * $per_page, $total );
 
 	return new \WP_REST_Response(
 		[
@@ -129,8 +151,8 @@ function chairforce_rest_load_more( \WP_REST_Request $request ) {
 			'maxPages'     => $max_pages,
 			'perPage'      => $per_page,
 			'offset'       => ( $page - 1 ) * $per_page,
-			'total'        => (int) $query->found_posts,
-			'viewingCount' => min( $page * $per_page, (int) $query->found_posts ),
+			'total'        => $total,
+			'viewingCount' => $viewing,
 		],
 		200
 	);

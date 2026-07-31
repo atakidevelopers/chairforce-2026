@@ -330,13 +330,21 @@ Expose options to JS via `Chairforce_Public` (e.g. `filtersPanelDesktop`,
 Direct navigation / refresh on a filtered URL must still work (server renders
 the same state from query string — bookmarkable, SEO-safe initial load).
 
-### 6.2 Woodmart parity note
+### 6.2 Woodmart parity note (updated after PJAX investigation)
 
-The reference site already proves AJAX + URL update without Jet or WPGB: Woodmart
-intercepts filter links listed in `woodmart_settings.ajax_links` (includes
-`.woocommerce-widget-layered-nav a`, `.wd-clear-filters a`, etc.) and PJAX-
-refreshes the shop region. We rebuild the **same contract** (WC query params +
-partial refresh) with theme-owned REST + Figma UI.
+The reference site uses **Woodmart PJAX**, not REST micro-fragments. Filter links
+(in `woodmart_settings.ajax_links`) trigger a GET to the filter URL with
+`_pjax=.wd-page-content`; the server re-renders the **entire shop content shell**
+(filters drawer, widgets with updated `Filterer` counts, active chips, grid page 1,
+load-more button) and JS replaces `.wd-page-content` innerHTML + `pushState`.
+
+**Full mechanism:** `context/existing-functionality/12A-woodmart-ajax-shop-filtering.md`.
+
+**Rebuild implication:** match the **one-shell partial reload** contract (URL params
++ single server render + optional drawer-state restore). Load More can stay a
+separate append channel (Woodmart uses `woo_ajax` JSON for that). Avoid maintaining
+independent REST paths that build grid vs panel with separate query assembly — that
+pattern already caused sort/pagination drift in the Phase 3f prototype.
 
 ---
 

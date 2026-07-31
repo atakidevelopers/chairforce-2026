@@ -18,6 +18,12 @@ require_once get_stylesheet_directory() . '/includes/constants.php';
 require_once get_stylesheet_directory() . '/includes/helper-functions.php';
 
 /**
+ * Product archive filter helpers (Phase 3f).
+ */
+require_once get_stylesheet_directory() . '/includes/product-filters-functions.php';
+require_once get_stylesheet_directory() . '/includes/archive-shell-functions.php';
+
+/**
  * Register CPTs
  */
 require_once get_stylesheet_directory() . '/includes/register-cpt.php';

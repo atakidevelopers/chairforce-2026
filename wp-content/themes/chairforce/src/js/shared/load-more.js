@@ -63,32 +63,33 @@ function getSortParamsFromUrl() {
 /**
  * Fallback sort params from the Load More button's exported query vars.
  *
+ * Page 1 SSR uses the main-query ordering captured in query_vars. Append requests
+ * must replay that ordering — not the URL alone — or pagination offsets drift.
+ *
  * @param {HTMLButtonElement} button Load More button.
  * @return {{ orderby: string|null, order: string|null }}
  */
 function getSortParamsFromButton( button ) {
-	const fromUrl = getSortParamsFromUrl();
-
-	if ( fromUrl.orderby ) {
-		return fromUrl;
-	}
-
 	const raw = button?.dataset?.queryVars;
 
-	if ( ! raw ) {
-		return fromUrl;
+	if ( raw ) {
+		try {
+			const vars = JSON.parse( raw );
+
+			const fromVars = parseCatalogOrderby(
+				typeof vars.orderby === 'string' ? vars.orderby : null,
+				typeof vars.order === 'string' ? vars.order : null
+			);
+
+			if ( fromVars.orderby ) {
+				return fromVars;
+			}
+		} catch {
+			// Fall through to URL params.
+		}
 	}
 
-	try {
-		const vars = JSON.parse( raw );
-
-		return parseCatalogOrderby(
-			typeof vars.orderby === 'string' ? vars.orderby : null,
-			typeof vars.order === 'string' ? vars.order : null
-		);
-	} catch {
-		return fromUrl;
-	}
+	return getSortParamsFromUrl();
 }
 
 /**
@@ -130,6 +131,17 @@ function buildLoadMoreUrl( button, page ) {
 	if ( order ) {
 		url.searchParams.set( 'order', order );
 	}
+
+	const catalogParams = new URLSearchParams( window.location.search );
+
+	catalogParams.forEach( ( value, key ) => {
+		if (
+			key.startsWith( 'filter_' )
+			|| [ 'min_price', 'max_price' ].includes( key )
+		) {
+			url.searchParams.set( key, value );
+		}
+	} );
 
 	return url.toString();
 }

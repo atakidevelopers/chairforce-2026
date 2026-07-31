@@ -1,0 +1,350 @@
+@import "../settings";
+@import "../theme-json-variable";
+
+$cf-filters-panel-width: 32rem;
+$cf-filters-transition: transform 0.4s ease, opacity 0.4s ease;
+
+.cf-product-filters {
+	position: relative;
+	margin-block: $spacing-small $spacing-medium;
+
+	&.is-loading {
+		opacity: 0.7;
+		pointer-events: none;
+	}
+}
+
+.cf-product-filters__bar-scroll {
+	display: flex;
+	flex-wrap: nowrap;
+	gap: $spacing-x-small;
+	overflow-x: auto;
+	padding-block: $spacing-xxx-small;
+	scrollbar-width: thin;
+}
+
+.cf-product-filters__bar-button {
+	display: inline-flex;
+	align-items: center;
+	gap: $spacing-xxx-small;
+	flex: 0 0 auto;
+	padding: $spacing-x-small $spacing-small;
+	border: 1px solid $color-outline;
+	border-radius: $radius-sm;
+	background: $color-white;
+	color: $color-body;
+	cursor: pointer;
+	white-space: nowrap;
+	font: inherit;
+
+	&.is-active {
+		border-color: $color-neutral;
+	}
+}
+
+.cf-product-filters__bar-button-count {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-width: 1.125rem;
+	height: 1.125rem;
+	padding-inline: $spacing-xxx-small;
+	border-radius: 999px;
+	font-size: 0.75rem;
+	line-height: 1;
+	background: $color-primary;
+	color: $color-white;
+}
+
+.cf-active-filters {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: $spacing-x-small $spacing-small;
+	margin-block: $spacing-x-small $spacing-small;
+}
+
+.cf-active-filters__list {
+	display: flex;
+	flex-wrap: wrap;
+	gap: $spacing-x-small;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.cf-active-filters__chip {
+	display: inline-flex;
+	align-items: center;
+	gap: $spacing-xxx-small;
+	padding: $spacing-xxx-small $spacing-x-small;
+	border: 1px solid $color-outline;
+	border-radius: $radius-sm;
+	background: $color-white;
+	cursor: pointer;
+	font: inherit;
+}
+
+.cf-active-filters__clear {
+	padding: 0;
+	border: 0;
+	background: transparent;
+	color: $color-body;
+	text-decoration: underline;
+	cursor: pointer;
+	font: inherit;
+}
+
+// Drawer shell — mirrors Quick View drawer pattern.
+.cf-filters-panel {
+	position: fixed;
+	inset: 0;
+	z-index: 100000;
+	pointer-events: none;
+
+	&.is-open {
+		pointer-events: auto;
+	}
+
+	&__backdrop {
+		position: absolute;
+		inset: 0;
+		z-index: 1;
+		background: rgb(0 0 0 / 45%);
+		opacity: 0;
+	}
+
+	&.is-open &__backdrop {
+		opacity: 1;
+	}
+
+	&__inner {
+		position: absolute;
+		top: 0;
+		right: 0;
+		z-index: 2;
+		display: flex;
+		flex-direction: column;
+		width: min(100%, $cf-filters-panel-width);
+		height: 100%;
+		background: $color-white;
+		box-shadow: 0 12px 40px rgb(0 0 0 / 18%);
+		outline: none;
+		overflow: hidden;
+		transform: translateX(100%);
+		transition: $cf-filters-transition;
+	}
+
+	&.is-open &__inner {
+		transform: translateX(0);
+	}
+
+	&__header {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		flex: 0 0 auto;
+		padding: $spacing-medium $spacing-large;
+		border-bottom: 1px solid $color-outline;
+	}
+
+	&__title {
+		margin: 0;
+		font-weight: 600;
+	}
+
+	&__close {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 2.25rem;
+		height: 2.25rem;
+		padding: 0;
+		border: 0;
+		border-radius: $radius-sm;
+		background: rgb(255 255 255 / 92%);
+		color: $color-body;
+		font-size: 1.5rem;
+		line-height: 1;
+		cursor: pointer;
+	}
+
+	&__sections {
+		flex: 1 1 auto;
+		overflow: auto;
+		padding: 0 $spacing-large $spacing-large;
+	}
+}
+
+.cf-filters-panel--horizontal {
+	.cf-filters-panel__inner {
+		top: auto;
+		right: auto;
+		left: 0;
+		width: 100%;
+		height: auto;
+		max-height: min(70vh, 40rem);
+		transform: translateY(-0.5rem);
+		opacity: 0;
+	}
+
+	&.is-open .cf-filters-panel__inner {
+		transform: translateY(0);
+		opacity: 1;
+	}
+}
+
+.cf-filter-section {
+	padding-block: $spacing-medium;
+	border-bottom: 1px solid $color-outline;
+
+	&:last-child {
+		border-bottom: 0;
+	}
+
+	&.is-focused {
+		.cf-filter-section__title {
+			color: $color-primary;
+		}
+	}
+
+	&__title {
+		margin: 0 0 $spacing-small;
+		font-size: 1rem;
+		font-weight: 600;
+	}
+}
+
+.cf-filter-card__terms {
+	display: flex;
+	flex-direction: column;
+	gap: 0;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	max-height: 225px;
+	overflow: auto;
+
+	&--swatches {
+		display: flex;
+		flex-wrap: wrap;
+		flex-direction: row;
+		align-content: flex-start;
+		gap: var(--cf-swatch-v-sp, 8px) var(--cf-swatch-h-sp, 10px);
+		max-height: 225px;
+		overflow: auto;
+		padding-right: $spacing-xxx-small;
+	}
+}
+
+.cf-filter-card__term {
+	margin: 0;
+}
+
+.cf-filter-term {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: $spacing-small;
+	width: 100%;
+	padding: $spacing-xxx-small 0;
+	border: 0;
+	background: transparent;
+	text-align: left;
+	cursor: pointer;
+	font: inherit;
+	color: $color-body;
+
+	&.is-active {
+		.cf-filter-term__label {
+			font-weight: 600;
+		}
+	}
+}
+
+.cf-filter-term__label {
+	flex: 1 1 auto;
+}
+
+.cf-filter-term__count {
+	flex: 0 0 auto;
+	min-width: 1.75rem;
+	padding: 0.125rem $spacing-x-small;
+	border-radius: 999px;
+	background: $color-outline;
+	color: $color-body;
+	font-size: 0.8125rem;
+	line-height: 1.2;
+	text-align: center;
+}
+
+.cf-filter-card__terms--swatches {
+	.cf-filter-term,
+	.cf-swatch {
+		flex: 0 0 auto;
+	}
+}
+
+.cf-filter-price {
+	display: grid;
+	gap: $spacing-small;
+
+	&__inputs {
+		display: flex;
+		align-items: center;
+		gap: $spacing-x-small;
+	}
+
+	&__field {
+		flex: 1 1 0;
+	}
+
+	&__input {
+		width: 100%;
+	}
+
+	&__apply {
+		justify-self: start;
+	}
+}
+
+html.cf-filters-open {
+	overflow: hidden;
+}
+
+@include breakpoint(medium) {
+	.cf-filters-panel--vertical .cf-filters-panel__inner {
+		width: min(100%, 36rem);
+	}
+
+	.cf-filters-panel--horizontal {
+		position: absolute;
+		inset: auto;
+		top: 100%;
+		left: 0;
+		right: 0;
+		z-index: 30;
+		height: auto;
+		pointer-events: none;
+
+		&.is-open {
+			pointer-events: auto;
+		}
+
+		.cf-filters-panel__backdrop {
+			display: none;
+		}
+
+		.cf-filters-panel__inner {
+			position: relative;
+			width: 100%;
+			height: auto;
+			max-height: min(70vh, 40rem);
+			box-shadow: 0 12px 32px rgb(0 0 0 / 12%);
+		}
+	}
+
+	.cf-product-filters:has(.cf-filters-panel--horizontal) {
+		position: relative;
+	}
+}

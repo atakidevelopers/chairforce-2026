@@ -155,6 +155,8 @@ class Front {
 			'wishlistLoginUrl'   => chairforce_get_wishlist_login_url(),
 			'wishlistAddLabel'   => __( 'Add to wishlist', 'chairforce' ),
 			'wishlistRemoveLabel' => __( 'Remove from wishlist', 'chairforce' ),
+			'filtersPanelDesktop' => chairforce_get_filters_panel_desktop(),
+			'filtersPanelMobile'  => chairforce_get_filters_panel_mobile(),
 		];
 
 

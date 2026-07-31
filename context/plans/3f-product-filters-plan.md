@@ -1,17 +1,17 @@
 # 3f — Product archive filters (Figma bar + AJAX) — Implementation Plan
 
-## Status: ⏳ Not started
+## Status: ⏳ In progress (chunks 1–6 implemented; QA pending)
 
-Plan locked from findings + UX decisions (31 Jul 2026). No implementation yet.
+Plan locked from findings + UX decisions (31 Jul 2026).
 
 | Chunk | Scope | Status |
 |---|---|---|
-| 1 | ACF theme options + PHP filter helpers (`Filterer`, dynamic attributes) | ⏳ |
-| 2 | Filter bar + panel markup (card grid) + chips partials | ⏳ |
-| 3 | Extend **`load-more` REST** (`mode`, filter params, product extras) | ⏳ |
-| 4 | Frontend JS (panel, AJAX, pushState, vertical/horizontal) | ⏳ |
-| 5 | Sass (bar, panel orientations, cards, chips) | ⏳ |
-| 6 | Template wiring + `WooCommerce_Archive` + Load More integration | ⏳ |
+| 1 | ACF theme options + PHP filter helpers (`Filterer`, dynamic attributes) | ✅ |
+| 2 | Filter bar + panel markup (card grid) + chips partials | ✅ |
+| 3 | Extend **`load-more` REST** (`mode`, filter params, product extras) | ✅ |
+| 4 | Frontend JS (panel, AJAX, pushState, vertical/horizontal) | ✅ |
+| 5 | Sass (bar, panel orientations, cards, chips) | ✅ |
+| 6 | Template wiring + `WooCommerce_Archive` + Load More integration | ✅ |
 | 7 | QA matrix (filters × panel modes × Load More) | ⏳ |
 
 ## Goal

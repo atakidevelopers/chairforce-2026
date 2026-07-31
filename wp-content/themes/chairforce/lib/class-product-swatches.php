@@ -529,7 +529,7 @@ class Product_Swatches {
 	 * @param mixed $image_meta Term `image` meta (attachment ID, legacy array, or URL).
 	 * @return string Image HTML or empty string.
 	 */
-	private static function get_term_swatch_image_html( $image_meta ): string {
+	public static function get_term_swatch_image_html( $image_meta ): string {
 		if ( is_numeric( $image_meta ) ) {
 			$html = wp_get_attachment_image( (int) $image_meta, 'woocommerce_thumbnail' );
 

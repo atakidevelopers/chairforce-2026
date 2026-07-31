@@ -20,7 +20,13 @@ classes) plus WooCommerce's native `widget_price_filter`. **Zero**
 `jet-smart-filters` / `jsf-` markup found anywhere on that page — the
 earlier speculation in files `09`/`10` was incorrect, not just unconfirmed.
 
-## How it works (mechanically — all standard WooCommerce, no AJAX/plugin magic)
+> **AJAX transport:** File `12` covers the *widgets and WC query params*. The *live
+> shop UX* (instant filter + sidebar refresh) is **Woodmart PJAX**, not REST facets.
+> See **`12A-woodmart-ajax-shop-filtering.md`** for the full mechanism verified on
+> `chairforce.test` (`ajax_shop: 1`). Summary: filter clicks trigger a GET partial
+> reload of `.wd-page-content` — filters and grid re-render in one server pass.
+
+## How it works (mechanically — standard WooCommerce filtering; AJAX is Woodmart PJAX)
 
 - **Data source — identical to swatches**: for each term, reads
   `get_term_meta($term_id, 'color', true)` / `'image'` / `'not_dropdown'`
@@ -58,13 +64,22 @@ earlier speculation in files `09`/`10` was incorrect, not just unconfirmed.
   optional search-within-filter input. All are presentation options on top
   of the same underlying WooCommerce filtering, not separate data.
 
-## Rebuild implication — this is largely a UI task, not a new system
+## Rebuild implication — UI on native WC; transport should match Woodmart PJAX
 
 Because the filter widget's data and styling are already 100% shared with
 the swatches you're already rebuilding (file `02` §1/§2), and the actual
 *filtering* is native WooCommerce (`filter_{attribute}` query args +
 `WC_Query`), this doesn't need `jet-smart-filters`, WP Grid Builder, or any
-other plugin to replicate. Recommended approach:
+other plugin to replicate.
+
+**Transport (how AJAX should work):** the live site does **not** update filters
+via a separate REST facet API. It **PJAX-reloads the whole shop content region**
+(`.wd-page-content`) so filters, counts, grid, and load-more button all come from
+one server render. See **`12A-woodmart-ajax-shop-filtering.md`** — the rebuild
+should follow that **single-shell partial reload** contract rather than swapping
+grid/chips/panel as independent REST fragments (which fights WC's one-query model).
+
+Recommended approach:
 
 1. Build a simple widget/block that lists `pa_colour` (and any other
    filterable attribute) terms with the same swatch rendering priority

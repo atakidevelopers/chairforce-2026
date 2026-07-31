@@ -68,26 +68,30 @@ function chairforce_get_load_more_excluded_query_var_keys(): array {
  *
  * @return array<string, mixed>
  */
-function chairforce_get_load_more_query_vars_for_client(): array {
-
-	if (
-		! is_shop()
-		&& ! is_product_taxonomy()
-		&& ! is_post_type_archive( 'product' )
-	) {
-		return [];
-	}
+function chairforce_get_load_more_query_vars_for_client( ?\WP_Query $query = null ): array {
 
 	global $wp_query;
 
-	if ( ! $wp_query instanceof \WP_Query ) {
+	$source_query = $query instanceof \WP_Query ? $query : $wp_query;
+
+	if ( ! $source_query instanceof \WP_Query ) {
 		return [];
+	}
+
+	if ( null === $query ) {
+		if (
+			! is_shop()
+			&& ! is_product_taxonomy()
+			&& ! is_post_type_archive( 'product' )
+		) {
+			return [];
+		}
 	}
 
 	$export  = [];
 	$exclude = array_flip( chairforce_get_load_more_excluded_query_var_keys() );
 
-	foreach ( $wp_query->query_vars as $key => $value ) {
+	foreach ( $source_query->query_vars as $key => $value ) {
 		if ( isset( $exclude[ $key ] ) ) {
 			continue;
 		}
@@ -201,7 +205,21 @@ function chairforce_sanitize_load_more_query_vars( array $vars ): array {
 		}
 
 		if ( in_array( $key, [ 'orderby', 'order', 's', 'meta_key', 'wc_query' ], true ) && is_string( $value ) ) {
+			if ( 'orderby' === $key ) {
+				$allowed[ $key ] = chairforce_sanitize_catalog_orderby( $value );
+			} else {
+				$allowed[ $key ] = sanitize_text_field( $value );
+			}
+			continue;
+		}
+
+		if ( str_starts_with( $key, 'filter_' ) && is_string( $value ) ) {
 			$allowed[ $key ] = sanitize_text_field( $value );
+			continue;
+		}
+
+		if ( in_array( $key, [ 'min_price', 'max_price' ], true ) && is_scalar( $value ) ) {
+			$allowed[ $key ] = sanitize_text_field( (string) $value );
 		}
 	}
 
@@ -223,6 +241,44 @@ function chairforce_sanitize_load_more_query_vars( array $vars ): array {
 	}
 
 	return chairforce_normalize_load_more_ordering( $allowed );
+}
+
+/**
+ * Sanitize a catalog orderby value without breaking WC compound keys.
+ *
+ * WooCommerce defaults to `menu_order title` (space-separated). sanitize_key()
+ * strips spaces and would corrupt that to `menu_ordertitle`, breaking pagination.
+ *
+ * @param string $orderby Raw orderby value.
+ * @return string
+ */
+function chairforce_sanitize_catalog_orderby( string $orderby ): string {
+
+	$orderby = strtolower( trim( sanitize_text_field( $orderby ) ) );
+
+	if ( '' === $orderby ) {
+		return '';
+	}
+
+	if ( str_contains( $orderby, ' ' ) ) {
+		$parts = preg_split( '/\s+/', $orderby ) ?: [];
+
+		return implode(
+			' ',
+			array_values(
+				array_filter(
+					array_map(
+						static function ( $part ) {
+							return sanitize_key( (string) $part );
+						},
+						$parts
+					)
+				)
+			)
+		);
+	}
+
+	return sanitize_key( $orderby );
 }
 
 /**
@@ -248,7 +304,7 @@ function chairforce_parse_catalog_orderby( string $orderby, string $order = '' )
 		}
 	}
 
-	$orderby = sanitize_key( $orderby );
+	$orderby = chairforce_sanitize_catalog_orderby( $orderby );
 
 	if ( ! in_array( $order, [ 'ASC', 'DESC' ], true ) ) {
 		$order = '';
@@ -336,11 +392,19 @@ function chairforce_sanitize_load_more_tax_query( array $tax_query ): array {
 			continue;
 		}
 
+		$operator = isset( $clause['operator'] )
+			? strtoupper( trim( sanitize_text_field( (string) $clause['operator'] ) ) )
+			: 'IN';
+
+		if ( ! in_array( $operator, [ 'IN', 'NOT IN', 'AND', 'EXISTS', 'NOT EXISTS' ], true ) ) {
+			$operator = 'IN';
+		}
+
 		$sanitized = [
 			'taxonomy' => sanitize_key( $clause['taxonomy'] ),
 			'field'    => $field,
 			'terms'    => $terms,
-			'operator' => isset( $clause['operator'] ) ? sanitize_key( (string) $clause['operator'] ) : 'IN',
+			'operator' => $operator,
 		];
 
 		if ( isset( $clause['include_children'] ) ) {
@@ -386,6 +450,30 @@ function chairforce_sanitize_load_more_meta_query( array $meta_query ): array {
 }
 
 /**
+ * Strip replayed filter artifacts before rebuilding layered-nav tax/meta queries.
+ *
+ * @param array<string, mixed>  $client_vars   Sanitized query vars from the client.
+ * @param array<string, string> $filter_params Active catalog filter params.
+ * @return array<string, mixed>
+ */
+function chairforce_prepare_load_more_client_vars( array $client_vars, array $filter_params ): array {
+
+	foreach ( array_keys( $client_vars ) as $key ) {
+		if ( str_starts_with( $key, 'filter_' ) || in_array( $key, [ 'min_price', 'max_price' ], true ) ) {
+			unset( $client_vars[ $key ] );
+		}
+	}
+
+	unset( $client_vars['taxonomy'], $client_vars['term'] );
+
+	if ( ! empty( $filter_params ) ) {
+		unset( $client_vars['tax_query'], $client_vars['meta_query'] );
+	}
+
+	return $client_vars;
+}
+
+/**
  * Build WP_Query args for a Load More request.
  *
  * Pagination is always derived server-side: calculated perPage + offset for the
@@ -395,10 +483,12 @@ function chairforce_sanitize_load_more_meta_query( array $meta_query ): array {
  * @param int                  $page        Target page number (≥ 2).
  * @return array<string, mixed>
  */
-function chairforce_build_load_more_query_args( array $client_vars, int $page ): array {
+function chairforce_build_load_more_query_args( array $client_vars, int $page, array $filter_params = [] ): array {
 
 	$per_page = chairforce_get_loop_shop_per_page();
-	$page     = max( 2, $page );
+	$page     = max( 1, $page );
+
+	$client_vars = chairforce_prepare_load_more_client_vars( $client_vars, $filter_params );
 
 	foreach ( chairforce_get_load_more_excluded_query_var_keys() as $excluded_key ) {
 		unset( $client_vars[ $excluded_key ] );
@@ -422,6 +512,7 @@ function chairforce_build_load_more_query_args( array $client_vars, int $page ):
 	unset( $query_args['paged'], $query_args['page'] );
 
 	$query_args = chairforce_apply_load_more_catalog_ordering( $query_args );
+	$query_args = chairforce_apply_catalog_filter_params_to_query( $query_args, $filter_params );
 
 	return $query_args;
 }
@@ -648,4 +739,92 @@ function chairforce_get_load_more_block_context( ?string $post_type = null ): ar
 			'columns' => $columns,
 		],
 	];
+}
+
+/**
+ * Render Load More block markup for a catalog query (filter replace refresh).
+ *
+ * @param \WP_Query              $query      Executed product query.
+ * @param array<string, mixed>   $query_vars Query vars payload for the button.
+ * @return string Empty when pagination is not needed.
+ */
+function chairforce_render_load_more_html_for_query( \WP_Query $query, array $query_vars ): string {
+
+	$per_page  = chairforce_get_loop_shop_per_page();
+	$total     = (int) $query->found_posts;
+	$max_pages = chairforce_get_load_more_max_pages( $total, $per_page );
+
+	if ( $max_pages <= 1 ) {
+		return '';
+	}
+
+	$viewing = min( $per_page, $total );
+
+	$load_more_text = __( 'Load More', 'chairforce' );
+	$loading_text   = __( 'Loading…', 'chairforce' );
+
+	$wrapper_attributes = get_block_wrapper_attributes(
+		[
+			'class'      => 'cf-load-more wp-block-query-pagination',
+			'data-total' => (string) $total,
+		]
+	);
+
+	$progress_percent = $total > 0 ? round( ( $viewing / $total ) * 100, 2 ) : 0;
+
+	$status_text = sprintf(
+		/* translators: 1: number of products currently visible, 2: total products in the query */
+		__( 'Viewing %1$s of %2$s', 'chairforce' ),
+		number_format_i18n( $viewing ),
+		number_format_i18n( $total )
+	);
+
+	$button_markup = chairforce_get_buttons_markup(
+		[
+			[
+				'label'           => $load_more_text,
+				'style'           => 'is-style-ghost',
+				'element_class'   => 'cf-load-more__button',
+				'tag'             => 'button',
+				'html_attributes' => [
+					'data-next-page'    => '2',
+					'data-max-pages'    => (string) $max_pages,
+					'data-per-page'     => (string) $per_page,
+					'data-query-vars'   => wp_json_encode( $query_vars ),
+					'data-loading-text' => $loading_text,
+					'aria-busy'         => 'false',
+				],
+			],
+		],
+		[
+			'layout' => [
+				'type'           => 'flex',
+				'justifyContent' => 'center',
+			],
+		]
+	);
+
+	return sprintf(
+		'<div %1$s>
+			<div class="cf-load-more__progress" role="progressbar" aria-valuemin="0" aria-valuemax="%2$d" aria-valuenow="%3$d" aria-label="%7$s">
+				<span class="cf-load-more__progress-bar" style="width:%4$s%%"></span>
+			</div>
+			<p class="cf-load-more__status">%5$s</p>
+			%6$s
+		</div>',
+		$wrapper_attributes,
+		esc_attr( (string) $total ),
+		esc_attr( (string) $viewing ),
+		esc_attr( (string) $progress_percent ),
+		esc_html( $status_text ),
+		$button_markup,
+		esc_attr(
+			sprintf(
+				/* translators: 1: number of products currently visible, 2: total products in the query */
+				__( 'Viewing %1$s of %2$s products', 'chairforce' ),
+				number_format_i18n( $viewing ),
+				number_format_i18n( $total )
+			)
+		)
+	);
 }
