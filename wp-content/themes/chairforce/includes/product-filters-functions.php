@@ -316,6 +316,53 @@ function chairforce_build_layered_nav_toggle_url( string $taxonomy, string $term
 }
 
 /**
+ * Lucide icon slug for a catalog filter group (attribute slug or `price`).
+ *
+ * Maps WooCommerce attribute slugs to the theme's curated Lucide set — no ACF.
+ * Unknown slugs fall back to `filter`.
+ *
+ * @param string $slug Attribute slug e.g. `material`, `colour`, or `price`.
+ * @return string Lucide slug registered in chairforce_get_lucide_icon_choices().
+ */
+function chairforce_get_filter_group_icon_slug( string $slug ): string {
+
+	$slug = sanitize_title( $slug );
+
+	$map = [
+		'price'           => 'tag',
+		'material'        => 'package',
+		'colour'          => 'eye',
+		'color'           => 'eye',
+		'arms'            => 'sliders-horizontal',
+		'stackable'       => 'package',
+		'assembly'        => 'check-circle',
+		'indoor-outdoor'  => 'map-pin',
+		'folding'         => 'menu',
+		'height'          => 'sliders-horizontal',
+		'shape'           => 'grid-2x2',
+		'size'            => 'sliders-horizontal',
+		'seat'            => 'user',
+		'type'            => 'file-text',
+		'features'        => 'star',
+		'backrest'        => 'shield-check',
+		'base-type'       => 'truck',
+		'brand'           => 'tag',
+		'mounting'        => 'map-pin',
+		'feet'            => 'truck',
+		'castors'         => 'truck',
+		'feet-castors'    => 'truck',
+	];
+
+	$icon = $map[ $slug ] ?? 'filter';
+
+	if ( function_exists( 'chairforce_sanitize_lucide_icon_slug' ) ) {
+		$icon = chairforce_sanitize_lucide_icon_slug( $icon );
+	}
+
+	return '' !== $icon ? $icon : 'filter';
+}
+
+/**
  * Visible attribute filter groups for the current product archive.
  *
  * @return array<int, array<string, mixed>>

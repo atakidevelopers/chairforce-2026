@@ -11,8 +11,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-$context = isset( $args['context'] ) ? (string) $args['context'] : 'chrome';
-$chips   = chairforce_get_active_filter_chips();
+$context   = isset( $args['context'] ) ? (string) $args['context'] : 'chrome';
+$chips     = chairforce_get_active_filter_chips();
 $clear_url = chairforce_get_clear_catalog_filters_url();
 
 if ( empty( $chips ) ) {
@@ -24,35 +24,58 @@ $wrapper_class = 'cf-active-filters';
 if ( 'panel' === $context ) {
 	$wrapper_class .= ' cf-active-filters--panel';
 }
+
+$chip_buttons = [];
+
+foreach ( $chips as $chip ) {
+	$chip_label = (string) ( $chip['label'] ?? '' );
+
+	if ( '' === $chip_label ) {
+		continue;
+	}
+
+	$html_attributes = [
+		'data-filter-name' => (string) ( $chip['filter_name'] ?? '' ),
+		'data-remove-url'  => (string) ( $chip['remove_url'] ?? '' ),
+		'aria-label'       => sprintf(
+			/* translators: %s: active filter label */
+			__( 'Remove filter: %s', 'chairforce' ),
+			$chip_label
+		),
+	];
+
+	if ( ! empty( $chip['term_slug'] ) ) {
+		$html_attributes['data-term-slug'] = (string) $chip['term_slug'];
+	}
+
+	$chip_buttons[] = [
+		'label'             => $chip_label,
+		'tag'               => 'button',
+		'style'             => 'is-style-light',
+		'icon'              => 'x',
+		'icon_position'     => 'right',
+		'element_class'     => 'cf-active-filters__chip',
+		'html_attributes'   => $html_attributes,
+	];
+}
 ?>
 <div class="<?php echo esc_attr( $wrapper_class ); ?>">
-	<ul class="cf-active-filters__list">
-		<?php foreach ( $chips as $chip ) : ?>
-			<li class="cf-active-filters__item">
-				<button
-					type="button"
-					class="cf-active-filters__chip"
-					data-filter-name="<?php echo esc_attr( (string) ( $chip['filter_name'] ?? '' ) ); ?>"
-					<?php if ( ! empty( $chip['term_slug'] ) ) : ?>
-						data-term-slug="<?php echo esc_attr( (string) $chip['term_slug'] ); ?>"
-					<?php endif; ?>
-					data-remove-url="<?php echo esc_url( (string) ( $chip['remove_url'] ?? '' ) ); ?>"
-				>
-					<span class="cf-active-filters__chip-label"><?php echo esc_html( (string) ( $chip['label'] ?? '' ) ); ?></span>
-					<span class="cf-active-filters__chip-remove" aria-hidden="true">&times;</span>
-					<span class="screen-reader-text">
-						<?php
-						printf(
-							/* translators: %s: active filter label */
-							esc_html__( 'Remove filter: %s', 'chairforce' ),
-							esc_html( (string) ( $chip['label'] ?? '' ) )
-						);
-						?>
-					</span>
-				</button>
-			</li>
-		<?php endforeach; ?>
-	</ul>
+	<?php if ( 'chrome' === $context ) : ?>
+		<p class="cf-active-filters__label"><?php esc_html_e( 'Active Filters:', 'chairforce' ); ?></p>
+	<?php endif; ?>
+	<?php
+	echo chairforce_get_buttons_markup(
+		$chip_buttons,
+		[
+			'wrapper_class' => 'cf-active-filters__chips',
+			'default_style' => 'is-style-light',
+			'layout'        => [
+				'type'     => 'flex',
+				'flexWrap' => 'wrap',
+			],
+		]
+	);
+	?>
 	<?php if ( $clear_url ) : ?>
 		<button
 			type="button"

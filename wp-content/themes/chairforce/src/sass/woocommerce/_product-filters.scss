@@ -46,44 +46,39 @@ html.cf-filters-swapping::before {
 }
 
 .cf-product-filters__bar-scroll {
-	display: flex;
-	flex-wrap: nowrap;
-	gap: $spacing-x-small;
 	overflow-x: auto;
 	padding-block: $spacing-xxx-small;
 }
 
-.cf-product-filters__bar-button {
-	display: inline-flex;
-	align-items: center;
-	gap: $spacing-xxx-small;
-	flex: 0 0 auto;
-	padding: $spacing-x-small $spacing-small;
-	border: 1px solid $color-outline;
-	border-radius: $radius-sm;
-	background: $color-white;
-	color: $color-body;
-	cursor: pointer;
-	white-space: nowrap;
-	font: inherit;
+.cf-product-filters__bar-buttons {
+	flex-wrap: nowrap;
+	gap: $spacing-x-small;
+	margin: 0;
 
-	&.is-active {
-		border-color: $color-neutral;
+	.wp-block-button {
+		flex: 0 0 auto;
+		margin: 0;
 	}
-}
 
-.cf-product-filters__bar-button-count {
-	display: inline-flex;
-	align-items: center;
-	justify-content: center;
-	min-width: 1.125rem;
-	height: 1.125rem;
-	padding-inline: $spacing-xxx-small;
-	border-radius: 999px;
-	font-size: 0.75rem;
-	line-height: 1;
-	background: $color-primary;
-	color: $color-white;
+	.cf-product-filters__bar-button.wp-block-button__link {
+		white-space: nowrap;
+		gap: $spacing-x-small;
+		padding-block: $spacing-x-small;
+		padding-inline: $spacing-small $spacing-medium;
+		font-size: $font-size-small;
+
+		@include cf-icon-after("chevron-down");
+
+		&::after {
+			margin-inline-start: auto;
+			font-size: 0.875em;
+			opacity: 0.85;
+		}
+
+		&.is-active {
+			border-color: $color-neutral;
+		}
+	}
 }
 
 .cf-active-filters {
@@ -101,25 +96,34 @@ html.cf-filters-swapping::before {
 	}
 }
 
-.cf-active-filters__list {
-	display: flex;
-	flex-wrap: wrap;
-	gap: $spacing-x-small;
+.cf-active-filters__label {
+	flex: 0 0 auto;
 	margin: 0;
-	padding: 0;
-	list-style: none;
+	font-size: $font-size-x-small;
+	line-height: 1.2;
+	color: $color-neutral;
 }
 
-.cf-active-filters__chip {
-	display: inline-flex;
-	align-items: center;
-	gap: $spacing-xxx-small;
-	padding: $spacing-xxx-small $spacing-x-small;
-	border: 1px solid $color-outline;
-	border-radius: $radius-sm;
-	background: $color-white;
-	cursor: pointer;
-	font: inherit;
+.cf-active-filters__chips {
+	gap: $spacing-x-small;
+	margin: 0;
+
+	.wp-block-button {
+		margin: 0;
+	}
+
+	.cf-active-filters__chip.wp-block-button__link {
+		gap: $spacing-xxx-small;
+		padding-block: $spacing-xxx-small;
+		padding-inline: $spacing-x-small;
+		font-size: $font-size-x-small;
+		line-height: 1.2;
+
+		&::before,
+		&::after {
+			font-size: 0.875em;
+		}
+	}
 }
 
 .cf-active-filters__clear {
