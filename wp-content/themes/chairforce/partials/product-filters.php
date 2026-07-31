@@ -27,23 +27,29 @@ $clear_url           = chairforce_get_clear_catalog_filters_url();
 	data-panel-mobile="<?php echo esc_attr( $mobile_orientation ); ?>"
 	data-clear-url="<?php echo esc_url( $clear_url ); ?>"
 >
-	<?php
-	get_template_part(
-		'partials/product-filters',
-		'bar',
-		[
-			'filter_groups' => $filter_groups,
-		]
-	);
+	<div class="cf-product-filters__chrome">
+		<?php
+		get_template_part(
+			'partials/product-filters',
+			'bar',
+			[
+				'filter_groups' => $filter_groups,
+			]
+		);
 
-	get_template_part( 'partials/product-filters', 'chips' );
+		get_template_part( 'partials/product-filters', 'chips' );
+		?>
+	</div>
 
-	get_template_part(
-		'partials/product-filters',
-		'panel',
-		[
-			'filter_groups' => $filter_groups,
-		]
-	);
-	?>
+	<aside class="cf-shop-archive-sidebar" aria-label="<?php esc_attr_e( 'Product filters', 'chairforce' ); ?>">
+		<?php
+		get_template_part(
+			'partials/product-filters',
+			'panel',
+			[
+				'filter_groups' => $filter_groups,
+			]
+		);
+		?>
+	</aside>
 </div>

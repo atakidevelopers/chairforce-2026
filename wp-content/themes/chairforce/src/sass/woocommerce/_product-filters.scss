@@ -2,11 +2,13 @@
 @import "../theme-json-variable";
 
 $cf-filters-panel-width: 32rem;
+$cf-filters-sidebar-width: 20rem; // ~400px desktop push sidebar
 $cf-filters-overlay-z: 99999;
 $cf-filters-panel-z: 100000;
 $cf-filters-transition: transform 0.4s ease, opacity 0.4s ease;
+$cf-filters-layout-transition: grid-template-columns 0.35s ease;
 
-// Full-viewport overlay on <html> — not inside alignwide shell / opacity ancestors.
+// Mobile vertical drawer overlays only (desktop vertical uses in-flow push sidebar).
 html.cf-filters-vertical-open::before,
 html.cf-filters-swapping::before {
 	content: "";
@@ -15,6 +17,18 @@ html.cf-filters-swapping::before {
 	z-index: $cf-filters-overlay-z;
 	background: rgb(0 0 0 / 45%);
 	pointer-events: auto;
+}
+
+.cf-shop-archive-layout {
+	width: 100%;
+}
+
+.cf-shop-archive-main {
+	min-width: 0;
+}
+
+.cf-shop-archive-sidebar {
+	min-width: 0;
 }
 
 .cf-product-filters {
@@ -333,8 +347,73 @@ html.cf-filters-open {
 }
 
 @include breakpoint(medium) {
-	.cf-filters-panel--vertical .cf-filters-panel__inner {
-		width: min(100%, 36rem);
+	// Desktop vertical — push sidebar (shop reflows; no fixed drawer / backdrop).
+	.cf-shop-archive-layout:has(.cf-filters-panel--vertical) {
+		display: grid;
+		grid-template-columns: 0 minmax(0, 1fr);
+		grid-template-areas:
+			"filters-chrome filters-chrome"
+			"filters-sidebar shop-main";
+		column-gap: 0;
+		transition: $cf-filters-layout-transition;
+
+		&.is-filters-open {
+			grid-template-columns: min($cf-filters-sidebar-width, 100%) minmax(0, 1fr);
+			column-gap: $spacing-medium;
+		}
+
+		.cf-product-filters {
+			display: contents;
+		}
+
+		.cf-product-filters__chrome {
+			grid-area: filters-chrome;
+		}
+
+		.cf-shop-archive-sidebar {
+			grid-area: filters-sidebar;
+			overflow: hidden;
+			align-self: start;
+			position: sticky;
+			top: var(--cf-shop-archive-sidebar-top, 0);
+			max-height: calc(100vh - var(--cf-shop-archive-sidebar-top, 0px));
+		}
+
+		.cf-shop-archive-main {
+			grid-area: shop-main;
+		}
+
+		.cf-filters-panel--vertical {
+			position: static;
+			inset: auto;
+			z-index: auto;
+			height: auto;
+			pointer-events: auto;
+
+			.cf-filters-panel__backdrop {
+				display: none;
+			}
+
+			.cf-filters-panel__inner {
+				position: relative;
+				top: auto;
+				right: auto;
+				left: auto;
+				width: 100%;
+				height: auto;
+				max-height: calc(100vh - var(--cf-shop-archive-sidebar-top, 0px));
+				min-height: 0;
+				transform: none;
+				box-shadow: none;
+				border: 1px solid $color-outline;
+				border-radius: $radius-sm;
+				transition: none;
+			}
+
+			&.is-open .cf-filters-panel__inner {
+				transform: none;
+			}
+		}
 	}
 
 	.cf-filters-panel--horizontal {

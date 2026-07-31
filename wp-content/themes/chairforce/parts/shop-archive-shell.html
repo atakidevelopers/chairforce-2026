@@ -1,14 +1,22 @@
 <!-- wp:group {"tagName":"div","metadata":{"name":"Shop archive shell"},"className":"cf-shop-archive-shell","align":"wide","layout":{"type":"constrained"}} -->
 <div class="wp-block-group cf-shop-archive-shell alignwide">
-	<!-- wp:chairforce/product-filters /-->
+	<!-- wp:group {"tagName":"div","metadata":{"name":"Shop archive layout"},"className":"cf-shop-archive-layout","align":"wide","layout":{"type":"default"}} -->
+	<div class="cf-shop-archive-layout alignwide">
+		<!-- wp:chairforce/product-filters /-->
 
-	<!-- wp:group {"metadata":{"name":"Results and sorting"},"layout":{"type":"flex","flexWrap":"nowrap","justifyContent":"space-between"}} -->
-	<div class="wp-block-group alignwide">
-		<!-- wp:woocommerce/product-results-count /-->
-		<!-- wp:woocommerce/catalog-sorting /-->
+		<!-- wp:group {"tagName":"div","metadata":{"name":"Shop results"},"className":"cf-shop-archive-main","layout":{"type":"constrained"}} -->
+		<div class="cf-shop-archive-main">
+			<!-- wp:group {"metadata":{"name":"Results and sorting"},"layout":{"type":"flex","flexWrap":"nowrap","justifyContent":"space-between"}} -->
+			<div class="wp-block-group alignwide">
+				<!-- wp:woocommerce/product-results-count /-->
+				<!-- wp:woocommerce/catalog-sorting /-->
+			</div>
+			<!-- /wp:group -->
+
+			<!-- wp:template-part {"slug":"product-collection","theme":"chairforce","tagName":"div","align":"wide"} /-->
+		</div>
+		<!-- /wp:group -->
 	</div>
 	<!-- /wp:group -->
-
-	<!-- wp:template-part {"slug":"product-collection","theme":"chairforce","tagName":"div","align":"wide"} /-->
 </div>
 <!-- /wp:group -->

@@ -1,8 +1,8 @@
 /**
  * Product archive filters — panel UI + archive shell partial reload (PJAX-style).
  *
- * Vertical drawer panel is portaled to document.body (Quick View pattern) so fixed
- * positioning is not trapped by alignwide shell / opacity stacking contexts.
+ * Desktop vertical: in-flow push sidebar (no portal/backdrop).
+ * Mobile vertical: fixed drawer portaled to body. Desktop horizontal: dropdown unchanged.
  *
  * @see context/existing-functionality/12A-woodmart-ajax-shop-filtering.md
  */
@@ -11,8 +11,11 @@ import { delegateDocument, dispatchContentUpdated } from './shared/delegated-eve
 
 const ROOT_SELECTOR = '.cf-product-filters';
 const SHELL_SELECTOR = '.cf-shop-archive-shell';
+const LAYOUT_SELECTOR = '.cf-shop-archive-layout';
+const SIDEBAR_SELECTOR = '.cf-shop-archive-sidebar';
 const BAR_BUTTON_SELECTOR = '.cf-product-filters__bar-button';
 const PANEL_SELECTOR = '.cf-filters-panel';
+const PANEL_INNER_SELECTOR = '.cf-filters-panel__inner';
 const PANEL_CLOSE_SELECTOR = '[data-cf-filters-close]';
 const TERM_SELECTOR = '.cf-filter-term, .cf-swatch.cf-filter-term';
 const CHIP_SELECTOR = '.cf-active-filters__chip';
@@ -21,11 +24,13 @@ const PRICE_APPLY_SELECTOR = '.cf-filter-price__apply';
 const SORT_SELECT_SELECTOR =
 	'.wp-block-woocommerce-catalog-sorting select.orderby, .wc-block-catalog-sorting select.orderby';
 const OPEN_CLASS = 'is-open';
+const LAYOUT_OPEN_CLASS = 'is-filters-open';
 const FOCUSED_CARD_CLASS = 'is-focused';
 const VERTICAL_OPEN_HTML_CLASS = 'cf-filters-vertical-open';
 const SWAPPING_HTML_CLASS = 'cf-filters-swapping';
 const ARCHIVE_SHELL_QUERY_ARG = '_cf_archive';
 const ARCHIVE_SHELL_QUERY_VALUE = 'shell';
+const DESKTOP_BREAKPOINT = '(min-width: 781px)';
 
 let activeFetchController = null;
 
@@ -58,7 +63,50 @@ function getDesktopBreakpoint() {
 		return null;
 	}
 
-	return window.matchMedia( '(min-width: 768px)' );
+	return window.matchMedia( DESKTOP_BREAKPOINT );
+}
+
+/**
+ * @param {HTMLElement|null} root
+ * @return {HTMLElement|null}
+ */
+function getArchiveLayout( root ) {
+	return root?.closest( LAYOUT_SELECTOR )
+		|| document.querySelector( LAYOUT_SELECTOR );
+}
+
+/**
+ * Desktop + vertical theme option → push sidebar (not mobile drawer).
+ *
+ * @param {HTMLElement|null} root
+ * @return {boolean}
+ */
+function isDesktopVerticalPushMode( root ) {
+	if ( ! root ) {
+		return false;
+	}
+
+	const mq = getDesktopBreakpoint();
+
+	if ( ! mq?.matches ) {
+		return false;
+	}
+
+	return root.dataset.panelDesktop !== 'horizontal';
+}
+
+/**
+ * Mobile vertical drawer still uses body portal + html overlay.
+ *
+ * @param {HTMLElement|null} root
+ * @return {boolean}
+ */
+function shouldPortalVerticalPanel( root ) {
+	if ( ! root || getActivePanelOrientation( root ) !== 'vertical' ) {
+		return false;
+	}
+
+	return ! isDesktopVerticalPushMode( root );
 }
 
 /**
@@ -93,22 +141,28 @@ function syncPanelOrientationClasses( root ) {
 }
 
 /**
- * Move the panel back into the filters root (before shell swap destroys it).
+ * Move the panel back into the filters sidebar (before shell swap destroys portaled copy).
  *
  * @param {HTMLElement|null} root
  */
 function embedFilterPanelInRoot( root ) {
 	const panel = getFilterPanel();
 
-	if ( ! panel || ! root || root.contains( panel ) ) {
+	if ( ! panel || ! root ) {
 		return;
 	}
 
-	root.appendChild( panel );
+	const sidebar = root.querySelector( SIDEBAR_SELECTOR ) || root;
+
+	if ( sidebar.contains( panel ) ) {
+		return;
+	}
+
+	sidebar.appendChild( panel );
 }
 
 /**
- * Vertical drawer: portal to body. Horizontal dropdown: keep in root.
+ * Mobile vertical drawer: portal to body. Others: keep panel in sidebar/root.
  *
  * @param {HTMLElement|null} root
  */
@@ -121,7 +175,7 @@ function syncFilterPanelPortal( root ) {
 
 	syncPanelOrientationClasses( root );
 
-	if ( getActivePanelOrientation( root ) === 'vertical' ) {
+	if ( shouldPortalVerticalPanel( root ) ) {
 		if ( panel.parentElement !== document.body ) {
 			document.body.appendChild( panel );
 		}
@@ -129,21 +183,55 @@ function syncFilterPanelPortal( root ) {
 		return;
 	}
 
-	if ( ! root.contains( panel ) ) {
-		root.appendChild( panel );
+	embedFilterPanelInRoot( root );
+}
+
+/**
+ * @param {HTMLElement|null} root
+ * @param {boolean} isOpen
+ */
+function syncLayoutOpenState( root, isOpen ) {
+	const layout = getArchiveLayout( root );
+
+	if ( ! layout || ! isDesktopVerticalPushMode( root ) ) {
+		return;
 	}
+
+	layout.classList.toggle( LAYOUT_OPEN_CLASS, isOpen );
+}
+
+/**
+ * @param {HTMLElement|null} root
+ * @param {boolean} isOpen
+ */
+function syncPanelAccessibility( root, isOpen ) {
+	const panel = getFilterPanel();
+	const inner = panel?.querySelector( PANEL_INNER_SELECTOR );
+
+	if ( ! inner ) {
+		return;
+	}
+
+	if ( isDesktopVerticalPushMode( root ) ) {
+		inner.setAttribute( 'role', 'region' );
+		inner.removeAttribute( 'aria-modal' );
+		panel?.removeAttribute( 'aria-modal' );
+		return;
+	}
+
+	inner.setAttribute( 'role', 'dialog' );
+	inner.setAttribute( 'aria-modal', isOpen ? 'true' : 'false' );
 }
 
 /**
  * @param {boolean} isOpen
  */
 function syncVerticalOverlayHtmlClass( isOpen ) {
-	const panel = getFilterPanel();
-	const isVertical = Boolean( panel?.classList.contains( 'cf-filters-panel--vertical' ) );
+	const root = getFiltersRoot();
 
 	document.documentElement.classList.toggle(
 		VERTICAL_OPEN_HTML_CLASS,
-		isOpen && isVertical
+		isOpen && shouldPortalVerticalPanel( root )
 	);
 }
 
@@ -151,7 +239,12 @@ function syncVerticalOverlayHtmlClass( isOpen ) {
  * @param {boolean} swapping
  */
 function setFiltersSwapping( swapping ) {
-	document.documentElement.classList.toggle( SWAPPING_HTML_CLASS, swapping );
+	const root = getFiltersRoot();
+
+	document.documentElement.classList.toggle(
+		SWAPPING_HTML_CLASS,
+		swapping && shouldPortalVerticalPanel( root )
+	);
 }
 
 /**
@@ -307,12 +400,15 @@ function applyArchiveShellHtml( html, options = {} ) {
 		return;
 	}
 
-	if ( wasOpen ) {
+	if ( wasOpen && shouldPortalVerticalPanel( root ) ) {
 		document.documentElement.classList.add( 'cf-filters-open' );
 		setFiltersSwapping( true );
 	}
 
-	embedFilterPanelInRoot( root );
+	if ( shouldPortalVerticalPanel( root ) ) {
+		embedFilterPanelInRoot( root );
+	}
+
 	currentShell.outerHTML = newShell.outerHTML;
 
 	const nextRoot = getFiltersRoot();
@@ -368,11 +464,15 @@ function setPanelOpen( root, isOpen ) {
 		);
 	} );
 
-	document.documentElement.classList.toggle( 'cf-filters-open', isOpen );
+	syncLayoutOpenState( root, isOpen );
+	syncPanelAccessibility( root, isOpen );
+
+	const lockDocumentScroll = isOpen && ! isDesktopVerticalPushMode( root );
+	document.documentElement.classList.toggle( 'cf-filters-open', lockDocumentScroll );
 	syncVerticalOverlayHtmlClass( isOpen );
 
 	if ( isOpen ) {
-		panel.querySelector( '.cf-filters-panel__inner' )?.focus();
+		panel.querySelector( PANEL_INNER_SELECTOR )?.focus();
 	}
 }
 
@@ -445,7 +545,7 @@ async function refreshCatalogFromUrl( options = {} ) {
 	activeFetchController = new AbortController();
 	root.classList.add( 'is-loading' );
 
-	if ( panelWasOpen ) {
+	if ( panelWasOpen && shouldPortalVerticalPanel( root ) ) {
 		setFiltersSwapping( true );
 	}
 
@@ -769,9 +869,24 @@ export function initProductFilters() {
 
 	if ( root ) {
 		syncFilterPanelPortal( root );
+		syncPanelAccessibility( root, false );
 
 		const mq = getDesktopBreakpoint();
-		mq?.addEventListener( 'change', () => syncFilterPanelPortal( root ) );
+		mq?.addEventListener( 'change', () => {
+			syncFilterPanelPortal( root );
+
+			const panel = getFilterPanel();
+
+			if ( panel?.classList.contains( OPEN_CLASS ) ) {
+				syncLayoutOpenState( root, isDesktopVerticalPushMode( root ) );
+				syncPanelAccessibility( root, true );
+				syncVerticalOverlayHtmlClass( true );
+				document.documentElement.classList.toggle(
+					'cf-filters-open',
+					! isDesktopVerticalPushMode( root )
+				);
+			}
+		} );
 	}
 
 	delegateDocument( 'click', BAR_BUTTON_SELECTOR, handleBarButtonClick );
