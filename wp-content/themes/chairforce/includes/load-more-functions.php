@@ -222,7 +222,68 @@ function chairforce_sanitize_load_more_query_vars( array $vars ): array {
 		}
 	}
 
-	return $allowed;
+	return chairforce_normalize_load_more_ordering( $allowed );
+}
+
+/**
+ * Split WooCommerce hyphenated catalog orderby values (e.g. price-desc).
+ *
+ * Matches WC_Query::get_catalog_ordering_args() when reading ?orderby=price-desc.
+ *
+ * @param string $orderby Raw orderby value.
+ * @param string $order   Optional explicit order (ASC|DESC).
+ * @return array{orderby: string, order: string} Normalized orderby + order.
+ */
+function chairforce_parse_catalog_orderby( string $orderby, string $order = '' ): array {
+
+	$orderby = strtolower( trim( sanitize_text_field( $orderby ) ) );
+	$order   = strtoupper( trim( sanitize_text_field( $order ) ) );
+
+	if ( str_contains( $orderby, '-' ) ) {
+		$parts   = explode( '-', $orderby );
+		$orderby = (string) ( $parts[0] ?? $orderby );
+
+		if ( '' === $order && ! empty( $parts[1] ) ) {
+			$order = strtoupper( (string) $parts[1] );
+		}
+	}
+
+	$orderby = sanitize_key( $orderby );
+
+	if ( ! in_array( $order, [ 'ASC', 'DESC' ], true ) ) {
+		$order = '';
+	}
+
+	return [
+		'orderby' => $orderby,
+		'order'   => $order,
+	];
+}
+
+/**
+ * Normalize orderby/order inside replayed Load More query vars.
+ *
+ * @param array<string, mixed> $query_vars Query vars array.
+ * @return array<string, mixed>
+ */
+function chairforce_normalize_load_more_ordering( array $query_vars ): array {
+
+	if ( empty( $query_vars['orderby'] ) || ! is_string( $query_vars['orderby'] ) ) {
+		return $query_vars;
+	}
+
+	$parsed = chairforce_parse_catalog_orderby(
+		$query_vars['orderby'],
+		isset( $query_vars['order'] ) && is_string( $query_vars['order'] ) ? $query_vars['order'] : ''
+	);
+
+	$query_vars['orderby'] = $parsed['orderby'];
+
+	if ( '' !== $parsed['order'] ) {
+		$query_vars['order'] = $parsed['order'];
+	}
+
+	return $query_vars;
 }
 
 /**
@@ -359,6 +420,44 @@ function chairforce_build_load_more_query_args( array $client_vars, int $page ):
 	$query_args['offset']         = ( $page - 1 ) * $per_page;
 
 	unset( $query_args['paged'], $query_args['page'] );
+
+	$query_args = chairforce_apply_load_more_catalog_ordering( $query_args );
+
+	return $query_args;
+}
+
+/**
+ * Apply WooCommerce catalog ordering to Load More query args.
+ *
+ * Plain `orderby => price` (and popularity/rating) is not enough — WC registers
+ * `posts_clauses` filters via WC_Query::get_catalog_ordering_args().
+ *
+ * @param array<string, mixed> $query_args WP_Query args.
+ * @return array<string, mixed>
+ */
+function chairforce_apply_load_more_catalog_ordering( array $query_args ): array {
+
+	$post_types = (array) ( $query_args['post_type'] ?? 'product' );
+
+	if (
+		! in_array( 'product', $post_types, true )
+		&& ! in_array( 'product_variation', $post_types, true )
+	) {
+		return $query_args;
+	}
+
+	if ( ! function_exists( 'WC' ) || ! WC()->query instanceof \WC_Query ) {
+		return $query_args;
+	}
+
+	$orderby = isset( $query_args['orderby'] ) ? (string) $query_args['orderby'] : '';
+	$order   = isset( $query_args['order'] ) ? (string) $query_args['order'] : '';
+
+	$parsed   = chairforce_parse_catalog_orderby( $orderby, $order );
+	$ordering = WC()->query->get_catalog_ordering_args( $parsed['orderby'], $parsed['order'] );
+
+	$query_args = array_merge( $query_args, $ordering );
+	$query_args['wc_query'] = 'product_query';
 
 	return $query_args;
 }

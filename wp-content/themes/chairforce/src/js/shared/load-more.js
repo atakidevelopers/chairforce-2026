@@ -12,6 +12,41 @@ const RESULTS_COUNT_SELECTOR =
 	'.wp-block-woocommerce-product-results-count .woocommerce-result-count, .wc-block-product-results-count .woocommerce-result-count';
 
 /**
+ * Split WooCommerce hyphenated orderby values (e.g. price-desc → price + DESC).
+ *
+ * @param {string|null} orderby Raw orderby query param.
+ * @param {string|null} order   Raw order query param.
+ * @return {{ orderby: string|null, order: string|null }}
+ */
+function parseCatalogOrderby( orderby, order ) {
+	if ( ! orderby ) {
+		return {
+			orderby: null,
+			order: order || null,
+		};
+	}
+
+	const parts = orderby.split( '-' );
+
+	if (
+		parts.length >= 2 &&
+		/^(asc|desc)$/i.test( parts[ parts.length - 1 ] )
+	) {
+		const direction = parts.pop().toUpperCase();
+
+		return {
+			orderby: parts.join( '-' ) || null,
+			order: order || direction,
+		};
+	}
+
+	return {
+		orderby,
+		order: order || null,
+	};
+}
+
+/**
  * Read catalog sort params from the current URL.
  *
  * @return {{ orderby: string|null, order: string|null }}
@@ -19,10 +54,41 @@ const RESULTS_COUNT_SELECTOR =
 function getSortParamsFromUrl() {
 	const params = new URLSearchParams( window.location.search );
 
-	return {
-		orderby: params.get( 'orderby' ),
-		order: params.get( 'order' ),
-	};
+	return parseCatalogOrderby(
+		params.get( 'orderby' ),
+		params.get( 'order' )
+	);
+}
+
+/**
+ * Fallback sort params from the Load More button's exported query vars.
+ *
+ * @param {HTMLButtonElement} button Load More button.
+ * @return {{ orderby: string|null, order: string|null }}
+ */
+function getSortParamsFromButton( button ) {
+	const fromUrl = getSortParamsFromUrl();
+
+	if ( fromUrl.orderby ) {
+		return fromUrl;
+	}
+
+	const raw = button?.dataset?.queryVars;
+
+	if ( ! raw ) {
+		return fromUrl;
+	}
+
+	try {
+		const vars = JSON.parse( raw );
+
+		return parseCatalogOrderby(
+			typeof vars.orderby === 'string' ? vars.orderby : null,
+			typeof vars.order === 'string' ? vars.order : null
+		);
+	} catch {
+		return fromUrl;
+	}
 }
 
 /**
@@ -55,7 +121,7 @@ function buildLoadMoreUrl( button, page ) {
 		url.searchParams.set( 'query_vars', queryVars );
 	}
 
-	const { orderby, order } = getSortParamsFromUrl();
+	const { orderby, order } = getSortParamsFromButton( button );
 
 	if ( orderby ) {
 		url.searchParams.set( 'orderby', orderby );

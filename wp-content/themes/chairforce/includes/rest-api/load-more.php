@@ -81,12 +81,21 @@ function chairforce_rest_load_more( \WP_REST_Request $request ) {
 	$order   = $request->get_param( 'order' );
 
 	if ( is_string( $orderby ) && '' !== $orderby ) {
-		$client_vars['orderby'] = sanitize_key( $orderby );
-	}
+		$parsed = chairforce_parse_catalog_orderby(
+			$orderby,
+			is_string( $order ) ? $order : ''
+		);
 
-	if ( is_string( $order ) && in_array( strtoupper( $order ), [ 'ASC', 'DESC' ], true ) ) {
+		$client_vars['orderby'] = $parsed['orderby'];
+
+		if ( '' !== $parsed['order'] ) {
+			$client_vars['order'] = $parsed['order'];
+		}
+	} elseif ( is_string( $order ) && in_array( strtoupper( $order ), [ 'ASC', 'DESC' ], true ) ) {
 		$client_vars['order'] = strtoupper( $order );
 	}
+
+	$client_vars = chairforce_normalize_load_more_ordering( $client_vars );
 
 	$query_args = chairforce_build_load_more_query_args( $client_vars, $page );
 	$post_types = (array) ( $query_args['post_type'] ?? 'product' );
