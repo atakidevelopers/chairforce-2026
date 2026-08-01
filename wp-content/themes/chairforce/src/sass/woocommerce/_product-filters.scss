@@ -20,19 +20,8 @@ html.cf-filters-swapping::before {
 	pointer-events: auto;
 }
 
-.cf-shop-archive-layout {
-	width: 100%;
-}
 
-.cf-shop-archive-main {
-	min-width: 0;
-}
-
-.cf-shop-archive-sidebar {
-	min-width: 0;
-}
-
-.cf-product-filters {
+.cf-product-filters:not(.cf-shop-archive-layout) {
 	position: relative;
 	margin-block: $spacing-small $spacing-medium;
 
@@ -526,39 +515,8 @@ html.cf-filters-open {
 }
 
 @include breakpoint(medium) {
-	// Desktop vertical — push sidebar (shop reflows; no fixed drawer / backdrop).
+	// Desktop vertical push — in-flow panel beside the grid (sidebar in grid band).
 	.cf-shop-archive-layout:has(.cf-filters-panel--vertical) {
-		display: grid;
-		grid-template-columns: 0 minmax(0, 1fr);
-		grid-template-areas:
-			"filters-chrome filters-chrome"
-			"filters-sidebar shop-main";
-		column-gap: 0;
-		transition: $cf-filters-layout-transition;
-
-		&.is-filters-open {
-			grid-template-columns: min($cf-filters-sidebar-width, 100%) minmax(0, 1fr);
-			column-gap: $spacing-medium;
-		}
-
-		.cf-product-filters {
-			display: contents;
-		}
-
-		.cf-product-filters__chrome {
-			grid-area: filters-chrome;
-		}
-
-		.cf-shop-archive-sidebar {
-			grid-area: filters-sidebar;
-			overflow: visible;
-			align-self: start;
-		}
-
-		.cf-shop-archive-main {
-			grid-area: shop-main;
-		}
-
 		.cf-filters-panel--vertical {
 			position: static;
 			inset: auto;
@@ -587,7 +545,6 @@ html.cf-filters-open {
 				overflow: visible;
 			}
 
-			// All filter sections visible — no outer sidebar scroll. Term/swatches lists keep global max-height scroll.
 			.cf-filters-panel__sections {
 				flex: none;
 				overflow: visible;
@@ -596,6 +553,10 @@ html.cf-filters-open {
 			&.is-open .cf-filters-panel__inner {
 				transform: none;
 			}
+		}
+
+		.cf-shop-archive-sidebar {
+			overflow: visible;
 		}
 	}
 
@@ -624,9 +585,5 @@ html.cf-filters-open {
 			max-height: min(70vh, 40rem);
 			box-shadow: 0 12px 32px rgb(0 0 0 / 12%);
 		}
-	}
-
-	.cf-product-filters:has(.cf-filters-panel--horizontal) {
-		position: relative;
 	}
 }

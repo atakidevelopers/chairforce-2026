@@ -567,6 +567,97 @@ function chairforce_render_product_filters_html( ?array $filter_groups = null ):
 }
 
 /**
+ * Render filter chrome only (bar + chips) for the white filters band.
+ *
+ * @param array<int, array<string, mixed>>|null $filter_groups Optional precomputed groups.
+ * @return string
+ */
+function chairforce_render_product_filters_chrome_html( ?array $filter_groups = null ): string {
+	if ( null !== $filter_groups && empty( $filter_groups ) ) {
+		return '';
+	}
+
+	ob_start();
+	get_template_part(
+		'partials/product-filters',
+		'chrome',
+		null !== $filter_groups
+			? [
+				'filter_groups' => $filter_groups,
+			]
+			: []
+	);
+
+	return (string) ob_get_clean();
+}
+
+/**
+ * Render filter sidebar only (panel host) for the shop grid band.
+ *
+ * @param array<int, array<string, mixed>>|null $filter_groups Optional precomputed groups.
+ * @return string
+ */
+function chairforce_render_product_filters_sidebar_html( ?array $filter_groups = null ): string {
+	if ( null !== $filter_groups && empty( $filter_groups ) ) {
+		return '';
+	}
+
+	ob_start();
+	get_template_part(
+		'partials/product-filters',
+		'sidebar',
+		null !== $filter_groups
+			? [
+				'filter_groups' => $filter_groups,
+			]
+			: []
+	);
+
+	return (string) ob_get_clean();
+}
+
+/**
+ * Inject product-filters data attributes onto the shop archive layout group.
+ *
+ * @param string $block_content Rendered block HTML.
+ * @param array  $block         Parsed block.
+ * @return string
+ */
+function chairforce_filter_shop_archive_layout_block( string $block_content, array $block ): string {
+	if ( 'core/group' !== ( $block['blockName'] ?? '' ) ) {
+		return $block_content;
+	}
+
+	$class_name = $block['attrs']['className'] ?? '';
+
+	if ( false === strpos( $class_name, 'cf-shop-archive-layout' ) ) {
+		return $block_content;
+	}
+
+	if ( ! chairforce_is_product_filter_archive() ) {
+		return $block_content;
+	}
+
+	$data_attributes = sprintf(
+		' data-panel-desktop="%1$s" data-panel-mobile="%2$s" data-clear-url="%3$s"',
+		esc_attr( chairforce_get_filters_panel_desktop() ),
+		esc_attr( chairforce_get_filters_panel_mobile() ),
+		esc_url( chairforce_get_clear_catalog_filters_url() )
+	);
+
+	$updated = preg_replace(
+		'/(<div[^>]*class="[^"]*\bcf-shop-archive-layout\b[^"]*")/i',
+		'$1' . $data_attributes,
+		$block_content,
+		1
+	);
+
+	return is_string( $updated ) ? $updated : $block_content;
+}
+
+add_filter( 'render_block', 'chairforce_filter_shop_archive_layout_block', 10, 2 );
+
+/**
  * Render active filter chips markup only.
  *
  * @return string

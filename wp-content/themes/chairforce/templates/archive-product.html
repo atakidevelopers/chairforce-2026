@@ -1,16 +1,17 @@
 <!-- wp:template-part {"slug":"header","tagName":"header","className":"site-header"} /-->
 
-<!-- wp:group {"tagName":"main","layout":{"inherit":true,"type":"constrained"}} -->
+<!-- wp:group {"tagName":"main","style":{"spacing":{"blockGap":"var:preset|spacing|0"}},"layout":{"inherit":true,"type":"constrained"}} -->
 <main class="wp-block-group">
 	<!-- wp:woocommerce/breadcrumbs /-->
-
-	<!-- wp:query-title {"type":"archive","showPrefix":false,"align":"wide"} /-->
-
-	<!-- wp:term-description {"align":"wide"} /-->
-
+	<!-- wp:group {"align":"full","style":{"spacing":{"padding":{"top":"var:preset|spacing|medium"}}},"backgroundColor":"white","layout":{"type":"constrained"}} -->
+	<div class="wp-block-group alignfull has-white-background-color has-background" style="padding-top:var(--wp--preset--spacing--medium)"><!-- wp:group {"align":"wide","layout":{"type":"default"}} -->
+		<div class="wp-block-group alignwide"><!-- wp:query-title {"type":"archive","showPrefix":false,"align":"wide"} /--><!-- wp:term-description {"align":"wide"} /--></div>
+		<!-- /wp:group --></div>
+	<!-- /wp:group -->
+	
 	<!-- wp:woocommerce/store-notices /-->
 
-	<!-- wp:template-part {"slug":"shop-archive-shell","theme":"chairforce","tagName":"div"} /-->
+	<!-- wp:template-part {"slug":"shop-archive-shell","theme":"chairforce","tagName":"div","className":"alignfull shop-archive-shell-template-part"} /-->
 </main>
 <!-- /wp:group -->
 

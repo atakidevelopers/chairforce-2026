@@ -1,0 +1,106 @@
+@import "../settings";
+@import "../theme-json-variable";
+
+$cf-shop-archive-sidebar-width: 20rem; // Match $cf-filters-sidebar-width in _product-filters.scss
+
+.shop-archive-shell-template-part{
+	margin-block-start: 0;
+}
+// Shop archive — two full-bleed bands (white filters + body-bg grid).
+// Chrome lives in the filters band; sidebar + main share the grid band row.
+// Markup: parts/shop-archive-shell.html
+
+.cf-shop-archive-shell,
+.cf-shop-archive-layout {
+	width: 100%;
+}
+
+.cf-shop-archive-shell{
+	.product-collection-template-part,
+	.wc-block-product-template{
+		margin-block-start: 0;
+	}
+}
+
+.cf-shop-archive-filters-band {
+	padding-block: $spacing-medium;
+}
+
+.cf-shop-archive-grid-band {
+	margin-block-start: 0;
+	//padding-block: $spacing-medium $spacing-section-m;
+}
+
+// Figma bar row: filter buttons + chips left, sort right (same row as bar).
+.cf-shop-archive-filters-band > .alignwide {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) auto;
+	grid-template-areas:
+		"bar sort"
+		"chips sort";
+	column-gap: $spacing-medium;
+	align-items: center;
+	position: relative;
+}
+
+.cf-shop-archive-filters-band .cf-product-filters__bar {
+	grid-area: bar;
+	min-width: 0;
+}
+
+.cf-shop-archive-filters-band .cf-active-filters--chrome {
+	grid-area: chips;
+}
+
+.cf-shop-archive-filters-band .wp-block-woocommerce-catalog-sorting,
+.cf-shop-archive-filters-band .wc-block-catalog-sorting {
+	grid-area: sort;
+	align-self: center;
+	justify-self: end;
+}
+
+.cf-shop-archive-grid {
+	min-width: 0;
+}
+
+.cf-shop-archive-main {
+	display: flex;
+	flex-direction: column;
+	gap: $spacing-medium;
+	min-width: 0;
+}
+
+.cf-shop-archive-sidebar {
+	min-width: 0;
+}
+
+@include breakpoint(medium) {
+	// Desktop vertical — push sidebar beside the shop grid (both in grid band).
+	.cf-shop-archive-layout:has(.cf-filters-panel--vertical) {
+		.cf-shop-archive-grid {
+			display: grid;
+			grid-template-columns: 0 minmax(0, 1fr);
+			grid-template-areas: "filters-sidebar shop-main";
+			column-gap: 0;
+			transition: grid-template-columns 0.35s ease;
+		}
+
+		&.is-filters-open .cf-shop-archive-grid {
+			grid-template-columns: min($cf-shop-archive-sidebar-width, 100%) minmax(0, 1fr);
+			column-gap: $spacing-medium;
+		}
+
+		.cf-shop-archive-sidebar {
+			grid-area: filters-sidebar;
+			align-self: start;
+		}
+
+		.cf-shop-archive-main {
+			grid-area: shop-main;
+		}
+	}
+
+	.cf-shop-archive-filters-band > .alignwide:has(.cf-filters-panel--horizontal) {
+		position: relative;
+	}
+}

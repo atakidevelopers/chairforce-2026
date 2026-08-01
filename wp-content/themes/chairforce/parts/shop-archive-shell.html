@@ -1,19 +1,34 @@
-<!-- wp:group {"tagName":"div","metadata":{"name":"Shop archive shell"},"className":"cf-shop-archive-shell","align":"wide","layout":{"type":"constrained"}} -->
-<div class="wp-block-group cf-shop-archive-shell alignwide">
-	<!-- wp:group {"tagName":"div","metadata":{"name":"Shop archive layout"},"className":"cf-shop-archive-layout","align":"wide","layout":{"type":"default"}} -->
-	<div class="cf-shop-archive-layout alignwide">
-		<!-- wp:chairforce/product-filters /-->
-
-		<!-- wp:group {"tagName":"div","metadata":{"name":"Shop results"},"className":"cf-shop-archive-main","layout":{"type":"constrained"}} -->
-		<div class="cf-shop-archive-main">
-			<!-- wp:group {"metadata":{"name":"Results and sorting"},"layout":{"type":"flex","flexWrap":"nowrap","justifyContent":"space-between"}} -->
+<!-- wp:group {"tagName":"div","metadata":{"name":"Shop archive shell"},"className":"cf-shop-archive-shell","align":"full","layout":{"type":"default"}} -->
+<div class="wp-block-group cf-shop-archive-shell alignfull">
+	<!-- wp:group {"tagName":"div","metadata":{"name":"Shop archive layout"},"className":"cf-shop-archive-layout cf-product-filters","align":"full","layout":{"type":"default"}} -->
+	<div class="cf-shop-archive-layout cf-product-filters alignfull">
+		<!-- wp:group {"metadata":{"name":"Filters band"},"className":"cf-shop-archive-filters-band","align":"full","backgroundColor":"white","layout":{"type":"constrained"}} -->
+		<div class="wp-block-group cf-shop-archive-filters-band alignfull has-white-background-color has-background">
+			<!-- wp:group {"align":"wide","layout":{"type":"default"}} -->
 			<div class="wp-block-group alignwide">
-				<!-- wp:woocommerce/product-results-count /-->
+				<!-- wp:chairforce/product-filters {"part":"chrome"} /-->
+
 				<!-- wp:woocommerce/catalog-sorting /-->
 			</div>
 			<!-- /wp:group -->
+		</div>
+		<!-- /wp:group -->
 
-			<!-- wp:template-part {"slug":"product-collection","theme":"chairforce","tagName":"div","align":"wide"} /-->
+		<!-- wp:group {"metadata":{"name":"Shop grid band"},"className":"cf-shop-archive-grid-band","align":"full","layout":{"type":"constrained"}} -->
+		<div class="wp-block-group cf-shop-archive-grid-band alignfull">
+			<!-- wp:group {"metadata":{"name":"Shop grid row"},"className":"cf-shop-archive-grid","align":"wide","layout":{"type":"default"}} -->
+			<div class="wp-block-group cf-shop-archive-grid alignwide">
+				<!-- wp:chairforce/product-filters {"part":"sidebar"} /-->
+
+				<!-- wp:group {"tagName":"div","metadata":{"name":"Shop results"},"className":"cf-shop-archive-main","layout":{"type":"default"}} -->
+				<div class="cf-shop-archive-main">
+					<!-- wp:woocommerce/product-results-count /-->
+
+					<!-- wp:template-part {"slug":"product-collection","theme":"chairforce","tagName":"div","className":"product-collection-template-part"} /-->
+				</div>
+				<!-- /wp:group -->
+			</div>
+			<!-- /wp:group -->
 		</div>
 		<!-- /wp:group -->
 	</div>

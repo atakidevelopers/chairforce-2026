@@ -1,6 +1,6 @@
 .wp-site-blocks{
   > main{
-    > .wp-block-template-part{
+    > .wp-block-template-part:not(:has(.cf-shop-archive-shell)){
       max-width: $grid-container-wide;
     }
   }

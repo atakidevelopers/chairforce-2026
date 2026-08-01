@@ -1,6 +1,6 @@
 <?php
 /**
- * Product archive filters shell (bar + chips + panel).
+ * Product archive filters shell (bar + chips + panel) — full markup for legacy callers.
  *
  * @package Chairforce
  */
@@ -22,34 +22,26 @@ $mobile_orientation  = chairforce_get_filters_panel_mobile();
 $clear_url           = chairforce_get_clear_catalog_filters_url();
 ?>
 <div
-	class="cf-product-filters alignwide"
+	class="cf-product-filters"
 	data-panel-desktop="<?php echo esc_attr( $desktop_orientation ); ?>"
 	data-panel-mobile="<?php echo esc_attr( $mobile_orientation ); ?>"
 	data-clear-url="<?php echo esc_url( $clear_url ); ?>"
 >
-	<div class="cf-product-filters__chrome">
-		<?php
-		get_template_part(
-			'partials/product-filters',
-			'bar',
-			[
-				'filter_groups' => $filter_groups,
-			]
-		);
+	<?php
+	get_template_part(
+		'partials/product-filters',
+		'chrome',
+		[
+			'filter_groups' => $filter_groups,
+		]
+	);
 
-		get_template_part( 'partials/product-filters', 'chips' );
-		?>
-	</div>
-
-	<aside class="cf-shop-archive-sidebar" aria-label="<?php esc_attr_e( 'Product filters', 'chairforce' ); ?>">
-		<?php
-		get_template_part(
-			'partials/product-filters',
-			'panel',
-			[
-				'filter_groups' => $filter_groups,
-			]
-		);
-		?>
-	</aside>
+	get_template_part(
+		'partials/product-filters',
+		'sidebar',
+		[
+			'filter_groups' => $filter_groups,
+		]
+	);
+	?>
 </div>

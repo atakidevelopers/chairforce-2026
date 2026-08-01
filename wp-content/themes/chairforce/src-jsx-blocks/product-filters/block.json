@@ -9,6 +9,11 @@
   "keywords": [ "filters", "shop", "woocommerce", "archive" ],
   "textdomain": "chairforce",
   "attributes": {
+    "part": {
+      "type": "string",
+      "default": "chrome",
+      "enum": [ "chrome", "sidebar" ]
+    },
     "title": {
       "type": "string",
       "default": "Product filters"
@@ -27,7 +32,7 @@
     "inserter": false,
     "reusable": false,
     "lock": false,
-    "multiple": false
+    "multiple": true
   },
   "editorScript": "file:./index.js",
   "render": "file:./render.php"

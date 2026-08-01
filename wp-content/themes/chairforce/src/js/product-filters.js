@@ -145,7 +145,31 @@ function syncPanelOrientationClasses( root ) {
 }
 
 /**
- * Move the panel back into the filters sidebar (before shell swap destroys portaled copy).
+ * @param {HTMLElement|null} root
+ * @return {HTMLElement|null}
+ */
+function getFilterPanelHost( root ) {
+	if ( ! root ) {
+		return null;
+	}
+
+	if ( shouldPortalVerticalPanel( root ) ) {
+		return document.body;
+	}
+
+	if ( getActivePanelOrientation( root ) === 'horizontal' ) {
+		return (
+			root.querySelector( '.cf-shop-archive-filters-band > .alignwide' )
+			|| root.querySelector( '.cf-shop-archive-filters-band' )
+			|| root
+		);
+	}
+
+	return root.querySelector( SIDEBAR_SELECTOR ) || root;
+}
+
+/**
+ * Move the panel back into the correct host (before shell swap destroys portaled copy).
  *
  * @param {HTMLElement|null} root
  */
@@ -156,17 +180,17 @@ function embedFilterPanelInRoot( root ) {
 		return;
 	}
 
-	const sidebar = root.querySelector( SIDEBAR_SELECTOR ) || root;
+	const host = getFilterPanelHost( root );
 
-	if ( sidebar.contains( panel ) ) {
+	if ( ! host || host.contains( panel ) ) {
 		return;
 	}
 
-	sidebar.appendChild( panel );
+	host.appendChild( panel );
 }
 
 /**
- * Mobile vertical drawer: portal to body. Others: keep panel in sidebar/root.
+ * Reparent panel for mobile drawer, horizontal dropdown, or vertical push sidebar.
  *
  * @param {HTMLElement|null} root
  */
@@ -179,15 +203,15 @@ function syncFilterPanelPortal( root ) {
 
 	syncPanelOrientationClasses( root );
 
-	if ( shouldPortalVerticalPanel( root ) ) {
-		if ( panel.parentElement !== document.body ) {
-			document.body.appendChild( panel );
-		}
+	const host = getFilterPanelHost( root );
 
+	if ( ! host ) {
 		return;
 	}
 
-	embedFilterPanelInRoot( root );
+	if ( panel.parentElement !== host ) {
+		host.appendChild( panel );
+	}
 }
 
 /**
