@@ -1,0 +1,15 @@
+@import "../../settings";
+@import "../../theme-json-variable";
+
+.wc-block-product .cf-product-swatches {
+	width: 100%;
+}
+
+.wc-block-product .cf-swatches-grid {
+	margin-top: 0;
+}
+
+// Legacy wrapper in customized template parts — hide when the block rendered empty.
+.wc-block-product .cf-wrapp-swatches:not(:has(.cf-product-swatches, .cf-swatches-grid)) {
+	display: none;
+}

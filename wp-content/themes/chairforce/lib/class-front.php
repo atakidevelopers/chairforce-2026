@@ -143,6 +143,8 @@ class Front {
 		$localize_data = [
 			'site_url'           => get_site_url(),
 			'nonce'              => wp_create_nonce( 'wp_rest' ),
+			'storeApiNonce'      => wp_create_nonce( 'wc_store_api' ),
+			'storeApiUrl'        => rest_url( 'wc/store/v1/cart/add-item' ),
 			'rest_url'           => rest_url( 'chairforce/v1/product-search' ),
 			'loadMoreRestUrl'    => rest_url( 'chairforce/v1/load-more' ),
 			'loadMoreViewingStatus' => __( 'Viewing %1$s of %2$s', 'chairforce' ),

@@ -1,0 +1,57 @@
+@import "../../settings";
+@import "../../theme-json-variable";
+@import "../../mixins";
+
+// Matches `.is-style-text-price` (textStylePrice mixin).
+.wc-block-product {
+
+}
+
+.wp-block-woocommerce-product-price,
+.wc-block-components-product-price {
+	text-align: left;
+}
+
+.wc-block-components-product-price {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: $spacing-xx-small $spacing-x-small;
+	font-size: 22px;
+	margin: 0;
+}
+
+.wc-block-components-product-price del {
+	order: 2;
+	color: $color-neutral;
+	font-family: $font-primary;
+	font-size: $font-size-small;
+	font-weight: $font-weight-medium;
+	line-height: 1.4;
+	text-decoration: line-through;
+
+	.woocommerce-Price-amount {
+		color: inherit;
+		font: inherit;
+	}
+}
+
+.wc-block-components-product-price ins,
+.wc-block-components-product-price > .woocommerce-Price-amount {
+	@include textStylePrice;
+
+	order: 0;
+	text-decoration: none;
+	color: $color-body;
+}
+
+.cf-product-card__save {
+	order: 3;
+	font-family: $font-primary;
+	font-size: $font-size-x-small;
+	font-weight: $font-weight-bold;
+	line-height: 1.2;
+	letter-spacing: 0.04em;
+	text-transform: uppercase;
+	color: $color-secondary;
+}

@@ -575,7 +575,9 @@ function chairforce_get_load_more_max_pages( int $found_posts, ?int $per_page = 
  * Parsed product-card blocks from the shared template part (Option A).
  *
  * Root blocks from `parts/product-card.html` are wrapped in a synthetic
- * `core/null` parent so WP_Block renders the same markup as the archive grid.
+ * `core/null` parent so WP_Block renders the same inner markup as the archive
+ * grid; `chairforce_wrap_product_card_template_part()` adds the template-part
+ * wrapper SSR includes automatically.
  *
  * @return array<string, mixed>
  */
@@ -619,6 +621,28 @@ function chairforce_get_product_card_template_parsed_block(): array {
 }
 
 /**
+ * Wrap parsed product-card block HTML in the same shell SSR uses.
+ *
+ * Product Collection renders `parts/product-card.html` via `core/template-part`,
+ * which always outputs `<div class="wp-block-template-part">`. Load More parses
+ * the file directly, so we add the wrapper here for markup/CSS parity.
+ *
+ * @param string $content Rendered product-card blocks.
+ * @return string
+ */
+function chairforce_wrap_product_card_template_part( string $content ): string {
+
+	if ( '' === $content ) {
+		return '';
+	}
+
+	return sprintf(
+		'<div class="wp-block-template-part">%s</div>',
+		$content
+	);
+}
+
+/**
  * Render one product card as `<li class="wc-block-product">` via product-card blocks.
  *
  * `core/post-title` reads global `$post` during its render callback — not just
@@ -650,12 +674,14 @@ function chairforce_render_product_template_item( int $post_id, array $context )
 		]
 	);
 
-	$block_content = (
-		new \WP_Block(
-			$block_instance,
-			$available_context
-		)
-	)->render( [ 'dynamic' => false ] );
+	$block_content = chairforce_wrap_product_card_template_part(
+		(
+			new \WP_Block(
+				$block_instance,
+				$available_context
+			)
+		)->render( [ 'dynamic' => false ] )
+	);
 
 	if ( $previous_post instanceof \WP_Post ) {
 		$post = $previous_post;
@@ -683,7 +709,7 @@ function chairforce_render_product_template_item( int $post_id, array $context )
 	$post_classes = implode( ' ', get_post_class( 'wc-block-product', $post_id ) );
 
 	return sprintf(
-		'<li class="%1$s" data-wp-interactive="woocommerce/product-collection"%2$s data-wp-key="product-item-%3$d">%4$s</li>',
+		'<li class="%1$s" data-cf-load-more-card="true" data-cf-product-id="%3$d" data-wp-interactive="woocommerce/product-collection"%2$s data-wp-key="product-item-%3$d">%4$s</li>',
 		esc_attr( $post_classes ),
 		$li_directives ? ' ' . $li_directives : '',
 		$post_id,

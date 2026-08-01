@@ -8,8 +8,8 @@
 // (src/sass/icon-font/_mixins.scss) - no markup/class changes needed on
 // the WooCommerce side at all.
 
-// Classic "Add to Cart" button (single product + archive/loop templates)
-// and the WC Blocks equivalent (Products block, mini-cart, etc.).
+// Classic "Add to Cart" and WC Blocks product-button — cart icon only.
+// Colors, padding, and typography come from theme.json elements.button.
 .add_to_cart_button,
 .wc-block-components-product-button__button {
   @include cf-icon-button('shopping-cart');

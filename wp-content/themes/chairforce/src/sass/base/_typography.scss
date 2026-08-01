@@ -17,3 +17,10 @@
 .is-style-text-price {
   @include textStylePrice;
 }
+
+:where(.wp-block-woocommerce-product-price.is-style-text-price) {
+  .wc-block-components-product-price ins,
+  .wc-block-components-product-price > .woocommerce-Price-amount {
+    @include textStylePrice;
+  }
+}

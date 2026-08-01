@@ -1,0 +1,45 @@
+@import "../../settings";
+@import "../../theme-json-variable";
+
+// Shared product card shell — shop, related, upsells, Load More.
+.wc-block-product {
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+	background-color: $color-white;
+
+	> .wp-block-template-part {
+		display: flex;
+		flex: 1 1 auto;
+		flex-direction: column;
+		gap: $spacing-xx-small;
+		min-width: 0;
+		padding-bottom: $spacing-xx-small;
+		
+		> *:not(.cf-card-media) {
+			padding-left: $spacing-small;
+			padding-right: $spacing-small;
+			width: auto;
+		}
+
+
+	}
+
+	.cf-card-media,
+	.cf-product-swatches,
+	.wp-block-post-title,
+	.wp-block-woocommerce-product-price,
+	.yith-ywraq-add-to-quote {
+		margin: 0;
+	}
+
+	.wc-block-components-product-button{
+		margin-top: auto;
+		margin-bottom: 0;	
+	}
+	.wp-block-button__link{
+		padding-top: $spacing-xx-small;
+		padding-bottom: $spacing-xx-small;
+		text-transform: unset;
+	}
+}

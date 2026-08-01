@@ -8,12 +8,12 @@
 
   appearance: none;
   align-items: center;
-  padding: $spacing-xx-small $spacing-xx-small !important;
+  padding: 0 $spacing-xx-small !important;
   border-radius: $button-border-radius;
   font-size: $button-font-size !important;
   font-weight: $button-font-weight !important;
   line-height: $button-line-height !important;
-  text-transform: $button-text-transform !important;
+  //text-transform: $button-text-transform !important;
   justify-content: center;
   text-decoration: none !important;
   cursor: pointer;
@@ -65,7 +65,8 @@
     @include ywraq-add-to-quote-button;
   }
 
-  .yith_ywraq_add_item_response_message {
+  .yith_ywraq_add_item_response_message,
+  .yith_ywraq_add_item_product_message{
     font-size: $font-size-x-small;
   }
 }

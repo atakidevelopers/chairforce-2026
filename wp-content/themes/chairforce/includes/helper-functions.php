@@ -588,6 +588,87 @@ function chairforce_render_ywraq_button_quote_markup( int $product_id = 0 ): str
 }
 
 /**
+ * Whether a block is rendering inside a WooCommerce product collection loop card.
+ *
+ * @param array<string, mixed> $block    Parsed block.
+ * @param \WP_Block|null       $instance Block instance.
+ */
+function chairforce_is_product_collection_loop_block( array $block, ?\WP_Block $instance ): bool {
+
+	if ( ! empty( $block['attrs']['isDescendentOfQueryLoop'] ) ) {
+		return true;
+	}
+
+	if ( $instance instanceof \WP_Block && ! empty( $instance->context['query']['isProductCollectionBlock'] ) ) {
+		return true;
+	}
+
+	return false;
+}
+
+/**
+ * Product ID from a product collection block render context.
+ *
+ * @param \WP_Block|null $instance Block instance.
+ */
+function chairforce_get_product_collection_block_post_id( ?\WP_Block $instance ): int {
+
+	if ( $instance instanceof \WP_Block && ! empty( $instance->context['postId'] ) ) {
+		return absint( $instance->context['postId'] );
+	}
+
+	return 0;
+}
+
+/**
+ * SAVE label markup for on-sale products in collection cards (matches Figma price row).
+ *
+ * @param int $product_id Product post ID.
+ * @return string Empty when not on sale or percentage cannot be calculated.
+ */
+function chairforce_get_product_card_save_label_markup( int $product_id ): string {
+
+	if ( ! function_exists( 'wc_get_product' ) ) {
+		return '';
+	}
+
+	$product = wc_get_product( $product_id );
+
+	if ( ! $product instanceof \WC_Product || ! $product->is_on_sale() ) {
+		return '';
+	}
+
+	$regular = (float) $product->get_regular_price();
+	$sale    = (float) $product->get_sale_price();
+
+	if ( $product->is_type( 'variable' ) ) {
+		$regular = (float) $product->get_variation_regular_price( 'min', true );
+		$sale    = (float) $product->get_variation_sale_price( 'min', true );
+	}
+
+	if ( $regular <= 0 || $sale <= 0 || $sale >= $regular ) {
+		return '';
+	}
+
+	$percent = (int) round( ( ( $regular - $sale ) / $regular ) * 100 );
+
+	if ( $percent <= 0 ) {
+		return '';
+	}
+
+	return sprintf(
+		'<span class="cf-product-card__save">%s</span>',
+		esc_html(
+			sprintf(
+				/* translators: %d: whole-number discount percentage */
+				__( 'SAVE %d%%', 'chairforce' ),
+				$percent
+			)
+		)
+	);
+}
+
+/**
  * URL for guest wishlist clicks (WooCommerce My Account login).
  *
  * wc_get_page_permalink( 'myaccount' ) can resolve to the site home when the

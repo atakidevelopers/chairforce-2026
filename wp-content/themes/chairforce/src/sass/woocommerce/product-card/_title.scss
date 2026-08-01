@@ -1,0 +1,24 @@
+@import "../../settings";
+@import "../../theme-json-variable";
+
+.wc-block-product {
+	.wp-block-post-title,
+	.wc-block-components-product-title {
+		margin: 0;
+		text-align: left;
+		line-height: 1.4;
+	}
+
+	.wp-block-post-title a,
+	.wc-block-components-product-title a {
+		color: $color-body;
+		font-weight: $font-weight-bold;
+		text-decoration: none;
+		transition: color $transition-duration ease;
+
+		&:hover,
+		&:focus-visible {
+			color: $color-primary;
+		}
+	}
+}

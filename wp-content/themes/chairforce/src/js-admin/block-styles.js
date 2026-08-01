@@ -26,6 +26,13 @@ wp.domReady(() => {
 		}
 	]);
 
+	wp.blocks.registerBlockStyle('woocommerce/product-price', [
+		{
+			name: 'text-price',
+			label: 'Price',
+		}
+	]);
+
 	wp.blocks.registerBlockStyle('core/paragraph', [
 		{
 			name: 'text-eyebrow',

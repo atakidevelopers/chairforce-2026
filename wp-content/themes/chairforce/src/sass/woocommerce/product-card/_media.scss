@@ -1,0 +1,33 @@
+@import "../../settings";
+@import "../../theme-json-variable";
+
+.wc-block-product {
+	.cf-card-media,
+	.wc-block-components-product-image,
+	.wp-block-woocommerce-product-image {
+		position: relative;
+	}
+
+	.cf-card-media .wp-block-woocommerce-product-image,
+	.cf-card-media .wc-block-components-product-image {
+		margin: 0;
+	}
+
+	.wc-block-components-product-image img {
+		display: block;
+		width: 100%;
+		height: auto;
+		object-fit: cover;
+	}
+
+	// Figma — sale badge top-left on the image.
+	.wc-block-components-product-sale-badge,
+	.wc-block-components-product-image .wc-block-components-product-sale-badge {
+		position: absolute;
+		top: $spacing-x-small;
+		left: $spacing-x-small;
+		right: auto;
+		z-index: 2;
+		margin: 0;
+	}
+}
