@@ -764,7 +764,7 @@
             "label": "Filters Panel (Desktop)",
             "name": "filters_panel_desktop",
             "aria-label": "",
-            "type": "select",
+            "type": "button_group",
             "instructions": "Vertical opens a side drawer; horizontal opens a floating panel under the filter bar (mega-menu style).",
             "required": 0,
             "conditional_logic": 0,
@@ -779,18 +779,15 @@
             },
             "default_value": "vertical",
             "return_format": "value",
-            "multiple": 0,
             "allow_null": 0,
-            "ui": 0,
-            "ajax": 0,
-            "placeholder": ""
+            "layout": "horizontal"
         },
         {
             "key": "field_chairforce_filters_panel_mobile",
             "label": "Filters Panel (Mobile)",
             "name": "filters_panel_mobile",
             "aria-label": "",
-            "type": "select",
+            "type": "button_group",
             "instructions": "Same options as desktop; vertical drawer is the default on small screens.",
             "required": 0,
             "conditional_logic": 0,
@@ -805,11 +802,8 @@
             },
             "default_value": "vertical",
             "return_format": "value",
-            "multiple": 0,
             "allow_null": 0,
-            "ui": 0,
-            "ajax": 0,
-            "placeholder": ""
+            "layout": "horizontal"
         },
         {
             "key": "field_cf_product_delivery_information",
@@ -1054,5 +1048,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1754067200
+    "modified": 1754069760
 }

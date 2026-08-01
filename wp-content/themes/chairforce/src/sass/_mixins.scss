@@ -444,7 +444,7 @@ $rem-base: 16px;
 }
 
 @mixin button-light {
-  background-color: $color-background;
+  background-color: $color-white;
   color: $color-body;
   border: 1px solid $color-outline;
   transition: $transition;

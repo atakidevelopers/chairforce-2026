@@ -80,14 +80,9 @@ html.cf-filters-swapping::before {
 			opacity: 0.85;
 		}
 
-		// Selections active in this filter group (distinct from is-active = panel open).
+		// Selections active — same fill as is-style-light :hover (button-light mixin).
 		&.cf-product-filters__bar-button--applied {
-			background-color: $color-white;
-
-			&:hover,
-			&:focus {
-				background-color: $color-white;
-			}
+			background-color: $color-outline;
 		}
 	}
 
@@ -98,7 +93,6 @@ html.cf-filters-swapping::before {
 
 		&:hover,
 		&:focus {
-			background-color: $color-outline;
 			border-color: $color-body;
 			color: $color-body;
 		}
@@ -165,7 +159,8 @@ html.cf-filters-swapping::before {
 .cf-active-filters__label {
 	flex: 0 0 auto;
 	margin: 0;
-	font-size: $font-size-x-small;
+	font-size: $font-size-small;
+	font-weight: 600;
 	line-height: 1.2;
 	color: $color-neutral;
 }
@@ -193,6 +188,7 @@ html.cf-filters-swapping::before {
 		font-size: $font-size-x-small;
 		line-height: 1.2;
 		text-transform: unset;
+		background-color: $color-outline;
 
 		&::before,
 		&::after {
@@ -206,9 +202,15 @@ html.cf-filters-swapping::before {
 	border: 0;
 	background: transparent;
 	color: $color-body;
-	text-decoration: underline;
+	//text-decoration: underline;
 	cursor: pointer;
 	font: inherit;
+	font-size: $font-size-small;
+	font-weight: 600;
+	
+	&:hover{
+		color: $color-secondary;
+	}
 }
 
 // Drawer shell — mirrors Quick View drawer pattern (panel portaled to body in JS).
