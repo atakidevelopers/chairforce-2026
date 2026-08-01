@@ -4,3 +4,10 @@
     background-color: $color-white;
   }
 }
+
+.woocommerce{
+  a.added_to_cart {
+    padding-top: 0;
+    margin-top: 0;
+  }
+}
