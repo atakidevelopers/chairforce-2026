@@ -1,5 +1,6 @@
 import { initProductSearchForms } from './product-search';
 import { initProductFilters } from './product-filters';
+import { initProductViewSwitcher } from './product-view-switcher';
 import { initQuickView } from './quick-view';
 import { initLoadMore } from './shared/load-more';
 import { initProductGridSwatches } from './shared/product-grid-swatches';
@@ -22,6 +23,7 @@ document.addEventListener( 'DOMContentLoaded', () => {
 	initSingleProductSwatches();
 	initQuickView();
 	initProductFilters();
+	initProductViewSwitcher();
 	initLoadMore();
 	initWishlist();
 	initWooCommerceQuantity();

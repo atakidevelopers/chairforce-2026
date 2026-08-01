@@ -31,14 +31,15 @@ $cf-shop-archive-sidebar-width: 20rem; // Match $cf-filters-sidebar-width in _pr
 	//padding-block: $spacing-medium $spacing-section-m;
 }
 
-// Figma bar row: filter buttons + chips left, sort right (same row as bar).
+// Figma bar row: filter buttons + chips left, sort + view right.
 .cf-shop-archive-filters-band > .alignwide {
 	display: grid;
-	grid-template-columns: minmax(0, 1fr) auto;
+	grid-template-columns: minmax(0, 1fr) auto auto;
 	grid-template-areas:
-		"bar sort"
-		"chips sort";
+		"bar sort view"
+		"chips sort view";
 	column-gap: $spacing-medium;
+	row-gap: $spacing-x-small;
 	align-items: center;
 	position: relative;
 }
@@ -55,6 +56,13 @@ $cf-shop-archive-sidebar-width: 20rem; // Match $cf-filters-sidebar-width in _pr
 .cf-shop-archive-filters-band .wp-block-woocommerce-catalog-sorting,
 .cf-shop-archive-filters-band .wc-block-catalog-sorting {
 	grid-area: sort;
+	align-self: center;
+	justify-self: end;
+}
+
+.cf-shop-archive-filters-band .cf-product-view-switcher,
+.cf-shop-archive-filters-band .wp-block-chairforce-product-view-switcher {
+	grid-area: view;
 	align-self: center;
 	justify-self: end;
 }

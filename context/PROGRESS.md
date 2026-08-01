@@ -332,6 +332,23 @@ ongoing.
 - Also covers filter UX on archives where `venues` / `sales-by-location` are
   the main query (taxonomy archives), not as sidebar filter widgets — see
   findings doc §1.
+- **Grid/list view toggle** deferred to **3k** (not 3f v1) — Figma toolbar
+  icons beside Sort; see `context/plans/3k-grid-list-view-toggle-plan.md`.
+
+#### 3k. Shop archive grid/list view toggle
+
+**Status: 🔄 In progress (1 Aug 2026)** — implementation landed; browser QA pending.
+
+- Investigation: `context/notes/grid-list-switcher-findings.md`.
+- Implementation plan: `context/plans/3k-grid-list-view-toggle-plan.md`.
+- **Shipped (uncommitted):** `chairforce/product-view-switcher` JSX block
+  (inserter + reusable); `src/js/product-view-switcher.js` (`localStorage` +
+  `cf-products-view-list` on `.cf-shop-archive-main`); Sass toolbar + list
+  layout; wired in `parts/shop-archive-shell.html`; Lucide `list` icon added.
+- **Locked:** client-side CSS class toggle — **no** REST/shell reload on toggle;
+  one shared `product-card.html` for grid, list, and Load More.
+- **Depends on:** 3f shop shell + 3i Load More (both shipped).
+- **QA pending:** toggle × filter shell swap × Load More × mobile toolbar.
 
 #### 3g. Parts (related spare-parts) section + single-product tabs
 
@@ -589,6 +606,8 @@ Carried from checklist file `19` §8 — resolve before/during the phase noted:
 | `context/plans/3f-product-filters-plan.md` | Execution plan for Phase 3f (archive filters) |
 | `context/plans/3i-load-more-plan.md` | Execution plan for Phase 3i (page-1 Load More on Product Collection archives) |
 | `context/plans/3j-wishlist-plan.md` | Execution plan for Phase 3j (logged-in wishlist — custom table, loop + single; account endpoint deferred) |
+| `context/notes/grid-list-switcher-findings.md` | Phase 3k investigation — WC blocks vs Woodmart vs recommended CSS toggle |
+| `context/plans/3k-grid-list-view-toggle-plan.md` | Execution plan for Phase 3k (shop toolbar grid/list toggle) |
 | `context/notes/load-more-findings.md` | Load More investigation, rejected plugin, architecture notes |
 | `context/plans/header-mega-menu-plan.md`, `header-mega-menu-cleanup-notes.md` | Phase 1 implementation |
 | `context/plans/lucide-icon-system-plan.md`, `icon-block-plugin-integration-plan.md` | Icon system infrastructure (done) |

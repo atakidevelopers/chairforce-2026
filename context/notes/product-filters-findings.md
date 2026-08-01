@@ -525,7 +525,7 @@ When filters ship, verify on filtered archive URLs:
 | 9 | ~~Empty filter groups~~ | ✅ Locked — hide filter bar (edge case) |
 | 10 | **Button overflow:** horizontal scroll vs wrap when 14 filters on shop? | Design |
 | 11 | **Filter button icons:** per-attribute Lucide map vs generic? | Design |
-| 12 | **Grid / list view toggle:** 3f or defer? | PM |
+| 12 | **Grid / list view toggle:** 3f or defer? | ✅ **3k** — `context/plans/3k-grid-list-view-toggle-plan.md` |
 | 13 | **Multi-select within attribute:** keep WC comma-separated OR? | PM (default: yes) |
 | 14 | **Term order:** respect Woodmart `order` meta? | PM / dev |
 | 15 | **Price UI:** slider (live) vs preset buckets (Figma chip)? | Design |

@@ -147,6 +147,45 @@ function chairforce_quick_view_render_product_details(): void {
 }
 
 /**
+ * Output YITH Add to Quote below the add-to-cart form in quick view.
+ */
+function chairforce_quick_view_render_add_to_quote(): void {
+
+	if ( ! chairforce_is_quick_view_request_quote_enabled() ) {
+		return;
+	}
+
+	if ( ! chairforce_is_ywraq_available() ) {
+		return;
+	}
+
+	if ( ! chairforce_is_ywraq_quote_button_enabled( 'single_product' ) ) {
+		return;
+	}
+
+	if ( function_exists( 'yith_ywraq_show_button_in_single_page' ) && ! yith_ywraq_show_button_in_single_page() ) {
+		return;
+	}
+
+	$product_id = get_the_ID();
+
+	if ( ! $product_id ) {
+		return;
+	}
+
+	$markup = chairforce_render_ywraq_button_quote_markup( $product_id );
+
+	if ( '' === trim( $markup ) ) {
+		return;
+	}
+	?>
+	<div class="cf-quick-view-quote">
+		<?php echo $markup; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- YITH shortcode output. ?>
+	</div>
+	<?php
+}
+
+/**
  * Render single-product summary markup for the quick-view popup.
  *
  * @param \WP_REST_Request $request Request object.
@@ -189,6 +228,10 @@ function chairforce_rest_quick_view( \WP_REST_Request $request ): \WP_REST_Respo
 	remove_action( 'woocommerce_single_product_summary', 'woocommerce_template_single_excerpt', 20 );
 	remove_action( 'woocommerce_single_product_summary', 'woocommerce_template_single_meta', 40 );
 	add_action( 'woocommerce_single_product_summary', 'chairforce_quick_view_render_product_details', 15 );
+
+	if ( chairforce_is_quick_view_request_quote_enabled() ) {
+		add_action( 'woocommerce_single_product_summary', 'chairforce_quick_view_render_add_to_quote', 35 );
+	}
 
 	ob_start();
 	?>

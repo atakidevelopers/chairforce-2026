@@ -152,8 +152,8 @@ behaviour.
 - `/gallery/` filters (Phase 6)
 - Blog filters (Phase 5)
 - `venues` / `sales-by-location` as filter widgets (separate taxonomy archives)
-- Grid/list view toggle — **defer unless PM promotes** (Figma shows it; not in
-  current `archive-product.html`)
+- Grid/list view toggle — **deferred to 3k** (Figma shows it; plan:
+  `context/plans/3k-grid-list-view-toggle-plan.md`)
 - Guest-specific filter behaviour (N/A — filters are public catalog)
 
 ---

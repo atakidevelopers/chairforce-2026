@@ -617,6 +617,60 @@ function chairforce_render_product_filters_sidebar_html( ?array $filter_groups =
 }
 
 /**
+ * Render grid/list view toggle buttons for product archives.
+ *
+ * @return string
+ */
+function chairforce_render_product_view_switcher_html(): string {
+
+	$buttons = [
+		[
+			'label'           => __( 'Grid view', 'chairforce' ),
+			'tag'             => 'button',
+			'style'           => 'is-style-light',
+			'icon'            => 'grid-2x2',
+			'class'           => 'cf-product-view-switcher__button',
+			'element_class'   => 'cf-product-view-switcher__control',
+			'html_attributes' => [
+				'data-cf-products-view' => 'grid',
+				'aria-pressed'          => 'true',
+			],
+		],
+		[
+			'label'           => __( 'List view', 'chairforce' ),
+			'tag'             => 'button',
+			'style'           => 'is-style-light',
+			'icon'            => 'list',
+			'class'           => 'cf-product-view-switcher__button',
+			'element_class'   => 'cf-product-view-switcher__control',
+			'html_attributes' => [
+				'data-cf-products-view' => 'list',
+				'aria-pressed'          => 'false',
+			],
+		],
+	];
+
+	$inner = chairforce_get_buttons_markup(
+		$buttons,
+		[
+			'wrapper_class' => 'cf-product-view-switcher__buttons',
+			'default_style' => 'is-style-light',
+			'layout'        => [
+				'type'          => 'flex',
+				'flexWrap'      => 'nowrap',
+				'justifyContent' => 'flex-end',
+			],
+		]
+	);
+
+	if ( '' === $inner ) {
+		return '';
+	}
+
+	return $inner;
+}
+
+/**
  * Inject product-filters data attributes onto the shop archive layout group.
  *
  * @param string $block_content Rendered block HTML.

@@ -890,6 +890,26 @@
             "layout": "horizontal"
         },
         {
+            "key": "field_chairforce_quick_view_request_quote",
+            "label": "Request a Quote in Quick View",
+            "name": "quick_view_request_quote_enabled",
+            "aria-label": "",
+            "type": "true_false",
+            "instructions": "Show the YITH Request a Quote button below Add to Cart in the quick view drawer. Requires YITH Request a Quote and the plugin's single-product quote setting.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "message": "",
+            "default_value": 1,
+            "ui_on_text": "Show",
+            "ui_off_text": "Hide",
+            "ui": 1
+        },
+        {
             "key": "field_63411c4d1cfff",
             "label": "Enable Grid Guides",
             "name": "enable_grid_guides",
@@ -1048,5 +1068,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1754069760
+    "modified": 1785569800
 }

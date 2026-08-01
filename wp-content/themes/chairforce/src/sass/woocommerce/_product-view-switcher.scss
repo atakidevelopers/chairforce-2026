@@ -1,0 +1,171 @@
+@import "../settings";
+@import "../theme-json-variable";
+
+// Grid/list toggle in the shop archive filters band.
+.cf-product-view-switcher {
+	align-self: center;
+	justify-self: end;
+}
+
+.cf-product-view-switcher__buttons.wp-block-buttons,
+.cf-product-view-switcher .wp-block-buttons {
+	display: flex;
+	flex-flow: row nowrap;
+	align-items: stretch;
+	gap: $spacing-xx-small;
+	margin: 0;
+}
+
+.cf-product-view-switcher__button.wp-block-button {
+	flex: 0 0 auto;
+	margin: 0;
+}
+
+// Icon-only controls — hide label text without zeroing Lucide ::before (1em inherits font-size).
+.cf-product-view-switcher .wp-block-button.cf-has-icon .wp-block-button__link {
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	white-space: nowrap;
+	width: 2.5rem;
+	height: 2.5rem;
+	padding: $spacing-xx-small;
+	font-size: 0;
+	line-height: 0;
+	gap: 0;
+
+	&::before {
+		clip: auto;
+		overflow: visible;
+		position: absolute;
+		inset: 0;
+		margin: auto;
+		width: 1em;
+		height: 1em;
+		font-size: 1.25rem;
+		line-height: 1;
+	}
+}
+
+.cf-product-view-switcher .wp-block-button.cf-has-icon {
+	position: relative;
+}
+
+.cf-product-view-switcher__button--active .cf-product-view-switcher__control {
+	border-color: $color-body;
+	color: $color-body;
+	background-color: $color-outline;
+}
+
+// List view — reshape shared product-card blocks without changing markup.
+.cf-shop-archive-main.cf-products-view-list {
+	.wc-block-product-template {
+		grid-template-columns: minmax(0, 1fr) !important;
+	}
+
+	// Mobile — media column + stacked content column.
+	.wc-block-product,
+	.wc-block-product-template > li {
+		display: grid;
+		grid-template-columns: minmax(5.5rem, 7.5rem) minmax(0, 1fr);
+		grid-template-areas:
+			"media title"
+			"media price"
+			"media swatches"
+			"media actions";
+		gap: $spacing-x-small $spacing-medium;
+		align-items: start;
+		padding-block: $spacing-medium;
+		border-bottom: 1px solid $color-outline;
+	}
+
+	// WP wraps product-card template-part blocks in .wp-block-template-part inside each <li>.
+	// display:contents promotes card blocks to grid children without a PHP render_block hack.
+	.wc-block-product > .wp-block-template-part {
+		display: contents;
+	}
+
+	.cf-card-media {
+		grid-area: media;
+		align-self: start;
+	}
+
+	.cf-wrapp-swatches {
+		grid-area: swatches;
+	}
+
+	.wp-block-post-title,
+	.wc-block-components-product-title {
+		grid-area: title;
+		text-align: left;
+		margin: 0;
+	}
+
+	.wp-block-woocommerce-product-price,
+	.wc-block-components-product-price {
+		grid-area: price;
+		text-align: left;
+		margin: 0;
+	}
+
+	.wp-block-woocommerce-product-button,
+	.wc-block-components-product-button {
+		grid-area: actions;
+		align-self: start;
+		justify-self: stretch;
+		display: flex;
+		flex-direction: column;
+		align-items: stretch;
+		gap: $spacing-x-small;
+		margin: 0;
+		text-align: left;
+
+		.wp-block-button,
+		.wc-block-components-product-button .wp-block-button {
+			justify-content: center;
+			margin: 0;
+			width: 100%;
+		}
+
+		.wc-block-components-product-button__button {
+			width: 100%;
+		}
+	}
+
+	// YITH quote is a sibling of product-button in the product card grid.
+	.yith-ywraq-add-to-quote {
+		grid-area: actions;
+		align-self: end;
+		justify-self: stretch;
+		margin: 0;
+		text-align: left;
+
+		+ .clear {
+			display: none;
+		}
+
+		.add-request-quote-button {
+			justify-content: center;
+			width: 100%;
+		}
+	}
+}
+
+@include breakpoint(medium) {
+	.cf-shop-archive-main.cf-products-view-list {
+		// Desktop — media | title, price, swatches | actions.
+		.wc-block-product,
+		.wc-block-product-template > li {
+			grid-template-columns: minmax(9rem, 12rem) minmax(0, 1fr) minmax(10rem, 12rem);
+			grid-template-areas:
+				"media title actions"
+				"media price actions"
+				"media swatches actions";
+		}
+
+		.wp-block-woocommerce-product-button,
+		.wc-block-components-product-button,
+		.yith-ywraq-add-to-quote {
+			text-align: center;
+		}
+	}
+}

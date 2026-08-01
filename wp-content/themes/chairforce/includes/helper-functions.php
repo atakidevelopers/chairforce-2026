@@ -506,6 +506,88 @@ function chairforce_is_wishlist_loop_enabled(): bool {
 }
 
 /**
+ * Whether YITH Request a Quote is active and its button API is available.
+ */
+function chairforce_is_ywraq_available(): bool {
+	return function_exists( 'yith_ywraq_render_button' )
+		|| shortcode_exists( 'yith_ywraq_button_quote' );
+}
+
+/**
+ * Whether a YITH "Add to quote" visibility option is enabled.
+ *
+ * @param string $context `woocommerce_blocks` (product cards / WC blocks),
+ *                        `single_product` (single product + quick view),
+ *                        `other_pages` (classic shop loop / taxonomy archives).
+ */
+function chairforce_is_ywraq_quote_button_enabled( string $context = 'woocommerce_blocks' ): bool {
+	if ( ! chairforce_is_ywraq_available() ) {
+		return false;
+	}
+
+	$option_map = [
+		'woocommerce_blocks' => 'ywraq_show_btn_woocommerce_blocks',
+		'single_product'     => 'ywraq_show_btn_single_page',
+		'other_pages'        => 'ywraq_show_btn_other_pages',
+	];
+
+	$option_key = $option_map[ $context ] ?? $option_map['woocommerce_blocks'];
+
+	return 'yes' === get_option( $option_key, 'no' );
+}
+
+/**
+ * Whether Request a Quote should render in the quick view drawer.
+ */
+function chairforce_is_quick_view_request_quote_enabled(): bool {
+	if ( ! function_exists( 'get_field' ) ) {
+		return false;
+	}
+
+	$value = get_field( 'quick_view_request_quote_enabled', 'option' );
+
+	if ( null === $value || '' === $value ) {
+		return true;
+	}
+
+	return (bool) $value;
+}
+
+/**
+ * Render YITH Add to Quote button markup for a product.
+ *
+ * Mirrors the `yith/yith-ywraq-button-quote` block output.
+ *
+ * @param int $product_id Product post ID; defaults to the current post in loop.
+ * @return string Button HTML or empty string when unavailable.
+ */
+function chairforce_render_ywraq_button_quote_markup( int $product_id = 0 ): string {
+	if ( ! chairforce_is_ywraq_available() ) {
+		return '';
+	}
+
+	if ( ! $product_id ) {
+		$product_id = get_the_ID();
+	}
+
+	$product_id = absint( $product_id );
+
+	if ( ! $product_id ) {
+		return '';
+	}
+
+	if ( is_callable( 'apply_shortcodes' ) ) {
+		return (string) apply_shortcodes(
+			'[yith_ywraq_button_quote product="' . $product_id . '"]'
+		);
+	}
+
+	return (string) do_shortcode(
+		'[yith_ywraq_button_quote product="' . $product_id . '"]'
+	);
+}
+
+/**
  * URL for guest wishlist clicks (WooCommerce My Account login).
  *
  * wc_get_page_permalink( 'myaccount' ) can resolve to the site home when the

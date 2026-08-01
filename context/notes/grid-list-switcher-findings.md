@@ -242,20 +242,12 @@ Hypothetical integration with `@woocommerce/stores/woocommerce/product-collectio
 
 ### 7.1 UI placement
 
-Extend filters band grid in `_shop-archive-layout.scss`:
+**Block:** `<!-- wp:chairforce/product-view-switcher /-->` in
+`shop-archive-shell.html` (sibling of `woocommerce/catalog-sorting`). Separate
+JSX block — rearrangeable / reusable in Site Editor; see
+`context/plans/3k-grid-list-view-toggle-plan.md` chunk 1.
 
-```text
-grid-template-areas:
-  "bar sort view"
-  "chips sort view";
-```
-
-New partial or JSX block: **`partials/product-view-switcher.php`** (or small
-`chairforce/product-view-switcher` block) outputting two icon buttons via
-`chairforce_get_buttons_markup()` — Lucide `layout-grid` / `layout-list`.
-
-Place in `shop-archive-shell.html` **after** `woocommerce/catalog-sorting`, or
-inject from chrome partial if sort stays a WC block.
+Extend filters band grid in `_shop-archive-layout.scss` (grid area `view`).
 
 ### 7.2 JS module
 
@@ -350,7 +342,7 @@ parity** with Woodmart list? v1 assumes layout-only.
 | 2 | Persist in URL for shareable list links? | No — `localStorage` only |
 | 3 | Default view on first visit? | Grid (matches WC template + Figma selected state) |
 | 4 | Per-row grid density (Woodmart `per_row` 3/4/5)? | Out of scope — Figma shows single grid + list |
-| 5 | Own JSX block vs PHP partial for toggle? | PHP partial + JS (matches filter bar buttons) |
+| 5 | Own JSX block vs PHP partial for toggle? | ✅ **JSX block** — `chairforce/product-view-switcher`, inserter + reusable |
 | 6 | Phase bucket? | **3f-follow-up** or **3g** — independent of filter mechanism |
 
 ---
@@ -373,7 +365,8 @@ parity** with Woodmart list? v1 assumes layout-only.
 | File | Change |
 |---|---|
 | `parts/shop-archive-shell.html` | Add switcher next to catalog sorting |
-| `partials/product-view-switcher.php` | New — toggle markup |
+| `partials/product-view-switcher.php` | ~~New~~ — use block `render.php` instead |
+| `src-jsx-blocks/product-view-switcher/` | New block |
 | `src/js/product-view-switcher.js` | New — storage + class + content-updated |
 | `src/public.js` | Import switcher on archives |
 | `src/sass/woocommerce/_product-view-switcher.scss` | New — list layout |
@@ -387,6 +380,68 @@ parity** with Woodmart list? v1 assumes layout-only.
 - `includes/rest-api/load-more.php`
 - `src/js/product-filters.js` (except optional shared content-updated listener)
 
+**Implementation plan:** `context/plans/3k-grid-list-view-toggle-plan.md`
+
+---
+
+## 14. Product-card template-part wrapper (investigation, 1 Aug 2026)
+
+### Observed DOM (SSR Product Collection)
+
+`parts/product-collection.html` nests `<!-- wp:template-part {"slug":"product-card"} /-->`
+inside `woocommerce/product-template`. WordPress renders:
+
+```html
+<li class="wc-block-product …">
+  <div class="wp-block-template-part">
+    <div class="wp-block-group cf-card-media">…</div>
+    <div class="wp-block-group cf-wrapp-swatches">…</div>
+    <h2 class="wp-block-post-title">…</h2>
+    …
+  </div>
+</li>
+```
+
+List-view CSS that targets `.cf-card-media` as a **direct** grid child of
+`<li>` fails because `cf-card-media` is nested one level deeper.
+
+**Load More append** (`chairforce_render_product_template_item()`) renders
+`parts/product-card.html` via `parse_blocks()` + synthetic `core/null` — **no**
+`wp-block-template-part` wrapper. Page-1 SSR and appended rows can diverge unless
+CSS accounts for both shapes.
+
+### Can WordPress skip the wrapper?
+
+**No supported core option today.**
+
+| Approach | Supported? | Notes |
+|---|---|---|
+| Block attribute to omit wrapper | ❌ | Open Gutenberg issues [#36853](https://github.com/WordPress/gutenberg/issues/36853), [#53760](https://github.com/WordPress/gutenberg/issues/53760) — not shipped |
+| `tagName` on template-part | Partial | Chooses wrapper element (`div`, `section`, …) — **does not** remove wrapper |
+| `get_template_part()` in PHP | N/A | Classic API — no block wrapper, but breaks Site Editor composability |
+| `render_block` filter | ✅ Workaround | Strip wrapper for specific slugs (e.g. `product-card`) — theme-owned, must keep editor parity in mind |
+| **`display: contents` on wrapper** | ✅ CSS (shipped) | Promotes inner card blocks to the `<li>` grid without changing PHP markup |
+
+Core renders template parts in `render_block_core_template_part()` — always wraps
+inner content in `$html_tag` + `get_block_wrapper_attributes()` unless filtered.
+
+**Recommendation (locked for 3k):** use **`display: contents`** on
+`.wc-block-product > .wp-block-template-part` in list mode. Keeps the template
+part in the editor, avoids a global `render_block` unwrap that could affect
+header/footer parts, and matches Load More card structure for grid placement.
+
+**Alternative (future):** `render_block` on `core/template-part` when
+`slug === 'product-card'` return inner HTML only — would align SSR DOM with Load
+More exactly, but adds PHP complexity and bypasses block wrapper attributes
+(alignment, etc.) on the card shell.
+
+### Switcher icons not showing (root cause)
+
+Icon-only Sass used `font-size: 0` on `.wp-block-button__link`. Lucide glyphs
+use `::before { font-size: 1em }` in `button-icon-font.css`, so **`1em` resolved
+to 0**. Fix: hide label with clip/overflow, set explicit `font-size` on
+`::before` in `_product-view-switcher.scss`.
+
 ---
 
 ## 13. Related docs
@@ -395,6 +450,7 @@ parity** with Woodmart list? v1 assumes layout-only.
 |---|---|
 | `context/notes/product-filters-findings.md` | Figma toolbar spec |
 | `context/plans/3f-product-filters-plan.md` | Original deferral note §Out of scope |
+| `context/plans/3k-grid-list-view-toggle-plan.md` | Implementation plan (Phase 3k) |
 | `context/implementation/product-grid.md` | Card + Load More architecture |
 | `context/existing-functionality/12A-woodmart-ajax-shop-filtering.md` | Why not PJAX for view |
 | `.cursor/skills/chairforce-woocommerce/SKILL.md` | WC integration conventions |

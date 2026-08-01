@@ -1,0 +1,36 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "chairforce/product-view-switcher",
+  "version": "1.0.0",
+  "title": "Product View Switcher",
+  "category": "theme",
+  "description": "Grid and list toggle for WooCommerce product archive toolbars.",
+  "keywords": [
+    "shop",
+    "grid",
+    "list",
+    "view",
+    "woocommerce",
+    "archive"
+  ],
+  "textdomain": "chairforce",
+  "attributes": {
+    "title": {
+      "type": "string",
+      "default": "Product view switcher"
+    },
+    "description": {
+      "type": "string",
+      "default": "Grid and list icons render on product archives. Preference is saved in the browser."
+    }
+  },
+  "supports": {
+    "html": false,
+    "inserter": true,
+    "reusable": true,
+    "multiple": true
+  },
+  "editorScript": "file:./index.js",
+  "render": "file:./render.php"
+}
