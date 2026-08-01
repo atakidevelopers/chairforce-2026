@@ -8,7 +8,7 @@ header.site-header {
   top: 0;
   z-index: $header-z-index;
   width: 100%;
-  background-color: $color-background;
+  background-color: $header-background-color;
   border-bottom: 1px solid $header-border-color;
 
   @include menu-mobile-only {
@@ -22,7 +22,7 @@ header.site-header {
   @include menu-mobile-only {
     position: relative;
     z-index: $header-z-index;
-    background-color: $color-background;
+    background-color: $header-background-color;
 
     &.site-header__primary--is-stuck {
       position: fixed;
@@ -47,10 +47,39 @@ header.site-header {
   }
 }
 
-.wp-site-blocks > main {
-  @include menu-desktop-only {
-    padding-top: 0;
+.wp-site-blocks {
+  //> main {
+  //  @include menu-desktop-only {
+  //    padding-top: 0;
+  //  }
+  //
+  //  // Breadcrumbs lead main: cancel .wp-site-blocks > * block-gap on main itself.
+  //  // Breadcrumb block padding supplies the top spacing instead.
+  //  &:has(> .wp-block-breadcrumbs:first-child),
+  //  &:has(> .pattern-breadcrumbs-wrapper:first-child) {
+  //    margin-block-start: 0;
+  //  }
+  //
+  //  > .wp-block-breadcrumbs:first-child {
+  //    margin-block-start: 0;
+  //  }
+  //}
+  .pattern-breadcrumbs-wrapper {
+    border-bottom: 1px solid $header-border-color;
+
+    + main {
+      margin-block-start: 0;
+    }
   }
+  .wp-block-post-content{
+    &:has(> .wp-block-breadcrumbs:first-child),
+    &:has(> .pattern-breadcrumbs-wrapper:first-child) {
+      margin-block-start: 0;
+
+    }
+  }
+
+
 }
 
 .site-header__announcement-inner,
@@ -76,7 +105,7 @@ header.site-header {
 
     &:hover,
     &:focus-visible {
-      color: $color-primary;
+      color: $header-link-hover-color;
     }
   }
 }

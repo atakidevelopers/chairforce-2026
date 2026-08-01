@@ -1,0 +1,33 @@
+@import "../icon-font/index";
+
+// core/breadcrumbs + normalised WooCommerce list markup.
+:is(.wp-block-breadcrumbs, .woocommerce-breadcrumb) {
+	ol {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 0;
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+
+	li:not(:last-child) {
+		@include cf-icon-after("chevron-right");
+
+		&::after {
+			margin: 0 0.5em;
+			opacity: 0.7;
+		}
+	}
+}
+
+
+
+.wc-block-breadcrumbs{
+	padding-top: $spacing-small;
+	padding-bottom: $spacing-small;
+	.woocommerce-breadcrumb{
+		margin-bottom: 0;
+	}
+}

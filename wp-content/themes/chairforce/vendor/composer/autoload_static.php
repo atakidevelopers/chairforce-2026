@@ -32,6 +32,7 @@ class ComposerStaticInit0b930fbfa8635b3843fecc3493015433
         'Chairforce\\WooCommerce' => __DIR__ . '/../..' . '/lib/class-woocommerce.php',
         'Chairforce\\WooCommerce_Admin' => __DIR__ . '/../..' . '/lib/class-woocommerce-admin.php',
         'Chairforce\\WooCommerce_Archive' => __DIR__ . '/../..' . '/lib/class-woocommerce-archive.php',
+        'Chairforce\\WooCommerce_Breadcrumbs' => __DIR__ . '/../..' . '/lib/class-woocommerce-breadcrumbs.php',
         'Chairforce\\WooCommerce_Quantity' => __DIR__ . '/../..' . '/lib/class-woocommerce-quantity.php',
         'Chairforce\\WooCommerce_Single_Product' => __DIR__ . '/../..' . '/lib/class-woocommerce-single-product.php',
         'Chairforce\\Zip_Archive' => __DIR__ . '/../..' . '/lib/class-zip-archive.php',
