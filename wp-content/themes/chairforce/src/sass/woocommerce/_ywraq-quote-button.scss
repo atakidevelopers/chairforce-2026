@@ -4,10 +4,9 @@
 @import "../icon-font/mixins";
 
 @mixin ywraq-add-to-quote-button {
-  @include cf-icon-button('file-text');
+
 
   appearance: none;
-  display: inline-flex !important;
   align-items: center;
   padding: $spacing-xx-small $spacing-xx-small !important;
   border-radius: $button-border-radius;
@@ -54,6 +53,11 @@
   .yith-ywraq-add-button {
     display: flex;
     justify-content: center;
+  }
+
+  .add-request-quote-button.button{
+    @include cf-icon-button('file-text');
+    display: inline-flex !important;
   }
 
   .add-request-quote-button.button,
