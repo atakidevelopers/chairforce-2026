@@ -5,7 +5,7 @@
  * Inserter: no
  */
 ?>
-<!-- wp:template-part {"slug":"header","tagName":"header"} /-->
+<!-- wp:template-part {"slug":"header","tagName":"header","className":"site-header"} /-->
 
 <!-- wp:group {"tagName":"main","metadata":{"name":"Main"},"style":{"spacing":{"margin":{"top":"0","bottom":"var:preset|spacing|block-gap"}}}} -->
 <main class="wp-block-group" style="margin-top:0;margin-bottom:var(--wp--preset--spacing--block-gap)"><!-- wp:group {"className":"swt-block-post-banner-group","style":{"spacing":{"blockGap":"var:preset|spacing|x-small","margin":{"top":"0","bottom":"var:preset|spacing|x-large"},"padding":{"top":"var:preset|spacing|large","right":"var:preset|spacing|large","bottom":"var:preset|spacing|large","left":"var:preset|spacing|large"}}},"backgroundColor":"foreground","layout":{"type":"constrained"}} -->

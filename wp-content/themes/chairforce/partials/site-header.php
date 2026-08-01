@@ -21,7 +21,6 @@ $search_placeholder = $header->get_option(
 );
 $phone_href         = $header->get_phone_href( $phone_number );
 ?>
-<header class="site-header">
 
 	<?php if ( $announcement ) : ?>
 		<div class="site-header__announcement">
@@ -123,8 +122,6 @@ $phone_href         = $header->get_phone_href( $phone_number );
 			</nav>
 		</div>
 	</div>
-
-</header>
 
 <div
 	id="chairforce-mobile-drawer"
