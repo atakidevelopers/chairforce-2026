@@ -1,0 +1,72 @@
+@import "../settings";
+@import "../theme-json-variable";
+@import "../mixins";
+@import "../icon-font/mixins";
+
+@mixin ywraq-add-to-quote-button {
+  @include cf-icon-button('file-text');
+
+  appearance: none;
+  display: inline-flex !important;
+  align-items: center;
+  padding: $spacing-xx-small $spacing-xx-small !important;
+  border-radius: $button-border-radius;
+  font-size: $button-font-size !important;
+  font-weight: $button-font-weight !important;
+  line-height: $button-line-height !important;
+  text-transform: $button-text-transform !important;
+  justify-content: center;
+  text-decoration: none !important;
+  cursor: pointer;
+  max-width: 100%;
+  width: auto;
+  min-width: unset;
+  margin-top: 0;
+
+  // Beat YITH ywraq-frontend.css + inline layout vars (!important).
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  color: $color-body !important;
+
+  &:visited {
+    color: $color-body !important;
+  }
+
+  &:hover,
+  &:focus {
+    background-color: transparent !important;
+    color: $color-primary !important;
+    border: none !important;
+    box-shadow: none !important;
+  }
+}
+
+// YITH Request a Quote — borderless ghost + file-text icon everywhere.
+.yith-ywraq-add-to-quote {
+  margin: 0;
+  text-align: center;
+
+  + .clear {
+    display: none;
+  }
+
+  .yith-ywraq-add-button {
+    display: flex;
+    justify-content: center;
+  }
+
+  .add-request-quote-button.button,
+  .yith_ywraq_add_item_browse_message {
+    @include ywraq-add-to-quote-button;
+  }
+
+  .yith_ywraq_add_item_response_message {
+    font-size: $font-size-x-small;
+  }
+}
+
+// Match YITH/WooCommerce loop selectors for specificity.
+.woocommerce .yith-ywraq-add-to-quote .add-request-quote-button.button {
+  @include ywraq-add-to-quote-button;
+}

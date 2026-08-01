@@ -39,9 +39,9 @@ class Front {
 	public function register_hooks() {
 
 		/**
-		 * Enqueue Styles
+		 * Enqueue Styles — priority 20 so YITH frontend CSS (11) is registered first.
 		 */
-		add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_styles' ] );
+		add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_styles' ], 20 );
 
 		/**
 		 * Enqueue Scripts
@@ -65,11 +65,16 @@ class Front {
 	public function enqueue_styles() {
 
 		$style_css = 'public.css';
+		$deps      = [];
+
+		if ( wp_style_is( 'yith_ywraq_frontend', 'registered' ) ) {
+			$deps[] = 'yith_ywraq_frontend';
+		}
 
 		wp_enqueue_style(
 			$this->public_style_handle,
 			chairforce_get_build_url( $style_css ),
-			[],
+			$deps,
 			filemtime( chairforce_get_build_dir( $style_css ) )
 		);
 

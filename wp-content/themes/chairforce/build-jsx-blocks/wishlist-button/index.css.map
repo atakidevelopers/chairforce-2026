@@ -1,1 +1,0 @@
-{"version":3,"file":"wishlist-button/index.css","mappings":";;;AAAA;EACC;AACD;;AAEA;EACC;AACD,C","sources":["webpack://chairforce/./src-jsx-blocks/wishlist-button/editor.scss"],"sourcesContent":[".cf-wishlist-button-editor {\n\tdisplay: inline-block;\n}\n\n.cf-wishlist-button-editor .cf-wishlist-trigger {\n\tpointer-events: none;\n}\n"],"names":[],"sourceRoot":""}

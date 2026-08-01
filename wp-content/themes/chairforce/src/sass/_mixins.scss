@@ -443,6 +443,28 @@ $rem-base: 16px;
   }
 }
 
+// Ghost colours/hover without the outline — used for YITH Add to Quote links.
+@mixin button-ghost-borderless {
+  background-color: transparent;
+  border: none;
+  box-shadow: none;
+  color: $color-body;
+  transition: $transition;
+  text-decoration: none;
+
+  &:visited {
+    color: $color-body;
+  }
+
+  &:hover,
+  &:focus {
+    background-color: $color-primary;
+    color: $color-background;
+    border: none;
+    box-shadow: none;
+  }
+}
+
 @mixin button-light {
   background-color: $color-white;
   color: $color-body;

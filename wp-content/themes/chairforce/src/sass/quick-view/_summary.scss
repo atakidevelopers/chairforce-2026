@@ -40,18 +40,6 @@
 .cf-quick-view-quote {
 	margin-top: $spacing-x-small;
 	text-align: center;
-
-	.yith-ywraq-add-to-quote {
-		margin: 0;
-	}
-
-	.yith-ywraq-add-to-quote + .clear {
-		display: none;
-	}
-
-	.add-request-quote-button {
-		@include cf-icon-button('file-text');
-	}
 }
 
 // Short description only — 3-line clamp + gradient, expand on click.

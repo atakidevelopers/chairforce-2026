@@ -129,24 +129,18 @@
 		.wc-block-components-product-button__button {
 			width: 100%;
 		}
+
+		.yith-ywraq-add-to-quote {
+			margin: 0;
+		}
 	}
 
-	// YITH quote is a sibling of product-button in the product card grid.
+	// YITH may also render as a sibling of product-button in the card grid.
 	.yith-ywraq-add-to-quote {
 		grid-area: actions;
 		align-self: end;
 		justify-self: stretch;
-		margin: 0;
 		text-align: left;
-
-		+ .clear {
-			display: none;
-		}
-
-		.add-request-quote-button {
-			justify-content: center;
-			width: 100%;
-		}
 	}
 }
 
