@@ -125,6 +125,317 @@
             ]
         },
         {
+            "key": "field_cf_catalogue_show_in_menu",
+            "label": "Catalogue Link For Menu",
+            "name": "cf_catalogue_show_in_menu",
+            "aria-label": "",
+            "type": "true_false",
+            "instructions": "Since the menu is not dynamic, we can't update it programmatically. Edit the nav menu item directly instead.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "message": "",
+            "default_value": 0,
+            "ui_on_text": "Show",
+            "ui_off_text": "Hide",
+            "ui": 1
+        },
+        {
+            "key": "field_cf_catalogue_home_url",
+            "label": "Catalogue Link For Home Page",
+            "name": "cf_catalogue_home_url",
+            "aria-label": "",
+            "type": "url",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": ""
+        },
+        {
+            "key": "field_cf_catalogue_footer_url",
+            "label": "Catalogue Link For Footer",
+            "name": "cf_catalogue_footer_url",
+            "aria-label": "",
+            "type": "url",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": ""
+        },
+        {
+            "key": "field_cf_catalogue_blog_url",
+            "label": "Catalogue Link For Blog Page",
+            "name": "cf_catalogue_blog_url",
+            "aria-label": "",
+            "type": "url",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": ""
+        },
+        {
+            "key": "field_cf_home_hero_banner_1_tab",
+            "label": "Home Hero 1",
+            "name": "",
+            "aria-label": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "top",
+            "endpoint": 0,
+            "selected": 0
+        },
+        {
+            "key": "field_cf_banner_title_1",
+            "label": "Banner Title 1",
+            "name": "cf_banner_title_1",
+            "aria-label": "",
+            "type": "textarea",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "rows": 3,
+            "placeholder": "",
+            "new_lines": ""
+        },
+        {
+            "key": "field_cf_banner_sub_title_1",
+            "label": "Banner Sub Title 1",
+            "name": "cf_banner_sub_title_1",
+            "aria-label": "",
+            "type": "textarea",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "rows": 4,
+            "placeholder": "",
+            "new_lines": ""
+        },
+        {
+            "key": "field_cf_banner_button_text_1",
+            "label": "Banner Button Text 1",
+            "name": "cf_banner_button_text_1",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_cf_banner_button_link_1",
+            "label": "Banner Button Link 1",
+            "name": "cf_banner_button_link_1",
+            "aria-label": "",
+            "type": "url",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": ""
+        },
+        {
+            "key": "field_cf_banner_image_1",
+            "label": "Banner Image 1",
+            "name": "cf_banner_image_1",
+            "aria-label": "",
+            "type": "image",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "return_format": "id",
+            "library": "all",
+            "min_width": "",
+            "min_height": "",
+            "min_size": "",
+            "max_width": "",
+            "max_height": "",
+            "max_size": "",
+            "mime_types": "",
+            "preview_size": "medium"
+        },
+        {
+            "key": "field_cf_home_hero_banner_2_tab",
+            "label": "Home Hero 2",
+            "name": "",
+            "aria-label": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "top",
+            "endpoint": 0,
+            "selected": 0
+        },
+        {
+            "key": "field_cf_banner_title_2",
+            "label": "Banner Title 2",
+            "name": "cf_banner_title_2",
+            "aria-label": "",
+            "type": "textarea",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "rows": 3,
+            "placeholder": "",
+            "new_lines": ""
+        },
+        {
+            "key": "field_cf_banner_sub_title_2",
+            "label": "Banner Sub Title 2",
+            "name": "cf_banner_sub_title_2",
+            "aria-label": "",
+            "type": "textarea",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "rows": 4,
+            "placeholder": "",
+            "new_lines": ""
+        },
+        {
+            "key": "field_cf_banner_button_text_2",
+            "label": "Banner Button Text 2",
+            "name": "cf_banner_button_text_2",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_cf_banner_button_link_2",
+            "label": "Banner Button Link 2",
+            "name": "cf_banner_button_link_2",
+            "aria-label": "",
+            "type": "url",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": ""
+        },
+        {
+            "key": "field_cf_banner_image_2",
+            "label": "Banner Image 2",
+            "name": "cf_banner_image_2",
+            "aria-label": "",
+            "type": "image",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "return_format": "id",
+            "library": "all",
+            "min_width": "",
+            "min_height": "",
+            "min_size": "",
+            "max_width": "",
+            "max_height": "",
+            "max_size": "",
+            "mime_types": "",
+            "preview_size": "medium"
+        },
+        {
             "key": "field_chairforce_header_tab",
             "label": "Header",
             "name": "",
@@ -501,6 +812,26 @@
             "placeholder": ""
         },
         {
+            "key": "field_cf_product_delivery_information",
+            "label": "Delivery Information For Product Page",
+            "name": "cf_product_delivery_information",
+            "aria-label": "",
+            "type": "wysiwyg",
+            "instructions": "Global delivery copy shown on the single product page.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "tabs": "all",
+            "toolbar": "full",
+            "media_upload": 1,
+            "delay": 0
+        },
+        {
             "key": "field_6147c9851039e",
             "label": "Misc",
             "name": "",
@@ -723,5 +1054,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1743091200
+    "modified": 1754067200
 }

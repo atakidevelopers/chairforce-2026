@@ -13,7 +13,7 @@ if ( class_exists( 'ChairforceDataNormalise\Jobs\Normalise_Jetengine_Options_Pag
 }
 
 /**
- * Migrates JetEngine single-blob wp_options rows to native ACF options storage.
+ * Migrates JetEngine single-blob wp_options rows to native ACF main Theme Options storage.
  */
 class Normalise_Jetengine_Options_Pages {
 
@@ -21,73 +21,80 @@ class Normalise_Jetengine_Options_Pages {
 
 	public $label = 'Normalise JetEngine options pages to native ACF storage';
 
-	public $description = 'Reads legacy JetEngine option blobs and writes each field to native ACF wp_options rows under cf-opt-hero, cf-opt-wc, and cf-opt-catalogue. Per-field idempotent with write verification. Legacy blobs are kept for rollback. Safe to re-run on production.';
+	public $description = 'Reads legacy JetEngine option blobs and writes each field to native ACF wp_options rows on main Theme Options (options_{field_name}). Maps legacy blob keys to cf_* ACF field names. Per-field idempotent with write verification. Legacy blobs are kept for rollback. Safe to re-run on production.';
 
 	/**
-	 * Native ACF post_id => migration config.
-	 *
-	 * @var array<string, array{group: string, legacy_blob: string, field_remaps: array<string, string>}>
+	 * ACF options post_id for main Theme Options.
 	 */
-	private const OPTIONS_PAGES = [
-		'cf-opt-hero' => [
-			'group'        => 'group_hero_banner_home_page',
+	private const OPTIONS_POST_ID = 'options';
+
+	/**
+	 * Legacy blob => migration config.
+	 *
+	 * field_remaps: ACF field name => JetEngine blob key inside the legacy option array.
+	 *
+	 * @var array<string, array{legacy_blob: string, field_remaps: array<string, string>}>
+	 */
+	private const LEGACY_OPTION_BLOBS = [
+		'hero-banner-home-page' => [
 			'legacy_blob'  => 'hero-banner-home-page',
-			'field_remaps' => [],
-		],
-		'cf-opt-wc' => [
-			'group'        => 'group_delivery_information_product_page',
-			'legacy_blob'  => 'delivery-information-for-product-page',
 			'field_remaps' => [
-				'content' => 'add_delivery_information_for_product_page',
+				'cf_banner_title_1'        => 'banner_title_1',
+				'cf_banner_sub_title_1'    => 'banner_sub_title_1',
+				'cf_banner_button_text_1'  => 'banner_button_text_1',
+				'cf_banner_button_link_1'  => 'banner_button_link_1',
+				'cf_banner_image_1'        => 'banner_image_1',
+				'cf_banner_title_2'        => 'banner_title_2',
+				'cf_banner_sub_title_2'    => 'banner_sub_title_2',
+				'cf_banner_button_text_2'  => 'banner_button_text_2',
+				'cf_banner_button_link_2'  => 'banner_button_link_2',
+				'cf_banner_image_2'        => 'banner_image_2',
 			],
 		],
-		'cf-opt-catalogue' => [
-			'group'        => 'group_catalogue_links',
+		'delivery-information-for-product-page' => [
+			'legacy_blob'  => 'delivery-information-for-product-page',
+			'field_remaps' => [
+				'cf_product_delivery_information' => 'add_delivery_information_for_product_page',
+			],
+		],
+		'catalogue-links' => [
 			'legacy_blob'  => 'catalogue-links',
 			'field_remaps' => [
-				'show_in_menu' => 'catalogue_link_for_menu',
-				'home_url'     => 'catalogue_link_for_home_page',
-				'footer_url'   => 'catalogue_link_for_footer',
-				'blog_url'     => 'catalogue_link_for_',
+				'cf_catalogue_show_in_menu' => 'catalogue_link_for_menu',
+				'cf_catalogue_home_url'     => 'catalogue_link_for_home_page',
+				'cf_catalogue_footer_url'   => 'catalogue_link_for_footer',
+				'cf_catalogue_blog_url'       => 'catalogue_link_for_',
 			],
 		],
 	];
 
 	/**
-	 * @return string[] Native ACF options page post_ids.
+	 * @return string[] Legacy JetEngine option blob names.
 	 */
 	public function items(): array {
-		return array_keys( self::OPTIONS_PAGES );
+		return array_keys( self::LEGACY_OPTION_BLOBS );
 	}
 
 	/**
-	 * @param string $post_id Native ACF options page post_id.
+	 * @param string $legacy_blob_name Legacy JetEngine wp_options blob name.
 	 */
-	public function process( $post_id ) {
-		$post_id = (string) $post_id;
+	public function process( $legacy_blob_name ) {
+		$legacy_blob_name = (string) $legacy_blob_name;
 
 		if ( ! Meta_Normalise_Helper::acf_is_available() ) {
-			return "{$post_id}: ACF is not active — skipped.";
+			return "{$legacy_blob_name}: ACF is not active — skipped.";
 		}
 
-		if ( ! isset( self::OPTIONS_PAGES[ $post_id ] ) ) {
-			return "{$post_id}: unknown options page — skipped.";
+		if ( ! isset( self::LEGACY_OPTION_BLOBS[ $legacy_blob_name ] ) ) {
+			return "{$legacy_blob_name}: unknown legacy blob — skipped.";
 		}
 
-		$config     = self::OPTIONS_PAGES[ $post_id ];
+		$config      = self::LEGACY_OPTION_BLOBS[ $legacy_blob_name ];
 		$legacy_blob = (string) $config['legacy_blob'];
 
 		$blob = get_option( $legacy_blob, [] );
 		if ( ! is_array( $blob ) || empty( $blob ) ) {
-			return "{$post_id}: legacy blob \"{$legacy_blob}\" empty or missing — skipped.";
-		}
-
-		$fields = Meta_Normalise_Helper::flatten_acf_fields(
-			acf_get_fields( $config['group'] )
-		);
-
-		if ( empty( $fields ) ) {
-			return "{$post_id}: no ACF fields found for group — skipped.";
+			return "{$legacy_blob_name}: legacy blob \"{$legacy_blob}\" empty or missing — skipped.";
 		}
 
 		$migrated = 0;
@@ -95,47 +102,52 @@ class Normalise_Jetengine_Options_Pages {
 		$failed   = 0;
 		$lines    = [];
 
-		foreach ( $fields as $field ) {
-			$name       = (string) $field['name'];
-			$legacy_key = $config['field_remaps'][ $name ] ?? $name;
+		foreach ( $config['field_remaps'] as $acf_name => $legacy_key ) {
+			$field = function_exists( 'acf_get_field' ) ? acf_get_field( $acf_name ) : null;
 
-			if ( Meta_Normalise_Helper::options_field_has_native_value( $post_id, $field ) ) {
-				++$skipped;
-				$lines[] = "  {$name}: native value already present — skipped.";
+			if ( ! is_array( $field ) || empty( $field['name'] ) ) {
+				++$failed;
+				$lines[] = "  {$acf_name}: ACF field not registered — skipped.";
 				continue;
 			}
 
-			if ( ! array_key_exists( $legacy_key, $blob ) && ! array_key_exists( $name, $blob ) ) {
+			if ( Meta_Normalise_Helper::options_field_has_native_value( self::OPTIONS_POST_ID, $field ) ) {
 				++$skipped;
-				$lines[] = "  {$name}: not in legacy blob \"{$legacy_blob}\" — skipped.";
+				$lines[] = "  {$acf_name}: native value already present — skipped.";
 				continue;
 			}
 
-			$stored = $blob[ $name ] ?? $blob[ $legacy_key ];
+			if ( ! array_key_exists( $legacy_key, $blob ) && ! array_key_exists( $acf_name, $blob ) ) {
+				++$skipped;
+				$lines[] = "  {$acf_name}: not in legacy blob \"{$legacy_blob}\" — skipped.";
+				continue;
+			}
+
+			$stored = $blob[ $acf_name ] ?? $blob[ $legacy_key ];
 			$value  = Meta_Normalise_Helper::legacy_option_value_for_acf( $stored, $field );
 
 			if ( ( $field['type'] ?? '' ) === 'image' && (int) $value > 0 && ! get_post( (int) $value ) ) {
 				++$failed;
-				$lines[] = "  {$name}: attachment #{$value} missing — not migrated.";
+				$lines[] = "  {$acf_name}: attachment #{$value} missing — not migrated.";
 				continue;
 			}
 
-			$result = Meta_Normalise_Helper::write_acf_field_native( $name, $value, $post_id, $field );
+			$result = Meta_Normalise_Helper::write_acf_field_native( $acf_name, $value, self::OPTIONS_POST_ID, $field );
 
 			if ( ! $result['ok'] ) {
 				++$failed;
-				$lines[] = "  {$name}: write verification failed — needs manual review.";
+				$lines[] = "  {$acf_name}: write verification failed — needs manual review.";
 				continue;
 			}
 
 			++$migrated;
 			$byte_note = $result['bytes'] > 0 ? " ({$result['bytes']} bytes verified)" : '';
-			$lines[]   = "  {$name}: migrated from {$legacy_blob}.{$legacy_key}{$byte_note}.";
+			$lines[]   = "  {$acf_name}: migrated from {$legacy_blob}.{$legacy_key}{$byte_note}.";
 		}
 
 		array_unshift(
 			$lines,
-			"{$post_id}: migrated {$migrated} field(s), skipped {$skipped}, failed {$failed}. Legacy blob \"{$legacy_blob}\" kept."
+			"{$legacy_blob_name}: migrated {$migrated} field(s), skipped {$skipped}, failed {$failed}. Legacy blob \"{$legacy_blob}\" kept."
 		);
 
 		return implode( "\n", $lines );

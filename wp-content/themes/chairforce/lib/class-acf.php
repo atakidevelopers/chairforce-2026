@@ -96,49 +96,6 @@ class Acf {
 			]
 		);
 
-		$this->register_theme_sub_options_pages();
-
-	}
-
-	/**
-	 * Register sub-pages under Theme Options (native ACF storage post_id slugs).
-	 */
-	private function register_theme_sub_options_pages(): void {
-		acf_add_options_page(
-			[
-				'page_title'  => esc_html__( 'Hero Banner Home Page', 'chairforce' ),
-				'menu_title'  => esc_html__( 'Hero Banner', 'chairforce' ),
-				'menu_slug'   => 'cf-opt-hero',
-				'post_id'     => 'cf-opt-hero',
-				'capability'  => 'manage_options',
-				'redirect'    => false,
-				'parent_slug' => 'chairforce-theme-options',
-			]
-		);
-
-		acf_add_options_page(
-			[
-				'page_title'  => esc_html__( 'WooCommerce', 'chairforce' ),
-				'menu_title'  => esc_html__( 'WooCommerce', 'chairforce' ),
-				'menu_slug'   => 'cf-opt-wc',
-				'post_id'     => 'cf-opt-wc',
-				'capability'  => 'manage_options',
-				'redirect'    => false,
-				'parent_slug' => 'chairforce-theme-options',
-			]
-		);
-
-		acf_add_options_page(
-			[
-				'page_title'  => esc_html__( 'Catalogue Links', 'chairforce' ),
-				'menu_title'  => esc_html__( 'Catalogue Links', 'chairforce' ),
-				'menu_slug'   => 'cf-opt-catalogue',
-				'post_id'     => 'cf-opt-catalogue',
-				'capability'  => 'manage_options',
-				'redirect'    => false,
-				'parent_slug' => 'chairforce-theme-options',
-			]
-		);
 	}
 
 	/**
