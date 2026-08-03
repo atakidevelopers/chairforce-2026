@@ -26,13 +26,13 @@ class WooCommerce_Archive {
 	 * Register archive hooks.
 	 */
 	private function register_hooks(): void {
-		add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_quick_view_assets' ], 20 );
+		add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_archive_assets' ], 20 );
 	}
 
 	/**
-	 * Enqueue WooCommerce single-product scripts/styles needed inside quick view.
+	 * Enqueue scripts/styles for shop archive features (quick view, interactivity hydrate).
 	 */
-	public function enqueue_quick_view_assets(): void {
+	public function enqueue_archive_assets(): void {
 		if (
 			! is_shop()
 			&& ! is_product_taxonomy()
@@ -46,15 +46,22 @@ class WooCommerce_Archive {
 			return;
 		}
 
-		if ( 'yes' === get_option( 'woocommerce_enable_ajax_add_to_cart' ) ) {
-			wp_enqueue_script( 'wc-add-to-cart' );
-		}
-
 		wp_enqueue_script( 'wc-add-to-cart-variation' );
 		wp_enqueue_script( 'wc-single-product' );
 
 		wp_enqueue_style( 'photoswipe-default-skin' );
 		wp_enqueue_style( 'photoswipe' );
+
+		$hydrate_path = get_theme_file_path( 'src/js-modules/interactivity-hydrate.js' );
+
+		if ( file_exists( $hydrate_path ) ) {
+			wp_enqueue_script_module(
+				'chairforce/interactivity-hydrate',
+				get_theme_file_uri( 'src/js-modules/interactivity-hydrate.js' ),
+				[ '@wordpress/interactivity' ],
+				(string) filemtime( $hydrate_path )
+			);
+		}
 	}
 
 }

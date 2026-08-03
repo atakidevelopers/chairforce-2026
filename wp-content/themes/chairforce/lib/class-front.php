@@ -71,6 +71,23 @@ class Front {
 			$deps[] = 'yith_ywraq_frontend';
 		}
 
+		$icon_font_handle = 'chairforce-lucide-icon-font';
+		$icon_font_path   = get_theme_file_path( 'assets/css/button-icon-font.css' );
+
+		if ( file_exists( $icon_font_path ) && ! wp_style_is( $icon_font_handle, 'registered' ) ) {
+			wp_register_style(
+				$icon_font_handle,
+				get_theme_file_uri( 'assets/css/button-icon-font.css' ),
+				[],
+				(string) filemtime( $icon_font_path )
+			);
+		}
+
+		if ( wp_style_is( $icon_font_handle, 'registered' ) ) {
+			wp_enqueue_style( $icon_font_handle );
+			$deps[] = $icon_font_handle;
+		}
+
 		wp_enqueue_style(
 			$this->public_style_handle,
 			chairforce_get_build_url( $style_css ),
@@ -152,6 +169,7 @@ class Front {
 			'resultsCountAll'       => __( 'Showing all %1$s results', 'chairforce' ),
 			'resultsCountRange'     => __( 'Showing %1$s–%2$s of %3$s results', 'chairforce' ),
 			'quickViewRestUrl'   => rest_url( 'chairforce/v1/quick-view' ),
+			'interactivityHydrateUrl' => get_theme_file_uri( 'src/js-modules/interactivity-hydrate.js' ),
 			'quickViewDisplay'   => in_array( $quick_view_display, [ 'modal', 'drawer' ], true ) ? $quick_view_display : 'drawer',
 			'quickViewContent'   => in_array( $quick_view_content, [ 'dimensions', 'short_description' ], true ) ? $quick_view_content : 'dimensions',
 			'wishlistEnabled'    => chairforce_is_wishlist_enabled(),

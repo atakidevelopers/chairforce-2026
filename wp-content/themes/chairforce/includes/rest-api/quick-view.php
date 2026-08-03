@@ -147,11 +147,9 @@ function chairforce_quick_view_render_product_details(): void {
 }
 
 /**
- * Use loop add-to-cart markup in quick view for simple products.
+ * Use native product-button block in quick view for simple products.
  *
- * WC core ajax add-to-cart handles `.add_to_cart_button.ajax_add_to_cart` links
- * globally via `wc-add-to-cart.js`. Single-product cart forms POST to the product
- * URL instead, which is a poor fit inside the drawer.
+ * Same Interactivity API markup as product collection cards ("X in cart", Store API cart sync).
  */
 function chairforce_quick_view_prepare_simple_add_to_cart(): void {
 
@@ -166,7 +164,7 @@ function chairforce_quick_view_prepare_simple_add_to_cart(): void {
 }
 
 /**
- * Loop-style add to cart for simple products in quick view.
+ * Native WooCommerce product-button block for simple products in quick view.
  */
 function chairforce_quick_view_render_simple_add_to_cart(): void {
 
@@ -176,7 +174,32 @@ function chairforce_quick_view_render_simple_add_to_cart(): void {
 		return;
 	}
 
-	echo chairforce_get_product_card_add_to_cart_html( $product ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- trusted WC loop markup from helper.
+	$product_id = $product->get_id();
+
+	if ( function_exists( 'wc_interactivity_api_load_product' ) ) {
+		wc_interactivity_api_load_product(
+			'I acknowledge that using experimental APIs means my theme or plugin will inevitably break in the next version of WooCommerce',
+			$product_id
+		);
+	}
+
+	$wrapper_directives = 'data-wp-interactive="woocommerce/product-collection"';
+
+	if ( function_exists( 'wp_interactivity_data_wp_context' ) ) {
+		$wrapper_directives .= ' ' . wp_interactivity_data_wp_context(
+			[
+				'productId'   => $product_id,
+				'variationId' => null,
+			],
+			'woocommerce/products'
+		);
+	}
+
+	printf(
+		'<div %1$s>%2$s</div>',
+		$wrapper_directives, // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- WC iAPI directives.
+		chairforce_render_product_button_block( $product_id ) // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- trusted WC block render.
+	);
 }
 
 /**

@@ -5,6 +5,13 @@
  */
 
 import { delegateDocument, dispatchContentUpdated } from './delegated-events';
+import {
+	hydrateInteractiveRoots,
+	mergeInteractivityDataFromDocument,
+} from './interactivity-hydrate-bridge';
+
+const PRODUCT_BUTTON_IAPI_SELECTOR =
+	'[data-wp-interactive="woocommerce/product-button"]';
 
 const BUTTON_SELECTOR = '.cf-load-more__button';
 const LOAD_MORE_SELECTOR = '.cf-load-more';
@@ -149,7 +156,7 @@ function buildCatalogPageUrl( page, button ) {
  * Extract product `<li>` nodes and optional total from a full catalog page.
  *
  * @param {string} html Full document HTML.
- * @return {{ items: HTMLLIElement[], total: number }}
+ * @return {{ items: HTMLLIElement[], total: number, doc: Document }}
  */
 function parseProductItemsFromPageHtml( html ) {
 	const doc = new DOMParser().parseFromString( html, 'text/html' );
@@ -172,23 +179,33 @@ function parseProductItemsFromPageHtml( html ) {
 		}
 	}
 
-	return { items, total };
+	return { items, total, doc };
 }
 
 /**
- * Append SSR product cards from a fetched catalog page.
+ * Append SSR product cards, merge iAPI product state, hydrate add-to-cart buttons.
  *
  * @param {HTMLElement}        list  Product template list.
  * @param {HTMLLIElement[]}    items Parsed list items from a catalog page.
+ * @param {Document}           doc   Parsed catalog page (interactivity JSON).
  */
-function appendProductItems( list, items ) {
-	const fragment = document.createDocumentFragment();
+async function appendProductItems( list, items, doc ) {
+	/** @type {HTMLLIElement[]} */
+	const imported = items.map( ( item ) =>
+		/** @type {HTMLLIElement} */ ( document.importNode( item, true ) )
+	);
 
-	items.forEach( ( item ) => {
-		fragment.appendChild( document.importNode( item, true ) );
+	mergeInteractivityDataFromDocument( doc );
+
+	imported.forEach( ( item ) => {
+		list.appendChild( item );
 	} );
 
-	list.appendChild( fragment );
+	for ( const item of imported ) {
+		await hydrateInteractiveRoots( item, {
+			selector: PRODUCT_BUTTON_IAPI_SELECTOR,
+		} );
+	}
 }
 
 /**
@@ -405,10 +422,10 @@ async function handleLoadMoreClick( event, button ) {
 		}
 
 		const html = await response.text();
-		const { items, total: fetchedTotal } = parseProductItemsFromPageHtml( html );
+		const { items, total: fetchedTotal, doc } = parseProductItemsFromPageHtml( html );
 
 		if ( items.length ) {
-			appendProductItems( list, items );
+			await appendProductItems( list, items, doc );
 			dispatchContentUpdated( { source: 'load-more', page: nextPage } );
 		}
 

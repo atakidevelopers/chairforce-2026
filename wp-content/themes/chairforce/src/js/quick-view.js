@@ -8,6 +8,13 @@ import jQuery from 'jquery';
 
 import { delegateDocument } from './shared/delegated-events';
 import {
+	ensureProductsLoaded,
+	hydrateInteractiveRoots,
+} from './shared/interactivity-hydrate-bridge';
+
+const PRODUCT_BUTTON_IAPI_SELECTOR =
+	'[data-wp-interactive="woocommerce/product-button"]';
+import {
 	bindQuickViewGalleryListeners,
 	initQuickViewGalleries,
 } from './quick-view-gallery';
@@ -113,8 +120,9 @@ function setLoading( loading ) {
 
 /**
  * @param {string} html
+ * @param {number} productId
  */
-function injectContent( html ) {
+async function injectContent( html, productId ) {
 	const content = getContentEl();
 
 	if ( ! content ) {
@@ -122,6 +130,14 @@ function injectContent( html ) {
 	}
 
 	content.innerHTML = html;
+
+	if ( Number.isFinite( productId ) && productId > 0 ) {
+		await ensureProductsLoaded( [ productId ] );
+	}
+
+	await hydrateInteractiveRoots( content, {
+		selector: PRODUCT_BUTTON_IAPI_SELECTOR,
+	} );
 	initQuickViewProductScripts( content );
 }
 
@@ -204,12 +220,12 @@ async function handleTriggerClick( event, trigger ) {
 			throw new Error( 'Quick view response empty' );
 		}
 
-		injectContent( data.html );
+		await injectContent( data.html, productId );
 
 		const content = getContentEl();
 
 		if ( content ) {
-			finalizeQuickViewContent( content );
+			await finalizeQuickViewContent( content );
 		}
 
 		setLoading( false );

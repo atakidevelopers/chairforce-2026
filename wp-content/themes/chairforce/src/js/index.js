@@ -3,6 +3,7 @@ import { initProductFilters } from './product-filters';
 import { initProductViewSwitcher } from './product-view-switcher';
 import { initQuickView } from './quick-view';
 import { initLoadMore } from './shared/load-more';
+import { initInteractivityHydrate } from './shared/interactivity-hydrate-bridge';
 import { initProductGridSwatches } from './shared/product-grid-swatches';
 import { initWishlist } from './shared/wishlist';
 import { initSingleProductSwatches } from './single-product-swatches';
@@ -25,6 +26,7 @@ document.addEventListener( 'DOMContentLoaded', () => {
 	initProductFilters();
 	initProductViewSwitcher();
 	initLoadMore();
+	initInteractivityHydrate();
 	initWishlist();
 	initWooCommerceQuantity();
 } );

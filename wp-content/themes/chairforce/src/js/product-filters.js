@@ -8,6 +8,7 @@
  */
 
 import { delegateDocument, dispatchContentUpdated } from './shared/delegated-events';
+import { mergeInteractivityDataFromDocument } from './shared/interactivity-hydrate-bridge';
 
 const ROOT_SELECTOR = '.cf-product-filters';
 const SHELL_SELECTOR = '.cf-shop-archive-shell';
@@ -463,7 +464,11 @@ function applyArchiveShellHtml( html, options = {} ) {
 		window.history.pushState( { cfFilters: true }, '', options.replaceUrl );
 	}
 
-	dispatchContentUpdated( { source: 'filters' } );
+	dispatchContentUpdated( {
+		source: 'filters',
+		root: document.querySelector( SHELL_SELECTOR ),
+		selector: '[data-wp-interactive="woocommerce/product-button"]',
+	} );
 }
 
 /**
@@ -699,6 +704,9 @@ async function refreshCatalogFromUrl( options = {} ) {
 		}
 
 		const html = await response.text();
+		const doc = new DOMParser().parseFromString( html, 'text/html' );
+
+		mergeInteractivityDataFromDocument( doc );
 
 		applyArchiveShellHtml( html, {
 			push: options.push,
