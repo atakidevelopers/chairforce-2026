@@ -50,7 +50,7 @@ if ( ! is_a( $product, WC_Product::class ) || ! $product->is_visible() ) {
 		/**
 		 * Hook: woocommerce_after_shop_loop_item.
 		 *
-		 * @hooked Classic_WC_Compatibility::render_loop_add_to_cart - 10
+		 * @hooked woocommerce_template_loop_add_to_cart - 10
 		 */
 		do_action( 'woocommerce_after_shop_loop_item' );
 		?>

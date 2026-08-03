@@ -17,7 +17,8 @@ $cf-shop-archive-sidebar-width: 20rem; // Match $cf-filters-sidebar-width in _pr
 
 .cf-shop-archive-shell{
 	.product-collection-template-part,
-	.wc-block-product-template{
+	.wc-block-product-template,
+	[data-block-name="woocommerce/legacy-template"][data-template="archive-product"] ul.products {
 		margin-block-start: 0;
 	}
 }

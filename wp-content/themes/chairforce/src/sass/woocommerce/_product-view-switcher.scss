@@ -58,13 +58,15 @@
 
 // List view — reshape shared product-card blocks without changing markup.
 .cf-shop-archive-main.cf-products-view-list {
-	.wc-block-product-template {
+	.wc-block-product-template,
+	[data-block-name="woocommerce/legacy-template"][data-template="archive-product"] ul.products {
 		grid-template-columns: minmax(0, 1fr) !important;
 	}
 
 	// Mobile — media column + stacked content column.
 	.wc-block-product,
-	.wc-block-product-template > li {
+	.wc-block-product-template > li,
+	[data-block-name="woocommerce/legacy-template"][data-template="archive-product"] ul.products > li.product {
 		display: grid;
 		grid-template-columns: minmax(5.5rem, 7.5rem) minmax(0, 1fr);
 		grid-template-areas:
@@ -148,7 +150,8 @@
 	.cf-shop-archive-main.cf-products-view-list {
 		// Desktop — media | title, price, swatches | actions.
 		.wc-block-product,
-		.wc-block-product-template > li {
+		.wc-block-product-template > li,
+		[data-block-name="woocommerce/legacy-template"][data-template="archive-product"] ul.products > li.product {
 			grid-template-columns: minmax(9rem, 12rem) minmax(0, 1fr) minmax(10rem, 12rem);
 			grid-template-areas:
 				"media title actions"

@@ -1,0 +1,72 @@
+@import "../settings";
+@import "../theme-json-variable";
+
+// Classic WC loop — CSS Grid parity with WC Blocks `.wc-block-product-template__responsive`.
+// Scoped to the legacy-template block (`archive-product`); widgets/cross-sells unchanged.
+
+$cf-legacy-archive-template: '[data-block-name="woocommerce/legacy-template"][data-template="archive-product"]';
+$cf-classic-product-grid-gap: 1.25em; // Match WC Blocks product-template gap.
+$cf-classic-product-grid-min: 150px;
+
+#{$cf-legacy-archive-template} ul.products {
+	display: grid;
+	grid-gap: $cf-classic-product-grid-gap;
+	clear: both;
+	list-style: none;
+	margin: 0 0 1em;
+	padding: 0;
+	max-width: 100%;
+
+	&::before,
+	&::after {
+		content: none;
+		display: none;
+	}
+
+	> li.product {
+		float: none;
+		width: auto;
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	&.columns-1 {
+		grid-template-columns: minmax(0, 1fr);
+	}
+
+	&.columns-2 {
+		grid-template-columns: repeat(
+			auto-fill,
+			minmax(max($cf-classic-product-grid-min, calc(50% - 0.625em)), 1fr)
+		);
+	}
+
+	&.columns-3 {
+		grid-template-columns: repeat(
+			auto-fill,
+			minmax(max($cf-classic-product-grid-min, calc(33.33333% - 0.83333em)), 1fr)
+		);
+	}
+
+	&.columns-4 {
+		grid-template-columns: repeat(
+			auto-fill,
+			minmax(max($cf-classic-product-grid-min, calc(25% - 0.9375em)), 1fr)
+		);
+	}
+
+	&.columns-5 {
+		grid-template-columns: repeat(
+			auto-fill,
+			minmax(max($cf-classic-product-grid-min, calc(20% - 1em)), 1fr)
+		);
+	}
+
+	&.columns-6 {
+		grid-template-columns: repeat(
+			auto-fill,
+			minmax(max($cf-classic-product-grid-min, calc(16.66667% - 1.04167em)), 1fr)
+		);
+	}
+}
