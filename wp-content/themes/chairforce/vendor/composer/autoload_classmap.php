@@ -12,6 +12,7 @@ return array(
     'Chairforce\\Api' => $baseDir . '/lib/class-api.php',
     'Chairforce\\Attribute_Swatch_Preview_Column' => $baseDir . '/lib/class-attribute-swatch-preview-column.php',
     'Chairforce\\Blocks_Jsx' => $baseDir . '/lib/class-blocks-jsx.php',
+    'Chairforce\\Classic_WC_Compatibility' => $baseDir . '/lib/class-classic-wc-compatibility.php',
     'Chairforce\\Content_Types' => $baseDir . '/lib/class-content-types.php',
     'Chairforce\\Editor_Curation' => $baseDir . '/lib/class-editor-curation.php',
     'Chairforce\\Front' => $baseDir . '/lib/class-front.php',

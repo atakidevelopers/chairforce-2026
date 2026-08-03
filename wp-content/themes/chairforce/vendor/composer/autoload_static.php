@@ -17,6 +17,7 @@ class ComposerStaticInit0b930fbfa8635b3843fecc3493015433
         'Chairforce\\Api' => __DIR__ . '/../..' . '/lib/class-api.php',
         'Chairforce\\Attribute_Swatch_Preview_Column' => __DIR__ . '/../..' . '/lib/class-attribute-swatch-preview-column.php',
         'Chairforce\\Blocks_Jsx' => __DIR__ . '/../..' . '/lib/class-blocks-jsx.php',
+        'Chairforce\\Classic_WC_Compatibility' => __DIR__ . '/../..' . '/lib/class-classic-wc-compatibility.php',
         'Chairforce\\Content_Types' => __DIR__ . '/../..' . '/lib/class-content-types.php',
         'Chairforce\\Editor_Curation' => __DIR__ . '/../..' . '/lib/class-editor-curation.php',
         'Chairforce\\Front' => __DIR__ . '/../..' . '/lib/class-front.php',

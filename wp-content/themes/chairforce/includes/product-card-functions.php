@@ -9,6 +9,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+use Chairforce\Product_Swatches;
+use Chairforce\Wishlist;
+
 /**
  * Whether the current request is a WooCommerce product shop archive.
  *
@@ -78,6 +81,185 @@ function chairforce_boots_product_card_features(): bool {
 	}
 
 	return chairforce_is_product_shop_archive();
+}
+
+/**
+ * Wishlist toggle markup for classic loop cards.
+ *
+ * @param int $product_id Product post ID.
+ * @return string
+ */
+function chairforce_get_product_card_wishlist_html( int $product_id ): string {
+
+	if ( ! chairforce_is_wishlist_loop_enabled() || ! chairforce_is_wishlist_enabled() ) {
+		return '';
+	}
+
+	if ( ! $product_id || ! Wishlist::is_valid_product( $product_id ) ) {
+		return '';
+	}
+
+	$in_wishlist   = is_user_logged_in() && Wishlist::is_in_wishlist( get_current_user_id(), $product_id );
+	$wrapper_class = 'cf-wishlist-button' . ( $in_wishlist ? ' is-active' : '' );
+	$aria_pressed  = $in_wishlist ? 'true' : 'false';
+	$label         = $in_wishlist
+		? esc_attr__( 'Remove from wishlist', 'chairforce' )
+		: esc_attr__( 'Add to wishlist', 'chairforce' );
+
+	return sprintf(
+		'<div class="%1$s"><button type="button" class="cf-wishlist-trigger" data-product-id="%2$d" aria-pressed="%3$s" aria-label="%4$s"><span class="screen-reader-text">%4$s</span></button></div>',
+		esc_attr( $wrapper_class ),
+		$product_id,
+		esc_attr( $aria_pressed ),
+		$label
+	);
+}
+
+/**
+ * Quick view trigger markup for classic loop cards.
+ *
+ * @param int $product_id Product post ID.
+ * @return string
+ */
+function chairforce_get_product_card_quick_view_html( int $product_id ): string {
+
+	if ( ! $product_id ) {
+		return '';
+	}
+
+	$label = esc_attr__( 'Quick view', 'chairforce' );
+
+	return sprintf(
+		'<div class="cf-quick-view-button"><button type="button" class="cf-quick-view-trigger" data-product-id="%1$d" aria-label="%2$s"><span class="screen-reader-text">%2$s</span></button></div>',
+		$product_id,
+		$label
+	);
+}
+
+/**
+ * Wishlist + quick view action stack for the card media overlay.
+ *
+ * @param int $product_id Product post ID.
+ * @return string
+ */
+function chairforce_get_product_card_actions_html( int $product_id ): string {
+
+	$wishlist   = chairforce_get_product_card_wishlist_html( $product_id );
+	$quick_view = chairforce_get_product_card_quick_view_html( $product_id );
+
+	if ( '' === $wishlist && '' === $quick_view ) {
+		return '';
+	}
+
+	return sprintf(
+		'<div class="cf-card-actions">%1$s%2$s</div>',
+		$wishlist,
+		$quick_view
+	);
+}
+
+/**
+ * Grid swatches markup for classic loop cards.
+ *
+ * @param \WC_Product $product Product object.
+ * @return string
+ */
+function chairforce_get_product_card_swatches_html( \WC_Product $product ): string {
+
+	if ( ! class_exists( Product_Swatches::class ) ) {
+		return '';
+	}
+
+	$markup = Product_Swatches::render_grid_swatches( $product );
+
+	if ( '' === $markup ) {
+		return '';
+	}
+
+	return sprintf(
+		'<div class="cf-product-swatches">%s</div>',
+		$markup // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in Product_Swatches.
+	);
+}
+
+/**
+ * Sale badge markup aligned with block product cards.
+ *
+ * @param \WC_Product $product Product object.
+ * @return string
+ */
+function chairforce_get_product_card_sale_badge_html( \WC_Product $product ): string {
+
+	if ( ! $product->is_on_sale() ) {
+		return '';
+	}
+
+	ob_start();
+	woocommerce_show_product_loop_sale_flash();
+	$flash = (string) ob_get_clean();
+
+	if ( '' === trim( $flash ) ) {
+		return '';
+	}
+
+	return str_replace(
+		'class="onsale"',
+		'class="onsale wc-block-components-product-sale-badge"',
+		$flash
+	);
+}
+
+/**
+ * Linked product thumbnail for classic loop cards.
+ *
+ * @param \WC_Product $product Product object.
+ * @return string
+ */
+function chairforce_get_product_card_thumbnail_html( \WC_Product $product ): string {
+
+	$permalink = $product->get_permalink();
+	$image     = $product->get_image(
+		'woocommerce_thumbnail',
+		[
+			'class' => 'attachment-woocommerce_thumbnail size-woocommerce_thumbnail',
+			'alt'   => $product->get_name(),
+		]
+	);
+
+	if ( '' === $image ) {
+		return '';
+	}
+
+	return sprintf(
+		'<a href="%1$s" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">%2$s</a>',
+		esc_url( $permalink ),
+		$image // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- WC image helper.
+	);
+}
+
+/**
+ * Media column — image, sale badge, wishlist, quick view.
+ *
+ * @param \WC_Product $product Product object.
+ * @return string
+ */
+function chairforce_get_product_card_media_html( \WC_Product $product ): string {
+
+	$product_id = $product->get_id();
+	$thumbnail  = chairforce_get_product_card_thumbnail_html( $product );
+	$badge      = chairforce_get_product_card_sale_badge_html( $product );
+	$actions    = chairforce_get_product_card_actions_html( $product_id );
+
+	if ( '' === $thumbnail && '' === $badge && '' === $actions ) {
+		return '';
+	}
+
+	return sprintf(
+		'<div class="cf-card-media"><div class="wc-block-components-product-image">%1$s%2$s</div>%3$s</div>',
+		$badge,
+		$thumbnail,
+		$actions
+	);
 }
 
 /**

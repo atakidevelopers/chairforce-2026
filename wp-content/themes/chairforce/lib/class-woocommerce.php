@@ -25,6 +25,7 @@ class WooCommerce {
 
 		new WooCommerce_Admin();
 		new WooCommerce_Archive();
+		new Classic_WC_Compatibility();
 		new WooCommerce_Breadcrumbs();
 		new WooCommerce_Single_Product();
 		new WooCommerce_Quantity();
