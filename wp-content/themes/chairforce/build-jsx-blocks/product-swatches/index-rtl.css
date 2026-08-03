@@ -1,15 +1,1 @@
-/*!********************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./src-jsx-blocks/product-swatches/editor.scss ***!
-  \********************************************************************************************************************************************************************************************************************************************************************/
-.cf-product-swatches-editor {
-  text-align: center;
-  padding: 0.75rem;
-  border: 1px dashed currentColor;
-  border-radius: 4px;
-}
-
-.cf-product-swatches-editor__hint {
-  margin: 0.25rem 0 0;
-  font-size: 0.8125rem;
-  opacity: 0.75;
-}
+.cf-product-swatches-editor{border:1px dashed;border-radius:4px;padding:.75rem;text-align:center}.cf-product-swatches-editor__hint{font-size:.8125rem;margin:.25rem 0 0;opacity:.75}

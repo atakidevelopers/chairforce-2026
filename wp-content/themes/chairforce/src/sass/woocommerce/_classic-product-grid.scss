@@ -29,6 +29,37 @@ $cf-classic-product-grid-min: 150px;
 		margin: 0;
 		padding: 0;
 		list-style: none;
+		> .wp-block-template-part{
+			//padding-bottom: $spacing-small;
+			//margin-bottom: unset;
+
+			> a:first-child{
+				display: none;
+			}
+
+			.yith-ywraq-add-to-quote{
+				padding-top: 0;
+				padding-bottom: 0;
+
+				a.add-request-quote-button{
+					margin-top: 0;
+				}
+			}
+		}
+
+		.added_to_cart{
+			text-align: center;
+		}
+		.add_to_cart_button{
+			margin-top: auto;
+			display: inline-flex;
+			margin-left:$spacing-small;
+			margin-right: $spacing-small;
+			justify-content: center;
+			padding-top: $spacing-xx-small;
+			padding-bottom: $spacing-xx-small;
+			text-transform: unset;
+		}
 	}
 
 	&.columns-1 {
@@ -69,4 +100,6 @@ $cf-classic-product-grid-min: 150px;
 			minmax(max($cf-classic-product-grid-min, calc(16.66667% - 1.04167em)), 1fr)
 		);
 	}
+
+
 }

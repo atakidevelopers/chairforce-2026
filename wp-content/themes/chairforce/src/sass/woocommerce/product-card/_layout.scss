@@ -7,6 +7,9 @@
 	flex-direction: column;
 	height: 100%;
 	background-color: $color-white;
+	//padding-bottom: $spacing-small;
+
+
 
 	> .wp-block-template-part {
 		display: flex;
@@ -14,15 +17,18 @@
 		flex-direction: column;
 		gap: $spacing-xx-small;
 		min-width: 0;
-		padding-bottom: $spacing-xx-small;
-		
+		//padding-bottom: $spacing-small;
+		margin-bottom: 0;
+
 		> *:not(.cf-card-media) {
 			padding-left: $spacing-small;
 			padding-right: $spacing-small;
 			width: auto;
 		}
 
-
+		&:last-child{
+			margin-bottom: $spacing-small;
+		}
 	}
 
 	.cf-card-media,
