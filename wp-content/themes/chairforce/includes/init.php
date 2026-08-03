@@ -22,7 +22,6 @@ require_once get_stylesheet_directory() . '/includes/helper-functions.php';
  */
 require_once get_stylesheet_directory() . '/includes/product-filters-functions.php';
 require_once get_stylesheet_directory() . '/includes/archive-shell-functions.php';
-require_once get_stylesheet_directory() . '/includes/ywraq-hooks.php';
 require_once get_stylesheet_directory() . '/includes/product-card-hooks.php';
 require_once get_stylesheet_directory() . '/includes/woocommerce-breadcrumb-functions.php';
 
