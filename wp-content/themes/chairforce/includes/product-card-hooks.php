@@ -10,6 +10,47 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
+ * Replace WooCommerce product-button block output with theme loop add-to-cart markup.
+ *
+ * Priority 5 — before YITH appends Add to Quote on `render_block_woocommerce/product-button` (10).
+ *
+ * @param string         $content  Block HTML.
+ * @param array          $block    Parsed block.
+ * @param \WP_Block|null $instance Block instance.
+ */
+function chairforce_render_product_card_product_button( string $content, array $block, ?\WP_Block $instance ): string {
+
+	if ( ! chairforce_is_product_collection_loop_block( $block, $instance ) ) {
+		return $content;
+	}
+
+	if ( ! function_exists( 'wc_get_product' ) ) {
+		return $content;
+	}
+
+	$product_id = chairforce_get_product_collection_block_post_id( $instance );
+
+	if ( ! $product_id ) {
+		return $content;
+	}
+
+	$product = wc_get_product( $product_id );
+
+	if ( ! $product instanceof \WC_Product ) {
+		return $content;
+	}
+
+	$markup = chairforce_get_product_card_add_to_cart_html(
+		$product,
+		is_array( $block['attrs'] ?? null ) ? $block['attrs'] : []
+	);
+
+	return '' !== trim( $markup ) ? $markup : $content;
+}
+
+add_filter( 'render_block_woocommerce/product-button', 'chairforce_render_product_card_product_button', 5, 3 );
+
+/**
  * Append SAVE % label to on-sale product price blocks in collection cards.
  *
  * @param string         $content  Block HTML.

@@ -1,5 +1,5 @@
 /**
- * Product archive filters — panel UI + archive shell partial reload (PJAX-style).
+ * Product archive filters — panel UI + full-page fetch shell swap (PJAX-style).
  *
  * Desktop vertical: in-flow push sidebar (no portal/backdrop).
  * Mobile vertical: fixed drawer portaled to body. Desktop horizontal: dropdown unchanged.
@@ -33,7 +33,6 @@ const ACCORDION_ALL_EXPANDED_CLASS = 'is-all-expanded';
 const VERTICAL_OPEN_HTML_CLASS = 'cf-filters-vertical-open';
 const SWAPPING_HTML_CLASS = 'cf-filters-swapping';
 const ARCHIVE_SHELL_QUERY_ARG = '_cf_archive';
-const ARCHIVE_SHELL_QUERY_VALUE = 'shell';
 const DESKTOP_BREAKPOINT = '(min-width: 781px)';
 
 let activeFetchController = null;
@@ -370,20 +369,23 @@ function parseCatalogOrderby( orderby, order ) {
 }
 
 /**
- * @param {string} catalogUrl Public catalog URL (no fragment param).
+ * Build the catalog URL for a full-page fetch (strip legacy partial query arg).
+ *
+ * @param {string} catalogUrl Public catalog URL.
  * @return {string}
  */
-function buildArchiveShellFetchUrl( catalogUrl ) {
+function buildCatalogFetchUrl( catalogUrl ) {
 	const url = new URL( catalogUrl, window.location.origin );
 
 	stripArchiveShellParam( url.searchParams );
-	url.searchParams.set( ARCHIVE_SHELL_QUERY_ARG, ARCHIVE_SHELL_QUERY_VALUE );
 
 	return url.toString();
 }
 
 /**
- * @param {string} html Fragment HTML.
+ * Extract the archive shell node from a full-page HTML response.
+ *
+ * @param {string} html Full document HTML.
  * @return {HTMLElement|null}
  */
 function parseArchiveShellFromHtml( html ) {
@@ -659,7 +661,7 @@ function openPanelForCard( root, cardSlug ) {
 }
 
 /**
- * Fetch archive shell HTML for current URL params.
+ * Fetch full catalog page HTML and swap the archive shell for filter/sort refresh.
  *
  * @param {{ push?: boolean, replaceUrl?: string }} [options]
  */
@@ -671,7 +673,7 @@ async function refreshCatalogFromUrl( options = {} ) {
 		return;
 	}
 
-	const fetchUrl = buildArchiveShellFetchUrl( catalogUrl );
+	const fetchUrl = buildCatalogFetchUrl( catalogUrl );
 	const panelWasOpen = Boolean( getFilterPanel()?.classList.contains( OPEN_CLASS ) );
 
 	if ( activeFetchController ) {
@@ -686,18 +688,9 @@ async function refreshCatalogFromUrl( options = {} ) {
 	}
 
 	try {
-		const headers = {
-			'X-Requested-With': 'XMLHttpRequest',
-		};
-
-		if ( window.Chairforce_Public?.nonce ) {
-			headers[ 'X-WP-Nonce' ] = window.Chairforce_Public.nonce;
-		}
-
 		const response = await fetch( fetchUrl, {
 			method: 'GET',
 			credentials: 'same-origin',
-			headers,
 			signal: activeFetchController.signal,
 		} );
 

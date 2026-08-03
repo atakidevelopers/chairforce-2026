@@ -26,8 +26,6 @@ class WooCommerce_Archive {
 	 * Register archive hooks.
 	 */
 	private function register_hooks(): void {
-		// Priority 15 — after YITH wc_blocks_hooks (10) registers render_block filters.
-		add_action( 'template_redirect', 'chairforce_maybe_render_archive_shell_fragment', 15 );
 		add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_quick_view_assets' ], 20 );
 	}
 
@@ -46,6 +44,10 @@ class WooCommerce_Archive {
 
 		if ( ! function_exists( 'WC' ) ) {
 			return;
+		}
+
+		if ( 'yes' === get_option( 'woocommerce_enable_ajax_add_to_cart' ) ) {
+			wp_enqueue_script( 'wc-add-to-cart' );
 		}
 
 		wp_enqueue_script( 'wc-add-to-cart-variation' );

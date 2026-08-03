@@ -147,6 +147,39 @@ function chairforce_quick_view_render_product_details(): void {
 }
 
 /**
+ * Use loop add-to-cart markup in quick view for simple products.
+ *
+ * WC core ajax add-to-cart handles `.add_to_cart_button.ajax_add_to_cart` links
+ * globally via `wc-add-to-cart.js`. Single-product cart forms POST to the product
+ * URL instead, which is a poor fit inside the drawer.
+ */
+function chairforce_quick_view_prepare_simple_add_to_cart(): void {
+
+	global $product;
+
+	if ( ! $product instanceof \WC_Product || ! $product->is_type( 'simple' ) ) {
+		return;
+	}
+
+	remove_action( 'woocommerce_single_product_summary', 'woocommerce_template_single_add_to_cart', 30 );
+	add_action( 'woocommerce_single_product_summary', 'chairforce_quick_view_render_simple_add_to_cart', 30 );
+}
+
+/**
+ * Loop-style add to cart for simple products in quick view.
+ */
+function chairforce_quick_view_render_simple_add_to_cart(): void {
+
+	global $product;
+
+	if ( ! $product instanceof \WC_Product ) {
+		return;
+	}
+
+	echo chairforce_get_product_card_add_to_cart_html( $product ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- trusted WC loop markup from helper.
+}
+
+/**
  * Output YITH Add to Quote below the add-to-cart form in quick view.
  */
 function chairforce_quick_view_render_add_to_quote(): void {
@@ -232,6 +265,8 @@ function chairforce_rest_quick_view( \WP_REST_Request $request ): \WP_REST_Respo
 	if ( chairforce_is_quick_view_request_quote_enabled() ) {
 		add_action( 'woocommerce_single_product_summary', 'chairforce_quick_view_render_add_to_quote', 35 );
 	}
+
+	chairforce_quick_view_prepare_simple_add_to_cart();
 
 	ob_start();
 	?>

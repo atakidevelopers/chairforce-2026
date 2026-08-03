@@ -1,5 +1,5 @@
 /**
- * Page-1 Load More — append default WC product cards via REST partial HTML.
+ * Page-1 Load More — fetch full catalog pages and append product cards from SSR HTML.
  *
  * @see context/plans/3i-load-more-plan.md
  */
@@ -8,6 +8,8 @@ import { delegateDocument, dispatchContentUpdated } from './delegated-events';
 
 const BUTTON_SELECTOR = '.cf-load-more__button';
 const LOAD_MORE_SELECTOR = '.cf-load-more';
+const PRODUCT_LIST_SELECTOR = '.wc-block-product-template';
+const ARCHIVE_SHELL_QUERY_ARG = '_cf_archive';
 const RESULTS_COUNT_SELECTOR =
 	'.wp-block-woocommerce-product-results-count .woocommerce-result-count, .wc-block-product-results-count .woocommerce-result-count';
 
@@ -63,9 +65,6 @@ function getSortParamsFromUrl() {
 /**
  * Fallback sort params from the Load More button's exported query vars.
  *
- * Page 1 SSR uses the main-query ordering captured in query_vars. Append requests
- * must replay that ordering — not the URL alone — or pagination offsets drift.
- *
  * @param {HTMLButtonElement} button Load More button.
  * @return {{ orderby: string|null, order: string|null }}
  */
@@ -93,57 +92,103 @@ function getSortParamsFromButton( button ) {
 }
 
 /**
- * Build REST URL for the next page batch.
- *
- * @param {HTMLButtonElement} button Load More button.
- * @param {number}            page   Page number to fetch.
- * @return {string|null}
+ * @param {URLSearchParams} params
  */
-function buildLoadMoreUrl( button, page ) {
-	const restBase = window.Chairforce_Public?.loadMoreRestUrl;
+function stripInternalQueryParams( params ) {
+	params.delete( ARCHIVE_SHELL_QUERY_ARG );
+}
 
-	if ( ! restBase ) {
-		return null;
-	}
+/**
+ * @return {URLSearchParams}
+ */
+function getCatalogParamsFromUrl() {
+	const params = new URLSearchParams( window.location.search );
 
-	const url = new URL( restBase, window.location.origin );
+	stripInternalQueryParams( params );
 
-	url.searchParams.set( 'page', String( page ) );
+	return params;
+}
 
-	const perPage = button.dataset.perPage;
+/**
+ * @return {string} Archive base path without /page/N/ segment.
+ */
+function getCatalogBasePath() {
+	return window.location.pathname.replace( /\/page\/\d+\/?$/, '' ) || '/';
+}
 
-	if ( perPage ) {
-		url.searchParams.set( 'per_page', perPage );
-	}
+/**
+ * Build a full catalog page URL for Load More (same query as the current archive view).
+ *
+ * @param {number}            page   Target catalog page.
+ * @param {HTMLButtonElement} button Load More button.
+ * @return {string}
+ */
+function buildCatalogPageUrl( page, button ) {
+	const params = getCatalogParamsFromUrl();
 
-	const queryVars = button.dataset.queryVars;
+	if ( ! params.has( 'orderby' ) ) {
+		const { orderby, order } = getSortParamsFromButton( button );
 
-	if ( queryVars ) {
-		url.searchParams.set( 'query_vars', queryVars );
-	}
-
-	const { orderby, order } = getSortParamsFromButton( button );
-
-	if ( orderby ) {
-		url.searchParams.set( 'orderby', orderby );
-	}
-
-	if ( order ) {
-		url.searchParams.set( 'order', order );
-	}
-
-	const catalogParams = new URLSearchParams( window.location.search );
-
-	catalogParams.forEach( ( value, key ) => {
-		if (
-			key.startsWith( 'filter_' )
-			|| [ 'min_price', 'max_price' ].includes( key )
-		) {
-			url.searchParams.set( key, value );
+		if ( orderby ) {
+			params.set( 'orderby', orderby );
 		}
+
+		if ( order ) {
+			params.set( 'order', order );
+		}
+	}
+
+	const basePath = getCatalogBasePath().replace( /\/$/, '' ) || '';
+	const pagePath = page > 1 ? `${ basePath }/page/${ page }/` : `${ basePath }/`;
+	const query = params.toString();
+
+	return query ? `${ pagePath }?${ query }` : pagePath;
+}
+
+/**
+ * Extract product `<li>` nodes and optional total from a full catalog page.
+ *
+ * @param {string} html Full document HTML.
+ * @return {{ items: HTMLLIElement[], total: number }}
+ */
+function parseProductItemsFromPageHtml( html ) {
+	const doc = new DOMParser().parseFromString( html, 'text/html' );
+	const list = doc.querySelector( PRODUCT_LIST_SELECTOR );
+	const items = list
+		? Array.from( list.querySelectorAll( ':scope > li' ) )
+		: [];
+
+	let total = parseInt(
+		doc.querySelector( `${ LOAD_MORE_SELECTOR }` )?.dataset?.total || '0',
+		10
+	);
+
+	if ( ! total ) {
+		const resultsCount = doc.querySelector( RESULTS_COUNT_SELECTOR );
+		const match = resultsCount?.textContent?.match( /of\s+([\d,.]+)\s+results/i );
+
+		if ( match ) {
+			total = parseInt( match[ 1 ].replace( /[,.]/g, '' ), 10 );
+		}
+	}
+
+	return { items, total };
+}
+
+/**
+ * Append SSR product cards from a fetched catalog page.
+ *
+ * @param {HTMLElement}        list  Product template list.
+ * @param {HTMLLIElement[]}    items Parsed list items from a catalog page.
+ */
+function appendProductItems( list, items ) {
+	const fragment = document.createDocumentFragment();
+
+	items.forEach( ( item ) => {
+		fragment.appendChild( document.importNode( item, true ) );
 	} );
 
-	return url.toString();
+	list.appendChild( fragment );
 }
 
 /**
@@ -159,7 +204,7 @@ function getProductTemplateList( button ) {
 		return null;
 	}
 
-	return collection.querySelector( '.wc-block-product-template' );
+	return collection.querySelector( PRODUCT_LIST_SELECTOR );
 }
 
 /**
@@ -308,9 +353,9 @@ function setButtonLoadingState( button, isLoading, labelOverride ) {
 /**
  * Sync progress UI and archive results count after cards change.
  *
- * @param {HTMLElement}       loadMoreContainer Load More wrapper.
- * @param {HTMLElement}       list              Product template list.
- * @param {number}            [totalOverride]   Optional total from REST.
+ * @param {HTMLElement} loadMoreContainer Load More wrapper.
+ * @param {HTMLElement} list              Product template list.
+ * @param {number}      [totalOverride]   Optional total from fetched page.
  */
 function syncLoadMoreState( loadMoreContainer, list, totalOverride ) {
 	const viewing = getLoadedProductCount( list );
@@ -341,7 +386,7 @@ async function handleLoadMoreClick( event, button ) {
 	const nextPage = parseInt( button.dataset.nextPage || '2', 10 );
 	const loadMoreContainer = button.closest( LOAD_MORE_SELECTOR );
 	const list = getProductTemplateList( button );
-	const fetchUrl = buildLoadMoreUrl( button, nextPage );
+	const fetchUrl = buildCatalogPageUrl( nextPage, button );
 
 	if ( ! list || ! loadMoreContainer || ! fetchUrl || Number.isNaN( nextPage ) ) {
 		return;
@@ -350,38 +395,30 @@ async function handleLoadMoreClick( event, button ) {
 	setButtonLoadingState( button, true );
 
 	try {
-		const headers = {};
-
-		if ( window.Chairforce_Public?.nonce ) {
-			headers[ 'X-WP-Nonce' ] = window.Chairforce_Public.nonce;
-		}
-
 		const response = await fetch( fetchUrl, {
 			method: 'GET',
 			credentials: 'same-origin',
-			headers,
 		} );
 
 		if ( ! response.ok ) {
 			throw new Error( `Load More request failed (${ response.status })` );
 		}
 
-		const data = await response.json();
+		const html = await response.text();
+		const { items, total: fetchedTotal } = parseProductItemsFromPageHtml( html );
 
-		if ( data.html ) {
-			list.insertAdjacentHTML( 'beforeend', data.html );
+		if ( items.length ) {
+			appendProductItems( list, items );
 			dispatchContentUpdated( { source: 'load-more', page: nextPage } );
 		}
 
-		const total = data.total || parseInt( loadMoreContainer.dataset.total || '0', 10 );
+		const total =
+			fetchedTotal ||
+			parseInt( loadMoreContainer.dataset.total || '0', 10 );
 		const { viewing } = syncLoadMoreState( loadMoreContainer, list, total );
 
-		if ( data.hasMore && data.nextPage ) {
-			button.dataset.nextPage = String( data.nextPage );
-
-			if ( data.maxPages ) {
-				button.dataset.maxPages = String( data.maxPages );
-			}
+		if ( viewing < total && items.length > 0 ) {
+			button.dataset.nextPage = String( nextPage + 1 );
 		} else {
 			updateResultsCount( viewing, total );
 			loadMoreContainer.remove();

@@ -65,7 +65,8 @@ add_action( 'rest_api_init', 'chairforce_register_load_more_route' );
 /**
  * Load More — append server-rendered product-template `<li>` HTML.
  *
- * Filter/sort refresh uses archive shell partial reload (`_cf_archive=shell`), not this route.
+ * Filter/sort refresh fetches the full catalog page and swaps `.cf-shop-archive-shell`
+ * client-side; this route is for Load More append only.
  *
  * @param \WP_REST_Request $request Request object.
  * @return \WP_REST_Response|\WP_Error
