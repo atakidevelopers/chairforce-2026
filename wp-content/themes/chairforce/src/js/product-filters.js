@@ -1,9 +1,13 @@
 /**
- * Product archive filters — panel UI + archive shell partial reload (PJAX-style).
+ * Product archive filters — panel UI + archive shell swap (PJAX-style).
+ *
+ * Filter refresh fetches the full catalog page and extracts `.cf-shop-archive-shell`
+ * client-side (experiment: block-template parity vs dedicated `_cf_archive=shell` fragment).
  *
  * Desktop vertical: in-flow push sidebar (no portal/backdrop).
  * Mobile vertical: fixed drawer portaled to body. Desktop horizontal: dropdown unchanged.
  *
+ * @see context/notes/block-full-page-shell-extract-experiment.md
  * @see context/existing-functionality/12A-woodmart-ajax-shop-filtering.md
  */
 
@@ -33,7 +37,6 @@ const ACCORDION_ALL_EXPANDED_CLASS = 'is-all-expanded';
 const VERTICAL_OPEN_HTML_CLASS = 'cf-filters-vertical-open';
 const SWAPPING_HTML_CLASS = 'cf-filters-swapping';
 const ARCHIVE_SHELL_QUERY_ARG = '_cf_archive';
-const ARCHIVE_SHELL_QUERY_VALUE = 'shell';
 const DESKTOP_BREAKPOINT = '(min-width: 781px)';
 
 let activeFetchController = null;
@@ -370,6 +373,11 @@ function parseCatalogOrderby( orderby, order ) {
 }
 
 /**
+ * Build the URL used to refresh the archive shell.
+ *
+ * Full-page fetch: same catalog URL SSR would use (page 1, no shell fragment arg).
+ * Response is parsed with `parseArchiveShellFromHtml()`.
+ *
  * @param {string} catalogUrl Public catalog URL (no fragment param).
  * @return {string}
  */
@@ -377,13 +385,14 @@ function buildArchiveShellFetchUrl( catalogUrl ) {
 	const url = new URL( catalogUrl, window.location.origin );
 
 	stripArchiveShellParam( url.searchParams );
-	url.searchParams.set( ARCHIVE_SHELL_QUERY_ARG, ARCHIVE_SHELL_QUERY_VALUE );
+	url.searchParams.delete( 'paged' );
+	url.searchParams.delete( 'page' );
 
 	return url.toString();
 }
 
 /**
- * @param {string} html Fragment HTML.
+ * @param {string} html Full page or shell fragment HTML.
  * @return {HTMLElement|null}
  */
 function parseArchiveShellFromHtml( html ) {
@@ -412,7 +421,7 @@ function getPanelRestoreState( root ) {
 }
 
 /**
- * Replace the archive shell from a server-rendered HTML fragment.
+ * Replace the archive shell from fetched HTML (full page or fragment).
  *
  * @param {string} html
  * @param {{ push?: boolean, replaceUrl?: string }} [options]
@@ -659,7 +668,7 @@ function openPanelForCard( root, cardSlug ) {
 }
 
 /**
- * Fetch archive shell HTML for current URL params.
+ * Fetch catalog HTML for current URL params and swap the archive shell.
  *
  * @param {{ push?: boolean, replaceUrl?: string }} [options]
  */
