@@ -30,19 +30,11 @@ class WooCommerce_Archive {
 	}
 
 	/**
-	 * Enqueue WooCommerce single-product scripts/styles needed inside quick view.
+	 * Enqueue WooCommerce scripts for product-card ajax add-to-cart and quick view.
 	 */
 	public function enqueue_quick_view_assets(): void {
-		if (
-			! is_shop()
-			&& ! is_product_taxonomy()
-			&& ! is_post_type_archive( 'product' )
-			&& ! is_product()
-		) {
-			return;
-		}
 
-		if ( ! function_exists( 'WC' ) ) {
+		if ( ! chairforce_boots_product_card_features() ) {
 			return;
 		}
 

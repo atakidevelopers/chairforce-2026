@@ -152,6 +152,7 @@ class Front {
 			'resultsCountAll'       => __( 'Showing all %1$s results', 'chairforce' ),
 			'resultsCountRange'     => __( 'Showing %1$s–%2$s of %3$s results', 'chairforce' ),
 			'quickViewRestUrl'   => rest_url( 'chairforce/v1/quick-view' ),
+			'inCartLabel'        => _x( '%d in cart', 'Product card add-to-cart quantity label', 'woocommerce' ),
 			'quickViewDisplay'   => in_array( $quick_view_display, [ 'modal', 'drawer' ], true ) ? $quick_view_display : 'drawer',
 			'quickViewContent'   => in_array( $quick_view_content, [ 'dimensions', 'short_description' ], true ) ? $quick_view_content : 'dimensions',
 			'wishlistEnabled'    => chairforce_is_wishlist_enabled(),

@@ -20,6 +20,10 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function chairforce_render_product_card_product_button( string $content, array $block, ?\WP_Block $instance ): string {
 
+	if ( ! chairforce_boots_product_card_features() ) {
+		return $content;
+	}
+
 	if ( ! chairforce_is_product_collection_loop_block( $block, $instance ) ) {
 		return $content;
 	}
@@ -59,6 +63,10 @@ add_filter( 'render_block_woocommerce/product-button', 'chairforce_render_produc
  */
 function chairforce_append_product_card_save_label( string $content, array $block, ?\WP_Block $instance ): string {
 
+	if ( ! chairforce_boots_product_card_features() ) {
+		return $content;
+	}
+
 	if ( ! chairforce_is_product_collection_loop_block( $block, $instance ) ) {
 		return $content;
 	}
@@ -90,3 +98,42 @@ function chairforce_append_product_card_save_label( string $content, array $bloc
 }
 
 add_filter( 'render_block_woocommerce/product-price', 'chairforce_append_product_card_save_label', 20, 3 );
+
+/**
+ * Include product cart quantities in WC fragment refresh (mini-cart add/remove, ajax add).
+ *
+ * @param array<string, string> $fragments Cart fragments.
+ * @return array<string, string>
+ */
+function chairforce_add_product_cart_quantities_fragment( array $fragments ): array {
+
+	if ( ! chairforce_boots_product_card_features() ) {
+		return $fragments;
+	}
+
+	$markup = chairforce_get_product_cart_quantities_script_markup();
+
+	if ( '' !== $markup ) {
+		$fragments['script#cf-product-cart-quantities'] = $markup;
+	}
+
+	return $fragments;
+}
+
+add_filter( 'woocommerce_add_to_cart_fragments', 'chairforce_add_product_cart_quantities_fragment' );
+
+/**
+ * Boot cart-quantity JSON for JS sync on first paint (before any ajax refresh).
+ */
+function chairforce_print_product_cart_quantities_script(): void {
+
+	if ( ! chairforce_boots_product_card_features() ) {
+		return;
+	}
+
+	// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- JSON script from trusted cart helper.
+	echo chairforce_get_product_cart_quantities_script_markup();
+}
+
+add_action( 'wp_footer', 'chairforce_print_product_cart_quantities_script', 20 );
+

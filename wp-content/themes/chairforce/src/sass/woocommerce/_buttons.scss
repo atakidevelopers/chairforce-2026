@@ -14,3 +14,10 @@
 .wc-block-components-product-button__button {
   @include cf-icon-button('shopping-cart');
 }
+
+// Card buttons: "X in cart" replaces label; hide WC's separate View cart link.
+.cf-add-to-cart {
+  .added_to_cart {
+    display: none;
+  }
+}
