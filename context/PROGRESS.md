@@ -1,7 +1,7 @@
 # Chairforce Rebuild — Progress Tracker & Roadmap
 
 Single top-level status doc for the whole rebuild (header/mega-menu →
-registration → commerce UI → page assembly). Phase numbers match the
+registration → commerce UI → content templates → page assembly). Phase numbers match the
 "Build-phase legend" in
 `context/existing-functionality/19-master-rebuild-registration-checklist.md`.
 Feature-level detail and sequencing rationale come from
@@ -34,6 +34,15 @@ active?" second-guess was raised and rejected —
 
 ## Phase roadmap
 
+| Phase | Focus | Status |
+|---|---|---|
+| **1** | Header + mega menu | ✅ Done |
+| **2** | Static patterns (team) | ⏳ Not started |
+| **3** | Registration + commerce UI (3a–3n) | 🔄 Mostly done — **3g**, **3l**, **3m**, **3n** remain |
+| **4** | Content CPT templates + page assembly (4a–4b) | ⏳ Not started |
+| **5** | Blog + My Account | ⏳ Not started |
+| **6** | `/gallery/` shoppable page | ⏳ Blocked on relation migration |
+
 ### Phase 1 — Header + mega menu (site-wide nav shell) — You
 
 **Status: ✅ Done**
@@ -61,8 +70,12 @@ active?" second-guess was raised and rejected —
 
 **Status: ⏳ Not started**
 
-Home hero, trust badges, category tiles, newsletter, footer — no backend
-logic, can run independently of Phase 3.
+Reusable **patterns only** (no CPT templates, no backend logic) — markup the
+team can drop into pages. Overlaps with **Phase 4b** where home sections are
+assembled; Phase 2 owns the pattern files, Phase 4b owns page composition.
+
+Home hero, trust badges, category tiles, newsletter, footer — can run
+independently of Phase 3.
 
 - Consumes the `hero-banner-home-page` and `catalogue-links` ACF Options
   Pages (already registered in Phase 3a below) — field detail in checklist
@@ -304,8 +317,7 @@ Black swatch → full variation gallery rebuild, Clear → default gallery) and
 
 #### 3f. Shop/category product archive filters (Figma bar + AJAX)
 
-**Status: 🔄 In progress (31 Jul 2026)** — implementation landed locally; browser QA
-ongoing.
+**Status: ✅ Done (4 Aug 2026)** — QA complete; fine for now.
 
 - Investigation: `context/notes/product-filters-findings.md`.
 - Implementation plan: `context/plans/3f-product-filters-plan.md` (plan still
@@ -313,17 +325,12 @@ ongoing.
   — see `12A-woodmart-ajax-shop-filtering.md`).
 - Mechanism (Woodmart PJAX-style shell reload + Load More append REST — **not**
   `jet-smart-filters`): files `12`, `12A`.
-- **Shipped (uncommitted):** filter bar/panel/chips partials;
+- **Shipped:** filter bar/panel/chips partials;
   `includes/archive-shell-functions.php` (`?_cf_archive=shell` fragment);
   `src/js/product-filters.js` (shell swap + `pushState`); Load More REST
   append-only (no `mode`); `lib/class-woocommerce-archive.php` shell wrapper.
-- **Fixed (31 Jul 2026):** post-filter single-column grid — shell now renders
-  product collection via `do_blocks()` on `parts/product-collection.html` so
-  `wc-block-product-template__responsive` classes match SSR.
-- **Browser QA (31 Jul 2026):** filter apply (Arms), faceted counts, chip +
-  Clear all, 3-column grid after shell swap, Load More append after filter — ✅.
-  Still to verify: sort change, `popstate`, price filter, multi-filter stack,
-  Quick View/wishlist on post-swap cards.
+- Post-filter grid renders product collection via `do_blocks()` on
+  `parts/product-collection.html` so responsive classes match SSR.
 - **Locked:** dynamic filter buttons; card-grid panel (all filters); AJAX +
   `pushState` (no reload); native WC `Filterer` only (no WPGB); panel
   orientation theme options **`vertical` | `horizontal`** (default desktop
@@ -332,23 +339,22 @@ ongoing.
 - Also covers filter UX on archives where `venues` / `sales-by-location` are
   the main query (taxonomy archives), not as sidebar filter widgets — see
   findings doc §1.
-- **Grid/list view toggle** deferred to **3k** (not 3f v1) — Figma toolbar
-  icons beside Sort; see `context/plans/3k-grid-list-view-toggle-plan.md`.
+- **Grid/list view toggle** shipped separately as **3k** — see
+  `context/plans/3k-grid-list-view-toggle-plan.md`.
 
 #### 3k. Shop archive grid/list view toggle
 
-**Status: 🔄 In progress (1 Aug 2026)** — implementation landed; browser QA pending.
+**Status: ✅ Done (4 Aug 2026)** — QA complete; fine for now.
 
 - Investigation: `context/notes/grid-list-switcher-findings.md`.
 - Implementation plan: `context/plans/3k-grid-list-view-toggle-plan.md`.
-- **Shipped (uncommitted):** `chairforce/product-view-switcher` JSX block
+- **Shipped:** `chairforce/product-view-switcher` JSX block
   (inserter + reusable); `src/js/product-view-switcher.js` (`localStorage` +
   `cf-products-view-list` on `.cf-shop-archive-main`); Sass toolbar + list
   layout; wired in `parts/shop-archive-shell.html`; Lucide `list` icon added.
 - **Locked:** client-side CSS class toggle — **no** REST/shell reload on toggle;
   one shared `product-card.html` for grid, list, and Load More.
 - **Depends on:** 3f shop shell + 3i Load More (both shipped).
-- **QA pending:** toggle × filter shell swap × Load More × mobile toolbar.
 
 #### 3g. Parts (related spare-parts) section + single-product tabs
 
@@ -379,9 +385,10 @@ modal skin after ACF switch). REST verified for Breeze Chair (#1000290).
   `src/js/quick-view.js` lazy shell + `primeVariationForms()` on inject; Sass
   `--modal`/`--drawer` skins + eye icon (`0xe0ba`).
 
-#### Product grid card parity (3d/3h follow-up)
+#### Product grid card parity — shop archive baseline (3d/3h follow-up)
 
-**Status: ✅ Done (31 Jul 2026)** — `2a455c9`.
+**Status: ✅ Done for shop archives (31 Jul 2026)** — `2a455c9`; extended scope
+tracked in **3m** below.
 
 - Tracker: `context/implementation/product-grid.md`.
 - Notes/decision history: `context/notes/product-grid-cards-and-load-more.md`.
@@ -395,6 +402,12 @@ modal skin after ACF switch). REST verified for Breeze Chair (#1000290).
 - **Templates:** `archive-product.html` → `product-collection` part;
   `templates/single-product.html` → upsell + related parts (legacy WC hook grids
   removed).
+- **Also shipped (Aug 2026):** classic WC loop card compatibility on
+  legacy-template archives (`5031d3c`, `8e89f5b`); unified pagination styling
+  (`c706dbe`, `fd9ce96`); site + product search FSE templates (`4b70a8e`).
+- **Not in scope of this row:** product cards embedded in regular page content,
+  hand-picked collections, or other WC Product Collection surfaces outside the
+  shop-archive shell — see **3m**.
 
 #### 3i. Page-1 Load More (WooCommerce Product Collection archives)
 
@@ -431,31 +444,110 @@ pass optional (see Known open issues below).
 - **Deferred to Phase 5 (My Account):** account endpoint UI + wishlist list
   page (plan chunk 5) — endpoint registration can ship with account work.
 
-### Phase 4 — Home page assembly — Team
+#### 3l. Product category archive chrome (`product_cat` and shared term surfaces)
 
 **Status: ⏳ Not started**
 
-Best-sellers grid, reviews carousel, showrooms section — consumes what
-Phase 3 built.
+Category/term archive components beyond today's title + term description row:
 
-- Reviews: `review` CPT (registered in 3a) is hand-curated marketing
-  testimonials, not WooCommerce's native per-product reviews (confirmed
-  unused) — file `20`.
-- Showrooms: CPT/fields registered in 3a; the **postcode-based "nearest
-  pickup showroom" selector is real logic to rebuild**, not just content —
-  file `14` §B. Open question (checklist §8): which page renders the
-  selector.
-- Uses the shared carousel component from 3b.
+- **Taxonomy banner** — term hero (image, title, description, optional CTA).
+- **Taxonomy thumbs grid** — child-category / sibling-term thumbnail grid.
+- **Taxonomy swiper** — horizontal term carousel (distinct from homepage
+  `category-silder-list` content in Phase 2/4b).
 
-### Phase 5 — Blog listing + My Account — Collective, end
+Wire into `archive-product.html` (or dedicated taxonomy template parts). Likely
+first real consumer of the deferred **shared Swiper component** (3b) — decide
+during planning. No plan/notes doc yet.
+
+#### 3m. Product card block + full Product Collection parity
 
 **Status: ⏳ Not started**
 
+Today, the canonical card lives in **`parts/product-card.html`** and works on
+shop archives, Load More, related/upsells, product search, and classic
+legacy-template loops — but **not everywhere** WC blocks can render products
+(homepage embeds, hand-picked collections, cross-sells in page content, etc.).
+
+**Locked approach:**
+
+- **Keep** existing shop-archive guards (`chairforce_boots_product_card_features()`
+  and related enqueue/hook scoping) — do **not** widen them as a shortcut.
+- **Build** a **`chairforce/product-card`** block (ACF or JSX TBD) that is a
+  thin wrapper around the **`product-card` template part** — because template
+  parts cannot be inserted in regular Gutenberg page content outside the Site
+  Editor, but a registered block can.
+- Audit all Product Collection surfaces (theme files + DB templates) and
+  standardise on either the template part (FSE) or the wrapper block (pages).
+
+Verification matrix to produce during planning: each surface × swatches, Quick
+View, wishlist, SAVE label, theme add-to-cart. No plan/notes doc yet.
+
+#### 3n. Product-adjacent taxonomy templates & blocks
+
+**Status: ⏳ Not started**
+
+FSE templates and/or blocks for taxonomies registered in 3a that affect commerce
+UX but are not plain `product_cat` archives:
+
+| Taxonomy | Deliverables |
+|---|---|
+| `venues` | Finish block archive beyond `taxonomy-venues.html` legacy shell |
+| `sales-by-location` | Archive template aligned with Product Collection + filters |
+| `feature` | Single-product icon-badge row block |
+
+Cross-ref checklist file `19` §2. No plan/notes doc yet.
+
+### Phase 4 — Content templates, CPT surfaces & page assembly
+
+**Status: ⏳ Not started**
+
+Phase 4 covers **registered content types** (FSE templates, archives, singles,
+reusable blocks) **and** marketing/home page sections that consume them. Schema
+for these CPTs/taxonomies was registered in **3a**; Phase 4 is the frontend
+pass.
+
+#### 4a. Content CPT FSE templates & blocks
+
+**Status: ⏳ Not started**
+
+| CPT / type | Deliverables |
+|---|---|
+| `chairforce_faq` | Archive, single, accordion/list block if needed |
+| `showrooms` | Archive, single, card/locator blocks; postcode nearest-showroom logic — file `14` §B |
+| `review` | Testimonial card block (carousel consumer in 4b) — file `20` |
+| `year-carousel` | Timeline/carousel block or template — PM decision on target page |
+| `gallery-tabs` | **Schema only until Phase 6** — no frontend here |
+| Future 3a CPTs | Same pattern: archive + single + any query-loop blocks |
+
+Generic `templates/archive.html` / `templates/single.html` remain fallbacks;
+dedicated templates replace them per CPT where UX warrants it.
+
+#### 4b. Home page & marketing page assembly — Team
+
+**Status: ⏳ Not started**
+
+Page-level sections and patterns — can overlap with **Phase 2** static patterns
+where the team owns markup-only work:
+
+- Home hero, trust badges, category tiles, newsletter, footer patterns.
+- Best-sellers product grid, reviews carousel, showrooms section.
+- Consumes `hero-banner-home-page` and `catalogue-links` ACF Options (3a) —
+  checklist file `19` §4, research file `14` §E.
+- **`category-silder-list`** homepage category slider (6 items) — distinct from
+  **3l** taxonomy swiper on category archives.
+- Uses shared carousel component (3b deferred Swiper) for reviews/slider sections.
+- Figma source: `context/figma/screens/`.
+- Open question (checklist §8): which page renders the showroom pickup selector.
+
+### Phase 5 — Blog, My Account & account-adjacent UI — Collective, end
+
+**Status: ⏳ Not started**
+
+- **Posts** — archive, single, category/tag templates; Post Tag/Category filters
+  (checklist file `19` §4a). Generic `archive.html` / `search.html` are interim
+  baselines; Phase 5 owns blog-specific polish and filters.
 - **My Account wishlist page** (3j plan chunk 5 — list UI + endpoint template)
   ships here, not as part of 3j closure.
-- Blog archive filters (Post Tag/Category — checklist file `19` §4a) are
-  out of scope for the swatch/gallery research, just standard blog
-  filtering.
 
 ### Phase 6 — `/gallery/` shoppable-photo page — TBD, after Phase 4
 
@@ -499,12 +591,17 @@ proactively backfill).
   (`ProductCategoryTemplate` etc. in
   `wp-content/plugins/woocommerce/src/Blocks/Templates/`) take over before
   the theme's generic `archive.html` is ever reached. Both templates were
-  rebuilt using native core blocks (`post-featured-image`, `post-terms`,
-  `post-title`, `post-author`, `post-date`) in place of the missing block —
-  covers the plain blog archive (**Phase 5**) and any other generic
-  taxonomy archive. Still worth a follow-up check once **3f**'s
-  `sales-by-location`/`feature` taxonomy archives are built, to confirm
-  they render through this same path (or get their own dedicated template).
+  rebuilt using native core blocks — covers the plain blog archive baseline
+  (**Phase 5**) and any other generic taxonomy archive until **Phase 4a**
+  adds dedicated CPT templates. Still worth a follow-up once **3n**'s
+  `sales-by-location`/`feature` work and **Phase 4a** FAQ/showroom templates
+  land, to confirm each type gets the right template (dedicated vs generic).
+
+- **Product cards outside shop-archive shell** — swatches, Quick View, wishlist,
+  and theme add-to-cart may not appear on Product Collections embedded in
+  regular page content or non-shop surfaces. **Do not** widen current guards;
+  tracked in **3m** (`chairforce/product-card` wrapper block around the
+  `product-card` template part).
 
 - **Load More — minor quirks pending** — core feature shipped (`d7d7acc`) and
   marked complete in docs; a short polish pass remains before calling it fully
@@ -519,21 +616,21 @@ proactively backfill).
 Carried from checklist file `19` §8 — resolve before/during the phase noted:
 
 - Which page renders the showroom "pickup selector" (file `14` §B) —
-  blocks part of **Phase 4**.
+  blocks part of **Phase 4b**.
 - ~~Exact archive page for the "Product sale by location" filter (file `14`
   §I) — blocks **3f**.~~ — ✅ Resolved (31 Jul 2026): existing
   `/sales-by-location/{term-slug}/` archives; WC Product Collection template
   alignment deferred.
 - ~~Where the mega-menu's "Shop by Space" link should point (likely `venues`
-  taxonomy archive) — blocks **3f**/**Phase 4**.~~ — ✅ Resolved (31 Jul
+  taxonomy archive) — blocks **3n** / **Phase 4a**.~~ — ✅ Resolved (31 Jul
   2026): top-level **`venues`** archives (e.g. `/venue/hospitality/`); menu
-  builder script populates from live terms.
+  builder script populates from live terms. Finish block archive in **3n**.
 - "Checkout notice popup" — confirm still wanted, zero live trigger found
   (file `14` §J) — blocks nothing yet, just needs a yes/no.
 - `/gallery/` page's exact pagination mode (infinite-scroll vs. load-more) —
   blocks **Phase 6**.
 - Contact page's showroom Select filter and the "Download Catalog"
-  `catalogue-links` CTA (checklist §4/§4a) — need a page owner (Phase 2/4 vs.
+  `catalogue-links` CTA (checklist §4/§4a) — need a page owner (Phase 2/4b vs.
   their own pass) before scheduling.
 - **Attribute term display order** (`order` term meta, populated on
   `pa_material`/`pa_features`/`pa_seat`/`pa_size`/`pa_arms`/`pa_assembly`/
@@ -559,6 +656,8 @@ Carried from checklist file `19` §8 — resolve before/during the phase noted:
   not Block Hooks. Block Hooks spike passed (30 Jul 2026) but implementation
   chose the template-part approach instead — see
   `context/notes/product-grid-cards-and-load-more.md` §6 decision log.
+  **Follow-up:** **`chairforce/product-card` wrapper block** for page-content
+  use — tracked in **3m** (keep shop-archive guards; do not remove).
 - ~~**"Limit swatches" (+N collapse) vs. always-expanded** and **whether
   the grid-hover gallery-preview feature is wanted independent of
   swatches**~~ — ✅ Resolved (client decision, both in the 3d plan's

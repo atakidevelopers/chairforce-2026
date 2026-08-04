@@ -157,9 +157,9 @@ class Theme_Style_Switcher {
 	 */
 	public function maybe_change_theme_style() {
 
-//		if ( is_admin() ) {
-//			return;
-//		}
+		if ( is_admin() ) {
+			return;
+		}
 
 		if ( ! $this->is_enabled() ) {
 			return;
