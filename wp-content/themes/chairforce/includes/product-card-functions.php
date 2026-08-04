@@ -80,7 +80,8 @@ function chairforce_boots_product_card_features(): bool {
 		return true;
 	}
 
-	return chairforce_is_product_shop_archive();
+	return true;
+//	return chairforce_is_product_shop_archive();
 }
 
 /**
@@ -464,4 +465,43 @@ function chairforce_get_product_card_add_to_cart_html( \WC_Product $product, arr
 		esc_attr( chairforce_get_product_card_button_wrapper_classes( $block_attrs ) ),
 		$link // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- WC loop add to cart.
 	);
+}
+
+
+/**
+ * Resolve the loop product ID for this card.
+ *
+ * Frontend: $block->context['postId'] from woocommerce/product-template.
+ * Editor SSR: REST sets post_id to the edited page in block context — use the
+ * post_id query arg from ServerSideRender urlQueryArgs instead.
+ *
+ * @param \WP_Block|null $block Block instance.
+ * @return int Product post ID, or 0 when not in a product loop.
+ */
+function chairforce_product_card_resolve_product_id( ?\WP_Block $block ): int {
+
+	$candidates = [];
+
+	if ( $block instanceof \WP_Block && ! empty( $block->context['postId'] ) ) {
+		$candidates[] = absint( $block->context['postId'] );
+	}
+
+	// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- REST block renderer query arg.
+	if ( isset( $_REQUEST['post_id'] ) ) {
+		$candidates[] = absint( wp_unslash( $_REQUEST['post_id'] ) );
+	}
+
+	$current_id = get_the_ID();
+
+	if ( $current_id ) {
+		$candidates[] = (int) $current_id;
+	}
+
+	foreach ( array_unique( array_filter( $candidates ) ) as $candidate ) {
+		if ( 'product' === get_post_type( $candidate ) ) {
+			return $candidate;
+		}
+	}
+
+	return 0;
 }

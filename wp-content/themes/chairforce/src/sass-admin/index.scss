@@ -16,6 +16,10 @@
   @import "../sass/cpt/index";
   //@import "../sass/components/index";
 
+  @import "../sass/woocommerce/index";
+  @import "../sass/swatches/index";
+  @import "../sass/quick-view/index";
+  @import "../sass/icon-font/index";
   .acf-block-preview {
     @include alertBoxStyling;
   }

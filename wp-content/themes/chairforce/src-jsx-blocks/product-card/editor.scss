@@ -1,0 +1,5 @@
+// SSR preview — disable interactive card UI (swatches, QV, wishlist, add to cart).
+.wp-block-chairforce-product-card,
+.wp-block-chairforce-product-card * {
+	pointer-events: none;
+}

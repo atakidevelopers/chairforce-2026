@@ -1,0 +1,36 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "chairforce/product-card",
+  "version": "1.0.0",
+  "title": "ChairForce Product Card",
+  "category": "woocommerce",
+  "description": "Canonical Chairforce product card, renders the shared product-card template part for each item in a Product Collection loop.",
+  "keywords": [
+    "woocommerce",
+    "product",
+    "card",
+    "grid",
+    "collection"
+  ],
+  "textdomain": "chairforce",
+  "ancestor": [
+    "woocommerce/product-template"
+  ],
+  "usesContext": [
+    "postId",
+    "postType",
+    "query",
+    "queryId",
+    "displayLayout"
+  ],
+  "supports": {
+    "html": false,
+    "inserter": true,
+    "reusable": false,
+    "lock": false
+  },
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "render": "file:./render.php"
+}

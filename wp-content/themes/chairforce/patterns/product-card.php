@@ -1,0 +1,23 @@
+<?php
+/**
+ * Title: ChairForce Product Card
+ * Slug: chairforce/product-card
+ */
+?>
+<!-- wp:group {"className":"cf-card-media","layout":{"type":"constrained"}} -->
+<div class="wp-block-group cf-card-media">
+    <!-- wp:woocommerce/product-image {"showSaleBadge":true,"imageSizing":"thumbnail","isDescendentOfQueryLoop":true} -->
+    <!-- wp:woocommerce/product-sale-badge {"isDescendentOfQueryLoop":true,"align":"left"} /-->
+    <!-- /wp:woocommerce/product-image -->
+    <!-- wp:group {"className":"cf-card-actions","layout":{"type":"flex","orientation":"vertical","justifyContent":"center","flexWrap":"nowrap"}} -->
+    <div class="wp-block-group cf-card-actions">
+        <!-- wp:chairforce/wishlist-button /-->
+        <!-- wp:chairforce/quick-view-button /-->
+    </div>
+    <!-- /wp:group -->
+</div>
+<!-- /wp:group -->
+<!-- wp:post-title {"textAlign":"left","level":2,"isLink":true,"fontSize":"medium","__woocommerceNamespace":"woocommerce/product-collection/product-title","style":{"typography":{"lineHeight":"1.4"}}} /-->
+<!-- wp:chairforce/product-swatches /-->
+<!-- wp:woocommerce/product-price {"textAlign":"left","isDescendentOfQueryLoop":true,"fontSize":"small","className":"is-style-text-price"} /-->
+<!-- wp:woocommerce/product-button {"textAlign":"center","width":100,"isDescendentOfQueryLoop":true,"fontSize":"small"} /-->
