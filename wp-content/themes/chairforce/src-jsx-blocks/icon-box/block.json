@@ -1,0 +1,55 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "chairforce/icon-box",
+	"version": "1.0.0",
+	"title": "Icon Box",
+	"category": "design",
+	"icon": "info",
+	"description": "Display an icon with a heading and short description.",
+	"keywords": ["icon", "feature", "benefit", "service", "trust"],
+	"textdomain": "chairforce",
+	"attributes": {
+		"iconPosition": {
+			"type": "string",
+			"default": "left"
+		},
+		"alignment": {
+			"type": "string",
+			"default": "center"
+		},
+		"layout": {
+			"type": "object",
+			"default": {
+				"type": "flex",
+				"orientation": "horizontal"
+			}
+		}
+	},
+	"supports": {
+		"html": false,
+		"anchor": true,
+		"reusable": true,
+		"layout": {
+			"allowSwitching": false,
+			"allowInheriting": false,
+			"allowEditing": false,
+			"default": {
+				"type": "flex"
+			}
+		},
+		"spacing": {
+			"blockGap": true,
+			"margin": true,
+			"padding": true
+		},
+		"color": {
+			"background": true,
+			"text": true,
+			"gradients": false
+		}
+	},
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css"
+}

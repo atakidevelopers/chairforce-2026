@@ -360,3 +360,36 @@ function chairforce_get_quick_view_button_html( int $product_id ): string {
 		$label
 	);
 }
+
+/**
+ * Resolve a blockGap attribute value to a CSS gap value.
+ *
+ * @param mixed $block_gap Block gap attribute.
+ * @return string|null
+ */
+function chairforce_resolve_block_gap_css( $block_gap ) {
+	if ( empty( $block_gap ) ) {
+		return null;
+	}
+
+	if ( is_string( $block_gap ) ) {
+		if ( preg_match( '/^var:preset\|spacing\|([a-z0-9-]+)$/', $block_gap, $matches ) ) {
+			return 'var(--wp--preset--spacing--' . $matches[1] . ')';
+		}
+
+		return $block_gap;
+	}
+
+	if ( is_array( $block_gap ) ) {
+		$top  = chairforce_resolve_block_gap_css( $block_gap['top'] ?? null );
+		$left = chairforce_resolve_block_gap_css( $block_gap['left'] ?? null );
+
+		if ( $top && $left && $top !== $left ) {
+			return $top . ' ' . $left;
+		}
+
+		return $top ? $top : $left;
+	}
+
+	return null;
+}

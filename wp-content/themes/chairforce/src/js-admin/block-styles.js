@@ -1,10 +1,9 @@
 wp.domReady(() => {
-
 	wp.blocks.registerBlockStyle('core/buttons', [
 		{
 			name: 'full-on-small',
 			label: 'Full on Small',
-		}
+		},
 	]);
 
 	wp.blocks.registerBlockStyle('core/button', [
@@ -23,13 +22,17 @@ wp.domReady(() => {
 		{
 			name: 'light',
 			label: 'Light',
-		}
+		},
 	]);
 
 	wp.blocks.registerBlockStyle('core/paragraph', [
 		{
 			name: 'text-eyebrow',
 			label: 'Eyebrow',
+		},
+		{
+			name: 'text-eyebrow-filled',
+			label: 'Filled Eyebrow',
 		},
 		{
 			name: 'text-lead',
@@ -46,7 +49,7 @@ wp.domReady(() => {
 		{
 			name: 'text-price',
 			label: 'Price',
-		}
+		},
 	]);
 
 	wp.blocks.registerBlockStyle('core/group', [
@@ -57,7 +60,13 @@ wp.domReady(() => {
 		{
 			name: 'narrow',
 			label: 'Narrow',
-		}
+		},
 	]);
 
+	wp.blocks.registerBlockStyle('core/media-text', [
+		{
+			name: 'split-section',
+			label: 'Split Section',
+		},
+	]);
 });
