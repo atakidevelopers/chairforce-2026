@@ -211,9 +211,9 @@ export function bindQuickViewGalleryListeners() {
 		'found_variation',
 		'.cf-quick-view__content .variations_form',
 		( event, variation ) => {
-			if ( variation?.cf_variation_gallery_html ) {
-				return;
-			}
+		if ( variation?.gallery_images_html || variation?.cf_variation_gallery_html ) {
+			return;
+		}
 
 			window.setTimeout( () => {
 				const form = event.currentTarget;

@@ -128,6 +128,11 @@ class WooCommerce_Admin {
 	/**
 	 * Render additional variation images inside each variation row.
 	 *
+	 * Skipped when WooCommerce's native Variation Gallery feature is enabled
+	 * (Settings → Advanced → Features → "Variation gallery"), because WC's own
+	 * ClassicVariationGalleryAdmin renders and saves _product_image_gallery in
+	 * that case. Showing both fields would confuse editors.
+	 *
 	 * @param int      $loop           Variation loop index.
 	 * @param array    $variation_data Variation data.
 	 * @param \WP_Post $variation      Variation post object.
@@ -135,6 +140,10 @@ class WooCommerce_Admin {
 	 * @hooked woocommerce_variation_options
 	 */
 	public function render_variation_gallery_field( int $loop, array $variation_data, \WP_Post $variation ): void {
+		if ( $this->is_wc_variation_gallery_enabled() ) {
+			return;
+		}
+
 		unset( $loop, $variation_data );
 
 		$attachment_ids = $this->get_variation_gallery_attachment_ids( (int) $variation->ID );
@@ -183,12 +192,20 @@ class WooCommerce_Admin {
 	/**
 	 * Save additional variation images to legacy Woodmart post meta.
 	 *
+	 * Skipped when WooCommerce's native Variation Gallery feature is enabled —
+	 * WC's own handler manages _product_image_gallery in that case and our
+	 * field is not rendered, so there is nothing to save.
+	 *
 	 * @param int $variation_id Variation post ID.
 	 * @param int $loop         Variation loop index.
 	 *
 	 * @hooked woocommerce_save_product_variation
 	 */
 	public function save_variation_gallery_field( int $variation_id, int $loop ): void {
+		if ( $this->is_wc_variation_gallery_enabled() ) {
+			return;
+		}
+
 		unset( $loop );
 
 		if ( ! current_user_can( 'edit_post', $variation_id ) ) {
@@ -218,11 +235,18 @@ class WooCommerce_Admin {
 	/**
 	 * Enqueue variation gallery admin assets on variable product edit screens.
 	 *
+	 * Skipped when WooCommerce's native Variation Gallery feature is enabled
+	 * because the custom gallery field is not rendered in that case.
+	 *
 	 * @param string $hook_suffix Current admin screen hook suffix.
 	 *
 	 * @hooked admin_enqueue_scripts
 	 */
 	public function enqueue_variation_gallery_assets( string $hook_suffix ): void {
+		if ( $this->is_wc_variation_gallery_enabled() ) {
+			return;
+		}
+
 		global $post;
 
 		if ( ! in_array( $hook_suffix, [ 'post.php', 'post-new.php' ], true ) ) {
@@ -295,6 +319,24 @@ class WooCommerce_Admin {
 	 */
 	private function get_variation_gallery_attachment_ids( int $variation_id ): array {
 		return Product_Swatches::get_variation_gallery_attachment_ids( $variation_id );
+	}
+
+	/**
+	 * Whether WooCommerce's native "Variation gallery" feature is active.
+	 *
+	 * When enabled, WC's ClassicVariationGalleryAdmin renders and saves the
+	 * _product_image_gallery field on each variation, so our custom Woodmart
+	 * field must stay out of the way.
+	 *
+	 * @return bool
+	 */
+	private function is_wc_variation_gallery_enabled(): bool {
+		if ( class_exists( '\Automattic\WooCommerce\Internal\VariationGallery\Package' ) ) {
+			return \Automattic\WooCommerce\Internal\VariationGallery\Package::is_enabled();
+		}
+
+		// Fallback: check the raw option used by the package.
+		return 'yes' === get_option( 'wc_feature_woocommerce_additional_variation_images_enabled', 'no' );
 	}
 
 	/**
