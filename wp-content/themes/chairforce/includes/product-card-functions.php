@@ -505,3 +505,34 @@ function chairforce_product_card_resolve_product_id( ?\WP_Block $block ): int {
 
 	return 0;
 }
+
+/**
+ * Block markup for the Product Collection product card (inner blocks only).
+ *
+ * Canonical source for `chairforce/product-card` render and future Load More
+ * parity. Must stay aligned with `parts/product-card.html` until that template
+ * part is fully retired — do not delete or rewrite the HTML file as part of
+ * routine migration steps (see context/notes/product-card-block-migration.md §A3).
+ *
+ * @return string Serialized block markup for do_blocks() / parse_blocks().
+ */
+function chairforce_get_product_card_blocks_markup(): string {
+
+	return '<!-- wp:group {"className":"cf-card-media","layout":{"type":"constrained"}} -->
+<div class="wp-block-group cf-card-media">
+	<!-- wp:woocommerce/product-image {"showSaleBadge":true,"imageSizing":"thumbnail","isDescendentOfQueryLoop":true} -->
+		<!-- wp:woocommerce/product-sale-badge {"isDescendentOfQueryLoop":true,"align":"left"} /-->
+	<!-- /wp:woocommerce/product-image -->
+	<!-- wp:group {"className":"cf-card-actions","layout":{"type":"flex","orientation":"vertical","justifyContent":"center","flexWrap":"nowrap"}} -->
+	<div class="wp-block-group cf-card-actions">
+		<!-- wp:chairforce/wishlist-button /-->
+		<!-- wp:chairforce/quick-view-button /-->
+	</div>
+	<!-- /wp:group -->
+</div>
+<!-- /wp:group -->
+<!-- wp:post-title {"textAlign":"left","level":2,"isLink":true,"fontSize":"medium","__woocommerceNamespace":"woocommerce/product-collection/product-title","style":{"typography":{"lineHeight":"1.4"}}} /-->
+<!-- wp:chairforce/product-swatches /-->
+<!-- wp:woocommerce/product-price {"textAlign":"left","isDescendentOfQueryLoop":true,"fontSize":"small","className":"is-style-text-price"} /-->
+<!-- wp:woocommerce/product-button {"textAlign":"center","width":100,"isDescendentOfQueryLoop":true,"fontSize":"small"} /-->';
+}
