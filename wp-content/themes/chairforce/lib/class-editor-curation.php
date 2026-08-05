@@ -128,6 +128,7 @@ class Editor_Curation {
 			'chairforce/editor-placeholder' === $block_type
 			|| 'chairforce/site-header' === $block_type
 			|| 'chairforce/product-filters' === $block_type
+			|| 'chairforce/product-features' === $block_type
 		) {
 			$args['supports']['inserter'] = false;
 		}

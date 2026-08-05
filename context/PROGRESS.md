@@ -38,7 +38,7 @@ active?" second-guess was raised and rejected —
 |---|---|---|
 | **1** | Header + mega menu | ✅ Done |
 | **2** | Static patterns (team) | ⏳ Not started |
-| **3** | Registration + commerce UI (3a–3n) | 🔄 Mostly done — **3g**, **3l**, **3n** remain |
+| **3** | Registration + commerce UI (3a–3n) | 🔄 Mostly done — **3l**, **3n** (`venues`/`sales-by-location`) remain |
 | **4** | Content CPT templates + page assembly (4a–4b) | ⏳ Not started |
 | **5** | Blog + My Account | ⏳ Not started |
 | **6** | `/gallery/` shoppable page | ⏳ Blocked on relation migration |
@@ -358,7 +358,7 @@ Black swatch → full variation gallery rebuild, Clear → default gallery) and
 
 #### 3g. Parts (related spare-parts) section + single-product tabs
 
-**Status: ⏳ Not started**
+**Status: ✅ Done (Aug 2026)** — `367c974`, `f49e59e`.
 
 - Data + legacy rendering system: file `10` §5 (relationship field, already
   registered in 3a) and §6 (why the child theme needed gallery-isolation
@@ -367,6 +367,13 @@ Black swatch → full variation gallery rebuild, Clear → default gallery) and
 - Tabs bundle Dimensions/Care/Parts/Additional Info + static "Delivery
   Information"/"Product Info" copy (options pages already registered in
   3a) — file `11`'s feature table, "Single-product tabs" row.
+- **Shipped:** `woocommerce_product_tabs` registration in
+  `lib/class-woocommerce-single-product.php`; tab content helpers in
+  `includes/product-tabs-functions.php`; Parts tab renders a hand-picked
+  Product Collection via `chairforce_get_hand_picked_product_collection_blocks_markup()`;
+  global Delivery/Product Info from ACF options; `templates/single-product.html`
+  uses `woocommerce/product-details` (`is-style-minimal`); Sass in
+  `src/sass/woocommerce/_product-tabs.scss`.
 
 #### 3h. Quick View rebuild
 
@@ -485,16 +492,25 @@ view, related, upsells, search, page embeds).
 
 #### 3n. Product-adjacent taxonomy templates & blocks
 
-**Status: ⏳ Not started**
+**Status: 🔄 In progress — `feature` single-product row shipped; `venues` + `sales-by-location` remain**
 
 FSE templates and/or blocks for taxonomies registered in 3a that affect commerce
 UX but are not plain `product_cat` archives:
+
+**Shipped (feature):** `chairforce/product-features` dynamic JSX block
+(`src-jsx-blocks/product-features/`), helpers in
+`includes/product-features-functions.php`, Sass in
+`src/sass/woocommerce/_product-features.scss`, rendered inside the
+Overview (Description) tab via `render_description_tab()` +
+`chairforce_render_product_features_blocks()`. Reads `feature` taxonomy
+terms + ACF `field_feature_thumbnail` (with legacy `thumbnail` term-meta
+fallback). Hidden from inserter via `Editor_Curation` — PHP-placed only.
 
 | Taxonomy | Deliverables |
 |---|---|
 | `venues` | Finish block archive beyond `taxonomy-venues.html` legacy shell |
 | `sales-by-location` | Archive template aligned with Product Collection + filters |
-| `feature` | Single-product icon-badge row block |
+| `feature` | ✅ Single-product icon row — `chairforce/product-features` block (Aug 2026) |
 
 Cross-ref checklist file `19` §2. No plan/notes doc yet.
 

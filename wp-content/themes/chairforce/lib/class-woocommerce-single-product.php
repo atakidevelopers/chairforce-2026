@@ -51,6 +51,7 @@ class WooCommerce_Single_Product {
 		);
 
 		add_filter( 'woocommerce_product_tabs', [ $this, 'register_product_tabs' ], 98 );
+		add_filter( 'woocommerce_product_description_heading', [ $this, 'filter_description_tab_heading' ] );
 	}
 
 	/**
@@ -72,8 +73,10 @@ class WooCommerce_Single_Product {
 
 		unset( $tabs['additional_information'] );
 
-		if ( isset( $tabs['reviews'] ) ) {
-			$tabs['reviews']['priority'] = 50;
+		if ( isset( $tabs['description'] ) ) {
+			$tabs['description']['title']    = __( 'Overview', 'chairforce' );
+			$tabs['description']['priority'] = 10;
+			$tabs['description']['callback'] = [ $this, 'render_description_tab' ];
 		}
 
 		$product_id = get_the_ID();
@@ -82,18 +85,27 @@ class WooCommerce_Single_Product {
 			return $tabs;
 		}
 
+		// Tab order: Overview → Delivery Information → Dimensions → Care Instructions → Parts.
+		if ( chairforce_get_product_delivery_information_html() ) {
+			$tabs['cf_delivery_information'] = [
+				'title'    => __( 'Delivery Information', 'chairforce' ),
+				'priority' => 20,
+				'callback' => [ $this, 'render_delivery_information_tab' ],
+			];
+		}
+
 		if ( chairforce_get_product_dimensions_html( $product_id ) ) {
 			$tabs['cf_dimensions'] = [
 				'title'    => __( 'Dimensions', 'chairforce' ),
-				'priority' => 15,
+				'priority' => 30,
 				'callback' => [ $this, 'render_dimensions_tab' ],
 			];
 		}
 
 		if ( chairforce_get_product_care_html( $product_id ) ) {
 			$tabs['cf_care'] = [
-				'title'    => __( 'Care', 'chairforce' ),
-				'priority' => 20,
+				'title'    => __( 'Care Instructions', 'chairforce' ),
+				'priority' => 40,
 				'callback' => [ $this, 'render_care_tab' ],
 			];
 		}
@@ -101,7 +113,7 @@ class WooCommerce_Single_Product {
 		if ( ! empty( chairforce_get_product_parts_ids( $product_id ) ) ) {
 			$tabs['cf_parts'] = [
 				'title'    => __( 'Parts', 'chairforce' ),
-				'priority' => 25,
+				'priority' => 50,
 				'callback' => [ $this, 'render_parts_tab' ],
 			];
 		}
@@ -109,28 +121,49 @@ class WooCommerce_Single_Product {
 		if ( chairforce_get_product_additional_information_html( $product_id ) ) {
 			$tabs['cf_additional_information'] = [
 				'title'    => __( 'Additional Information', 'chairforce' ),
-				'priority' => 30,
+				'priority' => 60,
 				'callback' => [ $this, 'render_additional_information_tab' ],
-			];
-		}
-
-		if ( chairforce_get_product_delivery_information_html() ) {
-			$tabs['cf_delivery_information'] = [
-				'title'    => __( 'Delivery Information', 'chairforce' ),
-				'priority' => 35,
-				'callback' => [ $this, 'render_delivery_information_tab' ],
 			];
 		}
 
 		if ( chairforce_get_product_info_html() ) {
 			$tabs['cf_product_info'] = [
 				'title'    => __( 'Product Info', 'chairforce' ),
-				'priority' => 40,
+				'priority' => 70,
 				'callback' => [ $this, 'render_product_info_tab' ],
 			];
 		}
 
+		if ( isset( $tabs['reviews'] ) ) {
+			$tabs['reviews']['priority'] = 80;
+		}
+
 		return $tabs;
+	}
+
+	/**
+	 * Rename the default Description tab label to Overview.
+	 *
+	 * @param string $heading Tab panel heading.
+	 * @return string
+	 */
+	public function filter_description_tab_heading( string $heading ): string {
+		return __( 'Overview', 'chairforce' );
+	}
+
+	/**
+	 * Output the Description tab: product content, then feature icons.
+	 *
+	 * @param string               $key Tab key.
+	 * @param array<string, mixed> $tab Tab config.
+	 * @return void
+	 */
+	public function render_description_tab( string $key, array $tab ): void {
+		if ( function_exists( 'woocommerce_product_description_tab' ) ) {
+			woocommerce_product_description_tab();
+		}
+
+		chairforce_render_product_features_blocks();
 	}
 
 	/**
