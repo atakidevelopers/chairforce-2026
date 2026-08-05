@@ -621,6 +621,153 @@ function chairforce_get_product_collection_block_post_id( ?\WP_Block $instance )
 }
 
 /**
+ * Products per page for Product Collection block queries (Customizer columns × rows).
+ *
+ * @return int Positive integer.
+ */
+function chairforce_get_shop_products_per_page(): int {
+
+	if ( function_exists( 'chairforce_get_loop_shop_per_page' ) ) {
+		return max( 1, chairforce_get_loop_shop_per_page() );
+	}
+
+	if ( function_exists( 'wc_get_default_products_per_row' ) && function_exists( 'wc_get_default_product_rows_per_page' ) ) {
+		return max(
+			1,
+			(int) apply_filters(
+				'loop_shop_per_page',
+				wc_get_default_products_per_row() * wc_get_default_product_rows_per_page()
+			)
+		);
+	}
+
+	$columns = max( 1, (int) get_option( 'woocommerce_catalog_columns', 4 ) );
+	$rows    = max( 1, (int) get_option( 'woocommerce_catalog_rows', 4 ) );
+
+	return max( 1, (int) apply_filters( 'loop_shop_per_page', $columns * $rows ) );
+}
+
+/**
+ * Serialized hand-picked Product Collection block markup for do_blocks().
+ *
+ * Uses the shop "Products per page" setting for query pagination. When hand-picked
+ * IDs exceed that count, the collection block renders query-pagination automatically.
+ *
+ * @param int[]               $product_ids Hand-picked product post IDs.
+ * @param int                 $columns     Product Collection display columns.
+ * @param array<string,mixed> $args {
+ *     Optional overrides.
+ *
+ *     @type string   $class_name         Block `className` + wrapper class. Default empty.
+ *     @type string   $align              Block align. Default `wide`.
+ *     @type int|null $query_id           Block `queryId`; omitted from JSON when null. Default null.
+ *     @type int|null $per_page           Query `perPage`; shop setting when null. Default null.
+ *     @type bool     $include_pagination Include `query-pagination` inner block. Default true.
+ * }
+ * @return string Block comments + inner HTML, or empty string when no product IDs.
+ */
+function chairforce_get_hand_picked_product_collection_blocks_markup( array $product_ids, int $columns = 5, array $args = [] ): string {
+
+	$product_ids = array_values(
+		array_filter(
+			array_map( 'absint', $product_ids )
+		)
+	);
+
+	if ( empty( $product_ids ) ) {
+		return '';
+	}
+
+	$class_name          = isset( $args['class_name'] ) ? sanitize_html_class( (string) $args['class_name'] ) : '';
+	$align               = isset( $args['align'] ) ? sanitize_key( (string) $args['align'] ) : 'wide';
+	$query_id            = array_key_exists( 'query_id', $args ) ? $args['query_id'] : null;
+	$per_page            = isset( $args['per_page'] ) ? max( 1, (int) $args['per_page'] ) : chairforce_get_shop_products_per_page();
+	$include_pagination  = ! array_key_exists( 'include_pagination', $args ) || (bool) $args['include_pagination'];
+	$columns             = max( 1, $columns );
+	$hand_picked         = array_map( 'strval', $product_ids );
+
+	$block_attrs = [
+		'align' => $align,
+		'query' => [
+			'perPage'                       => $per_page,
+			'pages'                         => 0,
+			'offset'                        => 0,
+			'postType'                      => 'product',
+			'order'                         => 'asc',
+			'orderBy'                       => 'post__in',
+			'search'                        => '',
+			'exclude'                       => [],
+			'inherit'                       => false,
+			'taxQuery'                      => (object) [],
+			'isProductCollectionBlock'      => true,
+			'featured'                      => false,
+			'woocommerceOnSale'             => false,
+			'woocommerceStockStatus'        => [ 'instock', 'outofstock', 'onbackorder' ],
+			'woocommerceAttributes'         => [],
+			'woocommerceHandPickedProducts' => $hand_picked,
+			'filterable'                    => false,
+			'relatedBy'                     => [
+				'categories' => true,
+				'tags'       => true,
+			],
+		],
+		'tagName'              => 'div',
+		'displayLayout'        => [
+			'type'          => 'flex',
+			'columns'       => $columns,
+			'shrinkColumns' => true,
+		],
+		'dimensions'           => [
+			'widthType' => 'fill',
+		],
+		'collection'           => 'woocommerce/product-collection/hand-picked',
+		'hideControls'         => [ 'inherit', 'hand-picked', 'filterable', 'order' ],
+		'queryContextIncludes' => [ 'collection' ],
+	];
+
+	// This is required attribute of block
+	$block_attrs['queryId'] = max( 0, (int) $query_id );
+
+
+	if ( '' !== $class_name ) {
+		$block_attrs['className'] = $class_name;
+	}
+
+	$json = wp_json_encode( $block_attrs, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES );
+
+	if ( ! is_string( $json ) || '' === $json ) {
+		return '';
+	}
+
+	$wrapper_classes = trim( 'wp-block-woocommerce-product-collection alignwide ' . $class_name );
+
+	$inner_blocks = '<!-- wp:woocommerce/product-template -->
+<!-- wp:chairforce/product-card /-->
+<!-- /wp:woocommerce/product-template -->';
+
+	if ( $include_pagination ) {
+		$inner_blocks .= '
+
+<!-- wp:query-pagination {"layout":{"type":"flex","justifyContent":"center"}} -->
+<!-- wp:query-pagination-previous /-->
+
+<!-- wp:query-pagination-numbers /-->
+
+<!-- wp:query-pagination-next /-->
+<!-- /wp:query-pagination -->';
+	}
+
+	return sprintf(
+		'<!-- wp:woocommerce/product-collection %1$s -->
+<div class="%2$s">%3$s</div>
+<!-- /wp:woocommerce/product-collection -->',
+		$json,
+		esc_attr( $wrapper_classes ),
+		$inner_blocks
+	);
+}
+
+/**
  * SAVE label markup for on-sale products in collection cards (matches Figma price row).
  *
  * @param int $product_id Product post ID.

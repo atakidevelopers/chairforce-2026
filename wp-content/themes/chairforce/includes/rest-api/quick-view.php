@@ -54,43 +54,6 @@ function chairforce_get_quick_view_content_mode(): string {
 }
 
 /**
- * Read formatted product Dimensions meta for quick view.
- *
- * Uses the legacy `dimensions` post meta / ACF field — not WooCommerce short
- * description or native shipping dimensions.
- *
- * @param int $product_id Product post ID.
- * @return string Safe HTML, or empty string when unset.
- */
-function chairforce_get_product_dimensions_html( int $product_id ): string {
-
-	$raw = '';
-
-	if ( function_exists( 'get_field' ) ) {
-		$field_value = get_field( 'dimensions', $product_id );
-		if ( is_string( $field_value ) ) {
-			$raw = $field_value;
-		}
-	}
-
-	if ( '' === trim( $raw ) ) {
-		$raw = (string) get_post_meta( $product_id, 'dimensions', true );
-	}
-
-	$raw = trim( $raw );
-
-	if ( '' === $raw ) {
-		return '';
-	}
-
-	if ( $raw === wp_strip_all_tags( $raw ) ) {
-		return nl2br( esc_html( $raw ) );
-	}
-
-	return wp_kses_post( $raw );
-}
-
-/**
  * Output Dimensions block in quick-view summary (Figma "Product Details").
  */
 function chairforce_quick_view_render_product_dimensions(): void {

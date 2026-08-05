@@ -826,6 +826,26 @@
             "delay": 0
         },
         {
+            "key": "field_cf_product_info",
+            "label": "Product Info For Product Page",
+            "name": "cf_product_info",
+            "aria-label": "",
+            "type": "wysiwyg",
+            "instructions": "Global product info copy shown on the single product page (site-wide, not per product).",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "tabs": "all",
+            "toolbar": "full",
+            "media_upload": 1,
+            "delay": 0
+        },
+        {
             "key": "field_6147c9851039e",
             "label": "Misc",
             "name": "",

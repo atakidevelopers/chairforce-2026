@@ -11,7 +11,7 @@ if ( class_exists( 'Chairforce\WooCommerce_Single_Product' ) ) {
 }
 
 /**
- * WooCommerce single-product customizations (swatches, gallery swap — Phase 3e).
+ * WooCommerce single-product customizations (swatches, gallery swap, tabs — Phase 3e/3g).
  *
  * @see context/plans/3e-single-product-swatches-and-gallery-plan.md
  */
@@ -43,6 +43,8 @@ class WooCommerce_Single_Product {
 			10,
 			3
 		);
+
+		add_filter( 'woocommerce_product_tabs', [ $this, 'register_product_tabs' ], 98 );
 	}
 
 	/**
@@ -50,6 +52,160 @@ class WooCommerce_Single_Product {
 	 */
 	public function remove_legacy_upsell_grid(): void {
 		remove_action( 'woocommerce_after_single_product_summary', 'woocommerce_upsell_display', 15 );
+	}
+
+	/**
+	 * Register custom single-product tabs via WooCommerce core tab API.
+	 *
+	 * Works with the Product Details block (legacy + accordion) and classic templates.
+	 *
+	 * @param array<string, array<string, mixed>> $tabs Product tabs.
+	 * @return array<string, array<string, mixed>>
+	 */
+	public function register_product_tabs( array $tabs ): array {
+
+		unset( $tabs['additional_information'] );
+
+		if ( isset( $tabs['reviews'] ) ) {
+			$tabs['reviews']['priority'] = 50;
+		}
+
+		$product_id = get_the_ID();
+
+		if ( $product_id <= 0 ) {
+			return $tabs;
+		}
+
+		if ( chairforce_get_product_dimensions_html( $product_id ) ) {
+			$tabs['cf_dimensions'] = [
+				'title'    => __( 'Dimensions', 'chairforce' ),
+				'priority' => 15,
+				'callback' => [ $this, 'render_dimensions_tab' ],
+			];
+		}
+
+		if ( chairforce_get_product_care_html( $product_id ) ) {
+			$tabs['cf_care'] = [
+				'title'    => __( 'Care', 'chairforce' ),
+				'priority' => 20,
+				'callback' => [ $this, 'render_care_tab' ],
+			];
+		}
+
+		if ( ! empty( chairforce_get_product_parts_ids( $product_id ) ) ) {
+			$tabs['cf_parts'] = [
+				'title'    => __( 'Parts', 'chairforce' ),
+				'priority' => 25,
+				'callback' => [ $this, 'render_parts_tab' ],
+			];
+		}
+
+		if ( chairforce_get_product_additional_information_html( $product_id ) ) {
+			$tabs['cf_additional_information'] = [
+				'title'    => __( 'Additional Information', 'chairforce' ),
+				'priority' => 30,
+				'callback' => [ $this, 'render_additional_information_tab' ],
+			];
+		}
+
+		if ( chairforce_get_product_delivery_information_html() ) {
+			$tabs['cf_delivery_information'] = [
+				'title'    => __( 'Delivery Information', 'chairforce' ),
+				'priority' => 35,
+				'callback' => [ $this, 'render_delivery_information_tab' ],
+			];
+		}
+
+		if ( chairforce_get_product_info_html() ) {
+			$tabs['cf_product_info'] = [
+				'title'    => __( 'Product Info', 'chairforce' ),
+				'priority' => 40,
+				'callback' => [ $this, 'render_product_info_tab' ],
+			];
+		}
+
+		return $tabs;
+	}
+
+	/**
+	 * Output the Dimensions tab panel.
+	 *
+	 * @param string               $key Tab key.
+	 * @param array<string, mixed> $tab Tab config.
+	 * @return void
+	 */
+	public function render_dimensions_tab( string $key, array $tab ): void {
+		chairforce_render_product_tab_panel(
+			'dimensions',
+			chairforce_get_product_dimensions_html( get_the_ID() )
+		);
+	}
+
+	/**
+	 * Output the Care tab panel.
+	 *
+	 * @param string               $key Tab key.
+	 * @param array<string, mixed> $tab Tab config.
+	 * @return void
+	 */
+	public function render_care_tab( string $key, array $tab ): void {
+		chairforce_render_product_tab_panel(
+			'care',
+			chairforce_get_product_care_html( get_the_ID() )
+		);
+	}
+
+	/**
+	 * Output the Parts tab panel.
+	 *
+	 * @param string               $key Tab key.
+	 * @param array<string, mixed> $tab Tab config.
+	 * @return void
+	 */
+	public function render_parts_tab( string $key, array $tab ): void {
+		chairforce_render_product_parts_tab( get_the_ID() );
+	}
+
+	/**
+	 * Output the Additional Information tab panel.
+	 *
+	 * @param string               $key Tab key.
+	 * @param array<string, mixed> $tab Tab config.
+	 * @return void
+	 */
+	public function render_additional_information_tab( string $key, array $tab ): void {
+		chairforce_render_product_tab_panel(
+			'additional-information',
+			chairforce_get_product_additional_information_html( get_the_ID() )
+		);
+	}
+
+	/**
+	 * Output the Delivery Information tab panel.
+	 *
+	 * @param string               $key Tab key.
+	 * @param array<string, mixed> $tab Tab config.
+	 * @return void
+	 */
+	public function render_delivery_information_tab( string $key, array $tab ): void {
+		chairforce_render_product_tab_panel(
+			'delivery-information',
+			chairforce_get_product_delivery_information_html()
+		);
+	}
+
+	/**
+	 * Output the Product Info tab panel.
+	 *
+	 * @param string               $key Tab key.
+	 * @param array<string, mixed> $tab Tab config.
+	 * @return void
+	 */
+	public function render_product_info_tab( string $key, array $tab ): void {
+		chairforce_render_product_tab_panel(
+			'product-info',
+			chairforce_get_product_info_html()
+		);
 	}
 
 	/**
