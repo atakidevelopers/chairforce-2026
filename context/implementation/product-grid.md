@@ -1,47 +1,52 @@
 # Product grid — implementation tracker
 
-**Status: ✅ Done (31 Jul 2026)** — `2a455c9` (shared card), `d7d7acc` (Load More).
-Minor Load More quirks pending polish (next session).
+**Status: ✅ Done (Aug 2026)** — shared card via **`chairforce/product-card`** block
+(`a295196`+); Load More page-fetch append (`d7d7acc`, REST removed Phase C).
 
-Short reference for how **Quick View**, **Swatches**, and **Load More** land on Product Collection cards. Detailed plans live under `context/plans/` and `context/notes/`.
+Short reference for how **Quick View**, **Swatches**, and **Load More** land on Product Collection cards. Migration history: `context/notes/product-card-block-migration.md`.
 
 ---
 
 ## Shared card markup
 
-Canonical card lives in **`parts/product-card.html`** (`cf-card-media`, swatches, title, price, button).
+Canonical card composition lives in **`chairforce_get_product_card_blocks_markup()`**
+(`includes/product-card-functions.php`), rendered by the locked **`chairforce/product-card`**
+dynamic block (`.wp-block-chairforce-product-card` wrapper).
 
-| Template part | Uses `product-card` | Collection type |
-|---|---|---|
-| `parts/product-collection.html` | Yes (inside `woocommerce/product-template`) | Archive — `inherit: true` + Load More pagination |
-| `parts/product-upsells.html` | Yes | Single product — `woocommerce/product-collection/upsells` |
-| `parts/product-related.html` | Yes | Single product — `woocommerce/product-collection/related` |
+| FSE consumer | Card block inside `woocommerce/product-template` |
+|---|---|
+| `parts/product-collection.html` | Archive — `inherit: true` + Load More pagination |
+| `parts/product-upsells.html` | Single product — upsells collection |
+| `parts/product-related.html` | Single product — related collection |
+| `templates/product-search-results.html` | Product search archive |
 
-**Templates:** `archive-product.html` → `product-collection` · `templates/single-product.html` → `product-upsells` + `product-related`
+**Templates:** `archive-product.html` → `product-collection` · `templates/single-product.html` → upsells + related · page content → insert `chairforce/product-card` in Product Collection loops.
 
-**DB overrides:** none at time of writing (0 `wp_template` / `wp_template_part` posts).
+**DB overrides:** none — FSE uses theme files only (orphan `slim-header` part removed Aug 2026).
+
+**Retired:** `parts/product-card.html` template part (removed Aug 2026); do not re-register in `theme.json`.
 
 ---
 
 ## Quick View
 
-**Explicit block in `product-card.html`** — `<!-- wp:chairforce/quick-view-button /-->` inside `cf-card-media` (sibling after `woocommerce/product-image`).
+**Block in card markup** — `chairforce/quick-view-button` inside `cf-card-media`.
 
 | Piece | Location |
 |---|---|
 | Block render | `src-jsx-blocks/quick-view-button/render.php` — reads `postId` from block context |
 | Popup content | REST `GET /wp-json/chairforce/v1/quick-view/{id}` — `includes/rest-api/quick-view.php` |
-| Frontend | `src/js/quick-view.js` — delegated click on `.cf-quick-view-trigger`, reads `data-product-id` |
-| Assets | `WooCommerce_Archive::enqueue_quick_view_assets()` — WC variation/single-product scripts on shop/single |
-| Styles | `src/sass/quick-view/` — trigger absolute over image; `cf-card-media` is `position: relative` |
+| Frontend | `src/js/quick-view.js` — delegated click on `.cf-quick-view-trigger` |
+| Assets | `WooCommerce_Archive::enqueue_quick_view_assets()` when `chairforce_boots_product_card_features()` |
+| Styles | `src/sass/quick-view/` — trigger over image; `cf-card-media` is `position: relative` |
 
-Archive, upsells, related, and Load More all get the trigger via the shared `product-card` partial (no `render_block` injection).
+Classic loop outputs equivalent trigger markup via `Classic_WC_Compatibility` hooks.
 
 ---
 
 ## Swatches
 
-**Explicit block in `product-card.html`** — `<!-- wp:chairforce/product-swatches /-->` inside `cf-wrapp-swatches`.
+**Block in card markup** — `chairforce/product-swatches` in card composition string.
 
 | Piece | Location |
 |---|---|
@@ -50,63 +55,45 @@ Archive, upsells, related, and Load More all get the trigger via the shared `pro
 | Grid interactions | `src/js/single-product-swatches.js` — delegated hover/click, image swap |
 | Context | Block uses `postId` from `woocommerce/product-template` ancestor |
 
-Unlike Quick View, swatches are authored in the template, not injected.
+Classic loop: `Classic_WC_Compatibility::render_loop_swatches()`.
 
 ---
 
 ## Load More
 
-**Custom REST append** — Query Loop Load More plugin is incompatible with `woocommerce/product-collection` (see `context/notes/load-more-findings.md`).
+**Page-fetch append** — fetches full catalog page HTML, extracts `.wc-block-product-template > li` (see `context/notes/load-more-findings.md`).
 
 | Piece | Location |
 |---|---|
-| REST | `GET /wp-json/chairforce/v1/load-more` — `includes/rest-api/load-more.php` |
-| Query helpers | `includes/load-more-functions.php` |
-| Button | `lib/class-load-more.php` — replaces page-1 pagination when `loadMore: true` on `core/query-pagination` |
-| Frontend | `src/js/shared/load-more.js` — `.cf-load-more__button`, appends server-rendered `<li>` HTML |
-| Config | `Chairforce_Public.loadMoreRestUrl` in `lib/class-front.php` |
+| Frontend | `src/js/shared/load-more.js` — `GET /shop/page/N/`, append SSR `<li>` nodes |
+| Query helpers | `includes/load-more-functions.php` — query var export/sanitize for button payload |
+| Button | `lib/class-load-more.php` — replaces page-1 pagination when `loadMore: true` |
 
-**Scope (v1):** shop / category / attribute archives only — inherited Product Collection (`inherit: true`). Not related/upsell grids.
+**Scope (v1):** shop / category / attribute archives — inherited Product Collection (`inherit: true`).
 
-### Card render path (Option A)
-
-Load More reads **`parts/product-card.html` directly** — not `product-collection.html`.
+### Card render path
 
 ```
-product-card.html
-  → parse_blocks() (root blocks)
-  → synthetic core/null wrapper
-  → WP_Block->render() per product (postId context + global $post)
-  → wrap in <li class="wc-block-product">
-  → append to .wc-block-product-template
+product-collection.html → chairforce/product-card → chairforce_get_product_card_blocks_markup()
+  → page 2 full HTML fetch → extract <li> → append to page-1 grid
 ```
 
-Function: `chairforce_get_product_card_template_parsed_block()` in `includes/load-more-functions.php`.
-
-Previously parsed `product-collection.html` and searched for `woocommerce/product-template` → `template-part product-card`. That indirection was removed once `product-card.html` became the shared partial.
-
-Appended cards rely on **delegated events** (`src/js/shared/delegated-events.js`) so Quick View + swatches work without rebind.
+Appended cards rely on **delegated events** (`src/js/shared/delegated-events.js`).
 
 ---
 
-## Single product grids
+## Classic loop
 
-**Fixed:** upsells and related now use block Product Collections with the same `product-card` partial.
-
-| Grid | Template part | Legacy hook |
-|---|---|---|
-| Upsells (“You may also like…”) | `parts/product-upsells.html` | Removed — `WooCommerce_Single_Product::remove_legacy_upsell_grid()` |
-| Related products | `parts/product-related.html` | WC default pattern replaced |
-
-Template: `templates/single-product.html` (theme file, not DB).
+**Separate PHP path** — `woocommerce/content-product.php` + `Classic_WC_Compatibility` hooks.
+Uses **`.wp-block-chairforce-product-card`** on the inner wrapper for shared Sass with block cards; does not render the block.
 
 ---
 
 ## Card composition summary
 
-| Feature | In template? | How it appears on each card |
+| Feature | Block cards | Classic loop |
 |---|---|---|
-| Card layout | Yes | `parts/product-card.html` (shared partial) |
-| Swatches | Yes | `chairforce/product-swatches` block in card partial |
-| Quick View | Yes | `chairforce/quick-view-button` block in `product-card.html` |
-| Load More | N/A (pagination) | REST replays query; renders `product-card.html` per product |
+| Card shell | `chairforce/product-card` block | `content-product.php` + hooks |
+| Swatches | `chairforce/product-swatches` block | `render_loop_swatches()` |
+| Quick View | `chairforce/quick-view-button` block | PHP helper markup |
+| Load More | Page-fetch clones FSE SSR | N/A |

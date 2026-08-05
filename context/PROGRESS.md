@@ -38,7 +38,7 @@ active?" second-guess was raised and rejected —
 |---|---|---|
 | **1** | Header + mega menu | ✅ Done |
 | **2** | Static patterns (team) | ⏳ Not started |
-| **3** | Registration + commerce UI (3a–3n) | 🔄 Mostly done — **3g**, **3l**, **3m**, **3n** remain |
+| **3** | Registration + commerce UI (3a–3n) | 🔄 Mostly done — **3g**, **3l**, **3n** remain |
 | **4** | Content CPT templates + page assembly (4a–4b) | ⏳ Not started |
 | **5** | Blog + My Account | ⏳ Not started |
 | **6** | `/gallery/` shoppable page | ⏳ Blocked on relation migration |
@@ -461,26 +461,27 @@ during planning. No plan/notes doc yet.
 
 #### 3m. Product card block + full Product Collection parity
 
-**Status: ⏳ Not started**
+**Status: ✅ Done (Aug 2026)** — `a295196`+; tracker:
+`context/notes/product-card-block-migration.md`, `context/implementation/product-grid.md`.
 
-Today, the canonical card lives in **`parts/product-card.html`** and works on
-shop archives, Load More, related/upsells, product search, and classic
-legacy-template loops — but **not everywhere** WC blocks can render products
-(homepage embeds, hand-picked collections, cross-sells in page content, etc.).
+**Shipped approach:**
 
-**Locked approach:**
+- **`chairforce/product-card`** locked JSX dynamic block — markup in
+  `chairforce_get_product_card_blocks_markup()`, wrapper
+  `.wp-block-chairforce-product-card`.
+- FSE templates (shop, related, upsells, search) use the block inside
+  `woocommerce/product-template`; page-embedded collections use the same block.
+- Load More appends via **page-fetch** SSR (same template as page 1); unused REST
+  card pipeline removed.
+- **`parts/product-card.html`** retired; removed from `theme.json` template parts.
+- **`chairforce_boots_product_card_features()`** runs on any front-end request
+  (not shop-archive-gated) so cards work on page-embedded collections; WC + admin
+  + cart-fragment guards retained.
+- Classic loop keeps PHP hooks + `.wp-block-chairforce-product-card` shell class
+  for shared Sass (does not render the block).
 
-- **Keep** existing shop-archive guards (`chairforce_boots_product_card_features()`
-  and related enqueue/hook scoping) — do **not** widen them as a shortcut.
-- **Build** a **`chairforce/product-card`** block (ACF or JSX TBD) that is a
-  thin wrapper around the **`product-card` template part** — because template
-  parts cannot be inserted in regular Gutenberg page content outside the Site
-  Editor, but a registered block can.
-- Audit all Product Collection surfaces (theme files + DB templates) and
-  standardise on either the template part (FSE) or the wrapper block (pages).
-
-Verification matrix to produce during planning: each surface × swatches, Quick
-View, wishlist, SAVE label, theme add-to-cart. No plan/notes doc yet.
+Verification matrix completed manually Aug 2026 (shop, Load More, filters, list
+view, related, upsells, search, page embeds).
 
 #### 3n. Product-adjacent taxonomy templates & blocks
 

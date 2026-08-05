@@ -80,7 +80,7 @@
 		border-bottom: 1px solid $color-outline;
 	}
 
-	// WP wraps product-card template-part blocks in .wp-block-chairforce-product-card inside each <li>.
+	// chairforce/product-card (and classic loop) wrap card blocks in .wp-block-chairforce-product-card inside each <li>.
 	// display:contents promotes card blocks to grid children without a PHP render_block hack.
 	.wc-block-product > .wp-block-chairforce-product-card {
 		display: contents;

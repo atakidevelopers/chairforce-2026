@@ -1,16 +1,31 @@
 # 3i — Page-1 Load More (WooCommerce Product Collection) — Implementation Plan
 
-## Status: ✅ Done (31 Jul 2026)
+## Status: ✅ Done (31 Jul 2026) — transport updated 5 Aug 2026
 
 Minor quirks remain — polish pass is the immediate follow-up before full browser
-sign-off. Docs updated 31 Jul 2026.
+sign-off. Docs updated 31 Jul 2026; **append transport corrected 5 Aug 2026**
+(see below).
 
 | Chunk | Scope | Commit |
 |---|---|---|
-| 1 | REST endpoint + main-query rebuild + product-card HTML render | `d7d7acc` |
+| 1 | REST endpoint + main-query rebuild + product-card HTML render | `d7d7acc` *(REST removed Phase C — `product-card-block-migration`)* |
 | 2 | `core/query-pagination` extension (page-1 Load More button only) | `d7d7acc` |
 | 3 | Frontend JS (fetch, append, loading state) + Sass | `d7d7acc` |
 | 4 | Template wiring + docs | `d7d7acc`, `2a455c9` (shared `product-card` partial) |
+
+### Shipped transport (5 Aug 2026 correction)
+
+**Production append uses page-fetch**, not REST:
+
+1. Client `GET`s full catalog page URL (`/shop/page/2/`, etc.) — see
+   `src/js/shared/load-more.js`.
+2. Parses `.wc-block-product-template > li` from the response.
+3. Appends cloned nodes into the page-1 grid.
+
+Cards match page 1 because both use the same FSE SSR (`product-collection.html`
+→ `chairforce/product-card`). The original `GET /wp-json/chairforce/v1/load-more`
+route and `product-card.html` parse helpers were **never wired to the frontend**
+and were **removed** in product-card migration Phase C.
 
 ## Goal
 
@@ -20,8 +35,10 @@ archives (main Product Collection, `inherit: true`):
 - **Page 1 only:** replace pagination with a Load More button.
 - **Page 2+:** default numbered / prev-next pagination (crawlable URLs for
   sitemap and SEO).
-- **Transport:** partial HTML via REST (Rudrastyh *idea*, block-theme
-  *execution*) — **not** full-page scrape (`query-loop-load-more` plugin model).
+- **Transport:** **full catalog page fetch** + DOM extract (see
+  `src/js/shared/load-more.js`) — SSR cards from FSE templates. *(Original plan:
+  REST partial HTML; route was built but frontend shipped with page-fetch instead;
+  REST removed Aug 2026 — see `context/notes/product-card-block-migration.md` Phase C.)*
 - **Query:** main query vars only (v1).
 - **Append:** server-rendered product cards into `.wc-block-product-template`;
   dispatch `chairforce:content-updated` after each append.
@@ -92,7 +109,7 @@ crawlers that do not execute JS.
 |---|---|---|
 | Delegated click handlers | `src/js/shared/delegated-events.js` | Swatches, quick view work on appended cards without rebind |
 | Content-updated event | `dispatchContentUpdated()` | Call after each append |
-| REST convention | `lib/class-api.php` → `includes/rest-api/*.php` | New `load-more.php` route |
+| REST convention | `lib/class-api.php` → `includes/rest-api/*.php` | ~~`load-more.php`~~ removed; append via page-fetch |
 | Public script data | `Chairforce\Front::get_localize_script_data()` | Extend with endpoint URL / nonce |
 | Quick view on appended cards | `src/js/quick-view.js` (delegated) | Verify after append |
 | Grid swatch hover | `src/js/single-product-swatches.js` (delegated) | Verify after append |
@@ -119,20 +136,17 @@ source.
 └─────────────────────────────────────────────────────────────────┘
          │ click
          ▼
-GET /wp-json/chairforce/v1/load-more?page=2&orderby=…
+GET /shop/page/2/  (full catalog HTML — `src/js/shared/load-more.js`)
          │
          ▼
-PHP: WP_Query( main_query_vars + paged )
-     → loop products
-     → render each as product-template item (<li class="wc-block-product">…)
+Parse `.wc-block-product-template > li` from response (same FSE SSR as page 1)
          │
          ▼
-JSON { html, nextPage, hasMore, maxPages }
-         │
-         ▼
-JS: append html → .wc-block-product-template
+JS: append cloned `<li>` nodes → `.wc-block-product-template`
     dispatchContentUpdated({ source: 'load-more' })
     update button data-page / hide at last page
+
+*(Original design used `GET /wp-json/chairforce/v1/load-more` — removed Aug 2026.)*
 
 ┌─────────────────────────────────────────────────────────────────┐
 │ Page 2+ — /shop/page/2/                                         │
@@ -143,9 +157,13 @@ JS: append html → .wc-block-product-template
 
 ---
 
-## REST API contract
+## REST API contract *(removed Aug 2026 — historical reference only)*
 
-**Route:** `GET chairforce/v1/load-more`
+The route below was implemented during 3i development but **never consumed by
+frontend JS**. Removed in product-card migration Phase C. Append uses page-fetch
+(see **Shipped transport** above).
+
+~~**Route:** `GET chairforce/v1/load-more`~~
 
 **Request params (v1):**
 
@@ -274,7 +292,8 @@ expect failure; abandon if markup diverges.
 | File | Purpose |
 |---|---|
 | `lib/class-load-more.php` | Block extension, render callback, asset registration |
-| `includes/rest-api/load-more.php` | REST route + query + HTML render |
+| ~~`includes/rest-api/load-more.php`~~ | *(removed Aug 2026)* — append uses page-fetch SSR |
+| `src/js/shared/load-more.js` | Page-fetch append (`.wc-block-product-template > li`) |
 | `lib/class-init.php` | Instantiate `Load_More` |
 | `lib/class-api.php` | `require_once` load-more REST file |
 | `src/js/shared/load-more.js` | Frontend append logic |
@@ -290,10 +309,9 @@ expect failure; abandon if markup diverges.
 
 ### Chunk 1 — REST + card render
 
-- [x] Create `includes/rest-api/load-more.php`; register in `class-api.php`.
-- [x] Implement main-query var capture + `WP_Query` with `paged`.
-- [x] Implement product-card item renderer (`parts/product-card.html` — Option A).
-- [x] Manual test: REST returns valid `<li>` HTML matching live cards.
+- [x] ~~Create `includes/rest-api/load-more.php`~~ *(removed Aug 2026 — unused)*.
+- [x] Implement main-query var capture + `WP_Query` with `paged` *(query helpers remain in `load-more-functions.php` for button payload)*.
+- [x] ~~Implement product-card item renderer (`parts/product-card.html`)~~ — cards from FSE SSR via page-fetch.
 - [x] Resolve **perPage mismatch** (block vs UI count).
 
 ### Chunk 2 — Pagination block (page-1 only)
@@ -306,8 +324,8 @@ expect failure; abandon if markup diverges.
 
 ### Chunk 3 — Frontend + styles
 
-- [x] `load-more.js` + import in `public.js`.
-- [x] Extend `Chairforce_Public` localize data (`loadMoreRestUrl`).
+- [x] `load-more.js` + import in `public.js` (page-fetch append).
+- [x] ~~Extend `Chairforce_Public` localize data (`loadMoreRestUrl`)~~ — removed; not used by JS.
 - [x] Sass for button / loading state.
 
 ### Chunk 4 — Verify, cleanup, docs

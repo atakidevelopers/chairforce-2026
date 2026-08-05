@@ -1,10 +1,12 @@
 # Product grid cards & Product Collection overrides — discussion notes
 
 Captured: 30 Jul 2026. **Resolved: 31 Jul 2026** — shared
-`parts/product-card.html` template part (`2a455c9`). See
-`context/implementation/product-grid.md` for the current wiring tracker.
+`parts/product-card.html` template part (`2a455c9`). **Superseded Aug 2026** by
+locked **`chairforce/product-card`** block — see
+`context/notes/product-card-block-migration.md` and
+`context/implementation/product-grid.md` for current wiring.
 Block Hooks plan (§3.2) was spiked but not shipped; template-part approach
-chosen instead.
+chosen initially, then migrated to the locked block.
 
 How to get the **same product card markup** on every Product Collection grid
 (shop, related, upsells, etc.) — swatches, quick view, and template strategy.

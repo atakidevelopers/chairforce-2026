@@ -1,6 +1,6 @@
 <?php
 /**
- * Loop Price — block product-price (matches parts/product-card.html).
+ * Loop Price — block product-price (matches chairforce/product-card inner blocks).
  *
  * Loaded by WooCommerce via `woocommerce_template_loop_price()`; no hook swap needed.
  *

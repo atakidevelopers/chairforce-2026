@@ -125,9 +125,11 @@ long-term dependency.
 
 ### Option 2 — Theme-owned Load More (recommended)
 
-- Partial AJAX returning **server-rendered card HTML** (not full-page scrape).
-- REST route under `chairforce/v1` (same family as existing theme APIs).
-- Generalise selectors / rendering for Product Collection (v1: main query only).
+- Server-rendered card HTML appended to the grid (same markup as page 1).
+- **Shipped (Aug 2026):** full catalog **page-fetch** + DOM extract in
+  `src/js/shared/load-more.js` — cards cloned from FSE SSR (`chairforce/product-card`).
+- **Removed:** `GET /wp-json/chairforce/v1/load-more` REST route + `product-card.html`
+  parse helpers (built during development, never consumed by frontend JS).
 - Integrate with `chairforce:content-updated` after append.
 
 ### Option 3 — Fully custom system (ignore plugin model)
@@ -155,11 +157,16 @@ classic theme pattern:
 
 | Rudrastyh (classic) | Chairforce (block theme) |
 |---|---|
-| `admin-ajax.php` + `wp_ajax_*` | `GET /wp-json/chairforce/v1/load-more` (or similar) |
-| `$wp_query->query_vars` | Main query vars on archive pages (`inherit: true`) |
-| `wc_get_template_part( 'content', 'product' )` | Render canonical `woocommerce/product-template` inner markup server-side (`WP_Block` / stored template string — **not** `content-product.php`) |
+| `admin-ajax.php` + `wp_ajax_*` | **Page-fetch** of `/shop/page/N/` — `src/js/shared/load-more.js` |
+| `$wp_query->query_vars` | Main query vars on archive pages (`inherit: true`) — `data-query-vars` on button |
+| `wc_get_template_part( 'content', 'product' )` | Same FSE SSR as page 1 (`product-collection.html` → `chairforce/product-card`) |
 | jQuery append | Vanilla JS + `delegated-events.js` |
 | `.products` container | `.wc-block-product-template` (`<ul>`) |
+
+**Note:** An alternate REST partial-HTML route was implemented during 3i development
+but the frontend shipped with **page-fetch** instead; the REST route and
+`product-card.html` PHP parse pipeline were removed Aug 2026 (see
+`context/notes/product-card-block-migration.md` Phase C).
 
 **Why partial HTML beats full-page scrape (plugin model):**
 
@@ -276,15 +283,17 @@ Theme implementation should **replace** pagination with Load More in the templat
 | 30 Jul 2026 | Must dispatch `chairforce:content-updated` after append (3b delegated-events). |
 | 30 Jul 2026 | Optional plugin patch acceptable as 1–2 hr spike only; do not maintain a fork. |
 | 31 Jul 2026 | Theme Load More **shipped** as 3i (`d7d7acc`); minor quirks pending polish. |
+| 5 Aug 2026 | **Shipped transport:** page-fetch append (`load-more.js`), not REST. |
+| 5 Aug 2026 | Removed unused `chairforce/v1/load-more` + `product-card.html` PHP parse pipeline (single card render path via block helper). |
 
 ---
 
 ## 8. Implementation checklist
 
-- [x] Spec REST route `chairforce/v1/load-more`.
-- [x] Implement main-query reconstruction + paged increment.
-- [x] Render product cards from `parts/product-card.html` (canonical source).
-- [x] Frontend: delegated click, append, loading state, hide button at last page.
+- [x] ~~Spec REST route `chairforce/v1/load-more`~~ *(removed Aug 2026)*.
+- [x] Implement main-query reconstruction + paged increment *(query helpers in `load-more-functions.php`)*.
+- [x] ~~Render product cards from `parts/product-card.html`~~ — page-fetch clones FSE SSR cards.
+- [x] Frontend: delegated click, page-fetch append, loading state, hide button at last page.
 - [x] Dispatch `chairforce:content-updated`.
 - [x] Page-1 Load More via `core/query-pagination` `loadMore` attribute.
 - [x] Update `context/PROGRESS.md` + plan doc.

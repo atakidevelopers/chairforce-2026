@@ -742,11 +742,6 @@
 		},
 		{
 			"area": "uncategorized",
-			"name": "product-card",
-			"title": "Product Card"
-		},
-		{
-			"area": "uncategorized",
 			"name": "product-upsells",
 			"title": "Product Upsells"
 		},

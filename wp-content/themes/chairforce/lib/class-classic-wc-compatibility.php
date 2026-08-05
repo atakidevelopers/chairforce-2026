@@ -16,7 +16,8 @@ if ( class_exists( 'Chairforce\Classic_WC_Compatibility' ) ) {
  * Swaps default loop partials for block-aligned equivalents. Price uses the WC
  * template override at `woocommerce/loop/price.php`. Title, media, and swatches
  * use loop hooks. Add-to-cart stays on the default WC loop hook so block Product
- * Collection cards are unaffected. Block cards render via `parts/product-card.html`.
+ * Collection cards are unaffected. Block cards render via `chairforce/product-card`;
+ * classic loop reuses the same Sass shell (`.wp-block-chairforce-product-card`).
  */
 class Classic_WC_Compatibility {
 

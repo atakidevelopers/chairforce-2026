@@ -9,11 +9,6 @@
 	background-color: $color-white;
 	//padding-bottom: $spacing-small;
 
-	// Temporary, Keep it unless the developer removes himself.
-	.wp-block-template-part{
-		background-color: $color-quaternary;
-	}
-
 	.wp-block-chairforce-product-card {
 		display: flex;
 		flex: 1 1 auto;

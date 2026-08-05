@@ -3,7 +3,7 @@
  * Product card within loops — Chairforce layout (shared with block card Sass).
  *
  * @see lib/class-classic-wc-compatibility.php
- * @see parts/product-card.html
+ * @see chairforce_get_product_card_blocks_markup() — block card composition reference
  *
  * @package Chairforce
  * @version 9.4.0
@@ -18,7 +18,7 @@ if ( ! is_a( $product, WC_Product::class ) || ! $product->is_visible() ) {
 }
 ?>
 <li <?php wc_product_class( 'wc-block-product cf-product-card', $product ); ?>>
-	<div class="cf-product-card__inner wp-block-template-part">
+	<div class="cf-product-card__inner wp-block-chairforce-product-card">
 		<?php
 		/**
 		 * Hook: woocommerce_before_shop_loop_item.

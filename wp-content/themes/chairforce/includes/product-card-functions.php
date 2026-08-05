@@ -60,9 +60,9 @@ function chairforce_is_wc_cart_fragment_request(): bool {
  * Whether theme product-card behaviour should run on this request.
  *
  * Gates block render overrides, loop add-to-cart markup, wc-add-to-cart enqueue,
- * cart-quantity fragments, and in-cart label sync. Scoped to shop archives (same
- * surface as Load More). WC cart-ajax requests are included so fragment refresh
- * still carries quantity data after add/remove.
+ * cart-quantity fragments, and in-cart label sync. Product Collections may appear
+ * on any page — not limited to shop archives. WC cart-ajax requests are included
+ * so fragment refresh still carries quantity data after add/remove.
  *
  * @return bool
  */
@@ -81,7 +81,6 @@ function chairforce_boots_product_card_features(): bool {
 	}
 
 	return true;
-//	return chairforce_is_product_shop_archive();
 }
 
 /**
@@ -469,50 +468,9 @@ function chairforce_get_product_card_add_to_cart_html( \WC_Product $product, arr
 
 
 /**
- * Resolve the loop product ID for this card.
- *
- * Frontend: $block->context['postId'] from woocommerce/product-template.
- * Editor SSR: REST sets post_id to the edited page in block context — use the
- * post_id query arg from ServerSideRender urlQueryArgs instead.
- *
- * @param \WP_Block|null $block Block instance.
- * @return int Product post ID, or 0 when not in a product loop.
- */
-function chairforce_product_card_resolve_product_id( ?\WP_Block $block ): int {
-
-	$candidates = [];
-
-	if ( $block instanceof \WP_Block && ! empty( $block->context['postId'] ) ) {
-		$candidates[] = absint( $block->context['postId'] );
-	}
-
-	// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- REST block renderer query arg.
-	if ( isset( $_REQUEST['post_id'] ) ) {
-		$candidates[] = absint( wp_unslash( $_REQUEST['post_id'] ) );
-	}
-
-	$current_id = get_the_ID();
-
-	if ( $current_id ) {
-		$candidates[] = (int) $current_id;
-	}
-
-	foreach ( array_unique( array_filter( $candidates ) ) as $candidate ) {
-		if ( 'product' === get_post_type( $candidate ) ) {
-			return $candidate;
-		}
-	}
-
-	return 0;
-}
-
-/**
  * Block markup for the Product Collection product card (inner blocks only).
  *
- * Canonical source for `chairforce/product-card` render and future Load More
- * parity. Must stay aligned with `parts/product-card.html` until that template
- * part is fully retired — do not delete or rewrite the HTML file as part of
- * routine migration steps (see context/notes/product-card-block-migration.md §A3).
+ * Canonical source for `chairforce/product-card` render via do_blocks().
  *
  * @return string Serialized block markup for do_blocks() / parse_blocks().
  */
