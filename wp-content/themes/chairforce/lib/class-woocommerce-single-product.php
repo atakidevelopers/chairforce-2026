@@ -11,7 +11,13 @@ if ( class_exists( 'Chairforce\WooCommerce_Single_Product' ) ) {
 }
 
 /**
- * WooCommerce single-product customizations (swatches, gallery swap, tabs — Phase 3e/3g).
+ * WooCommerce single-product customizations (swatches, tabs — Phase 3e/3g).
+ *
+ * Gallery swap is now handled natively by WooCommerce's Variation Gallery feature
+ * (WooCommerce → Settings → Advanced → Features → "Variation gallery"). The canary
+ * populates gallery_image_ids and gallery_images_html in woocommerce_available_variation,
+ * which drives both the block Product Gallery (Interactivity API) and the classic gallery
+ * swap in single-product-swatches.js.
  *
  * @see context/plans/3e-single-product-swatches-and-gallery-plan.md
  */
@@ -209,6 +215,59 @@ class WooCommerce_Single_Product {
 	}
 
 	/**
+	 * Expose variation gallery HTML for the classic gallery swap.
+	 *
+	 * Used when the WC Variation Gallery feature (Settings → Advanced → Features) is
+	 * disabled. When the feature IS enabled it populates gallery_images_html natively,
+	 * making cf_variation_gallery_html redundant — but keeping it here costs nothing
+	 * and ensures the classic path always has a value to fall back to.
+	 *
+	 * Image ID priority:
+	 *   1. WC native _product_image_gallery meta (populated by the BatchPress migration job)
+	 *   2. Woodmart wd_additional_variation_images_data (original legacy meta)
+	 *
+	 * @param array<string, mixed>  $data      Variation JSON payload.
+	 * @param \WC_Product           $product   Parent variable product.
+	 * @param \WC_Product_Variation $variation Variation product.
+	 * @return array<string, mixed>
+	 */
+	public function add_variation_gallery_html( array $data, $product, $variation ): array {
+		if ( ! $variation instanceof \WC_Product_Variation || ! $product instanceof \WC_Product ) {
+			return $data;
+		}
+
+		if ( ! function_exists( 'wc_get_product_gallery_html' ) ) {
+			return $data;
+		}
+
+		// 1. Try WC native gallery meta (_product_image_gallery on the variation).
+		$extra_ids = array_map( 'intval', $variation->get_gallery_image_ids() );
+
+		// 2. Fall back to the original Woodmart meta.
+		if ( empty( $extra_ids ) ) {
+			$extra_ids = Product_Swatches::get_variation_gallery_attachment_ids( $variation->get_id() );
+		}
+
+		// Always lead with the variation's featured image.
+		$featured_id = (int) $variation->get_image_id();
+		if ( $featured_id && ! in_array( $featured_id, $extra_ids, true ) ) {
+			array_unshift( $extra_ids, $featured_id );
+		}
+
+		if ( count( $extra_ids ) < 2 ) {
+			return $data;
+		}
+
+		$gallery_html = wc_get_product_gallery_html( $product, $extra_ids );
+
+		if ( '' !== $gallery_html ) {
+			$data['cf_variation_gallery_html'] = $gallery_html;
+		}
+
+		return $data;
+	}
+
+	/**
 	 * Prepend swatch markup before each attribute's real `<select>`.
 	 *
 	 * @param string               $html Dropdown HTML.
@@ -232,36 +291,4 @@ class WooCommerce_Single_Product {
 		return $swatches . $html;
 	}
 
-	/**
-	 * Expose variation gallery wrapper HTML for frontend gallery swap.
-	 *
-	 * @param array<string, mixed> $data     Variation JSON payload.
-	 * @param \WC_Product            $product Parent variable product.
-	 * @param \WC_Product_Variation  $variation Variation product.
-	 * @return array<string, mixed>
-	 */
-	public function add_variation_gallery_html( array $data, $product, $variation ): array {
-		if ( ! $variation instanceof \WC_Product_Variation || ! $product instanceof \WC_Product ) {
-			return $data;
-		}
-
-		if ( ! function_exists( 'wc_get_product_gallery_html' ) ) {
-			return $data;
-		}
-
-		$image_ids = Product_Swatches::get_variation_gallery_image_ids( $variation );
-
-		if ( count( $image_ids ) < 2 ) {
-			return $data;
-		}
-
-		$gallery_html = wc_get_product_gallery_html( $product, $image_ids );
-
-		if ( '' !== $gallery_html ) {
-			// Full gallery root HTML — required by wc_variations_gallery_replace().
-			$data['cf_variation_gallery_html'] = $gallery_html;
-		}
-
-		return $data;
-	}
 }
