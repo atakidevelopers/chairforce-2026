@@ -1,8 +1,9 @@
 # 3p — Product FAQs Section — Implementation Plan
 
-## Status: 🔄 In progress
+## Status: ✅ Done (Aug 2026)
 
-Plan locked from product-page review (6 Aug 2026).
+Plan locked from product-page review (6 Aug 2026). Commits: `53f3230`
+(initial), `e055397` (shared accordion, Load More, FAQPage schema, admin UX).
 
 | Chunk | Scope | Status |
 |---|---|---|
@@ -10,7 +11,7 @@ Plan locked from product-page review (6 Aug 2026).
 | 2 | FAQ resolution helpers (`includes/product-faqs-functions.php`) | ✅ |
 | 3 | `chairforce/product-faqs` dynamic block (accordion + empty state only) | ✅ |
 | 4 | Sass (Figma accordion) + true-accordion JS + template wrapper | ✅ |
-| 5 | Browser QA + docs (`PROGRESS.md`) | 🔄 |
+| 5 | Browser QA + docs (`PROGRESS.md`) | ✅ |
 
 ## Goal
 

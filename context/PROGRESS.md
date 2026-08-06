@@ -38,7 +38,7 @@ active?" second-guess was raised and rejected —
 |---|---|---|
 | **1** | Header + mega menu | ✅ Done |
 | **2** | Static patterns (team) | ⏳ Not started |
-| **3** | Registration + commerce UI (3a–3n) | 🔄 Mostly done — **3l**, **3n** (`venues`/`sales-by-location`) remain |
+| **3** | Registration + commerce UI (3a–3p) | 🔄 Mostly done — **3l**, **3n** remain; **3o** QA polish optional |
 | **4** | Content CPT templates + page assembly (4a–4b) | ⏳ Not started |
 | **5** | Blog + My Account | ⏳ Not started |
 | **6** | `/gallery/` shoppable page | ⏳ Blocked on relation migration |
@@ -490,6 +490,9 @@ during planning. No plan/notes doc yet.
 Verification matrix completed manually Aug 2026 (shop, Load More, filters, list
 view, related, upsells, search, page embeds).
 
+**Follow-up (Aug 2026, `e055397`):** `titleTag` block attribute (`h2` default,
+`h3` for related/upsell grids on single product) — shop/Load More unchanged.
+
 #### 3n. Product-adjacent taxonomy templates & blocks
 
 **Status: 🔄 In progress — `feature` single-product row shipped; `venues` + `sales-by-location` remain**
@@ -531,6 +534,29 @@ unset WC reviews tab in section mode (`lib/class-woocommerce-single-product.php`
 **Remaining:** Browser QA on product with reviews enabled; optional bulk
 `comment_status = open` for catalog; Figma polish pass if needed.
 
+#### 3p. Product FAQs section (Figma)
+
+**Status: ✅ Done (Aug 2026)** — `53f3230`, `e055397`. Plan:
+`context/plans/3p-product-faqs-section-plan.md`.
+
+**Shipped:** FAQ Configurations ACF options sub-page under FAQs admin menu
+(global + product-category repeater, single-page layout); `product_faqs` on
+product edit screen; three-tier FAQ resolution in
+`includes/product-faqs-functions.php`; reusable accordion component
+(`includes/accordion-functions.php`, `src/js/accordion.js`,
+`src/sass/components/_accordion.scss`); dynamic block
+`chairforce/product-faqs` (true accordion, empty state, Load More with
+animated reveal via `initialVisibleCount`); FAQPage JSON-LD queued from block,
+printed in `wp_footer` (`includeFaqSchema` toggle); template wrapper in
+`templates/single-product.html`; BatchPress Elementor FAQ import job
+(`535edf5`); ACF product-category picker AJAX fix (`class-acf.php`).
+
+**Out of scope (Phase 4a):** `chairforce_faq` archive/single CPT templates and
+any standalone public FAQ page block — product-page accordion only.
+
+**Optional before UAT:** Full browser pass on a product with 6+ FAQs (Load More,
+schema in page source, category/global/product-specific merge order).
+
 ### Phase 4 — Content templates, CPT surfaces & page assembly
 
 **Status: ⏳ Not started**
@@ -546,7 +572,7 @@ pass.
 
 | CPT / type | Deliverables |
 |---|---|
-| `chairforce_faq` | Archive, single, accordion/list block if needed |
+| `chairforce_faq` | Archive, single — **product-page FAQ accordion shipped in 3p**; dedicated CPT templates / public FAQ surfaces if still needed |
 | `showrooms` | Archive, single, card/locator blocks; postcode nearest-showroom logic — file `14` §B |
 | `review` | Testimonial card block (carousel consumer in 4b) — file `20` |
 | `year-carousel` | Timeline/carousel block or template — PM decision on target page |
@@ -736,6 +762,8 @@ Carried from checklist file `19` §8 — resolve before/during the phase noted:
 | `context/plans/3e-single-product-swatches-and-gallery-plan.md` | Execution plan for Phase 3e (single-product swatches + gallery swap) — includes the WooCommerce-native-canary-feature and Swiper-narrowing findings |
 | `context/plans/3h-quick-view-plan.md` | Execution plan for Phase 3h (Quick View rebuild — modal/drawer shell, REST endpoint, reuses 3e swatch/gallery component) |
 | `context/notes/product-filters-findings.md` | Phase 3f investigation + locked UX/engine decisions |
+| `context/plans/3o-product-reviews-section-plan.md` | Execution plan for Phase 3o (product reviews section) |
+| `context/plans/3p-product-faqs-section-plan.md` | Execution plan for Phase 3p (product FAQs accordion, schema, admin config) |
 | `context/plans/3f-product-filters-plan.md` | Execution plan for Phase 3f (archive filters) |
 | `context/plans/3i-load-more-plan.md` | Execution plan for Phase 3i (page-1 Load More on Product Collection archives) |
 | `context/plans/3j-wishlist-plan.md` | Execution plan for Phase 3j (logged-in wishlist — custom table, loop + single; account endpoint deferred) |
