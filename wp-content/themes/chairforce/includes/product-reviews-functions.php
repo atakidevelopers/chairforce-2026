@@ -261,26 +261,65 @@ function chairforce_get_review_rating_html( int $rating ): string {
 }
 
 /**
- * Author initials for review avatar placeholder.
+ * Serialized block markup for a single product review card.
  *
- * @param string $author Comment author name.
+ * Matches the core/group layout used in the Site Editor (name, verified, stars, date, content).
+ *
+ * @param WP_Comment $comment Review comment.
  * @return string
  */
-function chairforce_get_review_author_initials( string $author ): string {
-	$parts    = preg_split( '/\s+/', trim( $author ) );
-	$initials = '';
+function chairforce_get_product_review_card_blocks_markup( WP_Comment $comment ): string {
+	$rating   = (int) get_comment_meta( $comment->comment_ID, 'rating', true );
+	$author   = get_comment_author( $comment );
+	$date     = get_comment_date( 'F j, Y', $comment );
+	$date_iso = get_comment_date( 'c', $comment );
+	$content  = wp_kses_post( $comment->comment_content );
 
-	if ( ! is_array( $parts ) ) {
-		return '?';
+	$verified_markup = '';
+
+	if ( function_exists( 'wc_review_is_from_verified_owner' ) && wc_review_is_from_verified_owner( $comment->comment_ID ) ) {
+		$verified_markup = '<!-- wp:paragraph {"className":"cf-product-review-card__verified"} -->
+<p class="cf-product-review-card__verified">' . esc_html__( 'Verified Purchase', 'chairforce' ) . '</p>
+<!-- /wp:paragraph -->
+
+';
 	}
 
-	foreach ( array_slice( $parts, 0, 2 ) as $part ) {
-		if ( '' !== $part ) {
-			$initials .= strtoupper( mb_substr( $part, 0, 1 ) );
+	$rating_markup = '';
+
+	if ( $rating > 0 && function_exists( 'wc_review_ratings_enabled' ) && wc_review_ratings_enabled() ) {
+		$rating_html = chairforce_get_review_rating_html( $rating );
+
+		if ( '' !== $rating_html ) {
+			$rating_markup = '<!-- wp:html -->
+<div class="cf-product-review-card__rating">' . $rating_html . '</div>
+<!-- /wp:html -->
+
+';
 		}
 	}
 
-	return '' !== $initials ? $initials : '?';
+	$content_markup = '<!-- wp:html -->
+<div class="cf-product-review-card__content">' . $content . '</div>
+<!-- /wp:html -->';
+
+	return '<!-- wp:group {"metadata":{"name":"Product Review Card"},"className":"cf-product-review-card","style":{"spacing":{"padding":{"top":"var:preset|spacing|large","bottom":"var:preset|spacing|large","left":"var:preset|spacing|medium","right":"var:preset|spacing|medium"}}},"backgroundColor":"white","layout":{"type":"constrained"}} -->
+<div class="wp-block-group cf-product-review-card has-white-background-color has-background" style="padding-top:var(--wp--preset--spacing--large);padding-right:var(--wp--preset--spacing--medium);padding-bottom:var(--wp--preset--spacing--large);padding-left:var(--wp--preset--spacing--medium)"><!-- wp:group {"layout":{"type":"flex","flexWrap":"wrap","justifyContent":"space-between","verticalAlignment":"top"}} -->
+<div class="wp-block-group"><!-- wp:group {"style":{"spacing":{"blockGap":"var:preset|spacing|xxx-small"}},"layout":{"type":"constrained"}} -->
+<div class="wp-block-group"><!-- wp:paragraph {"className":"cf-product-review-card__author","style":{"typography":{"fontStyle":"normal","fontWeight":"600"}}} -->
+<p class="cf-product-review-card__author" style="font-style:normal;font-weight:600">' . esc_html( $author ) . '</p>
+<!-- /wp:paragraph -->
+
+' . $verified_markup . $rating_markup . '</div>
+<!-- /wp:group -->
+
+<!-- wp:paragraph {"className":"cf-product-review-card__date","style":{"elements":{"link":{"color":{"text":"var:preset|color|neutral"}}}},"textColor":"neutral","fontSize":"small"} -->
+<p class="cf-product-review-card__date has-neutral-color has-text-color has-link-color has-small-font-size"><time datetime="' . esc_attr( $date_iso ) . '">' . esc_html( $date ) . '</time></p>
+<!-- /wp:paragraph --></div>
+<!-- /wp:group -->
+
+' . $content_markup . '</div>
+<!-- /wp:group -->';
 }
 
 /**
@@ -290,31 +329,21 @@ function chairforce_get_review_author_initials( string $author ): string {
  * @return void
  */
 function chairforce_render_product_review_item( WP_Comment $comment ): void {
-	$rating = (int) get_comment_meta( $comment->comment_ID, 'rating', true );
-	$author = get_comment_author( $comment );
-	$date   = get_comment_date( '', $comment );
-	?>
-	<li id="comment-<?php echo esc_attr( (string) $comment->comment_ID ); ?>" class="cf-product-reviews__item">
-		<div class="cf-product-reviews__item-header">
-			<div class="cf-product-reviews__author">
-				<span class="cf-product-reviews__avatar" aria-hidden="true"><?php echo esc_html( chairforce_get_review_author_initials( $author ) ); ?></span>
-				<span class="cf-product-reviews__author-name"><?php echo esc_html( $author ); ?></span>
-				<?php if ( function_exists( 'wc_review_is_from_verified_owner' ) && wc_review_is_from_verified_owner( $comment->comment_ID ) ) : ?>
-					<span class="cf-product-reviews__verified"><?php esc_html_e( 'Verified Purchase', 'chairforce' ); ?></span>
-				<?php endif; ?>
-			</div>
-			<time class="cf-product-reviews__date" datetime="<?php echo esc_attr( get_comment_date( 'c', $comment ) ); ?>"><?php echo esc_html( $date ); ?></time>
-		</div>
-		<?php if ( $rating > 0 ) : ?>
-			<div class="cf-product-reviews__rating star-rating" role="img" aria-label="<?php echo esc_attr( sprintf( __( 'Rated %d out of 5', 'chairforce' ), $rating ) ); ?>">
-				<?php echo chairforce_get_review_rating_html( $rating ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-			</div>
-		<?php endif; ?>
-		<div class="cf-product-reviews__content">
-			<?php echo wp_kses_post( $comment->comment_content ); ?>
-		</div>
-	</li>
-	<?php
+	if ( ! function_exists( 'do_blocks' ) ) {
+		return;
+	}
+
+	$markup = chairforce_get_product_review_card_blocks_markup( $comment );
+
+	if ( '' === trim( $markup ) ) {
+		return;
+	}
+
+	printf(
+		'<li id="comment-%1$s" class="cf-product-reviews__item">%2$s</li>',
+		esc_attr( (string) $comment->comment_ID ),
+		do_blocks( $markup ) // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- block render output.
+	);
 }
 
 /**

@@ -2,1255 +2,1255 @@
     "key": "group_theme_options",
     "title": "Theme Options",
     "fields": [
-        {
-            "key": "field_6147c97b1039d",
-            "label": "General",
-            "name": "",
-            "aria-label": "",
-            "type": "tab",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "placement": "top",
-            "endpoint": 0,
-            "selected": 0
-        },
-        {
-            "key": "field_6361f76e567ef",
-            "label": "Placeholder Image",
-            "name": "placeholder_image_default",
-            "aria-label": "",
-            "type": "image",
-            "instructions": "This image shall be used if a Post, Page or Custom Post Type does not have a featured image added. Leave blank to disable the default placeholder",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "return_format": "id",
-            "library": "all",
-            "min_width": "",
-            "min_height": "",
-            "min_size": "",
-            "max_width": "",
-            "max_height": "",
-            "max_size": "",
-            "mime_types": "",
-            "preview_size": "thumbnail"
-        },
-        {
-            "key": "field_6361f7fe567f0",
-            "label": "Placeholder Configuration for Post Type",
-            "name": "placeholder_config_for_cpt",
-            "aria-label": "",
-            "type": "repeater",
-            "instructions": "This image shall be used if a Post, Page or Custom Post Type does not have a featured image added. Leave blank to disable the default placeholder",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "layout": "table",
-            "pagination": 0,
-            "min": 0,
-            "max": 0,
-            "collapsed": "",
-            "button_label": "Add Row",
-            "rows_per_page": 20,
-            "sub_fields": [
-                {
-                    "key": "field_6361f828567f1",
-                    "label": "Post Type",
-                    "name": "post_type",
-                    "aria-label": "",
-                    "type": "select",
-                    "instructions": "",
-                    "required": 0,
-                    "conditional_logic": 0,
-                    "wrapper": {
-                        "width": "50",
-                        "class": "",
-                        "id": ""
-                    },
-                    "choices": {
-                        "post": "Posts",
-                        "page": "Pages",
-                        "attachment": "Media"
-                    },
-                    "default_value": false,
-                    "return_format": "",
-                    "multiple": 0,
-                    "allow_null": 0,
-                    "allow_in_bindings": 1,
-                    "ui": 0,
-                    "ajax": 0,
-                    "placeholder": "",
-                    "parent_repeater": "field_6361f7fe567f0"
-                },
-                {
-                    "key": "field_6361f859567f2",
-                    "label": "Placeholder Image",
-                    "name": "placeholder_image",
-                    "aria-label": "",
-                    "type": "image",
-                    "instructions": "",
-                    "required": 0,
-                    "conditional_logic": 0,
-                    "wrapper": {
-                        "width": "50",
-                        "class": "",
-                        "id": ""
-                    },
-                    "return_format": "id",
-                    "library": "all",
-                    "min_width": "",
-                    "min_height": "",
-                    "min_size": "",
-                    "max_width": "",
-                    "max_height": "",
-                    "max_size": "",
-                    "mime_types": "",
-                    "preview_size": "thumbnail",
-                    "parent_repeater": "field_6361f7fe567f0"
-                }
-            ]
-        },
-        {
-            "key": "field_cf_catalogue_show_in_menu",
-            "label": "Catalogue Link For Menu",
-            "name": "cf_catalogue_show_in_menu",
-            "aria-label": "",
-            "type": "true_false",
-            "instructions": "Since the menu is not dynamic, we can't update it programmatically. Edit the nav menu item directly instead.",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "50",
-                "class": "",
-                "id": ""
-            },
-            "message": "",
-            "default_value": 0,
-            "ui_on_text": "Show",
-            "ui_off_text": "Hide",
-            "ui": 1
-        },
-        {
-            "key": "field_cf_catalogue_home_url",
-            "label": "Catalogue Link For Home Page",
-            "name": "cf_catalogue_home_url",
-            "aria-label": "",
-            "type": "url",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "50",
-                "class": "",
-                "id": ""
-            },
-            "default_value": "",
-            "placeholder": ""
-        },
-        {
-            "key": "field_cf_catalogue_footer_url",
-            "label": "Catalogue Link For Footer",
-            "name": "cf_catalogue_footer_url",
-            "aria-label": "",
-            "type": "url",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "50",
-                "class": "",
-                "id": ""
-            },
-            "default_value": "",
-            "placeholder": ""
-        },
-        {
-            "key": "field_cf_catalogue_blog_url",
-            "label": "Catalogue Link For Blog Page",
-            "name": "cf_catalogue_blog_url",
-            "aria-label": "",
-            "type": "url",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "50",
-                "class": "",
-                "id": ""
-            },
-            "default_value": "",
-            "placeholder": ""
-        },
-        {
-            "key": "field_cf_home_hero_banner_1_tab",
-            "label": "Home Hero 1",
-            "name": "",
-            "aria-label": "",
-            "type": "tab",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "placement": "top",
-            "endpoint": 0,
-            "selected": 0
-        },
-        {
-            "key": "field_cf_banner_title_1",
-            "label": "Banner Title 1",
-            "name": "cf_banner_title_1",
-            "aria-label": "",
-            "type": "textarea",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "default_value": "",
-            "maxlength": "",
-            "rows": 3,
-            "placeholder": "",
-            "new_lines": ""
-        },
-        {
-            "key": "field_cf_banner_sub_title_1",
-            "label": "Banner Sub Title 1",
-            "name": "cf_banner_sub_title_1",
-            "aria-label": "",
-            "type": "textarea",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "default_value": "",
-            "maxlength": "",
-            "rows": 4,
-            "placeholder": "",
-            "new_lines": ""
-        },
-        {
-            "key": "field_cf_banner_button_text_1",
-            "label": "Banner Button Text 1",
-            "name": "cf_banner_button_text_1",
-            "aria-label": "",
-            "type": "text",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "50",
-                "class": "",
-                "id": ""
-            },
-            "default_value": "",
-            "maxlength": "",
-            "placeholder": "",
-            "prepend": "",
-            "append": ""
-        },
-        {
-            "key": "field_cf_banner_button_link_1",
-            "label": "Banner Button Link 1",
-            "name": "cf_banner_button_link_1",
-            "aria-label": "",
-            "type": "url",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "50",
-                "class": "",
-                "id": ""
-            },
-            "default_value": "",
-            "placeholder": ""
-        },
-        {
-            "key": "field_cf_banner_image_1",
-            "label": "Banner Image 1",
-            "name": "cf_banner_image_1",
-            "aria-label": "",
-            "type": "image",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "return_format": "id",
-            "library": "all",
-            "min_width": "",
-            "min_height": "",
-            "min_size": "",
-            "max_width": "",
-            "max_height": "",
-            "max_size": "",
-            "mime_types": "",
-            "preview_size": "medium"
-        },
-        {
-            "key": "field_cf_home_hero_banner_2_tab",
-            "label": "Home Hero 2",
-            "name": "",
-            "aria-label": "",
-            "type": "tab",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "placement": "top",
-            "endpoint": 0,
-            "selected": 0
-        },
-        {
-            "key": "field_cf_banner_title_2",
-            "label": "Banner Title 2",
-            "name": "cf_banner_title_2",
-            "aria-label": "",
-            "type": "textarea",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "default_value": "",
-            "maxlength": "",
-            "rows": 3,
-            "placeholder": "",
-            "new_lines": ""
-        },
-        {
-            "key": "field_cf_banner_sub_title_2",
-            "label": "Banner Sub Title 2",
-            "name": "cf_banner_sub_title_2",
-            "aria-label": "",
-            "type": "textarea",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "default_value": "",
-            "maxlength": "",
-            "rows": 4,
-            "placeholder": "",
-            "new_lines": ""
-        },
-        {
-            "key": "field_cf_banner_button_text_2",
-            "label": "Banner Button Text 2",
-            "name": "cf_banner_button_text_2",
-            "aria-label": "",
-            "type": "text",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "50",
-                "class": "",
-                "id": ""
-            },
-            "default_value": "",
-            "maxlength": "",
-            "placeholder": "",
-            "prepend": "",
-            "append": ""
-        },
-        {
-            "key": "field_cf_banner_button_link_2",
-            "label": "Banner Button Link 2",
-            "name": "cf_banner_button_link_2",
-            "aria-label": "",
-            "type": "url",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "50",
-                "class": "",
-                "id": ""
-            },
-            "default_value": "",
-            "placeholder": ""
-        },
-        {
-            "key": "field_cf_banner_image_2",
-            "label": "Banner Image 2",
-            "name": "cf_banner_image_2",
-            "aria-label": "",
-            "type": "image",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "return_format": "id",
-            "library": "all",
-            "min_width": "",
-            "min_height": "",
-            "min_size": "",
-            "max_width": "",
-            "max_height": "",
-            "max_size": "",
-            "mime_types": "",
-            "preview_size": "medium"
-        },
-        {
-            "key": "field_chairforce_header_tab",
-            "label": "Header",
-            "name": "",
-            "aria-label": "",
-            "type": "tab",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "placement": "top",
-            "endpoint": 0,
-            "selected": 0
-        },
-        {
-            "key": "field_chairforce_header_announcement_text",
-            "label": "Announcement Text",
-            "name": "announcement_text",
-            "aria-label": "",
-            "type": "textarea",
-            "instructions": "Promotional bar copy shown above the header. Leave blank to hide the announcement bar.",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "default_value": "",
-            "maxlength": "",
-            "rows": 3,
-            "placeholder": "Free shipping on orders over $999 • Same-day dispatch on in-stock items",
-            "new_lines": ""
-        },
-        {
-            "key": "field_chairforce_header_announcement_link",
-            "label": "Announcement Link",
-            "name": "announcement_link",
-            "aria-label": "",
-            "type": "link",
-            "instructions": "Optional link for the announcement bar.",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "return_format": "array"
-        },
-        {
-            "key": "field_chairforce_header_announcement_icon",
-            "label": "Announcement Icon",
-            "name": "announcement_icon",
-            "aria-label": "",
-            "type": "select",
-            "instructions": "Lucide icon shown beside the announcement text.",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "choices": {},
-            "default_value": "truck",
-            "return_format": "value",
-            "multiple": 0,
-            "allow_null": 0,
-            "ui": 1,
-            "ajax": 0,
-            "placeholder": ""
-        },
-        {
-            "key": "field_chairforce_header_logo",
-            "label": "Logo",
-            "name": "logo",
-            "aria-label": "",
-            "type": "image",
-            "instructions": "Desktop header logo. Falls back to site title when empty.",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "33",
-                "class": "",
-                "id": ""
-            },
-            "return_format": "id",
-            "library": "all",
-            "min_width": "",
-            "min_height": "",
-            "min_size": "",
-            "max_width": "",
-            "max_height": "",
-            "max_size": "",
-            "mime_types": "",
-            "preview_size": "medium"
-        },
-        {
-            "key": "field_chairforce_header_logo_mobile",
-            "label": "Mobile Logo",
-            "name": "logo_mobile",
-            "aria-label": "",
-            "type": "image",
-            "instructions": "Logo for the mobile header row. Falls back to the desktop logo when empty.",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "33",
-                "class": "",
-                "id": ""
-            },
-            "return_format": "id",
-            "library": "all",
-            "preview_size": "medium"
-        },
-        {
-            "key": "field_chairforce_header_logo_mobile_sticky",
-            "label": "Mobile Sticky Logo",
-            "name": "logo_mobile_sticky",
-            "aria-label": "",
-            "type": "image",
-            "instructions": "Optional compact logo after the announcement bar scrolls away. Falls back to the mobile logo, then desktop logo.",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "34",
-                "class": "",
-                "id": ""
-            },
-            "return_format": "id",
-            "library": "all",
-            "preview_size": "medium"
-        },
-        {
-            "key": "field_chairforce_header_phone_number",
-            "label": "Phone Number",
-            "name": "phone_number",
-            "aria-label": "",
-            "type": "text",
-            "instructions": "Display phone number for the header contact block.",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "50",
-                "class": "",
-                "id": ""
-            },
-            "default_value": "1300 272 926",
-            "maxlength": "",
-            "placeholder": "",
-            "prepend": "",
-            "append": ""
-        },
-        {
-            "key": "field_chairforce_header_phone_hours",
-            "label": "Phone Hours",
-            "name": "phone_hours",
-            "aria-label": "",
-            "type": "text",
-            "instructions": "Hours label shown above the phone number.",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "50",
-                "class": "",
-                "id": ""
-            },
-            "default_value": "Mon–Fri 9–5",
-            "maxlength": "",
-            "placeholder": "",
-            "prepend": "",
-            "append": ""
-        },
-        {
-            "key": "field_chairforce_header_search_placeholder",
-            "label": "Search Placeholder",
-            "name": "search_placeholder",
-            "aria-label": "",
-            "type": "text",
-            "instructions": "Placeholder text for the product search inputs.",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "default_value": "Search chairs, tables, stools…",
-            "maxlength": "",
-            "placeholder": "",
-            "prepend": "",
-            "append": ""
-        },
-        {
-            "key": "field_chairforce_header_hide_on_scroll",
-            "label": "Hide Header On Scroll",
-            "name": "header_hide_on_scroll",
-            "aria-label": "",
-            "type": "true_false",
-            "instructions": "When enabled, the header hides when scrolling down and reappears when scrolling up.",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "message": "",
-            "default_value": 1,
-            "ui_on_text": "Enabled",
-            "ui_off_text": "Disabled",
-            "ui": 1
-        },
-        {
-            "key": "field_chairforce_header_display_quotes",
-            "label": "Display Quotes Icon",
-            "name": "header_display_quotes",
-            "aria-label": "",
-            "type": "true_false",
-            "instructions": "Show the YITH Request a Quote mini widget in the desktop utility cluster. Requires the YITH Request a Quote plugin.",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "50",
-                "class": "",
-                "id": ""
-            },
-            "message": "",
-            "default_value": 1,
-            "ui_on_text": "Show",
-            "ui_off_text": "Hide",
-            "ui": 1
-        },
-        {
-            "key": "field_chairforce_header_display_cart",
-            "label": "Display Cart",
-            "name": "header_display_cart",
-            "aria-label": "",
-            "type": "true_false",
-            "instructions": "Show the WooCommerce Mini Cart block in the header (desktop utilities and mobile primary row).",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "50",
-                "class": "",
-                "id": ""
-            },
-            "message": "",
-            "default_value": 1,
-            "ui_on_text": "Show",
-            "ui_off_text": "Hide",
-            "ui": 1
-        },
-        {
-            "key": "field_chairforce_tab_woocommerce",
-            "label": "WooCommerce",
-            "name": "",
-            "aria-label": "",
-            "type": "tab",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "placement": "top",
-            "endpoint": 0,
-            "selected": 0
-        },
-        {
-            "key": "field_chairforce_wishlist_enabled",
-            "label": "Enable Wishlist",
-            "name": "wishlist_enabled",
-            "aria-label": "",
-            "type": "true_false",
-            "instructions": "Enable wishlist for logged-in customers (single product, product loop when enabled below, and My Account endpoint when built).",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "50",
-                "class": "",
-                "id": ""
-            },
-            "message": "",
-            "default_value": 1,
-            "ui_on_text": "Enabled",
-            "ui_off_text": "Disabled",
-            "ui": 1
-        },
-        {
-            "key": "field_chairforce_wishlist_loop_enabled",
-            "label": "Show on Product Loop",
-            "name": "wishlist_loop_enabled",
-            "aria-label": "",
-            "type": "true_false",
-            "instructions": "Show the wishlist heart on product cards in grids and archives.",
-            "required": 0,
-            "conditional_logic": [
-                [
-                    {
-                        "field": "field_chairforce_wishlist_enabled",
-                        "operator": "==",
-                        "value": "1"
-                    }
-                ]
-            ],
-            "wrapper": {
-                "width": "50",
-                "class": "",
-                "id": ""
-            },
-            "message": "",
-            "default_value": 1,
-            "ui_on_text": "Show",
-            "ui_off_text": "Hide",
-            "ui": 1
-        },
-        {
-            "key": "field_chairforce_product_reviews_display",
-            "label": "Reviews Display",
-            "name": "product_reviews_display",
-            "aria-label": "",
-            "type": "button_group",
-            "instructions": "Section = standalone reviews block below product tabs. Tab = WooCommerce Reviews tab only. Enable/disable reviews globally under WooCommerce → Settings → Products → Enable product reviews.",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "50",
-                "class": "",
-                "id": ""
-            },
-            "choices": {
-                "section": "Section",
-                "tab": "Tab"
-            },
-            "default_value": "section",
-            "return_format": "value",
-            "allow_null": 0,
-            "layout": "horizontal"
-        },
-        {
-            "key": "field_chairforce_product_tabs_visibility_message",
-            "label": "Product Tab Visibility",
-            "name": "",
-            "aria-label": "",
-            "type": "message",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "message": "Toggle custom single-product tabs. Each tab still requires content on the product (or theme options for Delivery / Product Info).",
-            "new_lines": "wpautop",
-            "esc_html": 0
-        },
-        {
-            "key": "field_chairforce_product_tab_overview_enabled",
-            "label": "Overview Tab",
-            "name": "product_tab_overview_enabled",
-            "aria-label": "",
-            "type": "true_false",
-            "instructions": "Product description and feature icons.",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "50",
-                "class": "",
-                "id": ""
-            },
-            "message": "",
-            "default_value": 1,
-            "ui_on_text": "Show",
-            "ui_off_text": "Hide",
-            "ui": 1
-        },
-        {
-            "key": "field_chairforce_product_tab_delivery_enabled",
-            "label": "Delivery Information Tab",
-            "name": "product_tab_delivery_enabled",
-            "aria-label": "",
-            "type": "true_false",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "50",
-                "class": "",
-                "id": ""
-            },
-            "message": "",
-            "default_value": 1,
-            "ui_on_text": "Show",
-            "ui_off_text": "Hide",
-            "ui": 1
-        },
-        {
-            "key": "field_chairforce_product_tab_dimensions_enabled",
-            "label": "Dimensions Tab",
-            "name": "product_tab_dimensions_enabled",
-            "aria-label": "",
-            "type": "true_false",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "50",
-                "class": "",
-                "id": ""
-            },
-            "message": "",
-            "default_value": 1,
-            "ui_on_text": "Show",
-            "ui_off_text": "Hide",
-            "ui": 1
-        },
-        {
-            "key": "field_chairforce_product_tab_care_enabled",
-            "label": "Care Instructions Tab",
-            "name": "product_tab_care_enabled",
-            "aria-label": "",
-            "type": "true_false",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "50",
-                "class": "",
-                "id": ""
-            },
-            "message": "",
-            "default_value": 1,
-            "ui_on_text": "Show",
-            "ui_off_text": "Hide",
-            "ui": 1
-        },
-        {
-            "key": "field_chairforce_product_tab_parts_enabled",
-            "label": "Parts Tab",
-            "name": "product_tab_parts_enabled",
-            "aria-label": "",
-            "type": "true_false",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "50",
-                "class": "",
-                "id": ""
-            },
-            "message": "",
-            "default_value": 1,
-            "ui_on_text": "Show",
-            "ui_off_text": "Hide",
-            "ui": 1
-        },
-        {
-            "key": "field_chairforce_product_tab_additional_info_enabled",
-            "label": "Additional Information Tab",
-            "name": "product_tab_additional_info_enabled",
-            "aria-label": "",
-            "type": "true_false",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "50",
-                "class": "",
-                "id": ""
-            },
-            "message": "",
-            "default_value": 1,
-            "ui_on_text": "Show",
-            "ui_off_text": "Hide",
-            "ui": 1
-        },
-        {
-            "key": "field_chairforce_product_tab_product_info_enabled",
-            "label": "Product Info Tab",
-            "name": "product_tab_product_info_enabled",
-            "aria-label": "",
-            "type": "true_false",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "50",
-                "class": "",
-                "id": ""
-            },
-            "message": "",
-            "default_value": 1,
-            "ui_on_text": "Show",
-            "ui_off_text": "Hide",
-            "ui": 1
-        },
-        {
-            "key": "field_chairforce_filters_panel_desktop",
-            "label": "Filters Panel (Desktop)",
-            "name": "filters_panel_desktop",
-            "aria-label": "",
-            "type": "button_group",
-            "instructions": "Vertical opens a side drawer; horizontal opens a floating panel under the filter bar (mega-menu style).",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "50",
-                "class": "",
-                "id": ""
-            },
-            "choices": {
-                "vertical": "Vertical (drawer)",
-                "horizontal": "Horizontal (under bar)"
-            },
-            "default_value": "vertical",
-            "return_format": "value",
-            "allow_null": 0,
-            "layout": "horizontal"
-        },
-        {
-            "key": "field_chairforce_filters_panel_mobile",
-            "label": "Filters Panel (Mobile)",
-            "name": "filters_panel_mobile",
-            "aria-label": "",
-            "type": "button_group",
-            "instructions": "Same options as desktop; vertical drawer is the default on small screens.",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "50",
-                "class": "",
-                "id": ""
-            },
-            "choices": {
-                "vertical": "Vertical (drawer)",
-                "horizontal": "Horizontal (under bar)"
-            },
-            "default_value": "vertical",
-            "return_format": "value",
-            "allow_null": 0,
-            "layout": "horizontal"
-        },
-        {
-            "key": "field_cf_product_delivery_information",
-            "label": "Delivery Information For Product Page",
-            "name": "cf_product_delivery_information",
-            "aria-label": "",
-            "type": "wysiwyg",
-            "instructions": "Global delivery copy shown on the single product page.",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "default_value": "",
-            "tabs": "all",
-            "toolbar": "full",
-            "media_upload": 1,
-            "delay": 0
-        },
-        {
-            "key": "field_cf_product_info",
-            "label": "Product Info For Product Page",
-            "name": "cf_product_info",
-            "aria-label": "",
-            "type": "wysiwyg",
-            "instructions": "Global product info copy shown on the single product page (site-wide, not per product).",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "default_value": "",
-            "tabs": "all",
-            "toolbar": "full",
-            "media_upload": 1,
-            "delay": 0
-        },
-        {
-            "key": "field_6147c9851039e",
-            "label": "Misc",
-            "name": "",
-            "aria-label": "",
-            "type": "tab",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "placement": "top",
-            "endpoint": 0,
-            "selected": 0
-        },
-        {
-            "key": "field_chairforce_quick_view_display",
-            "label": "Quick View Display",
-            "name": "quick_view_display",
-            "aria-label": "",
-            "type": "button_group",
-            "instructions": "Choose how the quick view popup opens on product cards.",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "50",
-                "class": "",
-                "id": ""
-            },
-            "choices": {
-                "modal": "Modal",
-                "drawer": "Drawer"
-            },
-            "default_value": "drawer",
-            "return_format": "value",
-            "allow_null": 0,
-            "layout": "horizontal"
-        },
-        {
-            "key": "field_chairforce_quick_view_content",
-            "label": "Quick View Content",
-            "name": "quick_view_content",
-            "aria-label": "",
-            "type": "button_group",
-            "instructions": "Choose which product text appears below the price in quick view.",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "50",
-                "class": "",
-                "id": ""
-            },
-            "choices": {
-                "dimensions": "Dimensions",
-                "short_description": "Short Description"
-            },
-            "default_value": "dimensions",
-            "return_format": "value",
-            "allow_null": 0,
-            "layout": "horizontal"
-        },
-        {
-            "key": "field_chairforce_quick_view_request_quote",
-            "label": "Request a Quote in Quick View",
-            "name": "quick_view_request_quote_enabled",
-            "aria-label": "",
-            "type": "true_false",
-            "instructions": "Show the YITH Request a Quote button below Add to Cart in the quick view drawer. Requires YITH Request a Quote and the plugin's single-product quote setting.",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "50",
-                "class": "",
-                "id": ""
-            },
-            "message": "",
-            "default_value": 1,
-            "ui_on_text": "Show",
-            "ui_off_text": "Hide",
-            "ui": 1
-        },
-        {
-            "key": "field_63411c4d1cfff",
-            "label": "Enable Grid Guides",
-            "name": "enable_grid_guides",
-            "aria-label": "",
-            "type": "true_false",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "50",
-                "class": "",
-                "id": ""
-            },
-            "message": "",
-            "default_value": 1,
-            "allow_in_bindings": 1,
-            "ui_on_text": "",
-            "ui_off_text": "",
-            "ui": 1
-        },
-        {
-            "key": "field_66ed789f1b093",
-            "label": "Enable Style Switcher",
-            "name": "enable_style_switcher",
-            "aria-label": "",
-            "type": "true_false",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "50",
-                "class": "",
-                "id": ""
-            },
-            "message": "",
-            "default_value": 1,
-            "allow_in_bindings": 1,
-            "ui_on_text": "",
-            "ui_off_text": "",
-            "ui": 1
-        },
-        {
-            "key": "field_6147c9a6103a0",
-            "label": "Google Maps Key",
-            "name": "google_maps_key",
-            "aria-label": "",
-            "type": "text",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "default_value": "",
-            "placeholder": "",
-            "prepend": "",
-            "append": "",
-            "maxlength": ""
-        },
-        {
-            "key": "field_633eaf8d8b3b8",
-            "label": "Analytics",
-            "name": "",
-            "aria-label": "",
-            "type": "tab",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "placement": "top",
-            "endpoint": 0,
-            "selected": 0
-        },
-        {
-            "key": "field_633eafa88b3b9",
-            "label": "Head",
-            "name": "code_for_wp_head",
-            "aria-label": "",
-            "type": "textarea",
-            "instructions": "Code added here with be added to site head",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "default_value": "",
-            "maxlength": "",
-            "rows": "",
-            "placeholder": "",
-            "new_lines": ""
-        },
-        {
-            "key": "field_633eb0178b3bc",
-            "label": "Footer",
-            "name": "code_for_wp_footer",
-            "aria-label": "",
-            "type": "textarea",
-            "instructions": "Code added here with be added to footer of the site",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "default_value": "",
-            "maxlength": "",
-            "rows": "",
-            "placeholder": "",
-            "new_lines": ""
-        },
-        {
-            "key": "field_633eafe08b3ba",
-            "label": "Body Open",
-            "name": "code_for_wp_body_open",
-            "aria-label": "",
-            "type": "textarea",
-            "instructions": "Code added here with be added immediately after opening body tag",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "default_value": "",
-            "maxlength": "",
-            "rows": "",
-            "placeholder": "",
-            "new_lines": ""
-        }
-    ],
+		{
+			"key": "field_6147c97b1039d",
+			"label": "General",
+			"name": "",
+			"aria-label": "",
+			"type": "tab",
+			"instructions": "",
+			"required": 0,
+			"conditional_logic": 0,
+			"wrapper": {
+				"width": "",
+				"class": "",
+				"id": ""
+			},
+			"placement": "top",
+			"endpoint": 0,
+			"selected": 0
+		},
+		{
+			"key": "field_6361f76e567ef",
+			"label": "Placeholder Image",
+			"name": "placeholder_image_default",
+			"aria-label": "",
+			"type": "image",
+			"instructions": "This image shall be used if a Post, Page or Custom Post Type does not have a featured image added. Leave blank to disable the default placeholder",
+			"required": 0,
+			"conditional_logic": 0,
+			"wrapper": {
+				"width": "",
+				"class": "",
+				"id": ""
+			},
+			"return_format": "id",
+			"library": "all",
+			"min_width": "",
+			"min_height": "",
+			"min_size": "",
+			"max_width": "",
+			"max_height": "",
+			"max_size": "",
+			"mime_types": "",
+			"preview_size": "thumbnail"
+		},
+		{
+			"key": "field_6361f7fe567f0",
+			"label": "Placeholder Configuration for Post Type",
+			"name": "placeholder_config_for_cpt",
+			"aria-label": "",
+			"type": "repeater",
+			"instructions": "This image shall be used if a Post, Page or Custom Post Type does not have a featured image added. Leave blank to disable the default placeholder",
+			"required": 0,
+			"conditional_logic": 0,
+			"wrapper": {
+				"width": "",
+				"class": "",
+				"id": ""
+			},
+			"layout": "table",
+			"pagination": 0,
+			"min": 0,
+			"max": 0,
+			"collapsed": "",
+			"button_label": "Add Row",
+			"rows_per_page": 20,
+			"sub_fields": [
+				{
+					"key": "field_6361f828567f1",
+					"label": "Post Type",
+					"name": "post_type",
+					"aria-label": "",
+					"type": "select",
+					"instructions": "",
+					"required": 0,
+					"conditional_logic": 0,
+					"wrapper": {
+						"width": "50",
+						"class": "",
+						"id": ""
+					},
+					"choices": {
+						"post": "Posts",
+						"page": "Pages",
+						"attachment": "Media"
+					},
+					"default_value": false,
+					"return_format": "",
+					"multiple": 0,
+					"allow_null": 0,
+					"allow_in_bindings": 1,
+					"ui": 0,
+					"ajax": 0,
+					"placeholder": "",
+					"parent_repeater": "field_6361f7fe567f0"
+				},
+				{
+					"key": "field_6361f859567f2",
+					"label": "Placeholder Image",
+					"name": "placeholder_image",
+					"aria-label": "",
+					"type": "image",
+					"instructions": "",
+					"required": 0,
+					"conditional_logic": 0,
+					"wrapper": {
+						"width": "50",
+						"class": "",
+						"id": ""
+					},
+					"return_format": "id",
+					"library": "all",
+					"min_width": "",
+					"min_height": "",
+					"min_size": "",
+					"max_width": "",
+					"max_height": "",
+					"max_size": "",
+					"mime_types": "",
+					"preview_size": "thumbnail",
+					"parent_repeater": "field_6361f7fe567f0"
+				}
+			]
+		},
+		{
+			"key": "field_cf_catalogue_show_in_menu",
+			"label": "Catalogue Link For Menu",
+			"name": "cf_catalogue_show_in_menu",
+			"aria-label": "",
+			"type": "true_false",
+			"instructions": "Since the menu is not dynamic, we can't update it programmatically. Edit the nav menu item directly instead.",
+			"required": 0,
+			"conditional_logic": 0,
+			"wrapper": {
+				"width": "50",
+				"class": "",
+				"id": ""
+			},
+			"message": "",
+			"default_value": 0,
+			"ui_on_text": "Show",
+			"ui_off_text": "Hide",
+			"ui": 1
+		},
+		{
+			"key": "field_cf_catalogue_home_url",
+			"label": "Catalogue Link For Home Page",
+			"name": "cf_catalogue_home_url",
+			"aria-label": "",
+			"type": "url",
+			"instructions": "",
+			"required": 0,
+			"conditional_logic": 0,
+			"wrapper": {
+				"width": "50",
+				"class": "",
+				"id": ""
+			},
+			"default_value": "",
+			"placeholder": ""
+		},
+		{
+			"key": "field_cf_catalogue_footer_url",
+			"label": "Catalogue Link For Footer",
+			"name": "cf_catalogue_footer_url",
+			"aria-label": "",
+			"type": "url",
+			"instructions": "",
+			"required": 0,
+			"conditional_logic": 0,
+			"wrapper": {
+				"width": "50",
+				"class": "",
+				"id": ""
+			},
+			"default_value": "",
+			"placeholder": ""
+		},
+		{
+			"key": "field_cf_catalogue_blog_url",
+			"label": "Catalogue Link For Blog Page",
+			"name": "cf_catalogue_blog_url",
+			"aria-label": "",
+			"type": "url",
+			"instructions": "",
+			"required": 0,
+			"conditional_logic": 0,
+			"wrapper": {
+				"width": "50",
+				"class": "",
+				"id": ""
+			},
+			"default_value": "",
+			"placeholder": ""
+		},
+		{
+			"key": "field_cf_home_hero_banner_1_tab",
+			"label": "Home Hero 1",
+			"name": "",
+			"aria-label": "",
+			"type": "tab",
+			"instructions": "",
+			"required": 0,
+			"conditional_logic": 0,
+			"wrapper": {
+				"width": "",
+				"class": "",
+				"id": ""
+			},
+			"placement": "top",
+			"endpoint": 0,
+			"selected": 0
+		},
+		{
+			"key": "field_cf_banner_title_1",
+			"label": "Banner Title 1",
+			"name": "cf_banner_title_1",
+			"aria-label": "",
+			"type": "textarea",
+			"instructions": "",
+			"required": 0,
+			"conditional_logic": 0,
+			"wrapper": {
+				"width": "",
+				"class": "",
+				"id": ""
+			},
+			"default_value": "",
+			"maxlength": "",
+			"rows": 3,
+			"placeholder": "",
+			"new_lines": ""
+		},
+		{
+			"key": "field_cf_banner_sub_title_1",
+			"label": "Banner Sub Title 1",
+			"name": "cf_banner_sub_title_1",
+			"aria-label": "",
+			"type": "textarea",
+			"instructions": "",
+			"required": 0,
+			"conditional_logic": 0,
+			"wrapper": {
+				"width": "",
+				"class": "",
+				"id": ""
+			},
+			"default_value": "",
+			"maxlength": "",
+			"rows": 4,
+			"placeholder": "",
+			"new_lines": ""
+		},
+		{
+			"key": "field_cf_banner_button_text_1",
+			"label": "Banner Button Text 1",
+			"name": "cf_banner_button_text_1",
+			"aria-label": "",
+			"type": "text",
+			"instructions": "",
+			"required": 0,
+			"conditional_logic": 0,
+			"wrapper": {
+				"width": "50",
+				"class": "",
+				"id": ""
+			},
+			"default_value": "",
+			"maxlength": "",
+			"placeholder": "",
+			"prepend": "",
+			"append": ""
+		},
+		{
+			"key": "field_cf_banner_button_link_1",
+			"label": "Banner Button Link 1",
+			"name": "cf_banner_button_link_1",
+			"aria-label": "",
+			"type": "url",
+			"instructions": "",
+			"required": 0,
+			"conditional_logic": 0,
+			"wrapper": {
+				"width": "50",
+				"class": "",
+				"id": ""
+			},
+			"default_value": "",
+			"placeholder": ""
+		},
+		{
+			"key": "field_cf_banner_image_1",
+			"label": "Banner Image 1",
+			"name": "cf_banner_image_1",
+			"aria-label": "",
+			"type": "image",
+			"instructions": "",
+			"required": 0,
+			"conditional_logic": 0,
+			"wrapper": {
+				"width": "",
+				"class": "",
+				"id": ""
+			},
+			"return_format": "id",
+			"library": "all",
+			"min_width": "",
+			"min_height": "",
+			"min_size": "",
+			"max_width": "",
+			"max_height": "",
+			"max_size": "",
+			"mime_types": "",
+			"preview_size": "medium"
+		},
+		{
+			"key": "field_cf_home_hero_banner_2_tab",
+			"label": "Home Hero 2",
+			"name": "",
+			"aria-label": "",
+			"type": "tab",
+			"instructions": "",
+			"required": 0,
+			"conditional_logic": 0,
+			"wrapper": {
+				"width": "",
+				"class": "",
+				"id": ""
+			},
+			"placement": "top",
+			"endpoint": 0,
+			"selected": 0
+		},
+		{
+			"key": "field_cf_banner_title_2",
+			"label": "Banner Title 2",
+			"name": "cf_banner_title_2",
+			"aria-label": "",
+			"type": "textarea",
+			"instructions": "",
+			"required": 0,
+			"conditional_logic": 0,
+			"wrapper": {
+				"width": "",
+				"class": "",
+				"id": ""
+			},
+			"default_value": "",
+			"maxlength": "",
+			"rows": 3,
+			"placeholder": "",
+			"new_lines": ""
+		},
+		{
+			"key": "field_cf_banner_sub_title_2",
+			"label": "Banner Sub Title 2",
+			"name": "cf_banner_sub_title_2",
+			"aria-label": "",
+			"type": "textarea",
+			"instructions": "",
+			"required": 0,
+			"conditional_logic": 0,
+			"wrapper": {
+				"width": "",
+				"class": "",
+				"id": ""
+			},
+			"default_value": "",
+			"maxlength": "",
+			"rows": 4,
+			"placeholder": "",
+			"new_lines": ""
+		},
+		{
+			"key": "field_cf_banner_button_text_2",
+			"label": "Banner Button Text 2",
+			"name": "cf_banner_button_text_2",
+			"aria-label": "",
+			"type": "text",
+			"instructions": "",
+			"required": 0,
+			"conditional_logic": 0,
+			"wrapper": {
+				"width": "50",
+				"class": "",
+				"id": ""
+			},
+			"default_value": "",
+			"maxlength": "",
+			"placeholder": "",
+			"prepend": "",
+			"append": ""
+		},
+		{
+			"key": "field_cf_banner_button_link_2",
+			"label": "Banner Button Link 2",
+			"name": "cf_banner_button_link_2",
+			"aria-label": "",
+			"type": "url",
+			"instructions": "",
+			"required": 0,
+			"conditional_logic": 0,
+			"wrapper": {
+				"width": "50",
+				"class": "",
+				"id": ""
+			},
+			"default_value": "",
+			"placeholder": ""
+		},
+		{
+			"key": "field_cf_banner_image_2",
+			"label": "Banner Image 2",
+			"name": "cf_banner_image_2",
+			"aria-label": "",
+			"type": "image",
+			"instructions": "",
+			"required": 0,
+			"conditional_logic": 0,
+			"wrapper": {
+				"width": "",
+				"class": "",
+				"id": ""
+			},
+			"return_format": "id",
+			"library": "all",
+			"min_width": "",
+			"min_height": "",
+			"min_size": "",
+			"max_width": "",
+			"max_height": "",
+			"max_size": "",
+			"mime_types": "",
+			"preview_size": "medium"
+		},
+		{
+			"key": "field_chairforce_header_tab",
+			"label": "Header",
+			"name": "",
+			"aria-label": "",
+			"type": "tab",
+			"instructions": "",
+			"required": 0,
+			"conditional_logic": 0,
+			"wrapper": {
+				"width": "",
+				"class": "",
+				"id": ""
+			},
+			"placement": "top",
+			"endpoint": 0,
+			"selected": 0
+		},
+		{
+			"key": "field_chairforce_header_announcement_text",
+			"label": "Announcement Text",
+			"name": "announcement_text",
+			"aria-label": "",
+			"type": "textarea",
+			"instructions": "Promotional bar copy shown above the header. Leave blank to hide the announcement bar.",
+			"required": 0,
+			"conditional_logic": 0,
+			"wrapper": {
+				"width": "",
+				"class": "",
+				"id": ""
+			},
+			"default_value": "",
+			"maxlength": "",
+			"rows": 3,
+			"placeholder": "Free shipping on orders over $999 • Same-day dispatch on in-stock items",
+			"new_lines": ""
+		},
+		{
+			"key": "field_chairforce_header_announcement_link",
+			"label": "Announcement Link",
+			"name": "announcement_link",
+			"aria-label": "",
+			"type": "link",
+			"instructions": "Optional link for the announcement bar.",
+			"required": 0,
+			"conditional_logic": 0,
+			"wrapper": {
+				"width": "",
+				"class": "",
+				"id": ""
+			},
+			"return_format": "array"
+		},
+		{
+			"key": "field_chairforce_header_announcement_icon",
+			"label": "Announcement Icon",
+			"name": "announcement_icon",
+			"aria-label": "",
+			"type": "select",
+			"instructions": "Lucide icon shown beside the announcement text.",
+			"required": 0,
+			"conditional_logic": 0,
+			"wrapper": {
+				"width": "",
+				"class": "",
+				"id": ""
+			},
+			"choices": {},
+			"default_value": "truck",
+			"return_format": "value",
+			"multiple": 0,
+			"allow_null": 0,
+			"ui": 1,
+			"ajax": 0,
+			"placeholder": ""
+		},
+		{
+			"key": "field_chairforce_header_logo",
+			"label": "Logo",
+			"name": "logo",
+			"aria-label": "",
+			"type": "image",
+			"instructions": "Desktop header logo. Falls back to site title when empty.",
+			"required": 0,
+			"conditional_logic": 0,
+			"wrapper": {
+				"width": "33",
+				"class": "",
+				"id": ""
+			},
+			"return_format": "id",
+			"library": "all",
+			"min_width": "",
+			"min_height": "",
+			"min_size": "",
+			"max_width": "",
+			"max_height": "",
+			"max_size": "",
+			"mime_types": "",
+			"preview_size": "medium"
+		},
+		{
+			"key": "field_chairforce_header_logo_mobile",
+			"label": "Mobile Logo",
+			"name": "logo_mobile",
+			"aria-label": "",
+			"type": "image",
+			"instructions": "Logo for the mobile header row. Falls back to the desktop logo when empty.",
+			"required": 0,
+			"conditional_logic": 0,
+			"wrapper": {
+				"width": "33",
+				"class": "",
+				"id": ""
+			},
+			"return_format": "id",
+			"library": "all",
+			"preview_size": "medium"
+		},
+		{
+			"key": "field_chairforce_header_logo_mobile_sticky",
+			"label": "Mobile Sticky Logo",
+			"name": "logo_mobile_sticky",
+			"aria-label": "",
+			"type": "image",
+			"instructions": "Optional compact logo after the announcement bar scrolls away. Falls back to the mobile logo, then desktop logo.",
+			"required": 0,
+			"conditional_logic": 0,
+			"wrapper": {
+				"width": "34",
+				"class": "",
+				"id": ""
+			},
+			"return_format": "id",
+			"library": "all",
+			"preview_size": "medium"
+		},
+		{
+			"key": "field_chairforce_header_phone_number",
+			"label": "Phone Number",
+			"name": "phone_number",
+			"aria-label": "",
+			"type": "text",
+			"instructions": "Display phone number for the header contact block.",
+			"required": 0,
+			"conditional_logic": 0,
+			"wrapper": {
+				"width": "50",
+				"class": "",
+				"id": ""
+			},
+			"default_value": "1300 272 926",
+			"maxlength": "",
+			"placeholder": "",
+			"prepend": "",
+			"append": ""
+		},
+		{
+			"key": "field_chairforce_header_phone_hours",
+			"label": "Phone Hours",
+			"name": "phone_hours",
+			"aria-label": "",
+			"type": "text",
+			"instructions": "Hours label shown above the phone number.",
+			"required": 0,
+			"conditional_logic": 0,
+			"wrapper": {
+				"width": "50",
+				"class": "",
+				"id": ""
+			},
+			"default_value": "Mon–Fri 9–5",
+			"maxlength": "",
+			"placeholder": "",
+			"prepend": "",
+			"append": ""
+		},
+		{
+			"key": "field_chairforce_header_search_placeholder",
+			"label": "Search Placeholder",
+			"name": "search_placeholder",
+			"aria-label": "",
+			"type": "text",
+			"instructions": "Placeholder text for the product search inputs.",
+			"required": 0,
+			"conditional_logic": 0,
+			"wrapper": {
+				"width": "",
+				"class": "",
+				"id": ""
+			},
+			"default_value": "Search chairs, tables, stools…",
+			"maxlength": "",
+			"placeholder": "",
+			"prepend": "",
+			"append": ""
+		},
+		{
+			"key": "field_chairforce_header_hide_on_scroll",
+			"label": "Hide Header On Scroll",
+			"name": "header_hide_on_scroll",
+			"aria-label": "",
+			"type": "true_false",
+			"instructions": "When enabled, the header hides when scrolling down and reappears when scrolling up.",
+			"required": 0,
+			"conditional_logic": 0,
+			"wrapper": {
+				"width": "",
+				"class": "",
+				"id": ""
+			},
+			"message": "",
+			"default_value": 1,
+			"ui_on_text": "Enabled",
+			"ui_off_text": "Disabled",
+			"ui": 1
+		},
+		{
+			"key": "field_chairforce_header_display_quotes",
+			"label": "Display Quotes Icon",
+			"name": "header_display_quotes",
+			"aria-label": "",
+			"type": "true_false",
+			"instructions": "Show the YITH Request a Quote mini widget in the desktop utility cluster. Requires the YITH Request a Quote plugin.",
+			"required": 0,
+			"conditional_logic": 0,
+			"wrapper": {
+				"width": "50",
+				"class": "",
+				"id": ""
+			},
+			"message": "",
+			"default_value": 1,
+			"ui_on_text": "Show",
+			"ui_off_text": "Hide",
+			"ui": 1
+		},
+		{
+			"key": "field_chairforce_header_display_cart",
+			"label": "Display Cart",
+			"name": "header_display_cart",
+			"aria-label": "",
+			"type": "true_false",
+			"instructions": "Show the WooCommerce Mini Cart block in the header (desktop utilities and mobile primary row).",
+			"required": 0,
+			"conditional_logic": 0,
+			"wrapper": {
+				"width": "50",
+				"class": "",
+				"id": ""
+			},
+			"message": "",
+			"default_value": 1,
+			"ui_on_text": "Show",
+			"ui_off_text": "Hide",
+			"ui": 1
+		},
+		{
+			"key": "field_chairforce_tab_woocommerce",
+			"label": "WooCommerce",
+			"name": "",
+			"aria-label": "",
+			"type": "tab",
+			"instructions": "",
+			"required": 0,
+			"conditional_logic": 0,
+			"wrapper": {
+				"width": "",
+				"class": "",
+				"id": ""
+			},
+			"placement": "top",
+			"endpoint": 0,
+			"selected": 0
+		},
+		{
+			"key": "field_chairforce_wishlist_enabled",
+			"label": "Enable Wishlist",
+			"name": "wishlist_enabled",
+			"aria-label": "",
+			"type": "true_false",
+			"instructions": "Enable wishlist for logged-in customers (single product, product loop when enabled below, and My Account endpoint when built).",
+			"required": 0,
+			"conditional_logic": 0,
+			"wrapper": {
+				"width": "50",
+				"class": "",
+				"id": ""
+			},
+			"message": "",
+			"default_value": 1,
+			"ui_on_text": "Enabled",
+			"ui_off_text": "Disabled",
+			"ui": 1
+		},
+		{
+			"key": "field_chairforce_wishlist_loop_enabled",
+			"label": "Show on Product Loop",
+			"name": "wishlist_loop_enabled",
+			"aria-label": "",
+			"type": "true_false",
+			"instructions": "Show the wishlist heart on product cards in grids and archives.",
+			"required": 0,
+			"conditional_logic": [
+				[
+					{
+						"field": "field_chairforce_wishlist_enabled",
+						"operator": "==",
+						"value": "1"
+					}
+				]
+			],
+			"wrapper": {
+				"width": "50",
+				"class": "",
+				"id": ""
+			},
+			"message": "",
+			"default_value": 1,
+			"ui_on_text": "Show",
+			"ui_off_text": "Hide",
+			"ui": 1
+		},
+		{
+			"key": "field_chairforce_product_reviews_display",
+			"label": "Reviews Display",
+			"name": "product_reviews_display",
+			"aria-label": "",
+			"type": "button_group",
+			"instructions": "Section = standalone reviews block below product tabs. Tab = WooCommerce Reviews tab only. Enable/disable reviews globally under WooCommerce → Settings → Products → Enable product reviews.",
+			"required": 0,
+			"conditional_logic": 0,
+			"wrapper": {
+				"width": "50",
+				"class": "",
+				"id": ""
+			},
+			"choices": {
+				"section": "Section",
+				"tab": "Tab"
+			},
+			"default_value": "section",
+			"return_format": "value",
+			"allow_null": 0,
+			"layout": "horizontal"
+		},
+		{
+			"key": "field_chairforce_filters_panel_desktop",
+			"label": "Filters Panel (Desktop)",
+			"name": "filters_panel_desktop",
+			"aria-label": "",
+			"type": "button_group",
+			"instructions": "Vertical opens a side drawer; horizontal opens a floating panel under the filter bar (mega-menu style).",
+			"required": 0,
+			"conditional_logic": 0,
+			"wrapper": {
+				"width": "50",
+				"class": "",
+				"id": ""
+			},
+			"choices": {
+				"vertical": "Vertical (drawer)",
+				"horizontal": "Horizontal (under bar)"
+			},
+			"default_value": "vertical",
+			"return_format": "value",
+			"allow_null": 0,
+			"layout": "horizontal"
+		},
+		{
+			"key": "field_chairforce_filters_panel_mobile",
+			"label": "Filters Panel (Mobile)",
+			"name": "filters_panel_mobile",
+			"aria-label": "",
+			"type": "button_group",
+			"instructions": "Same options as desktop; vertical drawer is the default on small screens.",
+			"required": 0,
+			"conditional_logic": 0,
+			"wrapper": {
+				"width": "50",
+				"class": "",
+				"id": ""
+			},
+			"choices": {
+				"vertical": "Vertical (drawer)",
+				"horizontal": "Horizontal (under bar)"
+			},
+			"default_value": "vertical",
+			"return_format": "value",
+			"allow_null": 0,
+			"layout": "horizontal"
+		},
+		{
+			"key": "field_chairforce_product_tabs_visibility_message",
+			"label": "Product Tab Visibility",
+			"name": "",
+			"aria-label": "",
+			"type": "message",
+			"instructions": "",
+			"required": 0,
+			"conditional_logic": 0,
+			"wrapper": {
+				"width": "",
+				"class": "",
+				"id": ""
+			},
+			"message": "Toggle custom single-product tabs. Each tab still requires content on the product (or theme options for Delivery / Product Info).",
+			"new_lines": "wpautop",
+			"esc_html": 0
+		},
+		{
+			"key": "field_chairforce_product_tab_overview_enabled",
+			"label": "Overview Tab",
+			"name": "product_tab_overview_enabled",
+			"aria-label": "",
+			"type": "true_false",
+			"instructions": "Product description and feature icons.",
+			"required": 0,
+			"conditional_logic": 0,
+			"wrapper": {
+				"width": "50",
+				"class": "",
+				"id": ""
+			},
+			"message": "",
+			"default_value": 1,
+			"ui_on_text": "Show",
+			"ui_off_text": "Hide",
+			"ui": 1
+		},
+		{
+			"key": "field_chairforce_product_tab_delivery_enabled",
+			"label": "Delivery Information Tab",
+			"name": "product_tab_delivery_enabled",
+			"aria-label": "",
+			"type": "true_false",
+			"instructions": "",
+			"required": 0,
+			"conditional_logic": 0,
+			"wrapper": {
+				"width": "50",
+				"class": "",
+				"id": ""
+			},
+			"message": "",
+			"default_value": 1,
+			"ui_on_text": "Show",
+			"ui_off_text": "Hide",
+			"ui": 1
+		},
+		{
+			"key": "field_chairforce_product_tab_dimensions_enabled",
+			"label": "Dimensions Tab",
+			"name": "product_tab_dimensions_enabled",
+			"aria-label": "",
+			"type": "true_false",
+			"instructions": "",
+			"required": 0,
+			"conditional_logic": 0,
+			"wrapper": {
+				"width": "50",
+				"class": "",
+				"id": ""
+			},
+			"message": "",
+			"default_value": 1,
+			"ui_on_text": "Show",
+			"ui_off_text": "Hide",
+			"ui": 1
+		},
+		{
+			"key": "field_chairforce_product_tab_care_enabled",
+			"label": "Care Instructions Tab",
+			"name": "product_tab_care_enabled",
+			"aria-label": "",
+			"type": "true_false",
+			"instructions": "",
+			"required": 0,
+			"conditional_logic": 0,
+			"wrapper": {
+				"width": "50",
+				"class": "",
+				"id": ""
+			},
+			"message": "",
+			"default_value": 1,
+			"ui_on_text": "Show",
+			"ui_off_text": "Hide",
+			"ui": 1
+		},
+		{
+			"key": "field_chairforce_product_tab_parts_enabled",
+			"label": "Parts Tab",
+			"name": "product_tab_parts_enabled",
+			"aria-label": "",
+			"type": "true_false",
+			"instructions": "",
+			"required": 0,
+			"conditional_logic": 0,
+			"wrapper": {
+				"width": "50",
+				"class": "",
+				"id": ""
+			},
+			"message": "",
+			"default_value": 1,
+			"ui_on_text": "Show",
+			"ui_off_text": "Hide",
+			"ui": 1
+		},
+		{
+			"key": "field_chairforce_product_tab_additional_info_enabled",
+			"label": "Additional Information Tab",
+			"name": "product_tab_additional_info_enabled",
+			"aria-label": "",
+			"type": "true_false",
+			"instructions": "",
+			"required": 0,
+			"conditional_logic": 0,
+			"wrapper": {
+				"width": "50",
+				"class": "",
+				"id": ""
+			},
+			"message": "",
+			"default_value": 1,
+			"ui_on_text": "Show",
+			"ui_off_text": "Hide",
+			"ui": 1
+		},
+		{
+			"key": "field_chairforce_product_tab_product_info_enabled",
+			"label": "Product Info Tab",
+			"name": "product_tab_product_info_enabled",
+			"aria-label": "",
+			"type": "true_false",
+			"instructions": "",
+			"required": 0,
+			"conditional_logic": 0,
+			"wrapper": {
+				"width": "50",
+				"class": "",
+				"id": ""
+			},
+			"message": "",
+			"default_value": 1,
+			"ui_on_text": "Show",
+			"ui_off_text": "Hide",
+			"ui": 1
+		},
+		{
+			"key": "field_cf_product_delivery_information",
+			"label": "Delivery Information For Product Page",
+			"name": "cf_product_delivery_information",
+			"aria-label": "",
+			"type": "wysiwyg",
+			"instructions": "Global delivery copy shown on the single product page.",
+			"required": 0,
+			"conditional_logic": 0,
+			"wrapper": {
+				"width": "",
+				"class": "",
+				"id": ""
+			},
+			"default_value": "",
+			"tabs": "all",
+			"toolbar": "full",
+			"media_upload": 1,
+			"delay": 0
+		},
+		{
+			"key": "field_cf_product_info",
+			"label": "Product Info For Product Page",
+			"name": "cf_product_info",
+			"aria-label": "",
+			"type": "wysiwyg",
+			"instructions": "Global product info copy shown on the single product page (site-wide, not per product).",
+			"required": 0,
+			"conditional_logic": 0,
+			"wrapper": {
+				"width": "",
+				"class": "",
+				"id": ""
+			},
+			"default_value": "",
+			"tabs": "all",
+			"toolbar": "full",
+			"media_upload": 1,
+			"delay": 0
+		},
+		{
+			"key": "field_6147c9851039e",
+			"label": "Misc",
+			"name": "",
+			"aria-label": "",
+			"type": "tab",
+			"instructions": "",
+			"required": 0,
+			"conditional_logic": 0,
+			"wrapper": {
+				"width": "",
+				"class": "",
+				"id": ""
+			},
+			"placement": "top",
+			"endpoint": 0,
+			"selected": 0
+		},
+		{
+			"key": "field_chairforce_quick_view_display",
+			"label": "Quick View Display",
+			"name": "quick_view_display",
+			"aria-label": "",
+			"type": "button_group",
+			"instructions": "Choose how the quick view popup opens on product cards.",
+			"required": 0,
+			"conditional_logic": 0,
+			"wrapper": {
+				"width": "50",
+				"class": "",
+				"id": ""
+			},
+			"choices": {
+				"modal": "Modal",
+				"drawer": "Drawer"
+			},
+			"default_value": "drawer",
+			"return_format": "value",
+			"allow_null": 0,
+			"layout": "horizontal"
+		},
+		{
+			"key": "field_chairforce_quick_view_content",
+			"label": "Quick View Content",
+			"name": "quick_view_content",
+			"aria-label": "",
+			"type": "button_group",
+			"instructions": "Choose which product text appears below the price in quick view.",
+			"required": 0,
+			"conditional_logic": 0,
+			"wrapper": {
+				"width": "50",
+				"class": "",
+				"id": ""
+			},
+			"choices": {
+				"dimensions": "Dimensions",
+				"short_description": "Short Description"
+			},
+			"default_value": "dimensions",
+			"return_format": "value",
+			"allow_null": 0,
+			"layout": "horizontal"
+		},
+		{
+			"key": "field_chairforce_quick_view_request_quote",
+			"label": "Request a Quote in Quick View",
+			"name": "quick_view_request_quote_enabled",
+			"aria-label": "",
+			"type": "true_false",
+			"instructions": "Show the YITH Request a Quote button below Add to Cart in the quick view drawer. Requires YITH Request a Quote and the plugin's single-product quote setting.",
+			"required": 0,
+			"conditional_logic": 0,
+			"wrapper": {
+				"width": "50",
+				"class": "",
+				"id": ""
+			},
+			"message": "",
+			"default_value": 1,
+			"ui_on_text": "Show",
+			"ui_off_text": "Hide",
+			"ui": 1
+		},
+		{
+			"key": "field_63411c4d1cfff",
+			"label": "Enable Grid Guides",
+			"name": "enable_grid_guides",
+			"aria-label": "",
+			"type": "true_false",
+			"instructions": "",
+			"required": 0,
+			"conditional_logic": 0,
+			"wrapper": {
+				"width": "50",
+				"class": "",
+				"id": ""
+			},
+			"message": "",
+			"default_value": 1,
+			"allow_in_bindings": 1,
+			"ui_on_text": "",
+			"ui_off_text": "",
+			"ui": 1
+		},
+		{
+			"key": "field_66ed789f1b093",
+			"label": "Enable Style Switcher",
+			"name": "enable_style_switcher",
+			"aria-label": "",
+			"type": "true_false",
+			"instructions": "",
+			"required": 0,
+			"conditional_logic": 0,
+			"wrapper": {
+				"width": "50",
+				"class": "",
+				"id": ""
+			},
+			"message": "",
+			"default_value": 1,
+			"allow_in_bindings": 1,
+			"ui_on_text": "",
+			"ui_off_text": "",
+			"ui": 1
+		},
+		{
+			"key": "field_6147c9a6103a0",
+			"label": "Google Maps Key",
+			"name": "google_maps_key",
+			"aria-label": "",
+			"type": "text",
+			"instructions": "",
+			"required": 0,
+			"conditional_logic": 0,
+			"wrapper": {
+				"width": "",
+				"class": "",
+				"id": ""
+			},
+			"default_value": "",
+			"placeholder": "",
+			"prepend": "",
+			"append": "",
+			"maxlength": ""
+		},
+		{
+			"key": "field_633eaf8d8b3b8",
+			"label": "Analytics",
+			"name": "",
+			"aria-label": "",
+			"type": "tab",
+			"instructions": "",
+			"required": 0,
+			"conditional_logic": 0,
+			"wrapper": {
+				"width": "",
+				"class": "",
+				"id": ""
+			},
+			"placement": "top",
+			"endpoint": 0,
+			"selected": 0
+		},
+		{
+			"key": "field_633eafa88b3b9",
+			"label": "Head",
+			"name": "code_for_wp_head",
+			"aria-label": "",
+			"type": "textarea",
+			"instructions": "Code added here with be added to site head",
+			"required": 0,
+			"conditional_logic": 0,
+			"wrapper": {
+				"width": "",
+				"class": "",
+				"id": ""
+			},
+			"default_value": "",
+			"maxlength": "",
+			"rows": "",
+			"placeholder": "",
+			"new_lines": ""
+		},
+		{
+			"key": "field_633eb0178b3bc",
+			"label": "Footer",
+			"name": "code_for_wp_footer",
+			"aria-label": "",
+			"type": "textarea",
+			"instructions": "Code added here with be added to footer of the site",
+			"required": 0,
+			"conditional_logic": 0,
+			"wrapper": {
+				"width": "",
+				"class": "",
+				"id": ""
+			},
+			"default_value": "",
+			"maxlength": "",
+			"rows": "",
+			"placeholder": "",
+			"new_lines": ""
+		},
+		{
+			"key": "field_633eafe08b3ba",
+			"label": "Body Open",
+			"name": "code_for_wp_body_open",
+			"aria-label": "",
+			"type": "textarea",
+			"instructions": "Code added here with be added immediately after opening body tag",
+			"required": 0,
+			"conditional_logic": 0,
+			"wrapper": {
+				"width": "",
+				"class": "",
+				"id": ""
+			},
+			"default_value": "",
+			"maxlength": "",
+			"rows": "",
+			"placeholder": "",
+			"new_lines": ""
+		}
+	],
     "location": [
         [
             {
