@@ -99,26 +99,6 @@ function chairforce_get_product_delivery_information_html(): string {
 }
 
 /**
- * Global product info copy from theme options.
- *
- * @return string Safe HTML, or empty string when unset.
- */
-function chairforce_get_product_info_html(): string {
-
-	if ( ! function_exists( 'get_field' ) ) {
-		return '';
-	}
-
-	$raw = get_field( 'cf_product_info', 'option' );
-
-	if ( ! is_string( $raw ) ) {
-		return '';
-	}
-
-	return chairforce_get_product_wysiwyg_meta_html_from_raw( $raw );
-}
-
-/**
  * Format a raw WYSIWYG string for frontend output.
  *
  * @param string $raw Raw field value.

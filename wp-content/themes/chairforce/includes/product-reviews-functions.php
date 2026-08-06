@@ -108,7 +108,6 @@ function chairforce_is_product_tab_enabled( string $tab_key ): bool {
 		'cf_care'                   => 'product_tab_care_enabled',
 		'cf_parts'                  => 'product_tab_parts_enabled',
 		'cf_additional_information' => 'product_tab_additional_info_enabled',
-		'cf_product_info'           => 'product_tab_product_info_enabled',
 	];
 
 	if ( ! isset( $map[ $tab_key ] ) ) {

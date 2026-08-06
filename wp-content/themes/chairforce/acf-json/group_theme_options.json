@@ -842,7 +842,7 @@
 				"class": "",
 				"id": ""
 			},
-			"message": "Toggle custom single-product tabs. Each tab still requires content on the product (or theme options for Delivery / Product Info).",
+			"message": "Toggle custom single-product tabs. Each tab still requires content on the product (or theme options for Delivery Information).",
 			"new_lines": "wpautop",
 			"esc_html": 0
 		},
@@ -967,52 +967,12 @@
 			"ui": 1
 		},
 		{
-			"key": "field_chairforce_product_tab_product_info_enabled",
-			"label": "Product Info Tab",
-			"name": "product_tab_product_info_enabled",
-			"aria-label": "",
-			"type": "true_false",
-			"instructions": "",
-			"required": 0,
-			"conditional_logic": 0,
-			"wrapper": {
-				"width": "50",
-				"class": "",
-				"id": ""
-			},
-			"message": "",
-			"default_value": 1,
-			"ui_on_text": "Show",
-			"ui_off_text": "Hide",
-			"ui": 1
-		},
-		{
 			"key": "field_cf_product_delivery_information",
 			"label": "Delivery Information For Product Page",
 			"name": "cf_product_delivery_information",
 			"aria-label": "",
 			"type": "wysiwyg",
 			"instructions": "Global delivery copy shown on the single product page.",
-			"required": 0,
-			"conditional_logic": 0,
-			"wrapper": {
-				"width": "",
-				"class": "",
-				"id": ""
-			},
-			"default_value": "",
-			"tabs": "all",
-			"toolbar": "full",
-			"media_upload": 1,
-			"delay": 0
-		},
-		{
-			"key": "field_cf_product_info",
-			"label": "Product Info For Product Page",
-			"name": "cf_product_info",
-			"aria-label": "",
-			"type": "wysiwyg",
-			"instructions": "Global product info copy shown on the single product page (site-wide, not per product).",
 			"required": 0,
 			"conditional_logic": 0,
 			"wrapper": {

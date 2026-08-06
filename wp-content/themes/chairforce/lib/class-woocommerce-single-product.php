@@ -128,14 +128,6 @@ class WooCommerce_Single_Product {
 			];
 		}
 
-		if ( chairforce_is_product_tab_enabled( 'cf_product_info' ) && chairforce_get_product_info_html() ) {
-			$tabs['cf_product_info'] = [
-				'title'    => __( 'Product Info', 'chairforce' ),
-				'priority' => 70,
-				'callback' => [ $this, 'render_product_info_tab' ],
-			];
-		}
-
 		return $this->filter_reviews_tab( $tabs );
 	}
 
@@ -252,20 +244,6 @@ class WooCommerce_Single_Product {
 		chairforce_render_product_tab_panel(
 			'delivery-information',
 			chairforce_get_product_delivery_information_html()
-		);
-	}
-
-	/**
-	 * Output the Product Info tab panel.
-	 *
-	 * @param string               $key Tab key.
-	 * @param array<string, mixed> $tab Tab config.
-	 * @return void
-	 */
-	public function render_product_info_tab( string $key, array $tab ): void {
-		chairforce_render_product_tab_panel(
-			'product-info',
-			chairforce_get_product_info_html()
 		);
 	}
 
