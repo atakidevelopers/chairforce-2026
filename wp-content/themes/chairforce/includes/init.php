@@ -29,6 +29,8 @@ require_once get_stylesheet_directory() . '/includes/product-tabs-functions.php'
 require_once get_stylesheet_directory() . '/includes/product-features-functions.php';
 require_once get_stylesheet_directory() . '/includes/product-reviews-functions.php';
 require_once get_stylesheet_directory() . '/includes/accordion-functions.php';
+require_once get_stylesheet_directory() . '/includes/category-swiper-functions.php';
+require_once get_stylesheet_directory() . '/includes/product-cat-swiper-functions.php';
 require_once get_stylesheet_directory() . '/includes/product-faqs-functions.php';
 
 /**

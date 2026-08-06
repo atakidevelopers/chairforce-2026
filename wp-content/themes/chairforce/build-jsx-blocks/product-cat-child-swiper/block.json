@@ -1,0 +1,47 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "chairforce/product-cat-child-swiper",
+  "version": "1.0.0",
+  "title": "Product Category Child Swiper",
+  "category": "woocommerce",
+  "description": "Horizontal swiper of immediate child product categories on taxonomy archives.",
+  "keywords": [
+    "woocommerce",
+    "category",
+    "swiper",
+    "archive"
+  ],
+  "textdomain": "chairforce",
+  "attributes": {
+    "showArrowsDesktop": {
+      "type": "boolean",
+      "default": true
+    },
+    "showArrowsMobile": {
+      "type": "boolean",
+      "default": false
+    },
+    "showProgressBar": {
+      "type": "boolean",
+      "default": true
+    },
+    "showLabels": {
+      "type": "boolean",
+      "default": true
+    }
+  },
+  "supports": {
+    "html": false,
+    "inserter": true,
+    "reusable": false,
+    "lock": false,
+    "align": [
+      "wide",
+      "full"
+    ]
+  },
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "render": "file:./render.php"
+}

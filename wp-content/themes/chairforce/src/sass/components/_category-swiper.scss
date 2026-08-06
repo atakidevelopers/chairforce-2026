@@ -1,0 +1,171 @@
+.cf-category-swiper {
+	--cf-category-swiper-slide-width: 6.25rem; // Matches WP core thumbnail (100px).
+	--cf-category-swiper-nav-size: 2.75rem;
+	--cf-category-swiper-track-gap: #{$spacing-small};
+	--cf-category-swiper-scrollbar-gap: #{$spacing-medium};
+
+	width: 100%;
+
+	&__viewport {
+		width: 100%;
+	}
+
+	&__track {
+		align-items: stretch;
+		display: flex;
+		gap: var(--cf-category-swiper-track-gap);
+	}
+
+	&__swiper {
+		flex: 1 1 auto;
+		min-width: 0;
+		overflow: hidden;
+		padding-bottom: calc(var(--cf-category-swiper-scrollbar-gap) + 2px);
+		position: relative;
+
+		// Beat Swiper's `.swiper-slide { width: 100% }` — same single-class specificity, but Swiper CSS loads later.
+		.swiper-slide.cf-category-swiper__slide {
+			flex-shrink: 0;
+			height: auto;
+			width: var(--cf-category-swiper-slide-width);
+		}
+	}
+
+	&__card {
+		color: inherit;
+		display: flex;
+		flex-direction: column;
+		gap: $spacing-xx-small;
+		height: 100%;
+		text-decoration: none;
+
+		&:not(.cf-category-swiper__card--no-label) {
+			padding-bottom: var(--cf-category-swiper-scrollbar-gap);
+		}
+
+		&:hover,
+		&:focus-visible {
+			.cf-category-swiper__label {
+				text-decoration: underline;
+			}
+		}
+	}
+
+	&__media {
+		align-items: center;
+		aspect-ratio: 1;
+		background-color: $color-white;
+		display: flex;
+		justify-content: center;
+		overflow: hidden;
+		padding: $spacing-xx-small;
+	}
+
+	&__image {
+		display: block;
+		height: auto;
+		max-height: 100%;
+		max-width: 100%;
+		object-fit: contain;
+		width: 100%;
+
+		&--placeholder {
+			height: 100%;
+			object-fit: contain;
+			opacity: 0.45;
+			width: 100%;
+		}
+	}
+
+	&__label {
+		display: block;
+		font-size: $font-size-small;
+		font-weight: $font-weight-semi-bold;
+		line-height: 1.3;
+		text-align: center;
+	}
+
+	&__nav {
+		display: flex;
+		flex: 0 0 auto;
+		flex-direction: column;
+		gap: $spacing-xx-small;
+
+		&[hidden] {
+			display: none !important;
+		}
+	}
+
+	&__arrow {
+		align-items: center;
+		background-color: transparent;
+		border: 1px solid currentColor;
+		color: inherit;
+		cursor: pointer;
+		display: inline-flex;
+		flex-shrink: 0;
+		height: var(--cf-category-swiper-nav-size);
+		justify-content: center;
+		padding: 0;
+		transition:
+			background-color 0.2s ease,
+			border-color 0.2s ease,
+			color 0.2s ease;
+		width: var(--cf-category-swiper-nav-size);
+
+		&::before {
+			border-right: 2px solid currentColor;
+			border-top: 2px solid currentColor;
+			content: "";
+			display: block;
+			height: 0.55rem;
+			width: 0.55rem;
+		}
+
+		&--prev::before {
+			transform: rotate(-135deg);
+		}
+
+		&--next::before {
+			transform: rotate(45deg);
+		}
+
+		&--disabled {
+			cursor: default;
+			opacity: 0.35;
+			pointer-events: none;
+		}
+
+		&:not(.cf-category-swiper__arrow--disabled):hover,
+		&:not(.cf-category-swiper__arrow--disabled):focus-visible {
+			background-color: $color-white;
+			color: $color-body;
+		}
+	}
+
+	&__scrollbar {
+		background: rgb(255 255 255 / 20%);
+		border-radius: 999px;
+		bottom: 0;
+		height: 2px;
+		left: 0;
+		position: absolute;
+		width: 100%;
+		z-index: 1;
+
+		.swiper-scrollbar-drag {
+			background: $color-body;
+			border-radius: inherit;
+		}
+	}
+}
+
+// Block wrapper — archive template stacks title above swiper on small screens.
+.wp-block-chairforce-product-cat-child-swiper.cf-category-swiper {
+	margin-top: $spacing-medium;
+
+	@include breakpoint(medium) {
+		margin-top: 0;
+	}
+}
+

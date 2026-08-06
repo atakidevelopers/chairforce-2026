@@ -9,6 +9,10 @@ import { initWishlist } from './shared/wishlist';
 import { initSingleProductSwatches } from './single-product-swatches';
 import { initProductReviewsFormToggle } from './product-reviews-form-toggle';
 import { initAccordions } from './accordion';
+import {
+	bindCategorySwiperListeners,
+	initCategorySwipers,
+} from './category-swiper';
 import { initSiteHeader } from './site-header';
 import { initWooCommerceQuantity } from './woocommerce-quantity';
 
@@ -26,6 +30,8 @@ document.addEventListener( 'DOMContentLoaded', () => {
 	initSingleProductSwatches();
 	initProductReviewsFormToggle();
 	initAccordions();
+	initCategorySwipers();
+	bindCategorySwiperListeners();
 	initQuickView();
 	initProductFilters();
 	initProductViewSwitcher();

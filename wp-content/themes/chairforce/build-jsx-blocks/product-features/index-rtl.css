@@ -1,1 +1,15 @@
-.cf-product-features-editor .cf-product-features__placeholder{background:rgba(0,0,0,.08);border-radius:999px;display:block;height:2.5rem;width:2.5rem}.cf-product-features-editor .cf-product-features-editor__note{color:rgba(0,0,0,.55);font-size:.8125rem;margin:.75rem 0 0}
+/*!********************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./src-jsx-blocks/product-features/editor.scss ***!
+  \********************************************************************************************************************************************************************************************************************************************************************/
+.cf-product-features-editor .cf-product-features__placeholder {
+  display: block;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.08);
+}
+.cf-product-features-editor .cf-product-features-editor__note {
+  margin: 0.75rem 0 0;
+  font-size: 0.8125rem;
+  color: rgba(0, 0, 0, 0.55);
+}
