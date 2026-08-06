@@ -11,6 +11,7 @@
  * - Normalise gallery-tabs gallery_images meta
  * - Normalise JetEngine options pages to native ACF storage
  * - Normalise product variation galleries (Woodmart wd_additional_variation_images_data → WC native _product_image_gallery)
+ * - Import FAQs from Elementor accordion page (#1510) → chairforce_faq + chairforce_faq_category
  * Version:           1.0.0
  * Requires PHP:      7.4
  * Requires at least: 6.0
@@ -69,6 +70,7 @@ add_filter(
 		$jobs[] = ChairforceDataNormalise\Jobs\Normalise_Gallery_Tabs_Images::class;
 		$jobs[] = ChairforceDataNormalise\Jobs\Normalise_Jetengine_Options_Pages::class;
 		$jobs[] = ChairforceDataNormalise\Jobs\Normalise_Variation_Gallery::class;
+		$jobs[] = ChairforceDataNormalise\Jobs\Import_Elementor_Faqs::class;
 
 		return $jobs;
 	}
