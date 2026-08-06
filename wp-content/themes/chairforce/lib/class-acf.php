@@ -71,6 +71,10 @@ class Acf {
 			'acf_all_fields_prepare'
 		) );
 
+		add_filter( 'acf/fields/taxonomy/query/key=field_faq_category_term', [ $this, 'acf_faq_product_cat_taxonomy_query' ] );
+		add_filter( 'acf/fields/taxonomy/result/key=field_faq_category_term', [ $this, 'acf_faq_product_cat_taxonomy_result' ], 10, 4 );
+		add_filter( 'acf/validate_value/key=field_faq_category_term', [ $this, 'acf_validate_unique_faq_category_row' ], 10, 4 );
+
 	}
 
 	/**
@@ -93,6 +97,16 @@ class Acf {
 				'redirect'   => false,
 				// N&C infinity mark, derived from assets/images/nc-favicon.svg (cropped + recolored for the dark admin-menu background).
 				'icon_url'   => 'data:image/svg+xml;base64,' . base64_encode( file_get_contents( get_theme_file_path( 'assets/images/nc-menu-icon.svg' ) ) ),
+			]
+		);
+
+		acf_add_options_sub_page(
+			[
+				'page_title'  => esc_html__( 'FAQ Configurations', 'chairforce' ),
+				'menu_title'  => esc_html__( 'FAQ Configurations', 'chairforce' ),
+				'menu_slug'   => 'chairforce-faq-configurations',
+				'parent_slug' => 'edit.php?post_type=chairforce_faq',
+				'capability'  => 'manage_options',
 			]
 		);
 
@@ -286,6 +300,102 @@ class Acf {
 		];
 
 		return $field;
+	}
+
+	/**
+	 * FAQ Configurations: include all product categories in the picker query.
+	 *
+	 * @param array<string, mixed> $args    Taxonomy query args.
+	 * @param array<string, mixed> $field   ACF field.
+	 * @param int                  $post_id Post ID.
+	 * @return array<string, mixed>
+	 *
+	 * @hooked acf/fields/taxonomy/query/key=field_faq_category_term
+	 */
+	public function acf_faq_product_cat_taxonomy_query( array $args, array $field, int $post_id ): array {
+		unset( $field, $post_id );
+
+		$args['taxonomy']   = 'product_cat';
+		$args['hide_empty'] = false;
+		$args['orderby']    = 'name';
+		$args['order']      = 'ASC';
+
+		return $args;
+	}
+
+	/**
+	 * FAQ Configurations: indent child categories in the taxonomy select.
+	 *
+	 * @param string   $text    Option label.
+	 * @param WP_Term  $term    Term object.
+	 * @param array    $field   ACF field.
+	 * @param int|null $post_id Post ID.
+	 * @return string
+	 *
+	 * @hooked acf/fields/taxonomy/result/key=field_faq_category_term
+	 */
+	public function acf_faq_product_cat_taxonomy_result( string $text, $term, array $field, $post_id ): string {
+		unset( $field, $post_id );
+
+		if ( ! $term instanceof \WP_Term ) {
+			return $text;
+		}
+
+		$depth = count( get_ancestors( (int) $term->term_id, 'product_cat', 'taxonomy' ) );
+
+		if ( $depth < 1 ) {
+			return $text;
+		}
+
+		return str_repeat( '— ', $depth ) . html_entity_decode( $term->name, ENT_QUOTES, 'UTF-8' );
+	}
+
+	/**
+	 * Prevent duplicate product category rows in FAQ Configurations repeater.
+	 *
+	 * @param mixed                $valid   Validation state.
+	 * @param mixed                $value   Field value.
+	 * @param array<string, mixed> $field   ACF field.
+	 * @param string               $input   Input name.
+	 * @return mixed
+	 *
+	 * @hooked acf/validate_value/key=field_faq_category_term
+	 */
+	public function acf_validate_unique_faq_category_row( $valid, $value, array $field, string $input ) {
+		unset( $field );
+
+		if ( true !== $valid || empty( $value ) ) {
+			return $valid;
+		}
+
+		$term_id = is_array( $value ) ? absint( reset( $value ) ) : absint( $value );
+
+		if ( ! $term_id ) {
+			return $valid;
+		}
+
+		if ( ! preg_match( '/acf\[faq_category_rows\]\[row-(\d+)\]/', $input, $matches ) ) {
+			return $valid;
+		}
+
+		$current_row = $matches[1];
+		$rows        = isset( $_POST['acf']['faq_category_rows'] ) && is_array( $_POST['acf']['faq_category_rows'] )
+			? wp_unslash( $_POST['acf']['faq_category_rows'] )
+			: [];
+
+		foreach ( $rows as $row_key => $row ) {
+			if ( ! is_array( $row ) || $row_key === $current_row ) {
+				continue;
+			}
+
+			$row_term = isset( $row['product_category'] ) ? absint( $row['product_category'] ) : 0;
+
+			if ( $row_term === $term_id ) {
+				return esc_html__( 'This product category is already assigned in another row.', 'chairforce' );
+			}
+		}
+
+		return $valid;
 	}
 
 }

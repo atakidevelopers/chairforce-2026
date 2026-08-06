@@ -1,0 +1,110 @@
+{
+    "key": "group_faq_configurations",
+    "title": "FAQ Configurations",
+    "fields": [
+        {
+            "key": "field_faq_config_tab_global",
+            "label": "Global FAQs",
+            "name": "",
+            "type": "tab",
+            "placement": "top",
+            "endpoint": 0
+        },
+        {
+            "key": "field_faq_global",
+            "label": "Global FAQs",
+            "name": "faq_global",
+            "type": "relationship",
+            "instructions": "These FAQs appear on every product (after product-specific and category FAQs). Order is preserved.",
+            "required": 0,
+            "post_type": [
+                "chairforce_faq"
+            ],
+            "filters": [
+                "search"
+            ],
+            "return_format": "id",
+            "min": 0,
+            "max": 0,
+            "elements": ""
+        },
+        {
+            "key": "field_faq_config_tab_category",
+            "label": "Product Category FAQs",
+            "name": "",
+            "type": "tab",
+            "placement": "top",
+            "endpoint": 0
+        },
+        {
+            "key": "field_faq_category_rows",
+            "label": "Product Category FAQs",
+            "name": "faq_category_rows",
+            "type": "repeater",
+            "instructions": "Assign FAQs to a product category. Products in that category (or its children) receive these FAQs after product-specific selections.",
+            "required": 0,
+            "layout": "block",
+            "button_label": "Add Category Row",
+            "min": 0,
+            "max": 0,
+            "sub_fields": [
+                {
+                    "key": "field_faq_category_term",
+                    "label": "Product Category",
+                    "name": "product_category",
+                    "type": "taxonomy",
+                    "required": 1,
+                    "taxonomy": "product_cat",
+                    "field_type": "select",
+                    "allow_null": 0,
+                    "add_term": 0,
+                    "save_terms": 0,
+                    "load_terms": 0,
+                    "return_format": "id",
+                    "multiple": 0,
+                    "wrapper": {
+                        "width": "50"
+                    },
+                    "parent_repeater": "field_faq_category_rows"
+                },
+                {
+                    "key": "field_faq_category_posts",
+                    "label": "FAQs",
+                    "name": "faqs",
+                    "type": "relationship",
+                    "required": 0,
+                    "post_type": [
+                        "chairforce_faq"
+                    ],
+                    "filters": [
+                        "search"
+                    ],
+                    "return_format": "id",
+                    "min": 0,
+                    "max": 0,
+                    "elements": "",
+                    "wrapper": {
+                        "width": "50"
+                    },
+                    "parent_repeater": "field_faq_category_rows"
+                }
+            ]
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "options_page",
+                "operator": "==",
+                "value": "chairforce-faq-configurations"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "active": true,
+    "modified": 1753710400
+}

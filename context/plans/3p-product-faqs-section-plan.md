@@ -1,16 +1,16 @@
 # 3p — Product FAQs Section — Implementation Plan
 
-## Status: ⏳ Not started
+## Status: 🔄 In progress
 
 Plan locked from product-page review (6 Aug 2026).
 
 | Chunk | Scope | Status |
 |---|---|---|
-| 1 | ACF: FAQ Configurations options sub-page + product field | ⏳ |
-| 2 | FAQ resolution helpers (`includes/product-faqs-functions.php`) | ⏳ |
-| 3 | `chairforce/product-faqs` dynamic block (accordion + empty state only) | ⏳ |
-| 4 | Sass (Figma accordion) + true-accordion JS + template wrapper | ⏳ |
-| 5 | Browser QA + docs (`PROGRESS.md`) | ⏳ |
+| 1 | ACF: FAQ Configurations options sub-page + product field | ✅ |
+| 2 | FAQ resolution helpers (`includes/product-faqs-functions.php`) | ✅ |
+| 3 | `chairforce/product-faqs` dynamic block (accordion + empty state only) | ✅ |
+| 4 | Sass (Figma accordion) + true-accordion JS + template wrapper | ✅ |
+| 5 | Browser QA + docs (`PROGRESS.md`) | 🔄 |
 
 ## Goal
 

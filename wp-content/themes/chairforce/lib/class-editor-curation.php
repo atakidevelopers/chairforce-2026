@@ -131,6 +131,7 @@ class Editor_Curation {
 			|| 'chairforce/product-features' === $block_type
 			|| 'chairforce/product-reviews-summary' === $block_type
 			|| 'chairforce/product-reviews' === $block_type
+			|| 'chairforce/product-faqs' === $block_type
 		) {
 			$args['supports']['inserter'] = false;
 		}

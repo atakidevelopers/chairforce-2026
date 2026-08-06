@@ -31,6 +31,24 @@
             "toolbar": "full",
             "media_upload": 1,
             "delay": 0
+        },
+        {
+            "key": "field_product_faqs",
+            "label": "Product FAQs",
+            "name": "product_faqs",
+            "type": "relationship",
+            "instructions": "FAQs shown only on this product. These appear first in the product FAQ accordion.",
+            "required": 0,
+            "post_type": [
+                "chairforce_faq"
+            ],
+            "filters": [
+                "search"
+            ],
+            "return_format": "id",
+            "min": 0,
+            "max": 0,
+            "elements": ""
         }
     ],
     "location": [

@@ -1,0 +1,13 @@
+// Product FAQs accordion — complements block styles from build-jsx-blocks/product-faqs.
+
+.cf-product-faqs {
+	&__answer {
+		> :first-child {
+			margin-top: 0;
+		}
+
+		> :last-child {
+			margin-bottom: 0;
+		}
+	}
+}

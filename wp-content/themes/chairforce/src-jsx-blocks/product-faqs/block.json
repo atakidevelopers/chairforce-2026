@@ -1,0 +1,30 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "chairforce/product-faqs",
+  "version": "1.0.0",
+  "title": "Product FAQs",
+  "category": "woocommerce",
+  "description": "Accordion list of FAQs resolved from global, category, and product-specific configuration.",
+  "keywords": [
+    "woocommerce",
+    "product",
+    "faq",
+    "accordion"
+  ],
+  "textdomain": "chairforce",
+  "usesContext": [
+    "postId"
+  ],
+  "supports": {
+    "html": false,
+    "inserter": true,
+    "reusable": false,
+    "lock": false,
+    "align": [ "wide", "full" ]
+  },
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css",
+  "render": "file:./render.php"
+}

@@ -28,6 +28,7 @@ require_once get_stylesheet_directory() . '/includes/woocommerce-breadcrumb-func
 require_once get_stylesheet_directory() . '/includes/product-tabs-functions.php';
 require_once get_stylesheet_directory() . '/includes/product-features-functions.php';
 require_once get_stylesheet_directory() . '/includes/product-reviews-functions.php';
+require_once get_stylesheet_directory() . '/includes/product-faqs-functions.php';
 
 /**
  * Register CPTs
