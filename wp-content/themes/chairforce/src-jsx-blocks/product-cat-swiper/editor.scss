@@ -1,0 +1,94 @@
+@import "../../src/sass/settings";
+@import "../../src/sass/theme-json-variable";
+
+// Block-scoped editor preview — mirrors storefront card markup without Swiper JS.
+.wp-block-chairforce-product-cat-swiper,
+.cf-product-cat-swiper-editor {
+	--cf-category-swiper-slide-width: 6.25rem;
+	--cf-category-swiper-scrollbar-gap: #{$spacing-medium};
+
+	&__hint {
+		color: $color-neutral;
+		font-size: $font-size-small;
+		margin: 0;
+		text-align: center;
+	}
+
+	&__searching {
+		align-items: center;
+		color: $color-neutral;
+		display: flex;
+		font-size: $font-size-small;
+		gap: $spacing-x-small;
+		margin: $spacing-x-small 0 0;
+	}
+
+	.cf-category-swiper__flex-list {
+		display: flex;
+		flex-wrap: wrap;
+		gap: $spacing-small;
+	}
+
+	.cf-category-swiper__slide {
+		flex: 0 0 auto;
+		width: var(--cf-category-swiper-slide-width);
+	}
+
+	.cf-category-swiper__card {
+		color: inherit;
+		display: flex;
+		flex-direction: column;
+		gap: $spacing-xx-small;
+		height: 100%;
+		pointer-events: none;
+		text-decoration: none;
+
+		&:not(.cf-category-swiper__card--no-label) {
+			padding-bottom: var(--cf-category-swiper-scrollbar-gap);
+		}
+	}
+
+	.cf-category-swiper__media {
+		align-items: center;
+		aspect-ratio: 1;
+		background-color: $color-white;
+		display: flex;
+		justify-content: center;
+		overflow: hidden;
+		padding: $spacing-xx-small;
+	}
+
+	.cf-category-swiper__image {
+		display: block;
+		height: auto;
+		max-height: 100%;
+		max-width: 100%;
+		object-fit: contain;
+		width: 100%;
+
+		&--placeholder {
+			height: 100%;
+			object-fit: contain;
+			opacity: 0.45;
+			width: 100%;
+		}
+	}
+
+	.cf-category-swiper__label {
+		display: block;
+		font-size: $font-size-small;
+		font-weight: $font-weight-semi-bold;
+		line-height: 1.3;
+		text-align: center;
+	}
+
+	.swiper-wrapper{
+		display: flex;
+		justify-content: flex-start;
+		flex-wrap: wrap;
+		gap: 12px;
+	}
+	.cf-category-swiper__nav{
+		display: none;
+	}
+}

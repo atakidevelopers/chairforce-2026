@@ -1,0 +1,73 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "chairforce/product-cat-swiper",
+  "version": "1.0.0",
+  "title": "Product Category Swiper",
+  "category": "woocommerce",
+  "description": "Horizontal swiper of selected product categories.",
+  "keywords": [
+    "woocommerce",
+    "category",
+    "swiper",
+    "carousel"
+  ],
+  "textdomain": "chairforce",
+  "attributes": {
+    "terms": {
+      "type": "array",
+      "default": []
+    },
+    "showArrowsDesktop": {
+      "type": "boolean",
+      "default": true
+    },
+    "showArrowsMobile": {
+      "type": "boolean",
+      "default": false
+    },
+    "showProgressBar": {
+      "type": "boolean",
+      "default": true
+    },
+    "showLabels": {
+      "type": "boolean",
+      "default": true
+    },
+    "orderBy": {
+      "type": "string",
+      "default": "manual",
+      "enum": [
+        "manual",
+        "menu_order",
+        "name",
+        "slug",
+        "term_id",
+        "count",
+        "description",
+        "term_group"
+      ]
+    },
+    "order": {
+      "type": "string",
+      "default": "asc",
+      "enum": [
+        "asc",
+        "desc"
+      ]
+    }
+  },
+  "supports": {
+    "html": false,
+    "inserter": true,
+    "reusable": true,
+    "lock": false,
+    "align": [
+      "wide",
+      "full"
+    ]
+  },
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "render": "file:./render.php"
+}

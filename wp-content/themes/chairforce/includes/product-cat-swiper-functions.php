@@ -79,6 +79,91 @@ function chairforce_get_category_swiper_items_from_term_ids( array $term_ids ): 
 }
 
 /**
+ * Allowed order values for {@see chairforce_sort_product_cat_swiper_term_ids()}.
+ *
+ * @return string[]
+ */
+function chairforce_get_product_cat_swiper_term_orderby_options(): array {
+	return [
+		'manual',
+		'menu_order',
+		'name',
+		'slug',
+		'term_id',
+		'count',
+		'description',
+		'term_group',
+	];
+}
+
+/**
+ * Normalize block order attribute for WP_Term_Query.
+ *
+ * @param string $order Block order setting (`asc` or `desc`).
+ * @return string `ASC` or `DESC`.
+ */
+function chairforce_normalize_product_cat_swiper_term_order( string $order ): string {
+	return 'desc' === strtolower( $order ) ? 'DESC' : 'ASC';
+}
+
+/**
+ * Sort selected product_cat term IDs for the manual category swiper block.
+ *
+ * @param int[]  $term_ids Term IDs in editor selection order.
+ * @param string $order_by Block order setting. `manual` preserves selection order.
+ * @param string $order    Sort direction (`asc` or `desc`). Ignored when `$order_by` is `manual`.
+ * @return int[]
+ */
+function chairforce_sort_product_cat_swiper_term_ids( array $term_ids, string $order_by = 'manual', string $order = 'asc' ): array {
+	$term_ids = array_values(
+		array_filter(
+			array_map( 'absint', $term_ids ),
+			static function ( int $term_id ): bool {
+				return $term_id > 0;
+			}
+		)
+	);
+
+	if ( empty( $term_ids ) || 'manual' === $order_by ) {
+		return $term_ids;
+	}
+
+	if ( ! in_array( $order_by, chairforce_get_product_cat_swiper_term_orderby_options(), true ) ) {
+		return $term_ids;
+	}
+
+	$terms = get_terms(
+		[
+			'taxonomy'   => 'product_cat',
+			'include'    => $term_ids,
+			'hide_empty' => false,
+			'orderby'    => $order_by,
+			'order'      => chairforce_normalize_product_cat_swiper_term_order( $order ),
+		]
+	);
+
+	if ( is_wp_error( $terms ) || empty( $terms ) ) {
+		return $term_ids;
+	}
+
+	$sorted_ids = array_map(
+		static function ( WP_Term $term ): int {
+			return (int) $term->term_id;
+		},
+		$terms
+	);
+
+	// Keep any unmatched IDs (edge case) in their original selection order.
+	foreach ( $term_ids as $term_id ) {
+		if ( ! in_array( $term_id, $sorted_ids, true ) ) {
+			$sorted_ids[] = $term_id;
+		}
+	}
+
+	return $sorted_ids;
+}
+
+/**
  * Get immediate child product_cat terms for a parent term.
  *
  * @param int $parent_term_id Parent term ID.

@@ -105,6 +105,35 @@ function chairforce_get_category_swiper_html( array $items, array $args = [] ): 
 }
 
 /**
+ * Render a static flex row of category cards (editor preview — no Swiper JS).
+ *
+ * @param array<int, array<string, mixed>> $items Swiper slides.
+ * @param array<string, mixed>             $args  Display options.
+ * @return string
+ */
+function chairforce_get_category_swiper_flex_list_html( array $items, array $args = [] ): string {
+	if ( empty( $items ) ) {
+		return '';
+	}
+
+	$options = chairforce_normalize_category_swiper_args( $args );
+	$options['static_slide'] = true;
+
+	ob_start();
+	?>
+	<div class="cf-category-swiper__flex-list">
+		<?php
+		foreach ( $items as $item ) {
+			echo chairforce_get_category_swiper_slide_html( $item, $options ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in helper.
+		}
+		?>
+	</div>
+	<?php
+
+	return (string) ob_get_clean();
+}
+
+/**
  * Render one swiper slide.
  *
  * @param array<string, mixed> $item Slide config.
@@ -128,9 +157,13 @@ function chairforce_get_category_swiper_slide_html( array $item, array $options 
 		$card_classes .= ' cf-category-swiper__card--no-label';
 	}
 
+	$slide_classes = ! empty( $options['static_slide'] )
+		? 'cf-category-swiper__slide cf-category-swiper__slide--static'
+		: 'swiper-slide cf-category-swiper__slide';
+
 	ob_start();
 	?>
-	<div class="swiper-slide cf-category-swiper__slide"<?php echo $item_id > 0 ? ' data-term-id="' . esc_attr( (string) $item_id ) . '"' : ''; ?>>
+	<div class="<?php echo esc_attr( $slide_classes ); ?>"<?php echo $item_id > 0 ? ' data-term-id="' . esc_attr( (string) $item_id ) . '"' : ''; ?>>
 		<a class="<?php echo esc_attr( $card_classes ); ?>" href="<?php echo esc_url( $url ); ?>">
 			<span class="cf-category-swiper__media">
 				<?php echo chairforce_get_category_swiper_slide_image_html( $image_id, $title ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in helper. ?>
