@@ -68,6 +68,37 @@ wp-content/themes/chairforce/
 ```
 **NOT** in the repository root!
 
+## ⚠️ **PHP & WP-CLI — use DDEV (not the host shell)**
+
+This project runs in **DDEV** (`chairforce-2026`, https://chairforce-2026.test).
+Host `php` and `wp` are **not** wired to WordPress — always use DDEV from the
+**repository root**:
+
+```bash
+cd /path/to/chairforce-2026   # repo root — NOT wp-content/themes/chairforce/
+
+# WP-CLI (options, posts, meta, eval, db queries, etc.)
+ddev wp option get woocommerce_enable_reviews
+ddev wp post meta get <product_id> parts --format=json
+ddev wp eval 'echo get_bloginfo("name");'
+
+# PHP one-offs inside the web container (same PHP/WP as the site)
+ddev exec php -r 'require "wp-load.php"; echo get_option("siteurl");'
+ddev php path/to/script.php   # if the script expects wp-load.php
+
+# Interactive shell in the web container
+ddev ssh
+```
+
+**When to use which:**
+- **Theme builds** (`npm run build`, etc.) → theme directory on the host (see above).
+- **WordPress/PHP inspection, migrations, WP-CLI** → `ddev wp` / `ddev exec php` from repo root.
+
+Do not report “WP-CLI unavailable” without trying `ddev wp` first.
+
+**Note:** The legacy live/reference site may be a separate DDEV project
+(`chairforce`, not `chairforce-2026`) — this repo’s DDEV is the rebuild workspace.
+
 ## Key Theme Concepts
 
 - **Dual Block System**: ACF (quick setup) + JSX (preferred approach)

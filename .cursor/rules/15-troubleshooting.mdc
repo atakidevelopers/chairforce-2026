@@ -6,6 +6,25 @@ alwaysApply: true
 
 # Chairforce Theme Troubleshooting
 
+## DDEV — PHP & WP-CLI
+
+WordPress runs in DDEV. Use **`ddev wp`** and **`ddev exec php`** from the
+**repository root** — not host `wp`/`php` (they lack WP bootstrap).
+
+```bash
+cd /path/to/chairforce-2026
+
+ddev wp plugin list
+ddev wp option get woocommerce_enable_reviews
+ddev wp post list --post_type=product --fields=ID,post_title --format=table
+ddev wp db query "SELECT option_value FROM wp_options WHERE option_name='woocommerce_enable_reviews'"
+
+# Theme debug log (inside container path mirrors project mount)
+ddev exec tail -20 wp-content/themes/chairforce/debug.log
+```
+
+See also: [Main Rules](00-main-rules.mdc) — DDEV section.
+
 ## Chairforce-Specific Debug Functions
 
 ### **chairforce_write_log()**
