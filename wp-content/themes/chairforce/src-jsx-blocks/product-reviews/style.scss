@@ -1,5 +1,6 @@
 @import "../../src/sass/settings";
 @import "../../src/sass/icon-font/variables";
+@import "../../src/sass/icon-font/mixins";
 @import "../../src/sass/components/pagination";
 
 .cf-product-reviews {
@@ -83,7 +84,12 @@
 	}
 
 	&__verified {
+		@include cf-icon-button( 'badge-check', left, $spacing-xx-small );
+
+		color: $color-tertiary;
 		font-size: $font-size-small;
+		font-weight: 600;
+		line-height: 1.2;
 		margin: 0;
 	}
 

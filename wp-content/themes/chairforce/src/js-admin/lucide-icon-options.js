@@ -40,6 +40,7 @@ export const CHAIRFORCE_LUCIDE_ICON_OPTIONS = [
 	{ slug: 'mail', label: 'Mail' },
 	{ slug: 'check', label: 'Check' },
 	{ slug: 'check-circle', label: 'Check Circle' },
+	{ slug: 'badge-check', label: 'Badge Check' },
 	{ slug: 'tag', label: 'Tag' },
 	{ slug: 'filter', label: 'Filter' },
 	{ slug: 'sliders-horizontal', label: 'Sliders Horizontal' },
