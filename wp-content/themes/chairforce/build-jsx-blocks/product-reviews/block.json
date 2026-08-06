@@ -1,0 +1,53 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "chairforce/product-reviews",
+  "version": "1.0.0",
+  "title": "Product Reviews",
+  "category": "woocommerce",
+  "description": "Review list, pagination, and submission form for the current product.",
+  "keywords": [
+    "woocommerce",
+    "product",
+    "reviews",
+    "comments"
+  ],
+  "textdomain": "chairforce",
+  "usesContext": [
+    "postId"
+  ],
+  "attributes": {
+    "reviewsPerPage": {
+      "type": "number",
+      "default": 3
+    },
+    "displayReviewsSummary": {
+      "type": "boolean",
+      "default": true
+    },
+    "backgroundColor": {
+      "type": "string",
+      "default": "background"
+    }
+  },
+  "supports": {
+    "html": false,
+    "inserter": true,
+    "reusable": false,
+    "lock": false,
+    "align": [
+      "wide",
+      "full"
+    ],
+    "color": {
+      "background": true
+    },
+    "spacing": {
+      "padding": true
+    }
+  },
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css",
+  "render": "file:./render.php"
+}

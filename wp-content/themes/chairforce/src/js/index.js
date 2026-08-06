@@ -7,6 +7,7 @@ import { initProductCardAddToCart } from './shared/product-card-add-to-cart';
 import { initProductGridSwatches } from './shared/product-grid-swatches';
 import { initWishlist } from './shared/wishlist';
 import { initSingleProductSwatches } from './single-product-swatches';
+import { initProductReviewsFormToggle } from './product-reviews-form-toggle';
 import { initSiteHeader } from './site-header';
 import { initWooCommerceQuantity } from './woocommerce-quantity';
 
@@ -22,6 +23,7 @@ document.addEventListener( 'DOMContentLoaded', () => {
 	initProductSearchForms();
 	initProductGridSwatches();
 	initSingleProductSwatches();
+	initProductReviewsFormToggle();
 	initQuickView();
 	initProductFilters();
 	initProductViewSwitcher();

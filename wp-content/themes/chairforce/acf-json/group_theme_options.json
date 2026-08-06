@@ -760,6 +760,187 @@
             "ui": 1
         },
         {
+            "key": "field_chairforce_product_reviews_display",
+            "label": "Reviews Display",
+            "name": "product_reviews_display",
+            "aria-label": "",
+            "type": "button_group",
+            "instructions": "Section = standalone reviews block below product tabs. Tab = WooCommerce Reviews tab only. Enable/disable reviews globally under WooCommerce → Settings → Products → Enable product reviews.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "section": "Section",
+                "tab": "Tab"
+            },
+            "default_value": "section",
+            "return_format": "value",
+            "allow_null": 0,
+            "layout": "horizontal"
+        },
+        {
+            "key": "field_chairforce_product_tabs_visibility_message",
+            "label": "Product Tab Visibility",
+            "name": "",
+            "aria-label": "",
+            "type": "message",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "message": "Toggle custom single-product tabs. Each tab still requires content on the product (or theme options for Delivery / Product Info).",
+            "new_lines": "wpautop",
+            "esc_html": 0
+        },
+        {
+            "key": "field_chairforce_product_tab_overview_enabled",
+            "label": "Overview Tab",
+            "name": "product_tab_overview_enabled",
+            "aria-label": "",
+            "type": "true_false",
+            "instructions": "Product description and feature icons.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "message": "",
+            "default_value": 1,
+            "ui_on_text": "Show",
+            "ui_off_text": "Hide",
+            "ui": 1
+        },
+        {
+            "key": "field_chairforce_product_tab_delivery_enabled",
+            "label": "Delivery Information Tab",
+            "name": "product_tab_delivery_enabled",
+            "aria-label": "",
+            "type": "true_false",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "message": "",
+            "default_value": 1,
+            "ui_on_text": "Show",
+            "ui_off_text": "Hide",
+            "ui": 1
+        },
+        {
+            "key": "field_chairforce_product_tab_dimensions_enabled",
+            "label": "Dimensions Tab",
+            "name": "product_tab_dimensions_enabled",
+            "aria-label": "",
+            "type": "true_false",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "message": "",
+            "default_value": 1,
+            "ui_on_text": "Show",
+            "ui_off_text": "Hide",
+            "ui": 1
+        },
+        {
+            "key": "field_chairforce_product_tab_care_enabled",
+            "label": "Care Instructions Tab",
+            "name": "product_tab_care_enabled",
+            "aria-label": "",
+            "type": "true_false",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "message": "",
+            "default_value": 1,
+            "ui_on_text": "Show",
+            "ui_off_text": "Hide",
+            "ui": 1
+        },
+        {
+            "key": "field_chairforce_product_tab_parts_enabled",
+            "label": "Parts Tab",
+            "name": "product_tab_parts_enabled",
+            "aria-label": "",
+            "type": "true_false",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "message": "",
+            "default_value": 1,
+            "ui_on_text": "Show",
+            "ui_off_text": "Hide",
+            "ui": 1
+        },
+        {
+            "key": "field_chairforce_product_tab_additional_info_enabled",
+            "label": "Additional Information Tab",
+            "name": "product_tab_additional_info_enabled",
+            "aria-label": "",
+            "type": "true_false",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "message": "",
+            "default_value": 1,
+            "ui_on_text": "Show",
+            "ui_off_text": "Hide",
+            "ui": 1
+        },
+        {
+            "key": "field_chairforce_product_tab_product_info_enabled",
+            "label": "Product Info Tab",
+            "name": "product_tab_product_info_enabled",
+            "aria-label": "",
+            "type": "true_false",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "message": "",
+            "default_value": 1,
+            "ui_on_text": "Show",
+            "ui_off_text": "Hide",
+            "ui": 1
+        },
+        {
             "key": "field_chairforce_filters_panel_desktop",
             "label": "Filters Panel (Desktop)",
             "name": "filters_panel_desktop",
@@ -1088,5 +1269,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1785569800
+    "modified": 1754382000
 }

@@ -1,0 +1,77 @@
+@import "../../src/sass/settings";
+
+.cf-product-reviews-summary {
+  &__inner {
+    background: var(--wp--preset--color--base, #fff);
+    border: 1px solid var(--wp--preset--color--neutral-light, #e5e5e5);
+    padding: $spacing-large;
+  }
+
+  &__score-row {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: $spacing-small;
+    margin-bottom: $spacing-small;
+  }
+
+  &__average {
+    font-size: var(--wp--preset--font-size--xxx-large, 2.5rem);
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  &__count {
+    color: var(--wp--preset--color--neutral, #666);
+    margin: 0 0 $spacing-medium;
+  }
+
+  &__bars {
+    display: grid;
+    gap: $spacing-xx-small;
+    list-style: none;
+    margin: 0 0 $spacing-medium;
+    padding: 0;
+  }
+
+  &__bar-row {
+    align-items: center;
+    display: grid;
+    gap: $spacing-xx-small;
+    grid-template-columns: 4.5rem 1fr 2rem;
+  }
+
+  &__bar-label,
+  &__bar-count {
+    font-size: $font-size-small;
+  }
+
+  &__bar-count {
+    text-align: right;
+  }
+
+  &__bar-track {
+    background: var(--wp--preset--color--neutral-light, #eee);
+    border-radius: 999px;
+    display: block;
+    height: 0.5rem;
+    overflow: hidden;
+  }
+
+  &__bar-fill {
+    background: var(--wp--preset--color--contrast, #1a1a1a);
+    display: block;
+    height: 100%;
+  }
+
+  &__actions {
+    .wp-block-button {
+      width: 100%;
+    }
+
+    .wp-block-button__link {
+      justify-content: center;
+      width: 100%;
+    }
+  }
+}

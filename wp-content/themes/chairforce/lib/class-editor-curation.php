@@ -129,6 +129,8 @@ class Editor_Curation {
 			|| 'chairforce/site-header' === $block_type
 			|| 'chairforce/product-filters' === $block_type
 			|| 'chairforce/product-features' === $block_type
+			|| 'chairforce/product-reviews-summary' === $block_type
+			|| 'chairforce/product-reviews' === $block_type
 		) {
 			$args['supports']['inserter'] = false;
 		}

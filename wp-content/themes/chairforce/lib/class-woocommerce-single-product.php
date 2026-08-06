@@ -73,20 +73,22 @@ class WooCommerce_Single_Product {
 
 		unset( $tabs['additional_information'] );
 
-		if ( isset( $tabs['description'] ) ) {
+		if ( isset( $tabs['description'] ) && chairforce_is_product_tab_enabled( 'description' ) ) {
 			$tabs['description']['title']    = __( 'Overview', 'chairforce' );
 			$tabs['description']['priority'] = 10;
 			$tabs['description']['callback'] = [ $this, 'render_description_tab' ];
+		} elseif ( isset( $tabs['description'] ) ) {
+			unset( $tabs['description'] );
 		}
 
 		$product_id = get_the_ID();
 
 		if ( $product_id <= 0 ) {
-			return $tabs;
+			return $this->filter_reviews_tab( $tabs );
 		}
 
 		// Tab order: Overview → Delivery Information → Dimensions → Care Instructions → Parts.
-		if ( chairforce_get_product_delivery_information_html() ) {
+		if ( chairforce_is_product_tab_enabled( 'cf_delivery_information' ) && chairforce_get_product_delivery_information_html() ) {
 			$tabs['cf_delivery_information'] = [
 				'title'    => __( 'Delivery Information', 'chairforce' ),
 				'priority' => 20,
@@ -94,7 +96,7 @@ class WooCommerce_Single_Product {
 			];
 		}
 
-		if ( chairforce_get_product_dimensions_html( $product_id ) ) {
+		if ( chairforce_is_product_tab_enabled( 'cf_dimensions' ) && chairforce_get_product_dimensions_html( $product_id ) ) {
 			$tabs['cf_dimensions'] = [
 				'title'    => __( 'Dimensions', 'chairforce' ),
 				'priority' => 30,
@@ -102,7 +104,7 @@ class WooCommerce_Single_Product {
 			];
 		}
 
-		if ( chairforce_get_product_care_html( $product_id ) ) {
+		if ( chairforce_is_product_tab_enabled( 'cf_care' ) && chairforce_get_product_care_html( $product_id ) ) {
 			$tabs['cf_care'] = [
 				'title'    => __( 'Care Instructions', 'chairforce' ),
 				'priority' => 40,
@@ -110,7 +112,7 @@ class WooCommerce_Single_Product {
 			];
 		}
 
-		if ( ! empty( chairforce_get_product_parts_ids( $product_id ) ) ) {
+		if ( chairforce_is_product_tab_enabled( 'cf_parts' ) && ! empty( chairforce_get_product_parts_ids( $product_id ) ) ) {
 			$tabs['cf_parts'] = [
 				'title'    => __( 'Parts', 'chairforce' ),
 				'priority' => 50,
@@ -118,7 +120,7 @@ class WooCommerce_Single_Product {
 			];
 		}
 
-		if ( chairforce_get_product_additional_information_html( $product_id ) ) {
+		if ( chairforce_is_product_tab_enabled( 'cf_additional_information' ) && chairforce_get_product_additional_information_html( $product_id ) ) {
 			$tabs['cf_additional_information'] = [
 				'title'    => __( 'Additional Information', 'chairforce' ),
 				'priority' => 60,
@@ -126,12 +128,32 @@ class WooCommerce_Single_Product {
 			];
 		}
 
-		if ( chairforce_get_product_info_html() ) {
+		if ( chairforce_is_product_tab_enabled( 'cf_product_info' ) && chairforce_get_product_info_html() ) {
 			$tabs['cf_product_info'] = [
 				'title'    => __( 'Product Info', 'chairforce' ),
 				'priority' => 70,
 				'callback' => [ $this, 'render_product_info_tab' ],
 			];
+		}
+
+		return $this->filter_reviews_tab( $tabs );
+	}
+
+	/**
+	 * Keep, reprioritize, or remove the WooCommerce reviews tab.
+	 *
+	 * @param array<string, array<string, mixed>> $tabs Product tabs.
+	 * @return array<string, array<string, mixed>>
+	 */
+	private function filter_reviews_tab( array $tabs ): array {
+		if ( ! chairforce_is_product_reviews_enabled() ) {
+			unset( $tabs['reviews'] );
+			return $tabs;
+		}
+
+		if ( chairforce_is_product_reviews_section_mode() ) {
+			unset( $tabs['reviews'] );
+			return $tabs;
 		}
 
 		if ( isset( $tabs['reviews'] ) ) {

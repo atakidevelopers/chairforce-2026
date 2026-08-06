@@ -1,16 +1,16 @@
 # 3o — Product Reviews Section (Figma) — Implementation Plan
 
-## Status: ⏳ Not started
+## Status: 🔄 In progress
 
-Plan locked from product-page review (6 Aug 2026). No implementation yet.
+Plan locked from product-page review (6 Aug 2026).
 
 | Chunk | Scope | Status |
 |---|---|---|
-| 1 | Theme options (reviews display mode + tab toggles) + visibility helpers | ⏳ |
-| 2 | `chairforce/product-reviews-summary` block (average + histogram) | ⏳ |
-| 3 | `chairforce/product-reviews` block (list + form + native pagination) | ⏳ |
-| 4 | Tab integration (unset WC reviews tab in section mode; gate custom tabs) | ⏳ |
-| 5 | Sass (Figma layout) + `single-product.html` wiring + browser QA | ⏳ |
+| 1 | Theme options (reviews display mode + tab toggles) + visibility helpers | ✅ |
+| 2 | `chairforce/product-reviews-summary` block (average + histogram) | ✅ |
+| 3 | `chairforce/product-reviews` block (list + form + native pagination) | ✅ |
+| 4 | Tab integration (unset WC reviews tab in section mode; gate custom tabs) | ✅ |
+| 5 | Sass (Figma layout) + `single-product.html` wiring + browser QA | 🔄 |
 
 ## Goal
 

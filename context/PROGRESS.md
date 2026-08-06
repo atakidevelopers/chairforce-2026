@@ -514,6 +514,23 @@ fallback). Hidden from inserter via `Editor_Curation` — PHP-placed only.
 
 Cross-ref checklist file `19` §2. No plan/notes doc yet.
 
+#### 3o. Product reviews section (Figma)
+
+**Status: 🔄 In progress (Aug 2026)** — plan:
+`context/plans/3o-product-reviews-section-plan.md`.
+
+**Shipped:** Theme options on WooCommerce tab (`product_reviews_enabled`,
+`product_reviews_display`, per-tab toggles); helpers in
+`includes/product-reviews-functions.php`; dynamic blocks
+`chairforce/product-reviews-summary` + `chairforce/product-reviews`
+(`#reviews`, native pagination, form show/hide JS); tab gating +
+unset WC reviews tab in section mode (`lib/class-woocommerce-single-product.php`);
+`templates/single-product.html` two-column layout; Sass +
+`src/js/product-reviews-form-toggle.js`.
+
+**Remaining:** Browser QA on product with reviews enabled; optional bulk
+`comment_status = open` for catalog; Figma polish pass if needed.
+
 ### Phase 4 — Content templates, CPT surfaces & page assembly
 
 **Status: ⏳ Not started**

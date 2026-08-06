@@ -1,0 +1,30 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "chairforce/product-reviews-summary",
+  "version": "1.0.0",
+  "title": "Product Reviews Summary",
+  "category": "woocommerce",
+  "description": "Average rating and histogram for the current product (single-product template).",
+  "keywords": [
+    "woocommerce",
+    "product",
+    "reviews",
+    "rating",
+    "summary"
+  ],
+  "textdomain": "chairforce",
+  "usesContext": [
+    "postId"
+  ],
+  "supports": {
+    "html": false,
+    "inserter": true,
+    "reusable": false,
+    "lock": false
+  },
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css",
+  "render": "file:./render.php"
+}
