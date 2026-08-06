@@ -533,3 +533,101 @@ function chairforce_render_product_reviews_summary_block( int $product_id ): str
 
 	return $block->render();
 }
+
+/**
+ * Build the review list + form column HTML for the product reviews block.
+ *
+ * @param int  $product_id       Product post ID.
+ * @param int  $reviews_per_page Reviews per page.
+ * @param bool $show_write_button Show Write a Review when summary is hidden.
+ * @return string
+ */
+function chairforce_get_product_reviews_main_column_html( int $product_id, int $reviews_per_page, bool $show_write_button ): string {
+	$reviews_per_page = max( 1, $reviews_per_page );
+	$total            = chairforce_get_product_review_comment_count( $product_id );
+	$paged            = chairforce_get_product_review_page();
+	$comments         = chairforce_get_product_review_comments(
+		$product_id,
+		[
+			'number' => $reviews_per_page,
+			'offset' => ( $paged - 1 ) * $reviews_per_page,
+		]
+	);
+
+	$has_reviews = $total > 0;
+
+	ob_start();
+	?>
+	<div class="cf-product-reviews__inner">
+		<div class="cf-product-reviews__header">
+			<h2 class="cf-product-reviews__title">
+				<?php
+				echo esc_html(
+					sprintf(
+						/* translators: %d: review count */
+						_n( '%d Review', '%d Reviews', $total, 'chairforce' ),
+						$total
+					)
+				);
+				?>
+			</h2>
+		</div>
+
+		<div id="comments" class="cf-product-reviews__comments">
+			<?php if ( $has_reviews ) : ?>
+				<ol class="cf-product-reviews__list commentlist">
+					<?php
+					foreach ( $comments as $comment ) {
+						chairforce_render_product_review_item( $comment );
+					}
+					?>
+				</ol>
+				<?php chairforce_render_product_review_pagination( $product_id, $reviews_per_page ); ?>
+			<?php else : ?>
+				<p class="cf-product-reviews__empty woocommerce-noreviews"><?php esc_html_e( 'There are no reviews yet.', 'woocommerce' ); ?></p>
+			<?php endif; ?>
+		</div>
+
+		<?php if ( $show_write_button ) : ?>
+			<?php echo chairforce_get_product_reviews_write_review_button_html(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+		<?php endif; ?>
+
+		<div class="cf-product-reviews__form-wrapper cf-product-reviews__form-wrapper--hidden">
+			<?php chairforce_render_product_review_form( $product_id ); ?>
+		</div>
+	</div>
+	<?php
+	return (string) ob_get_clean();
+}
+
+/**
+ * Serialized core/columns markup for the product reviews section.
+ *
+ * @param string $main_html     Review list column HTML.
+ * @param string $summary_html  Summary block render output.
+ * @param bool   $show_summary  Whether to include the summary column.
+ * @return string
+ */
+function chairforce_get_product_reviews_columns_blocks_markup( string $main_html, string $summary_html, bool $show_summary ): string {
+	if ( '' === trim( $main_html ) ) {
+		return '';
+	}
+
+	if ( $show_summary && '' !== trim( $summary_html ) ) {
+		return '<!-- wp:columns {"align":"wide"} -->
+<div class="wp-block-columns alignwide"><!-- wp:column {"width":"25%"} -->
+<div class="wp-block-column" style="flex-basis:25%">' . $summary_html . '</div>
+<!-- /wp:column -->
+
+<!-- wp:column -->
+<div class="wp-block-column">' . $main_html . '</div>
+<!-- /wp:column --></div>
+<!-- /wp:columns -->';
+	}
+
+	return '<!-- wp:columns {"align":"wide"} -->
+<div class="wp-block-columns alignwide"><!-- wp:column -->
+<div class="wp-block-column">' . $main_html . '</div>
+<!-- /wp:column --></div>
+<!-- /wp:columns -->';
+}

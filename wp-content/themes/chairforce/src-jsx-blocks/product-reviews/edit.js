@@ -70,14 +70,18 @@ export default function Edit( { attributes, setAttributes } ) {
 			</InspectorControls>
 			<div { ...blockProps } id="reviews">
 				{ displayReviewsSummary ? (
-					<div className="cf-product-reviews__layout alignwide">
-						<div className="cf-product-reviews__summary-column cf-product-reviews-summary-editor">
-							<p>{ __( 'Summary column (average + histogram + Write a Review)', 'chairforce' ) }</p>
+					<div className="wp-block-columns alignwide">
+						<div className="wp-block-column" style={ { flexBasis: '25%' } }>
+							<p className="cf-product-reviews-summary-editor">
+								{ __( 'Summary column (average + histogram + Write a Review)', 'chairforce' ) }
+							</p>
 						</div>
-						<div className="cf-product-reviews__main-column">{ listColumn }</div>
+						<div className="wp-block-column">{ listColumn }</div>
 					</div>
 				) : (
-					listColumn
+					<div className="wp-block-columns alignwide">
+						<div className="wp-block-column">{ listColumn }</div>
+					</div>
 				) }
 			</div>
 		</>

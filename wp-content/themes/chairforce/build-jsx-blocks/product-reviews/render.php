@@ -36,21 +36,30 @@ if ( $reviews_per_page < 1 ) {
 $display_reviews_summary = ! isset( $attributes['displayReviewsSummary'] ) || $attributes['displayReviewsSummary'];
 $show_write_button       = ! $display_reviews_summary;
 
-$total    = chairforce_get_product_review_comment_count( $product_id );
-$paged    = chairforce_get_product_review_page();
-$comments = chairforce_get_product_review_comments(
+$main_html = chairforce_get_product_reviews_main_column_html(
 	$product_id,
-	[
-		'number' => $reviews_per_page,
-		'offset' => ( $paged - 1 ) * $reviews_per_page,
-	]
+	$reviews_per_page,
+	$show_write_button
 );
 
-$has_reviews   = $total > 0;
+if ( '' === trim( $main_html ) ) {
+	return;
+}
+
 $summary_html = '';
 
 if ( $display_reviews_summary ) {
 	$summary_html = chairforce_render_product_reviews_summary_block( $product_id );
+}
+
+$columns_markup = chairforce_get_product_reviews_columns_blocks_markup(
+	$main_html,
+	$summary_html,
+	$display_reviews_summary
+);
+
+if ( '' === trim( $columns_markup ) || ! function_exists( 'do_blocks' ) ) {
+	return;
 }
 
 $wrapper_attributes = get_block_wrapper_attributes(
@@ -61,55 +70,5 @@ $wrapper_attributes = get_block_wrapper_attributes(
 );
 ?>
 <div <?php echo $wrapper_attributes; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>>
-	<?php if ( $display_reviews_summary && '' !== trim( $summary_html ) ) : ?>
-		<div class="cf-product-reviews__layout alignwide">
-			<div class="cf-product-reviews__summary-column">
-				<?php echo $summary_html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- block render output. ?>
-			</div>
-			<div class="cf-product-reviews__main-column">
-	<?php endif; ?>
-
-	<div class="cf-product-reviews__inner">
-		<div class="cf-product-reviews__header">
-			<h2 class="cf-product-reviews__title">
-				<?php
-				echo esc_html(
-					sprintf(
-						/* translators: %d: review count */
-						_n( '%d Review', '%d Reviews', $total, 'chairforce' ),
-						$total
-					)
-				);
-				?>
-			</h2>
-		</div>
-
-		<div id="comments" class="cf-product-reviews__comments">
-			<?php if ( $has_reviews ) : ?>
-				<ol class="cf-product-reviews__list commentlist">
-					<?php
-					foreach ( $comments as $comment ) {
-						chairforce_render_product_review_item( $comment );
-					}
-					?>
-				</ol>
-				<?php chairforce_render_product_review_pagination( $product_id, $reviews_per_page ); ?>
-			<?php else : ?>
-				<p class="cf-product-reviews__empty woocommerce-noreviews"><?php esc_html_e( 'There are no reviews yet.', 'woocommerce' ); ?></p>
-			<?php endif; ?>
-		</div>
-
-		<?php if ( $show_write_button ) : ?>
-			<?php echo chairforce_get_product_reviews_write_review_button_html(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-		<?php endif; ?>
-
-		<div class="cf-product-reviews__form-wrapper cf-product-reviews__form-wrapper--hidden">
-			<?php chairforce_render_product_review_form( $product_id ); ?>
-		</div>
-	</div>
-
-	<?php if ( $display_reviews_summary && '' !== trim( $summary_html ) ) : ?>
-			</div>
-		</div>
-	<?php endif; ?>
+	<?php echo do_blocks( $columns_markup ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- block render output. ?>
 </div>
