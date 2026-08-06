@@ -24,6 +24,16 @@
     "queryId",
     "displayLayout"
   ],
+  "attributes": {
+    "titleTag": {
+      "type": "string",
+      "default": "h2",
+      "enum": [
+        "h2",
+        "h3"
+      ]
+    }
+  },
   "supports": {
     "html": false,
     "inserter": true,

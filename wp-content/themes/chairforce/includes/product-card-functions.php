@@ -468,13 +468,40 @@ function chairforce_get_product_card_add_to_cart_html( \WC_Product $product, arr
 
 
 /**
+ * Sanitize product card title heading tag.
+ *
+ * @param string $title_tag Requested heading tag.
+ * @return string
+ */
+function chairforce_sanitize_product_card_title_tag( string $title_tag ): string {
+	$title_tag = strtolower( trim( $title_tag ) );
+
+	return in_array( $title_tag, [ 'h2', 'h3' ], true ) ? $title_tag : 'h2';
+}
+
+/**
+ * Map product card title tag to core/post-title level.
+ *
+ * @param string $title_tag Requested heading tag.
+ * @return int
+ */
+function chairforce_get_product_card_title_level( string $title_tag ): int {
+	return (int) str_replace( 'h', '', chairforce_sanitize_product_card_title_tag( $title_tag ) );
+}
+
+/**
  * Block markup for the Product Collection product card (inner blocks only).
  *
  * Canonical source for `chairforce/product-card` render via do_blocks().
  *
+ * @param array{
+ *     title_tag?: string,
+ * } $args Card markup options.
  * @return string Serialized block markup for do_blocks() / parse_blocks().
  */
-function chairforce_get_product_card_blocks_markup(): string {
+function chairforce_get_product_card_blocks_markup( array $args = [] ): string {
+	$title_tag   = isset( $args['title_tag'] ) ? (string) $args['title_tag'] : 'h2';
+	$title_level = chairforce_get_product_card_title_level( $title_tag );
 
 	return '<!-- wp:group {"className":"cf-card-media","layout":{"type":"constrained"}} -->
 <div class="wp-block-group cf-card-media">
@@ -489,7 +516,7 @@ function chairforce_get_product_card_blocks_markup(): string {
 	<!-- /wp:group -->
 </div>
 <!-- /wp:group -->
-<!-- wp:post-title {"textAlign":"left","level":2,"isLink":true,"fontSize":"medium","__woocommerceNamespace":"woocommerce/product-collection/product-title","style":{"typography":{"lineHeight":"1.4"}}} /-->
+<!-- wp:post-title {"textAlign":"left","level":' . $title_level . ',"isLink":true,"fontSize":"medium","__woocommerceNamespace":"woocommerce/product-collection/product-title","style":{"typography":{"lineHeight":"1.4"}}} /-->
 <!-- wp:chairforce/product-swatches /-->
 <!-- wp:woocommerce/product-price {"textAlign":"left","isDescendentOfQueryLoop":true,"fontSize":"small","className":"is-style-text-price"} /-->
 <!-- wp:woocommerce/product-button {"textAlign":"center","width":100,"isDescendentOfQueryLoop":true,"fontSize":"small"} /-->';

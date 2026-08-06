@@ -305,14 +305,14 @@ class Acf {
 	/**
 	 * FAQ Configurations: include all product categories in the picker query.
 	 *
-	 * @param array<string, mixed> $args    Taxonomy query args.
-	 * @param array<string, mixed> $field   ACF field.
-	 * @param int                  $post_id Post ID.
+	 * @param array<string, mixed> $args     Taxonomy query args.
+	 * @param array<string, mixed> $field    ACF field.
+	 * @param int|string         $post_id  Post ID (options pages may pass non-int).
 	 * @return array<string, mixed>
 	 *
 	 * @hooked acf/fields/taxonomy/query/key=field_faq_category_term
 	 */
-	public function acf_faq_product_cat_taxonomy_query( array $args, array $field, int $post_id ): array {
+	public function acf_faq_product_cat_taxonomy_query( array $args, array $field = [], $post_id = 0 ): array {
 		unset( $field, $post_id );
 
 		$args['taxonomy']   = 'product_cat';
@@ -326,16 +326,18 @@ class Acf {
 	/**
 	 * FAQ Configurations: indent child categories in the taxonomy select.
 	 *
-	 * @param string   $text    Option label.
-	 * @param WP_Term  $term    Term object.
-	 * @param array    $field   ACF field.
-	 * @param int|null $post_id Post ID.
+	 * @param string              $text    Option label.
+	 * @param \WP_Term|mixed      $term    Term object.
+	 * @param array<string,mixed> $field   ACF field.
+	 * @param int|string|null     $post_id Post ID.
 	 * @return string
 	 *
 	 * @hooked acf/fields/taxonomy/result/key=field_faq_category_term
 	 */
-	public function acf_faq_product_cat_taxonomy_result( string $text, $term, array $field, $post_id ): string {
+	public function acf_faq_product_cat_taxonomy_result( $text, $term, array $field = [], $post_id = null ): string {
 		unset( $field, $post_id );
+
+		$text = (string) $text;
 
 		if ( ! $term instanceof \WP_Term ) {
 			return $text;

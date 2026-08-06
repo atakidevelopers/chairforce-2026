@@ -16,6 +16,16 @@
   "usesContext": [
     "postId"
   ],
+  "attributes": {
+    "initialVisibleCount": {
+      "type": "number",
+      "default": 5
+    },
+    "includeFaqSchema": {
+      "type": "boolean",
+      "default": true
+    }
+  },
   "supports": {
     "html": false,
     "inserter": true,

@@ -55,9 +55,6 @@
 
 	<!-- wp:chairforce/product-reviews {"displayReviewsSummary":true,"align":"full","backgroundColor":"background","style":{"spacing":{"padding":{"top":"var:preset|spacing|section-l","bottom":"var:preset|spacing|section-l"}}}} /-->
 
-	<!-- wp:group {"metadata":{"name":"Product FAQs Wrapper"},"align":"wide","style":{"spacing":{"padding":{"top":"var:preset|spacing|section-m","bottom":"var:preset|spacing|section-m"}}},"layout":{"type":"constrained"}} -->
-	<div class="wp-block-group alignwide" style="padding-top:var(--wp--preset--spacing--section-m);padding-bottom:var(--wp--preset--spacing--section-m)"><!-- wp:chairforce/product-faqs /--></div>
-	<!-- /wp:group -->
 
 	<!-- wp:group {"metadata":{"name":"Related Wrapper"},"align":"wide","style":{"spacing":{"padding":{"top":"var:preset|spacing|section-m","bottom":"var:preset|spacing|section-m"}}},"layout":{"type":"constrained"}} -->
 	<div class="wp-block-group alignwide" style="padding-top:var(--wp--preset--spacing--section-m);padding-bottom:var(--wp--preset--spacing--section-m)"><!-- wp:woocommerce/product-collection {"queryId":0,"query":{"perPage":5,"pages":1,"offset":0,"postType":"product","order":"asc","orderBy":"title","search":"","exclude":[],"inherit":false,"taxQuery":[],"isProductCollectionBlock":true,"featured":false,"woocommerceOnSale":false,"woocommerceStockStatus":["instock","outofstock","onbackorder"],"woocommerceAttributes":[],"woocommerceHandPickedProducts":[],"filterable":false},"tagName":"div","displayLayout":{"type":"flex","columns":5,"shrinkColumns":true},"dimensions":{"widthType":"fill"},"collection":"woocommerce/product-collection/upsells","hideControls":["filterable"],"queryContextIncludes":["collection"],"__privatePreviewState":{"isPreview":true,"previewMessage":"Actual products will vary depending on the product being viewed."},"align":"wide"} -->
@@ -66,7 +63,7 @@
 			<!-- /wp:heading -->
 
 			<!-- wp:woocommerce/product-template -->
-			<!-- wp:chairforce/product-card /-->
+			<!-- wp:chairforce/product-card {"titleTag":"h3"} /-->
 			<!-- /wp:woocommerce/product-template --></div>
 		<!-- /wp:woocommerce/product-collection -->
 		<!-- wp:woocommerce/product-collection {"queryId":0,"query":{"perPage":5,"pages":1,"offset":0,"postType":"product","order":"asc","orderBy":"title","search":"","exclude":[],"inherit":false,"taxQuery":[],"isProductCollectionBlock":true,"featured":false,"woocommerceOnSale":false,"woocommerceStockStatus":["instock","onbackorder"],"woocommerceAttributes":[],"woocommerceHandPickedProducts":[],"filterable":false,"relatedBy":{"categories":true,"tags":true}},"tagName":"div","displayLayout":{"type":"flex","columns":5,"shrinkColumns":false},"dimensions":{"widthType":"fill"},"collection":"woocommerce/product-collection/related","hideControls":["inherit"],"queryContextIncludes":["collection"],"__privatePreviewState":{"isPreview":true,"previewMessage":"Actual products will vary depending on the product being viewed."},"align":"wide"} -->
@@ -75,9 +72,17 @@
 			<!-- /wp:heading -->
 
 			<!-- wp:woocommerce/product-template -->
-			<!-- wp:chairforce/product-card /-->
+			<!-- wp:chairforce/product-card {"titleTag":"h3"} /-->
 			<!-- /wp:woocommerce/product-template --></div>
 		<!-- /wp:woocommerce/product-collection --></div>
+	<!-- /wp:group --><!-- wp:group {"metadata":{"name":"FAQs Section"},"align":"full","style":{"spacing":{"padding":{"top":"var:preset|spacing|section-l","bottom":"var:preset|spacing|section-l"}}},"backgroundColor":"background","layout":{"type":"constrained"}} -->
+	<div class="wp-block-group alignfull has-background-background-color has-background" style="padding-top:var(--wp--preset--spacing--section-l);padding-bottom:var(--wp--preset--spacing--section-l)"><!-- wp:heading {"style":{"typography":{"textAlign":"center"}}} -->
+		<h2 class="wp-block-heading has-text-align-center">Frequently Asked Questions</h2>
+		<!-- /wp:heading -->
+
+		<!-- wp:group {"metadata":{"name":"FAQ Accordions"},"className":"is-style-narrow","layout":{"type":"constrained"}} -->
+		<div class="wp-block-group is-style-narrow"><!-- wp:chairforce/product-faqs /--></div>
+		<!-- /wp:group --></div>
 	<!-- /wp:group --></main>
 <!-- /wp:group -->
 

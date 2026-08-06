@@ -17,8 +17,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 $attributes = $attributes ?? [];
 
+$title_tag       = isset( $attributes['titleTag'] ) ? (string) $attributes['titleTag'] : 'h2';
 $block_props     = get_block_wrapper_attributes();
-$blocks_rendered = do_blocks( chairforce_get_product_card_blocks_markup() );
+$blocks_rendered = do_blocks(
+	chairforce_get_product_card_blocks_markup(
+		[
+			'title_tag' => $title_tag,
+		]
+	)
+);
 
 // TODO: Do not remove the Block Wrapper class, its going to be Very Helpful to identify this ourt block no matter where its inserted.
 printf(

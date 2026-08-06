@@ -1,6 +1,6 @@
 <?php
 /**
- * Product FAQ resolution and accordion markup helpers.
+ * Product FAQ resolution helpers.
  *
  * @package Chairforce
  */
@@ -10,31 +10,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Normalize an ACF relationship/post ID list to positive integers.
+ * Normalize an ACF FAQ relationship value to post IDs.
  *
  * @param mixed $value Raw field value.
  * @return int[]
  */
 function chairforce_normalize_faq_post_ids( $value ): array {
-	if ( ! is_array( $value ) ) {
-		return [];
-	}
-
-	$ids = [];
-
-	foreach ( $value as $item ) {
-		if ( is_object( $item ) && isset( $item->ID ) ) {
-			$item = (int) $item->ID;
-		}
-
-		$id = absint( $item );
-
-		if ( $id > 0 ) {
-			$ids[] = $id;
-		}
-	}
-
-	return $ids;
+	return chairforce_normalize_post_ids( $value );
 }
 
 /**
@@ -218,104 +200,135 @@ function chairforce_get_product_faq_ids( int $product_id ): array {
 }
 
 /**
- * Load FAQ posts for a product in resolved order.
+ * Render product FAQ accordion markup via the shared accordion component.
+ *
+ * @param int   $product_id Product post ID.
+ * @param array{
+ *     initial_visible_count?: int,
+ * } $args Accordion options.
+ * @return string
+ */
+function chairforce_get_product_faqs_html( int $product_id, array $args = [] ): string {
+	return chairforce_get_accordion_html_from_post_ids(
+		chairforce_get_product_faq_ids( $product_id ),
+		array_merge(
+			[
+				'post_type'     => 'chairforce_faq',
+				'empty_message' => __( 'No FAQs Found', 'chairforce' ),
+				'instance_id'   => 'cf-product-faqs-' . $product_id,
+			],
+			$args
+		)
+	);
+}
+
+/**
+ * Product IDs queued for FAQPage JSON-LD in wp_footer.
+ *
+ * @return int[]
+ */
+function &chairforce_faqpage_schema_get_queue(): array {
+	static $queue = [];
+
+	return $queue;
+}
+
+/**
+ * Queue FAQPage schema for a product (printed in wp_footer when the block renders).
  *
  * @param int $product_id Product post ID.
- * @return WP_Post[]
  */
-function chairforce_get_product_faq_posts( int $product_id ): array {
-	$faq_ids = chairforce_get_product_faq_ids( $product_id );
+function chairforce_queue_faqpage_schema( int $product_id ): void {
+	$product_id = absint( $product_id );
 
-	if ( empty( $faq_ids ) ) {
-		return [];
+	if ( $product_id < 1 ) {
+		return;
 	}
 
-	$posts = [];
+	$queue = &chairforce_faqpage_schema_get_queue();
 
-	foreach ( $faq_ids as $faq_id ) {
-		$post = get_post( $faq_id );
+	if ( in_array( $product_id, $queue, true ) ) {
+		return;
+	}
 
-		if (
-			! $post instanceof WP_Post
-			|| 'chairforce_faq' !== $post->post_type
-			|| 'publish' !== $post->post_status
-		) {
+	$queue[] = $product_id;
+}
+
+/**
+ * Build FAQPage schema for a product's resolved FAQs.
+ *
+ * @param int $product_id Product post ID.
+ * @return array<string, mixed>|null
+ */
+function chairforce_get_product_faqpage_schema( int $product_id ): ?array {
+	$items = chairforce_get_accordion_items_from_post_ids(
+		chairforce_get_product_faq_ids( $product_id ),
+		'chairforce_faq'
+	);
+
+	if ( empty( $items ) ) {
+		return null;
+	}
+
+	$main_entity = [];
+
+	foreach ( $items as $item ) {
+		$question = trim( (string) ( $item['title'] ?? '' ) );
+		$answer   = trim( wp_strip_all_tags( (string) ( $item['content'] ?? '' ) ) );
+
+		if ( '' === $question || '' === $answer ) {
 			continue;
 		}
 
-		$posts[] = $post;
+		$main_entity[] = [
+			'@type'          => 'Question',
+			'name'           => $question,
+			'acceptedAnswer' => [
+				'@type' => 'Answer',
+				'text'  => $answer,
+			],
+		];
 	}
 
-	return $posts;
+	if ( empty( $main_entity ) ) {
+		return null;
+	}
+
+	return [
+		'@context'   => 'https://schema.org',
+		'@type'      => 'FAQPage',
+		'mainEntity' => $main_entity,
+	];
 }
 
 /**
- * Build accordion markup for resolved FAQ posts.
- *
- * @param WP_Post[] $faqs FAQ posts in display order.
- * @return string
+ * Print queued FAQPage JSON-LD scripts in the footer.
  */
-function chairforce_get_product_faq_accordion_html( array $faqs ): string {
-	if ( empty( $faqs ) ) {
-		return '';
+function chairforce_print_faqpage_schema_json_ld(): void {
+	$queue = chairforce_faqpage_schema_get_queue();
+
+	if ( empty( $queue ) ) {
+		return;
 	}
 
-	ob_start();
-	?>
-	<div class="cf-product-faqs__list" role="presentation">
-		<?php
-		foreach ( $faqs as $index => $faq ) :
-			if ( ! $faq instanceof WP_Post ) {
-				continue;
-			}
+	foreach ( $queue as $product_id ) {
+		$schema = chairforce_get_product_faqpage_schema( (int) $product_id );
 
-			$is_first = 0 === $index;
-			$panel_id = 'cf-product-faq-panel-' . (int) $faq->ID;
-			?>
-			<div class="cf-product-faqs__item<?php echo $is_first ? ' is-open' : ''; ?>" data-cf-product-faq-item>
-				<button
-					type="button"
-					class="cf-product-faqs__trigger"
-					aria-expanded="<?php echo $is_first ? 'true' : 'false'; ?>"
-					aria-controls="<?php echo esc_attr( $panel_id ); ?>"
-					id="<?php echo esc_attr( 'cf-product-faq-trigger-' . (int) $faq->ID ); ?>"
-				>
-					<span class="cf-product-faqs__question"><?php echo esc_html( $faq->post_title ); ?></span>
-					<span class="cf-product-faqs__icon" aria-hidden="true"></span>
-				</button>
-				<div
-					id="<?php echo esc_attr( $panel_id ); ?>"
-					class="cf-product-faqs__panel"
-					role="region"
-					aria-labelledby="<?php echo esc_attr( 'cf-product-faq-trigger-' . (int) $faq->ID ); ?>"
-					<?php echo $is_first ? '' : ' hidden'; ?>
-				>
-					<div class="cf-product-faqs__answer entry-content">
-						<?php echo wp_kses_post( apply_filters( 'the_content', $faq->post_content ) ); ?>
-					</div>
-				</div>
-			</div>
-			<?php
-		endforeach;
-		?>
-	</div>
-	<?php
+		if ( null === $schema ) {
+			continue;
+		}
 
-	return (string) ob_get_clean();
-}
+		$json = wp_json_encode( $schema, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES );
 
-/**
- * Render the product FAQ accordion or empty-state message.
- *
- * @param int $product_id Product post ID.
- * @return string
- */
-function chairforce_get_product_faqs_html( int $product_id ): string {
-	$faqs = chairforce_get_product_faq_posts( $product_id );
+		if ( ! $json ) {
+			continue;
+		}
 
-	if ( empty( $faqs ) ) {
-		return '<p class="cf-product-faqs__empty">' . esc_html__( 'No FAQs Found', 'chairforce' ) . '</p>';
+		printf(
+			'<script type="application/ld+json">%s</script>' . "\n",
+			$json // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- JSON encoded.
+		);
 	}
-
-	return chairforce_get_product_faq_accordion_html( $faqs );
 }
+
+add_action( 'wp_footer', 'chairforce_print_faqpage_schema_json_ld', 20 );
