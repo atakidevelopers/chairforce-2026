@@ -1,0 +1,38 @@
+.wp-block-chairforce-icon-box {
+	display: flex;
+	width: 100%;
+	min-width: 0;
+
+	&.is-icon-left {
+		flex-direction: row;
+	}
+
+	&.is-icon-right {
+		flex-direction: row-reverse;
+	}
+
+	&.is-icon-top {
+		flex-direction: column;
+	}
+
+	&.is-align-start {
+		align-items: flex-start;
+	}
+
+	&.is-align-center {
+		align-items: center;
+	}
+
+	&.is-align-end {
+		align-items: flex-end;
+	}
+
+	> .block-editor-block-list__block:first-child {
+		flex-shrink: 0;
+	}
+
+	> .block-editor-block-list__block:last-child {
+		flex: 1;
+		min-width: 0;
+	}
+}

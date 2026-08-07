@@ -1,0 +1,25 @@
+@import "../../src/sass/settings";
+@import "../../src/sass/mixins";
+
+.wp-block-chairforce-hero-section {
+	background-size: cover;
+	background-repeat: no-repeat;
+
+	.cf-hero-section__inner {
+		width: 100%;
+		max-width: $grid-container-wide;
+		margin-inline: auto;
+	}
+
+	.cf-hero-section__content {
+		width: 100%;
+		margin-inline-end: auto;
+	}
+
+	@include breakpoint(large) {
+
+		.cf-hero-section__content {
+			width: calc(100% / 3);
+		}
+	}
+}

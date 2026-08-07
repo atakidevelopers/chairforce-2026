@@ -1,0 +1,58 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "chairforce/hero-section",
+	"version": "1.0.0",
+	"title": "Hero Section",
+	"category": "design",
+	"icon": "cover-image",
+	"description": "Full-width hero section with a background image and editable content box.",
+	"keywords": ["hero", "banner", "cover", "section"],
+	"textdomain": "chairforce",
+	"attributes": {
+		"align": {
+			"type": "string",
+			"default": "full"
+		},
+		"backgroundImageId": {
+			"type": "number",
+			"default": 0
+		},
+		"backgroundImageUrl": {
+			"type": "string",
+			"default": ""
+		},
+		"focalPoint": {
+			"type": "object",
+			"default": {
+				"x": 0.5,
+				"y": 0.5
+			}
+		},
+		"style": {
+			"type": "object",
+			"default": {
+				"spacing": {
+					"padding": {
+						"top": "var:preset|spacing|section-xl",
+						"right": "var:preset|spacing|section-s",
+						"bottom": "var:preset|spacing|section-xl",
+						"left": "var:preset|spacing|section-s"
+					}
+				}
+			}
+		}
+	},
+	"supports": {
+		"html": false,
+		"anchor": true,
+		"align": ["wide", "full"],
+		"spacing": {
+			"margin": true,
+			"padding": true
+		},
+		"reusable": true
+	},
+	"editorScript": "file:./index.js",
+	"style": "file:./style-index.css"
+}

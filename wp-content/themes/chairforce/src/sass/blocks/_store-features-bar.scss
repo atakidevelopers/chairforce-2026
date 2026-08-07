@@ -1,0 +1,17 @@
+.wp-block-columns.store-features-bar__columns {
+	@include breakpoint-max(medium) {
+		display: grid !important;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+
+		> .wp-block-column {
+			flex-basis: auto !important;
+			width: auto !important;
+		}
+	}
+
+	@include breakpoint(medium) {
+		> .wp-block-column:not(:last-child) {
+			border-right: 1px solid $color-outline;
+		}
+	}
+}

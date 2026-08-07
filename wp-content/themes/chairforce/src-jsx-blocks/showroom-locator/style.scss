@@ -1,0 +1,177 @@
+@import "../../src/sass/settings";
+@import "../../src/sass/mixins";
+
+.wp-block-chairforce-showroom-locator {
+	.cf-showroom-locator__filters {
+		display: flex;
+		flex-wrap: nowrap;
+		gap: var(--wp--preset--spacing--small);
+		margin-block-end: var(--wp--preset--spacing--large);
+		overflow-x: auto;
+		-webkit-overflow-scrolling: touch;
+		scrollbar-width: thin;
+	}
+
+	.cf-showroom-locator__filter {
+		align-items: center;
+		background: var(--wp--preset--color--surface);
+		border: 1px solid var(--wp--preset--color--outline);
+		border-radius: var(--wp--custom--border-radius--full, 9999px);
+		color: var(--wp--preset--color--heading);
+		display: inline-flex;
+		flex: 0 0 auto;
+		font: inherit;
+		padding-block: var(--wp--preset--spacing--tag-y);
+		padding-inline: var(--wp--preset--spacing--x-small);
+		text-decoration: none;
+		transition:
+			background-color var(--wp--custom--transition--duration, 0.2s) ease,
+			border-color var(--wp--custom--transition--duration, 0.2s) ease,
+			color var(--wp--custom--transition--duration, 0.2s) ease;
+
+		&.is-active {
+			background: var(--wp--preset--color--secondary);
+			border-color: var(--wp--preset--color--secondary);
+			color: var(--wp--preset--color--white);
+		}
+
+		&:focus-visible {
+			outline: 2px solid var(--wp--preset--color--primary);
+			outline-offset: 2px;
+		}
+	}
+
+	.cf-showroom-locator__body {
+		display: grid;
+		gap: var(--wp--preset--spacing--large);
+		grid-template-columns: minmax(0, 1fr);
+	}
+
+	.cf-showroom-locator__cards {
+		min-width: 0;
+	}
+
+	.cf-showroom-locator__card {
+		background: var(--wp--preset--color--surface);
+		border: 1px solid var(--wp--preset--color--outline);
+		border-radius: #{$border-radius-md};
+		display: grid;
+		gap: var(--wp--preset--spacing--medium);
+		min-width: 0;
+		padding: var(--wp--preset--spacing--large);
+
+		&[hidden] {
+			display: none !important;
+		}
+	}
+
+	.cf-showroom-locator__card-title {
+		color: var(--wp--preset--color--heading);
+		margin: 0;
+	}
+
+	.cf-showroom-locator__detail {
+		align-items: flex-start;
+		color: var(--wp--preset--color--body);
+		display: grid;
+		gap: var(--wp--preset--spacing--small);
+		grid-template-columns: auto minmax(0, 1fr);
+		min-width: 0;
+	}
+
+	.cf-showroom-locator__detail-text,
+	.cf-showroom-locator__detail-link {
+		min-width: 0;
+		overflow-wrap: anywhere;
+		word-break: break-word;
+	}
+
+	.cf-showroom-locator__detail-link {
+		color: var(--wp--preset--color--primary);
+		text-decoration: underline;
+		text-underline-offset: 0.15em;
+
+		&:focus-visible {
+			outline: 2px solid var(--wp--preset--color--primary);
+			outline-offset: 2px;
+		}
+	}
+
+	.cf-showroom-locator__cta {
+		margin-block-start: var(--wp--preset--spacing--small);
+	}
+
+	.cf-showroom-locator__map {
+		min-width: 0;
+	}
+
+	.cf-showroom-locator__map-canvas {
+		aspect-ratio: 264 / 209;
+		position: relative;
+		width: 100%;
+	}
+
+	.cf-showroom-locator__map-image {
+		display: block;
+		height: 100%;
+		object-fit: contain;
+		width: 100%;
+	}
+
+	.cf-showroom-locator__marker {
+		align-items: center;
+		display: flex;
+		height: 2rem;
+		justify-content: center;
+		left: var(--cf-marker-x);
+		position: absolute;
+		text-decoration: none;
+		top: var(--cf-marker-y);
+		transform: translate(-50%, -50%);
+		width: 2rem;
+
+		> span {
+			background: var(--wp--preset--color--secondary);
+			border: 2px solid var(--wp--preset--color--white);
+			border-radius: 50%;
+			box-shadow: 0 0 0 1px var(--wp--preset--color--outline);
+			display: block;
+			height: 0.75rem;
+			transition:
+				transform var(--wp--custom--transition--duration, 0.2s) ease,
+				background-color var(--wp--custom--transition--duration, 0.2s) ease;
+			width: 0.75rem;
+		}
+
+		&.is-active > span {
+			background: var(--wp--preset--color--primary);
+			transform: scale(1.35);
+		}
+
+		&:focus-visible {
+			outline: 2px solid var(--wp--preset--color--primary);
+			outline-offset: 2px;
+		}
+	}
+
+	@include breakpoint(large) {
+		.cf-showroom-locator__body {
+			align-items: start;
+			grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.cf-showroom-locator__filter,
+		.cf-showroom-locator__marker > span {
+			transition: none;
+		}
+	}
+}
+
+.cf-showroom-locator--empty {
+	border: 1px dashed var(--wp--preset--color--outline);
+	border-radius: #{$border-radius-md};
+	color: var(--wp--preset--color--body);
+	padding: var(--wp--preset--spacing--large);
+}

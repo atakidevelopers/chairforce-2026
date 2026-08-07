@@ -1,21 +1,30 @@
 .is-style-text-eyebrow {
-  @include textStyleEyebrow;
+	@include textStyleEyebrow;
+}
+
+.is-style-text-eyebrow-filled {
+	@include textStyleEyebrow;
+	display: inline-flex;
+	width: fit-content;
+	background-color: var(--wp--preset--color--secondary);
+	color: var(--wp--preset--color--white);
+	padding: var(--wp--preset--spacing--tag-y) var(--wp--preset--spacing--x-small);
 }
 
 .is-style-text-lead {
-  @include textStyleLead;
+	@include textStyleLead;
 }
 
 .is-style-text-label-nav {
-  @include textStyleLabelNav;
+	@include textStyleLabelNav;
 }
 
 .is-style-text-meta {
-  @include textStyleMeta;
+	@include textStyleMeta;
 }
 
 .is-style-text-price {
-  @include textStylePrice;
+	@include textStylePrice;
 }
 
 :where(p.is-style-text-heading-like, .wp-block-paragraph.is-style-text-heading-like) {

@@ -4,7 +4,7 @@ wp.domReady(() => {
 		{
 			name: 'full-on-small',
 			label: 'Full on Small',
-		}
+		},
 	]);
 
 	wp.blocks.registerBlockStyle('core/button', [
@@ -23,7 +23,7 @@ wp.domReady(() => {
 		{
 			name: 'light',
 			label: 'Light',
-		}
+		},
 	]);
 
 	wp.blocks.registerBlockStyle('woocommerce/product-price', [
@@ -37,6 +37,10 @@ wp.domReady(() => {
 		{
 			name: 'text-eyebrow',
 			label: 'Eyebrow',
+		},
+		{
+			name: 'text-eyebrow-filled',
+			label: 'Filled Eyebrow',
 		},
 		{
 			name: 'text-lead',
@@ -68,7 +72,6 @@ wp.domReady(() => {
 		{
 			name: 'narrow',
 			label: 'Narrow',
-		}
+		},
 	]);
-
 });
