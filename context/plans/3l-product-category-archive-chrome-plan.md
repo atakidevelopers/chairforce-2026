@@ -1,6 +1,6 @@
 # 3l — Product Category Archive Chrome — Implementation Plan
 
-## Status: 🔄 In progress — Chunks 1–2 ✅ (Aug 2026)
+## Status: ✅ Done — Chunks 1–3 (Aug 2026)
 
 Phase **3l** in `context/PROGRESS.md` covers three archive chrome pieces.
 This plan tracks them in order.
@@ -9,7 +9,7 @@ This plan tracks them in order.
 |---|---|---|
 | 1 | Reusable category swiper + archive child-category block | ✅ Done (`7be0750`) |
 | 2 | Manual category-picker block (reuses swiper) | ✅ Done (`abd6076`) |
-| 3 | Taxonomy banner (Banner CPT + config + archive block) | 📋 Plan locked — see `3l-product-category-banner-plan.md` |
+| 3 | Taxonomy banner (Banner CPT + config + archive block) | ✅ Done |
 | 4 | Taxonomy thumbs grid | ❌ Dropped — covered by swiper (Chunks 1–2) |
 
 **Design reference (Chunk 1):**

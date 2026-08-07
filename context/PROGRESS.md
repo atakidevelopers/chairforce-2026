@@ -38,7 +38,7 @@ active?" second-guess was raised and rejected —
 |---|---|---|
 | **1** | Header + mega menu | ✅ Done |
 | **2** | Static patterns (team) | ⏳ Not started |
-| **3** | Registration + commerce UI (3a–3p) | 🔄 Mostly done — **3l** Chunks 3–4, **3n** remain; **3o** QA polish optional |
+| **3** | Registration + commerce UI (3a–3p) | 🔄 Mostly done — **3n** remains; **3o** QA polish optional |
 | **4** | Content CPT templates + page assembly (4a–4b) | ⏳ Not started |
 | **5** | Blog + My Account | ⏳ Not started |
 | **6** | `/gallery/` shoppable page | ⏳ Blocked on relation migration |
@@ -453,7 +453,7 @@ pass optional (see Known open issues below).
 
 #### 3l. Product category archive chrome (`product_cat` and shared term surfaces)
 
-**Status: 🔄 In progress — Chunks 1–2 ✅; Chunks 3–4 remain**
+**Status: ✅ Done (Aug 2026)**
 
 Plan: `context/plans/3l-product-category-archive-chrome-plan.md`. Figma:
 `context/figma/components/Product Category Title Area.png` (+ Mobile).
@@ -470,11 +470,16 @@ Plan: `context/plans/3l-product-category-archive-chrome-plan.md`. Figma:
   ServerSideRender flex-list editor preview, display toggles, WordPress standard
   **Order by** + **Order** (ASC/DESC).
 
-**Remaining (same plan):**
+**Shipped — taxonomy banner (Chunk 3):** plan
+`context/plans/3l-product-category-banner-plan.md`.
 
-- **Chunk 3 — Taxonomy banner** — plan locked:
-  `context/plans/3l-product-category-banner-plan.md` (`chairforce_banner` CPT,
-  Banner Configurations + `display_on_child_categories`, `product-cat-banner` block).
+- **`chairforce_banner` CPT** — Gutenberg content; no public single URLs or archive.
+- **Banner Configurations** — options sub-page; category → banner repeater +
+  `display_on_child_categories`.
+- **`chairforce/product-cat-banner`** block + `includes/product-cat-banner-functions.php`;
+  wired above archive header in `templates/archive-product.html`.
+- **Banner editor UX** — guidelines snackbar + always-open Document panel, Heading
+  block removed on banner posts, **Heading Like** paragraph style.
 
 **Dropped:** Chunk 4 thumbs grid — covered by category swiper blocks.
 

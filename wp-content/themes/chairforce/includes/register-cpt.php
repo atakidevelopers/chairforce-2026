@@ -140,3 +140,63 @@ function chairforce_register_taxonomy_chairforce_faq_category(): void {
 }
 
 add_action( 'init', 'chairforce_register_taxonomy_chairforce_faq_category' );
+
+/**
+ * Register Post Type: chairforce_banner.
+ * Plural: Banners
+ * Singular: Banner
+ * Admin-only content — no public archive or single URLs.
+ *
+ * @return void
+ */
+function chairforce_register_cpt_chairforce_banner(): void {
+
+	$labels = [
+		'name'                     => __( 'Banners', 'chairforce' ),
+		'singular_name'            => __( 'Banner', 'chairforce' ),
+		'menu_name'                => __( 'Banners', 'chairforce' ),
+		'all_items'                => __( 'All Banners', 'chairforce' ),
+		'add_new'                  => __( 'Add new', 'chairforce' ),
+		'add_new_item'             => __( 'Add new Banner', 'chairforce' ),
+		'edit_item'                => __( 'Edit Banner', 'chairforce' ),
+		'new_item'                 => __( 'New Banner', 'chairforce' ),
+		'view_item'                => __( 'View Banner', 'chairforce' ),
+		'view_items'               => __( 'View Banners', 'chairforce' ),
+		'search_items'             => __( 'Search Banners', 'chairforce' ),
+		'not_found'                => __( 'No Banners found', 'chairforce' ),
+		'not_found_in_trash'       => __( 'No Banners found in trash', 'chairforce' ),
+		'item_published'           => __( 'Banner published', 'chairforce' ),
+		'item_published_privately' => __( 'Banner published privately.', 'chairforce' ),
+		'item_reverted_to_draft'   => __( 'Banner reverted to draft.', 'chairforce' ),
+		'item_scheduled'           => __( 'Banner scheduled', 'chairforce' ),
+		'item_updated'             => __( 'Banner updated.', 'chairforce' ),
+	];
+
+	$args = [
+		'label'               => __( 'Banners', 'chairforce' ),
+		'labels'              => $labels,
+		'description'         => '',
+		'public'              => true,
+		'publicly_queryable'  => false,
+		'show_ui'             => true,
+		'show_in_rest'        => true,
+		'rest_base'           => 'banners',
+		'has_archive'         => false,
+		'show_in_menu'        => true,
+		'show_in_nav_menus'   => false,
+		'delete_with_user'    => false,
+		'exclude_from_search' => true,
+		'capability_type'     => 'post',
+		'map_meta_cap'        => true,
+		'hierarchical'        => false,
+		'rewrite'             => false,
+		'query_var'           => false,
+		'menu_icon'           => 'dashicons-cover-image',
+		'menu_position'       => 22,
+		'supports'            => [ 'title', 'editor', 'revisions' ],
+	];
+
+	register_post_type( 'chairforce_banner', $args );
+}
+
+add_action( 'init', 'chairforce_register_cpt_chairforce_banner' );

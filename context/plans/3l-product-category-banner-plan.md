@@ -1,15 +1,15 @@
 # 3l Chunk 3 — Product Category Banner — Implementation Plan
 
-## Status: 📋 Plan locked (Aug 2026)
+## Status: ✅ Done (Aug 2026)
 
 Parent plan: `context/plans/3l-product-category-archive-chrome-plan.md` (Chunks 1–2 ✅).
 
 | Chunk | Scope | Status |
 |---|---|---|
-| 1 | `chairforce_banner` CPT (Gutenberg) | ⏳ Not started |
-| 2 | Banner Configurations ACF options sub-page | ⏳ Not started |
-| 3 | Resolution helpers + `chairforce/product-cat-banner` block | ⏳ Not started |
-| 4 | `archive-product.html` wiring + verification | ⏳ Not started |
+| 1 | `chairforce_banner` CPT (Gutenberg) | ✅ |
+| 2 | Banner Configurations ACF options sub-page | ✅ |
+| 3 | Resolution helpers + `chairforce/product-cat-banner` block | ✅ |
+| 4 | `archive-product.html` wiring + banner editor UX | ✅ |
 
 **Chunk 4 (thumbs grid)** in the parent 3l plan is **dropped** — category swiper blocks
 cover that use case.

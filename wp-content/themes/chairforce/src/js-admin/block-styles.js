@@ -53,6 +53,10 @@ wp.domReady(() => {
 		{
 			name: 'text-price',
 			label: 'Price',
+		},
+		{
+			name: 'text-heading-like',
+			label: 'Heading Like',
 		}
 	]);
 

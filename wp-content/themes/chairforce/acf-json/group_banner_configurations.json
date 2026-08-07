@@ -1,0 +1,128 @@
+{
+    "key": "group_banner_configurations",
+    "title": "Banner Configurations",
+    "fields": [
+        {
+            "key": "field_banner_category_rows",
+            "label": "Product Category Banners",
+            "name": "banner_category_rows",
+            "aria-label": "",
+            "type": "repeater",
+            "instructions": "Assign a banner to a product category. Use \"Display banner on child categories\" to inherit a parent banner on descendant archives that do not have their own row.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "layout": "block",
+            "pagination": 0,
+            "min": 0,
+            "max": 0,
+            "collapsed": "field_banner_category_term",
+            "button_label": "Add Category Row",
+            "rows_per_page": 20,
+            "sub_fields": [
+                {
+                    "key": "field_banner_category_term",
+                    "label": "Product Category",
+                    "name": "product_category",
+                    "aria-label": "",
+                    "type": "taxonomy",
+                    "instructions": "",
+                    "required": 1,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "25",
+                        "class": "",
+                        "id": ""
+                    },
+                    "taxonomy": "product_cat",
+                    "add_term": 0,
+                    "save_terms": 0,
+                    "load_terms": 0,
+                    "return_format": "id",
+                    "field_type": "select",
+                    "allow_null": 0,
+                    "allow_in_bindings": 1,
+                    "bidirectional": 0,
+                    "multiple": 0,
+                    "bidirectional_target": [],
+                    "parent_repeater": "field_banner_category_rows"
+                },
+                {
+                    "key": "field_banner_post",
+                    "label": "Banner",
+                    "name": "banner",
+                    "aria-label": "",
+                    "type": "post_object",
+                    "instructions": "",
+                    "required": 1,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "50",
+                        "class": "",
+                        "id": ""
+                    },
+                    "post_type": [
+                        "chairforce_banner"
+                    ],
+                    "post_status": "",
+                    "taxonomy": "",
+                    "return_format": "id",
+                    "multiple": 0,
+                    "allow_null": 0,
+                    "allow_in_bindings": 0,
+                    "bidirectional": 0,
+                    "ui": 1,
+                    "bidirectional_target": [],
+                    "parent_repeater": "field_banner_category_rows"
+                },
+                {
+                    "key": "field_banner_display_on_children",
+                    "label": "Display on child categories",
+                    "name": "display_on_child_categories",
+                    "aria-label": "",
+                    "type": "true_false",
+                    "instructions": "When enabled, this banner also appears on archives of nested child categories that do not have their own banner row.",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "25",
+                        "class": "",
+                        "id": ""
+                    },
+                    "message": "",
+                    "default_value": 0,
+                    "allow_in_bindings": 0,
+                    "ui": 1,
+                    "ui_on_text": "",
+                    "ui_off_text": "",
+                    "parent_repeater": "field_banner_category_rows"
+                }
+            ]
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "options_page",
+                "operator": "==",
+                "value": "chairforce-banner-configurations"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "",
+    "show_in_rest": 0,
+    "display_title": "",
+    "allow_ai_access": false,
+    "ai_description": ""
+}

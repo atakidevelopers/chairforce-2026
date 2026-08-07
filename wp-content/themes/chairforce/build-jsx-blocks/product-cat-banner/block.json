@@ -1,0 +1,30 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "chairforce/product-cat-banner",
+  "version": "1.0.0",
+  "title": "Product Category Banner",
+  "category": "woocommerce",
+  "description": "Renders the configured banner for the current product category archive.",
+  "keywords": [
+    "woocommerce",
+    "category",
+    "banner",
+    "archive"
+  ],
+  "textdomain": "chairforce",
+  "attributes": {},
+  "supports": {
+    "html": false,
+    "inserter": true,
+    "reusable": false,
+    "lock": false,
+    "align": [
+      "wide",
+      "full"
+    ]
+  },
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "render": "file:./render.php"
+}

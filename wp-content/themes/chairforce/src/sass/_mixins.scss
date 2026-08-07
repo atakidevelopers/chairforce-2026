@@ -757,6 +757,16 @@ $rem-base: 16px;
   line-height: 1.2;
 }
 
+@mixin textStyleHeadingLike {
+  font-family: $font-primary;
+  font-size: var(--wp--preset--font-size--xxx-large);
+  font-style: normal;
+  font-weight: $font-weight-bold;
+  letter-spacing: -0.01em;
+  line-height: 1;
+  color: $color-heading;
+}
+
 @mixin cardBackgroundImage {
 
   &:has(.card-background-image-wrapper) {

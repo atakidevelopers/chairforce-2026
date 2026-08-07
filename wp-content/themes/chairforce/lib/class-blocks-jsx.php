@@ -95,10 +95,28 @@ class Blocks_Jsx {
 		 * Register Scripts
 		 */
 		$script_asset = require( $script_asset_path );
+		$dependencies = array_unique(
+			array_merge(
+				$script_asset['dependencies'],
+				[
+					'wp-plugins',
+					'wp-edit-post',
+					'wp-data',
+					'wp-element',
+					'wp-components',
+					'wp-i18n',
+					'wp-blocks',
+					'wp-dom-ready',
+					'wp-hooks',
+					'wp-compose',
+				]
+			)
+		);
+
 		wp_enqueue_script(
 			$this->editor_script_handle,
 			chairforce_get_build_url( 'index.js' ),
-			$script_asset['dependencies'],
+			$dependencies,
 			$script_asset['version']
 		);
 

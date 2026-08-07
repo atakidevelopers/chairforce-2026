@@ -18,6 +18,10 @@
   @include textStylePrice;
 }
 
+:where(p.is-style-text-heading-like, .wp-block-paragraph.is-style-text-heading-like) {
+  @include textStyleHeadingLike;
+}
+
 :where(.wp-block-woocommerce-product-price.is-style-text-price) {
   .wc-block-components-product-price ins,
   .wc-block-components-product-price > .woocommerce-Price-amount {

@@ -48,3 +48,35 @@ wp.domReady(() => {
 wp.domReady(function () {
 	wp.blocks.unregisterBlockStyle('core/image', [ 'rounded' ]);
 });
+
+/**
+ * Banner CPT: remove Heading block from the inserter (JS fallback).
+ */
+wp.domReady(function () {
+	if (!wp.data?.subscribe || !wp.blocks?.unregisterBlockType) {
+		return;
+	}
+
+	let headingRemoved = false;
+
+	const maybeRemoveHeadingBlock = function () {
+		if (headingRemoved) {
+			return;
+		}
+
+		const postType = wp.data.select('core/editor')?.getCurrentPostType?.();
+
+		if (postType !== 'chairforce_banner') {
+			return;
+		}
+
+		if (wp.blocks.getBlockType('core/heading')) {
+			wp.blocks.unregisterBlockType('core/heading');
+		}
+
+		headingRemoved = true;
+	};
+
+	wp.data.subscribe(maybeRemoveHeadingBlock);
+	maybeRemoveHeadingBlock();
+});

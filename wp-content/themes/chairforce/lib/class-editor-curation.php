@@ -59,6 +59,8 @@ class Editor_Curation {
 
 		add_filter( 'register_block_type_args', [ $this, 'curate_chairforce_blocks' ], 10, 2 );
 
+		add_filter( 'allowed_block_types_all', [ $this, 'restrict_banner_editor_blocks' ], 10, 2 );
+
 	}
 
 	/**
@@ -137,5 +139,36 @@ class Editor_Curation {
 		}
 
 		return $args;
+	}
+
+	/**
+	 * Remove heading blocks from Banner CPT content (use Paragraph + Heading Like style).
+	 *
+	 * @param bool|string[]              $allowed_block_types Allowed block types.
+	 * @param WP_Block_Editor_Context    $context             Editor context.
+	 * @return bool|string[]
+	 */
+	public function restrict_banner_editor_blocks( $allowed_block_types, WP_Block_Editor_Context $context ) {
+		if ( empty( $context->post ) || 'chairforce_banner' !== $context->post->post_type ) {
+			return $allowed_block_types;
+		}
+
+		if ( true === $allowed_block_types ) {
+			$registered          = \WP_Block_Type_Registry::get_instance()->get_all_registered();
+			$allowed_block_types = array_keys( $registered );
+		}
+
+		if ( ! is_array( $allowed_block_types ) ) {
+			return $allowed_block_types;
+		}
+
+		return array_values(
+			array_filter(
+				$allowed_block_types,
+				static function ( string $block_name ): bool {
+					return 'core/heading' !== $block_name;
+				}
+			)
+		);
 	}
 }
