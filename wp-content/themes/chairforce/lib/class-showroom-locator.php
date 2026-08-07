@@ -189,16 +189,18 @@ class Showroom_Locator {
 			$phone     = (string) get_post_meta( $post->ID, 'phone', true );
 			$email     = sanitize_email( (string) get_post_meta( $post->ID, 'email', true ) );
 			$address   = (string) get_post_meta( $post->ID, 'address', true );
+			$heading   = '' !== trim( $warehouse ) ? $warehouse : get_the_title( $post );
 
 			$mapped[ $key ] = [
 				'key'          => $key,
 				'post_id'      => (int) $post->ID,
-				'filter_label' => $config[ $key ]['filter_label'],
+				'filter_label' => self::resolve_filter_label( (int) $post->ID, $config[ $key ]['label'] ),
 				'label'        => $config[ $key ]['label'],
 				'marker_x'     => $config[ $key ]['marker_x'],
 				'marker_y'     => $config[ $key ]['marker_y'],
 				'order'        => $config[ $key ]['order'],
-				'warehouse'    => '' !== trim( $warehouse ) ? $warehouse : get_the_title( $post ),
+				'warehouse'    => $heading,
+				'image_id'     => self::resolve_showroom_image_id( (int) $post->ID ),
 				'time'         => $time,
 				'phone'        => $phone,
 				'phone_href'   => self::normalize_phone_link( $phone ),
@@ -271,8 +273,9 @@ class Showroom_Locator {
 			$is_active   = $key === $active_location;
 			$tab_id      = $instance_id . '-tab-' . $key;
 			$panel_id    = $instance_id . '-panel-' . $key;
-			$class_names = 'cf-showroom-locator__filter' . ( $is_active ? ' is-active' : '' );
+			$class_names = 'wp-block-button__link wp-element-button cf-showroom-locator__filter' . ( $is_active ? ' is-active' : '' );
 
+			$markup .= '<div class="wp-block-button is-style-ghost cf-showroom-locator__filter-button">';
 			$markup .= sprintf(
 				'<a id="%1$s" class="%2$s" role="tab" href="%3$s" data-showroom-location="%4$s" aria-controls="%5$s" aria-selected="%6$s" tabindex="%7$d">%8$s</a>',
 				esc_attr( $tab_id ),
@@ -282,8 +285,9 @@ class Showroom_Locator {
 				esc_attr( $panel_id ),
 				$is_active ? 'true' : 'false',
 				$is_active ? 0 : -1,
-				esc_html( (string) $showroom['filter_label'] )
+				esc_html( self::format_title_case( (string) $showroom['filter_label'] ) )
 			);
+			$markup .= '</div>';
 		}
 
 		return $markup;
@@ -317,6 +321,8 @@ class Showroom_Locator {
 				$hidden_attr
 			);
 
+			$markup .= self::render_card_image( $showroom );
+			$markup .= '<div class="cf-showroom-locator__card-content">';
 			$markup .= '<h3 class="cf-showroom-locator__card-title">' . esc_html( (string) $showroom['warehouse'] ) . '</h3>';
 
 			if ( '' !== trim( (string) $showroom['time'] ) ) {
@@ -333,48 +339,196 @@ class Showroom_Locator {
 				$markup .= '</div>';
 			}
 
-			if ( '' !== trim( (string) $showroom['phone'] ) && '' !== (string) $showroom['phone_href'] ) {
-				$markup .= '<div class="cf-showroom-locator__detail">';
-				$markup .= '<span class="cf-icon-preview cf-icon-phone" aria-hidden="true"></span>';
-				$markup .= sprintf(
-					'<a class="cf-showroom-locator__detail-link" href="tel:%1$s">%2$s</a>',
-					esc_attr( (string) $showroom['phone_href'] ),
-					esc_html( (string) $showroom['phone'] )
-				);
-				$markup .= '</div>';
-			}
-
-			if ( '' !== (string) $showroom['email'] ) {
-				$markup .= '<div class="cf-showroom-locator__detail">';
-				$markup .= '<span class="cf-icon-preview cf-icon-mail" aria-hidden="true"></span>';
-				$markup .= sprintf(
-					'<a class="cf-showroom-locator__detail-link" href="mailto:%1$s">%2$s</a>',
-					esc_attr( (string) $showroom['email'] ),
-					esc_html( antispambot( (string) $showroom['email'] ) )
-				);
-				$markup .= '</div>';
-			}
+			$markup .= self::render_card_contact( $showroom );
 
 			if ( $show_cta ) {
-				$cta_label = sprintf(
-					/* translators: %s: showroom location label, e.g. Sydney */
-					__( 'View %s showroom', 'chairforce' ),
-					(string) $showroom['label']
-				);
-
-				$markup .= '<div class="cf-showroom-locator__cta wp-block-button is-style-secondary">';
+				$markup .= '<div class="cf-showroom-locator__cta wp-block-button is-style-primary cf-has-icon cf-icon-arrow-right cf-icon-right">';
 				$markup .= sprintf(
 					'<a class="wp-block-button__link wp-element-button" href="%1$s">%2$s</a>',
 					esc_url( (string) $showroom['permalink'] ),
-					esc_html( $cta_label )
+					esc_html__( 'Get Directions', 'chairforce' )
 				);
 				$markup .= '</div>';
 			}
 
+			$markup .= '</div>';
 			$markup .= '</article>';
 		}
 
 		return $markup;
+	}
+
+	/**
+	 * Format a label using title case.
+	 *
+	 * @param string $value Raw label value.
+	 * @return string
+	 */
+	private static function format_title_case( string $value ): string {
+		if ( function_exists( 'mb_convert_case' ) ) {
+			return mb_convert_case( $value, MB_CASE_TITLE, 'UTF-8' );
+		}
+
+		return ucwords( strtolower( $value ) );
+	}
+
+	/**
+	 * Resolve the filter label from showroom taxonomy terms.
+	 *
+	 * @param int    $post_id       Showroom post ID.
+	 * @param string $fallback_label Fallback label when taxonomy is missing.
+	 * @return string
+	 */
+	private static function resolve_filter_label( int $post_id, string $fallback_label ): string {
+		$terms = get_the_terms( $post_id, 'showroom-locations' );
+
+		if ( is_wp_error( $terms ) || empty( $terms ) ) {
+			return $fallback_label;
+		}
+
+		$term = $terms[0];
+
+		return '' !== trim( (string) $term->name ) ? (string) $term->name : $fallback_label;
+	}
+
+	/**
+	 * Render phone and email on a single contact row.
+	 *
+	 * @param array<string, mixed> $showroom Mapped showroom data.
+	 * @return string
+	 */
+	private static function render_card_contact( array $showroom ): string {
+		$has_phone = '' !== trim( (string) $showroom['phone'] ) && '' !== (string) $showroom['phone_href'];
+		$has_email = '' !== (string) $showroom['email'];
+
+		if ( ! $has_phone && ! $has_email ) {
+			return '';
+		}
+
+		$leading_icon = $has_phone ? 'cf-icon-phone' : 'cf-icon-mail';
+
+		$markup  = '<div class="cf-showroom-locator__detail cf-showroom-locator__detail--contact">';
+		$markup .= sprintf(
+			'<span class="cf-icon-preview %1$s" aria-hidden="true"></span>',
+			esc_attr( $leading_icon )
+		);
+		$markup .= '<span class="cf-showroom-locator__contact-line">';
+
+		if ( $has_phone ) {
+			$markup .= sprintf(
+				'<a class="cf-showroom-locator__detail-link" href="tel:%1$s">%2$s</a>',
+				esc_attr( (string) $showroom['phone_href'] ),
+				esc_html( (string) $showroom['phone'] )
+			);
+		}
+
+		if ( $has_email ) {
+			if ( $has_phone ) {
+				$markup .= '<span class="cf-showroom-locator__email-item">';
+				$markup .= '<span class="cf-icon-preview cf-icon-mail" aria-hidden="true"></span>';
+			}
+
+			$markup .= sprintf(
+				'<a class="cf-showroom-locator__detail-link" href="mailto:%1$s">%2$s</a>',
+				esc_attr( (string) $showroom['email'] ),
+				esc_html( antispambot( (string) $showroom['email'] ) )
+			);
+
+			if ( $has_phone ) {
+				$markup .= '</span>';
+			}
+		}
+
+		$markup .= '</span>';
+		$markup .= '</div>';
+
+		return $markup;
+	}
+
+	/**
+	 * Resolve the attachment ID used for a showroom card image.
+	 *
+	 * @param int $post_id Showroom post ID.
+	 * @return int
+	 */
+	private static function resolve_showroom_image_id( int $post_id ): int {
+		$gallery_ids = self::parse_attachment_ids( get_post_meta( $post_id, 'showroom_gallery', true ) );
+
+		if ( ! empty( $gallery_ids ) ) {
+			return (int) $gallery_ids[0];
+		}
+
+		$map_image_id = absint( get_post_meta( $post_id, 'map', true ) );
+
+		if ( $map_image_id > 0 ) {
+			return $map_image_id;
+		}
+
+		return (int) get_post_thumbnail_id( $post_id );
+	}
+
+	/**
+	 * Normalize attachment ID values from gallery meta.
+	 *
+	 * @param mixed $value Raw post meta value.
+	 * @return int[]
+	 */
+	private static function parse_attachment_ids( $value ): array {
+		if ( is_array( $value ) ) {
+			return array_values( array_filter( array_map( 'absint', $value ) ) );
+		}
+
+		if ( is_numeric( $value ) ) {
+			$attachment_id = absint( $value );
+
+			return $attachment_id > 0 ? [ $attachment_id ] : [];
+		}
+
+		if ( ! is_string( $value ) || '' === trim( $value ) ) {
+			return [];
+		}
+
+		$unserialized = maybe_unserialize( $value );
+
+		if ( is_array( $unserialized ) ) {
+			return array_values( array_filter( array_map( 'absint', $unserialized ) ) );
+		}
+
+		$ids = array_map( 'absint', explode( ',', $value ) );
+
+		return array_values( array_filter( $ids ) );
+	}
+
+	/**
+	 * Render a showroom card image when available.
+	 *
+	 * @param array<string, mixed> $showroom Mapped showroom data.
+	 * @return string
+	 */
+	private static function render_card_image( array $showroom ): string {
+		$image_id = isset( $showroom['image_id'] ) ? absint( $showroom['image_id'] ) : 0;
+
+		if ( $image_id <= 0 ) {
+			return '';
+		}
+
+		$image = wp_get_attachment_image(
+			$image_id,
+			'large',
+			false,
+			[
+				'class'    => 'cf-showroom-locator__card-image',
+				'loading'  => 'lazy',
+				'decoding' => 'async',
+				'alt'      => (string) $showroom['warehouse'],
+			]
+		);
+
+		if ( ! $image ) {
+			return '';
+		}
+
+		return '<div class="cf-showroom-locator__card-media">' . $image . '</div>';
 	}
 
 	/**

@@ -21,6 +21,41 @@
             "min": 1,
             "max": 5,
             "step": 1
+        },
+        {
+            "key": "field_review_title",
+            "label": "Review Title",
+            "name": "review_title",
+            "type": "text",
+            "required": 0,
+            "instructions": "Short heading displayed above the testimonial text.",
+            "wrapper": {
+                "width": "100"
+            }
+        },
+        {
+            "key": "field_review_location",
+            "label": "Reviewer Location",
+            "name": "review_location",
+            "type": "text",
+            "required": 0,
+            "instructions": "Public location such as a suburb, city, or state. Do not enter a private street address.",
+            "wrapper": {
+                "width": "50"
+            }
+        },
+        {
+            "key": "field_review_verified",
+            "label": "Verified",
+            "name": "verified",
+            "type": "true_false",
+            "required": 0,
+            "ui": 1,
+            "default_value": 0,
+            "instructions": "Enable only when the testimonial source has been manually checked. This is not a WooCommerce verified-purchase flag.",
+            "wrapper": {
+                "width": "50"
+            }
         }
     ],
     "location": [
@@ -38,5 +73,5 @@
     "label_placement": "left",
     "instruction_placement": "field",
     "active": true,
-    "modified": 1753710200
+    "modified": 1754406000
 }
