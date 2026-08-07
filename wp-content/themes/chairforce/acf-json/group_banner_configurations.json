@@ -8,7 +8,7 @@
             "name": "banner_category_rows",
             "aria-label": "",
             "type": "repeater",
-            "instructions": "Assign a banner to a product category. Use \"Display banner on child categories\" to inherit a parent banner on descendant archives that do not have their own row.",
+            "instructions": "Assign banners to product categories. Multiple rows may target the same category — the first matching row wins (exact match on the archive term, then first inherit row walking repeater order).",
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {

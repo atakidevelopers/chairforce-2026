@@ -77,7 +77,6 @@ class Acf {
 
 		add_filter( 'acf/fields/taxonomy/query/key=field_banner_category_term', [ $this, 'acf_faq_product_cat_taxonomy_query' ] );
 		add_filter( 'acf/fields/taxonomy/result/key=field_banner_category_term', [ $this, 'acf_faq_product_cat_taxonomy_result' ], 10, 4 );
-		add_filter( 'acf/validate_value/key=field_banner_category_term', [ $this, 'acf_validate_unique_banner_category_row' ], 10, 4 );
 
 	}
 
@@ -397,54 +396,6 @@ class Acf {
 		$current_row = $matches[1];
 		$rows        = isset( $_POST['acf']['faq_category_rows'] ) && is_array( $_POST['acf']['faq_category_rows'] )
 			? wp_unslash( $_POST['acf']['faq_category_rows'] )
-			: [];
-
-		foreach ( $rows as $row_key => $row ) {
-			if ( ! is_array( $row ) || $row_key === $current_row ) {
-				continue;
-			}
-
-			$row_term = isset( $row['product_category'] ) ? absint( $row['product_category'] ) : 0;
-
-			if ( $row_term === $term_id ) {
-				return esc_html__( 'This product category is already assigned in another row.', 'chairforce' );
-			}
-		}
-
-		return $valid;
-	}
-
-	/**
-	 * Prevent duplicate product category rows in Banner Configurations repeater.
-	 *
-	 * @param mixed                $valid   Validation state.
-	 * @param mixed                $value   Field value.
-	 * @param array<string, mixed> $field   ACF field.
-	 * @param string               $input   Input name.
-	 * @return mixed
-	 *
-	 * @hooked acf/validate_value/key=field_banner_category_term
-	 */
-	public function acf_validate_unique_banner_category_row( $valid, $value, array $field, string $input ) {
-		unset( $field );
-
-		if ( true !== $valid || empty( $value ) ) {
-			return $valid;
-		}
-
-		$term_id = is_array( $value ) ? absint( reset( $value ) ) : absint( $value );
-
-		if ( ! $term_id ) {
-			return $valid;
-		}
-
-		if ( ! preg_match( '/acf\[banner_category_rows\]\[row-(\d+)\]/', $input, $matches ) ) {
-			return $valid;
-		}
-
-		$current_row = $matches[1];
-		$rows        = isset( $_POST['acf']['banner_category_rows'] ) && is_array( $_POST['acf']['banner_category_rows'] )
-			? wp_unslash( $_POST['acf']['banner_category_rows'] )
 			: [];
 
 		foreach ( $rows as $row_key => $row ) {

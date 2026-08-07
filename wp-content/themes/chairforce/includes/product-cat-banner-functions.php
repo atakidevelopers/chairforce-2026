@@ -30,11 +30,11 @@ function chairforce_normalize_banner_post_id( $value ): int {
 }
 
 /**
- * Build a term ID index from Banner Configurations options rows.
+ * Normalized Banner Configurations rows in repeater order (first row wins).
  *
- * @return array<int, array{banner_id: int, display_on_child_categories: bool}>
+ * @return array<int, array{term_id: int, banner_id: int, display_on_child_categories: bool}>
  */
-function chairforce_get_banner_configuration_rows_by_term(): array {
+function chairforce_get_banner_configuration_rows(): array {
 	if ( ! function_exists( 'get_field' ) ) {
 		return [];
 	}
@@ -45,7 +45,7 @@ function chairforce_get_banner_configuration_rows_by_term(): array {
 		return [];
 	}
 
-	$rows_by_term = [];
+	$normalized = [];
 
 	foreach ( $rows as $row ) {
 		if ( ! is_array( $row ) ) {
@@ -64,17 +64,47 @@ function chairforce_get_banner_configuration_rows_by_term(): array {
 			continue;
 		}
 
-		$rows_by_term[ $term_id ] = [
-			'banner_id'                   => $banner_id,
-			'display_on_child_categories' => ! empty( $row['display_on_child_categories'] ),
+		$normalized[] = [
+			'term_id'                       => $term_id,
+			'banner_id'                     => $banner_id,
+			'display_on_child_categories'   => ! empty( $row['display_on_child_categories'] ),
 		];
 	}
 
-	return $rows_by_term;
+	return $normalized;
+}
+
+/**
+ * Whether a product_cat term is a strict ancestor of another.
+ *
+ * @param int $ancestor_id Potential ancestor term ID.
+ * @param int $term_id     Descendant term ID.
+ * @return bool
+ */
+function chairforce_is_product_cat_strict_ancestor( int $ancestor_id, int $term_id ): bool {
+	$ancestor_id = absint( $ancestor_id );
+	$term_id     = absint( $term_id );
+
+	if ( $ancestor_id < 1 || $term_id < 1 || $ancestor_id === $term_id ) {
+		return false;
+	}
+
+	$current_id = $term_id;
+
+	while ( $current_id = (int) wp_get_term_taxonomy_parent_id( $current_id, 'product_cat' ) ) {
+		if ( $current_id === $ancestor_id ) {
+			return true;
+		}
+	}
+
+	return false;
 }
 
 /**
  * Resolve a banner post ID for a product_cat term archive.
+ *
+ * Uses repeater order: first exact match on the queried term, else first inherit
+ * row whose category is a strict ancestor with display_on_child_categories enabled.
  *
  * @param int $term_id Product category term ID.
  * @return int Banner post ID, or 0 when unmapped.
@@ -86,24 +116,28 @@ function chairforce_resolve_product_cat_banner_id( int $term_id ): int {
 		return 0;
 	}
 
-	$rows_by_term = chairforce_get_banner_configuration_rows_by_term();
+	$rows = chairforce_get_banner_configuration_rows();
 
-	if ( isset( $rows_by_term[ $term_id ]['banner_id'] ) ) {
-		return (int) $rows_by_term[ $term_id ]['banner_id'];
+	if ( empty( $rows ) ) {
+		return 0;
 	}
 
-	$ancestor_id = $term_id;
+	foreach ( $rows as $row ) {
+		if ( (int) $row['term_id'] === $term_id ) {
+			return (int) $row['banner_id'];
+		}
+	}
 
-	while ( $ancestor_id = (int) wp_get_term_taxonomy_parent_id( $ancestor_id, 'product_cat' ) ) {
-		if ( empty( $rows_by_term[ $ancestor_id ] ) ) {
+	foreach ( $rows as $row ) {
+		if ( empty( $row['display_on_child_categories'] ) ) {
 			continue;
 		}
 
-		$row = $rows_by_term[ $ancestor_id ];
-
-		if ( ! empty( $row['display_on_child_categories'] ) && ! empty( $row['banner_id'] ) ) {
-			return (int) $row['banner_id'];
+		if ( ! chairforce_is_product_cat_strict_ancestor( (int) $row['term_id'], $term_id ) ) {
+			continue;
 		}
+
+		return (int) $row['banner_id'];
 	}
 
 	return 0;

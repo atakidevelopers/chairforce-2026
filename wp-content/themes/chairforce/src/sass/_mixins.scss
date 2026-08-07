@@ -758,8 +758,8 @@ $rem-base: 16px;
 }
 
 @mixin textStyleHeadingLike {
-  font-family: $font-primary;
-  font-size: var(--wp--preset--font-size--xxx-large);
+  font-family: $font-secondary;
+  font-size: $font-size-xxxx-large;
   font-style: normal;
   font-weight: $font-weight-bold;
   letter-spacing: -0.01em;
