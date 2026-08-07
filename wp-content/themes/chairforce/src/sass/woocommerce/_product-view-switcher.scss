@@ -73,11 +73,29 @@
 			"media title"
 			"media price"
 			"media swatches"
-			"media actions";
+			"media actions"
+			"media yith";
 		gap: $spacing-x-small $spacing-medium;
 		align-items: start;
-		padding-block: $spacing-medium;
-		border-bottom: 1px solid $color-outline;
+
+		position: relative;
+
+		&:last-child{
+			margin-block-end: $spacing-medium;
+		}
+		.wp-block-chairforce-product-card{
+
+			> .wp-block-post-title{
+				margin-block-start: $spacing-medium;
+			}
+			> .cf-add-to-cart{
+				margin-block-end: $spacing-xx-small;
+				width: fit-content;
+			}
+			.cf-card-media{
+				position: unset;
+			}
+		}
 	}
 
 	// chairforce/product-card (and classic loop) wrap card blocks in .wp-block-chairforce-product-card inside each <li>.
@@ -88,7 +106,7 @@
 
 	.cf-card-media {
 		grid-area: media;
-		align-self: start;
+		align-self: center;
 	}
 
 	.cf-product-swatches {
@@ -139,30 +157,32 @@
 
 	// YITH may also render as a sibling of product-button in the card grid.
 	.yith-ywraq-add-to-quote {
-		grid-area: actions;
-		align-self: end;
-		justify-self: stretch;
+		grid-area: yith;
+		//align-self: end;
+		//justify-self: stretch;
 		text-align: left;
+		max-width: fit-content;
+		padding-top: unset;
 	}
 }
 
 @include breakpoint(medium) {
 	.cf-shop-archive-main.cf-products-view-list {
 		// Desktop — media | title, price, swatches | actions.
-		.wc-block-product,
-		.wc-block-product-template > li,
-		[data-block-name="woocommerce/legacy-template"][data-template="archive-product"] ul.products > li.product {
-			grid-template-columns: minmax(9rem, 12rem) minmax(0, 1fr) minmax(10rem, 12rem);
-			grid-template-areas:
-				"media title actions"
-				"media price actions"
-				"media swatches actions";
-		}
+		//.wc-block-product,
+		//.wc-block-product-template > li,
+		//[data-block-name="woocommerce/legacy-template"][data-template="archive-product"] ul.products > li.product {
+		//	grid-template-columns: minmax(9rem, 12rem) minmax(0, 1fr) minmax(10rem, 12rem);
+		//	grid-template-areas:
+		//		"media title actions"
+		//		"media price actions"
+		//		"media swatches actions";
+		//}
 
-		.wp-block-woocommerce-product-button,
-		.wc-block-components-product-button,
-		.yith-ywraq-add-to-quote {
-			text-align: center;
-		}
+		//.wp-block-woocommerce-product-button,
+		//.wc-block-components-product-button,
+		//.yith-ywraq-add-to-quote {
+		//	text-align: center;
+		//}
 	}
 }

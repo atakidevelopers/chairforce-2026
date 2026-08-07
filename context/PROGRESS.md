@@ -38,7 +38,7 @@ active?" second-guess was raised and rejected —
 |---|---|---|
 | **1** | Header + mega menu | ✅ Done |
 | **2** | Static patterns (team) | ⏳ Not started |
-| **3** | Registration + commerce UI (3a–3p) | 🔄 Mostly done — **3n** remains |
+| **3** | Registration + commerce UI (3a–3p) | ✅ Done |
 | **4** | Content CPT templates + page assembly (4a–4b) | ⏳ Not started |
 | **5** | Blog + My Account | ⏳ Not started |
 | **6** | `/gallery/` shoppable page | ⏳ Blocked on relation migration |
@@ -512,7 +512,7 @@ view, related, upsells, search, page embeds).
 
 #### 3n. Product-adjacent taxonomy templates & blocks
 
-**Status: 🔄 In progress — archive shell shared via pattern; block polish remains**
+**Status: ✅ Done (Aug 2026)**
 
 FSE templates and/or blocks for taxonomies registered in 3a that affect commerce
 UX but are not plain `product_cat` archives:
@@ -536,11 +536,11 @@ archives reuse `archive-product.html` via WooCommerce's
 
 | Taxonomy | Deliverables |
 |---|---|
-| `venues` | ✅ FSE template shell — block/archive polish remains |
-| `sales-by-location` | ✅ FSE template shell — Product Collection + filters alignment remains |
-| `feature` | ✅ Single-product icon row — `chairforce/product-features` block (Aug 2026) |
+| `venues` | ✅ FSE template + shared archive pattern |
+| `sales-by-location` | ✅ FSE template + shared archive pattern |
+| `feature` | ✅ Single-product icon row — `chairforce/product-features` block |
 
-Cross-ref checklist file `19` §2. No plan/notes doc yet.
+Cross-ref checklist file `19` §2.
 
 #### 3o. Product reviews section (Figma)
 
@@ -721,7 +721,8 @@ Carried from checklist file `19` §8 — resolve before/during the phase noted:
 - ~~Where the mega-menu's "Shop by Space" link should point (likely `venues`
   taxonomy archive) — blocks **3n** / **Phase 4a**.~~ — ✅ Resolved (31 Jul
   2026): top-level **`venues`** archives (e.g. `/venue/hospitality/`); menu
-  builder script populates from live terms. Finish block archive in **3n**.
+  builder script populates from live terms. ~~Finish block archive in **3n**.~~
+  ✅ Done (Aug 2026) — shared `archive-product` pattern on taxonomy templates.
 - "Checkout notice popup" — confirm still wanted, zero live trigger found
   (file `14` §J) — blocks nothing yet, just needs a yes/no.
 - `/gallery/` page's exact pagination mode (infinite-scroll vs. load-more) —
