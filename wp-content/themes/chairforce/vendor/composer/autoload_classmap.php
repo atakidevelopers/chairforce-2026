@@ -21,7 +21,6 @@ return array(
     'Chairforce\\Plugins_Manager' => $baseDir . '/lib/class-plugins-manager.php',
     'Chairforce\\Product_Swatches' => $baseDir . '/lib/class-product-swatches.php',
     'Chairforce\\Showroom_Locator' => $baseDir . '/lib/class-showroom-locator.php',
-    'Chairforce\\Testimonials_Carousel' => $baseDir . '/lib/class-testimonials-carousel.php',
     'Chairforce\\Site_Header' => $baseDir . '/lib/class-site-header.php',
     'Chairforce\\Theme_Style_Switcher' => $baseDir . '/lib/class-theme-style-switcher.php',
     'Chairforce\\WooCommerce' => $baseDir . '/lib/class-woocommerce.php',
