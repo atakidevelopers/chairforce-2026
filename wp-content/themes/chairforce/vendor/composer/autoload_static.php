@@ -26,6 +26,7 @@ class ComposerStaticInit0b930fbfa8635b3843fecc3493015433
         'Chairforce\\Plugins_Manager' => __DIR__ . '/../..' . '/lib/class-plugins-manager.php',
         'Chairforce\\Product_Swatches' => __DIR__ . '/../..' . '/lib/class-product-swatches.php',
         'Chairforce\\Showroom_Locator' => __DIR__ . '/../..' . '/lib/class-showroom-locator.php',
+        'Chairforce\\Showroom_Locator_Full' => __DIR__ . '/../..' . '/lib/class-showroom-locator-full.php',
         'Chairforce\\Site_Header' => __DIR__ . '/../..' . '/lib/class-site-header.php',
         'Chairforce\\Theme_Style_Switcher' => __DIR__ . '/../..' . '/lib/class-theme-style-switcher.php',
         'Chairforce\\WooCommerce' => __DIR__ . '/../..' . '/lib/class-woocommerce.php',
