@@ -1,0 +1,39 @@
+// Primary action styling for native form buttons (not block editor buttons).
+
+@mixin cf-form-button-primary {
+	display: inline-block;
+	width: auto;
+	min-height: 0;
+	padding: $button-padding-vertical $button-padding-sides;
+	border: 1px solid $button-border-color;
+	border-radius: $button-border-radius;
+	background-color: $button-background-color;
+	color: $button-text-color;
+	font-family: inherit;
+	font-size: $button-font-size;
+	font-weight: $button-font-weight;
+	line-height: $button-line-height;
+	text-transform: $button-text-transform;
+	text-decoration: none;
+	cursor: pointer;
+	appearance: none;
+	box-shadow: none;
+
+	@include button-primary-default;
+
+	&:focus-visible {
+		outline: $form-field-outline-focus;
+		outline-offset: 2px;
+	}
+}
+
+form {
+	:where(
+		button[type='submit'],
+		input[type='submit'],
+		button[type='reset'],
+		input[type='reset']
+	):not(.site-header__search-submit):not(.cf-qty-button) {
+		@include cf-form-button-primary;
+	}
+}

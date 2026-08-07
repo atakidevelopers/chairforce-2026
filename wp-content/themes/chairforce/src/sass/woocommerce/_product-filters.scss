@@ -41,7 +41,7 @@ html.cf-filters-swapping::before {
 .cf-product-filters__bar-scroll {
 	overflow-x: auto;
 	overflow-y: hidden;
-	padding-block: $spacing-x-small;
+	padding-bottom: $spacing-x-small;
 	-webkit-overflow-scrolling: touch;
 	scrollbar-gutter: stable;
 
@@ -68,7 +68,7 @@ html.cf-filters-swapping::before {
 	.cf-product-filters__bar-button.wp-block-button__link {
 		white-space: nowrap;
 		gap: $spacing-x-small;
-		padding-block: $spacing-xxx-small;
+		padding-block: $spacing-xx-small;
 		padding-inline: $spacing-x-small $spacing-x-small;
 		font-size: $font-size-small;
 

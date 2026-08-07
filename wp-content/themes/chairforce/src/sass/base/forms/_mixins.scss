@@ -1,0 +1,41 @@
+// Shared selector list for text-like form controls (WC Select2, native inputs, etc.).
+
+@mixin cf-all-input-fields {
+	input:not([type='checkbox']):not([type='radio']):not([type='file']):not([type='hidden']):not([type='submit']):not([type='button']):not([type='reset']):not([type='image']),
+	[type='text'],
+	[type='password'],
+	[type='date'],
+	[type='datetime'],
+	[type='datetime-local'],
+	[type='month'],
+	[type='week'],
+	[type='email'],
+	[type='number'],
+	[type='search'],
+	[type='tel'],
+	[type='time'],
+	[type='url'],
+	[type='color'],
+	textarea,
+	select,
+	.select2-container .select2-selection,
+	.select2-container--default .select2-selection--single {
+		@content;
+	}
+}
+
+// Controls that keep the browser's native UI chrome (chevron, calendar, spinners, etc.).
+@mixin cf-native-ui-fields {
+	select,
+	[type='date'],
+	[type='datetime'],
+	[type='datetime-local'],
+	[type='month'],
+	[type='week'],
+	[type='time'],
+	[type='color'],
+	[type='search'],
+	[type='number'] {
+		@content;
+	}
+}

@@ -38,7 +38,7 @@ active?" second-guess was raised and rejected —
 |---|---|---|
 | **1** | Header + mega menu | ✅ Done |
 | **2** | Static patterns (team) | ⏳ Not started |
-| **3** | Registration + commerce UI (3a–3p) | 🔄 Mostly done — **3n** remains; **3o** QA polish optional |
+| **3** | Registration + commerce UI (3a–3p) | 🔄 Mostly done — **3n** remains |
 | **4** | Content CPT templates + page assembly (4a–4b) | ⏳ Not started |
 | **5** | Blog + My Account | ⏳ Not started |
 | **6** | `/gallery/` shoppable page | ⏳ Blocked on relation migration |
@@ -512,7 +512,7 @@ view, related, upsells, search, page embeds).
 
 #### 3n. Product-adjacent taxonomy templates & blocks
 
-**Status: 🔄 In progress — `feature` single-product row shipped; `venues` + `sales-by-location` remain**
+**Status: 🔄 In progress — archive shell shared via pattern; block polish remains**
 
 FSE templates and/or blocks for taxonomies registered in 3a that affect commerce
 UX but are not plain `product_cat` archives:
@@ -526,17 +526,25 @@ Overview (Description) tab via `render_description_tab()` +
 terms + ACF `field_feature_thumbnail` (with legacy `thumbnail` term-meta
 fallback). Hidden from inserter via `Editor_Curation` — PHP-placed only.
 
+**Shipped (archive shell):** `patterns/archive-product.php` — shared shop/taxonomy
+archive chrome (banner, title/description, child swiper, shop shell). Wired from
+`templates/archive-product.html`, `taxonomy-venues.html`,
+`taxonomy-feature.html`, and `taxonomy-sales-by-location.html`. `product_cat`
+archives reuse `archive-product.html` via WooCommerce's
+`taxonomy-product_cat` → `archive-product` template fallback (no dedicated
+`taxonomy-product_cat.html` required).
+
 | Taxonomy | Deliverables |
 |---|---|
-| `venues` | Finish block archive beyond `taxonomy-venues.html` legacy shell |
-| `sales-by-location` | Archive template aligned with Product Collection + filters |
+| `venues` | ✅ FSE template shell — block/archive polish remains |
+| `sales-by-location` | ✅ FSE template shell — Product Collection + filters alignment remains |
 | `feature` | ✅ Single-product icon row — `chairforce/product-features` block (Aug 2026) |
 
 Cross-ref checklist file `19` §2. No plan/notes doc yet.
 
 #### 3o. Product reviews section (Figma)
 
-**Status: 🔄 In progress (Aug 2026)** — plan:
+**Status: ✅ Done (Aug 2026)** — plan:
 `context/plans/3o-product-reviews-section-plan.md`.
 
 **Shipped:** Theme options on WooCommerce tab (`product_reviews_enabled`,
@@ -547,9 +555,6 @@ Cross-ref checklist file `19` §2. No plan/notes doc yet.
 unset WC reviews tab in section mode (`lib/class-woocommerce-single-product.php`);
 `templates/single-product.html` two-column layout; Sass +
 `src/js/product-reviews-form-toggle.js`.
-
-**Remaining:** Browser QA on product with reviews enabled; optional bulk
-`comment_status = open` for catalog; Figma polish pass if needed.
 
 #### 3p. Product FAQs section (Figma)
 

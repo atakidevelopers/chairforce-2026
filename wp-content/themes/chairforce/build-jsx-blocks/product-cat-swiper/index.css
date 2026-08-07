@@ -1,1 +1,116 @@
-.cf-product-cat-swiper-editor,.wp-block-chairforce-product-cat-swiper{--cf-category-swiper-slide-width:6.25rem;--cf-category-swiper-scrollbar-gap:var(--wp--preset--spacing--medium)}.cf-product-cat-swiper-editor__hint,.wp-block-chairforce-product-cat-swiper__hint{color:var(--wp--preset--color--neutral);font-size:var(--wp--preset--font-size--small);margin:0;text-align:center}.cf-product-cat-swiper-editor__searching,.wp-block-chairforce-product-cat-swiper__searching{align-items:center;color:var(--wp--preset--color--neutral);display:flex;font-size:var(--wp--preset--font-size--small);gap:var(--wp--preset--spacing--x-small);margin:var(--wp--preset--spacing--x-small) 0 0}.cf-product-cat-swiper-editor .cf-category-swiper__flex-list,.wp-block-chairforce-product-cat-swiper .cf-category-swiper__flex-list{display:flex;flex-wrap:wrap;gap:var(--wp--preset--spacing--small)}.cf-product-cat-swiper-editor .cf-category-swiper__slide,.wp-block-chairforce-product-cat-swiper .cf-category-swiper__slide{flex:0 0 auto;width:var(--cf-category-swiper-slide-width)}.cf-product-cat-swiper-editor .cf-category-swiper__card,.wp-block-chairforce-product-cat-swiper .cf-category-swiper__card{color:inherit;display:flex;flex-direction:column;gap:var(--wp--preset--spacing--xx-small);height:100%;pointer-events:none;text-decoration:none}.cf-product-cat-swiper-editor .cf-category-swiper__card:not(.cf-category-swiper__card--no-label),.wp-block-chairforce-product-cat-swiper .cf-category-swiper__card:not(.cf-category-swiper__card--no-label){padding-bottom:var(--cf-category-swiper-scrollbar-gap)}.cf-product-cat-swiper-editor .cf-category-swiper__media,.wp-block-chairforce-product-cat-swiper .cf-category-swiper__media{align-items:center;aspect-ratio:1;background-color:var(--wp--preset--color--white);display:flex;justify-content:center;overflow:hidden;padding:var(--wp--preset--spacing--xx-small)}.cf-product-cat-swiper-editor .cf-category-swiper__image,.wp-block-chairforce-product-cat-swiper .cf-category-swiper__image{display:block;height:auto;max-height:100%;max-width:100%;object-fit:contain;width:100%}.cf-product-cat-swiper-editor .cf-category-swiper__image--placeholder,.wp-block-chairforce-product-cat-swiper .cf-category-swiper__image--placeholder{height:100%;object-fit:contain;opacity:.45;width:100%}.cf-product-cat-swiper-editor .cf-category-swiper__label,.wp-block-chairforce-product-cat-swiper .cf-category-swiper__label{display:block;font-size:var(--wp--preset--font-size--small);font-weight:var(--wp--custom--font-weight--semi-bold);line-height:1.3;text-align:center}.cf-product-cat-swiper-editor .swiper-wrapper,.wp-block-chairforce-product-cat-swiper .swiper-wrapper{display:flex;flex-wrap:wrap;gap:12px;justify-content:flex-start}.cf-product-cat-swiper-editor .cf-category-swiper__nav,.wp-block-chairforce-product-cat-swiper .cf-category-swiper__nav{display:none}
+/*!**********************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./src-jsx-blocks/product-cat-swiper/editor.scss ***!
+  \**********************************************************************************************************************************************************************************************************************************************************************/
+/**
+ * IMPORTANT: This file should not never declare any CSS rules, it should only contain variables and settings.
+ * TODO: Read Note above!
+ */
+/**
+ * Breakpoints
+ */
+/**
+ * Colours for Theme
+ * (Ideally, these should be css variables created with theme.json
+ */
+/**
+ * Theme.json Set Color Variables
+ */
+/**
+ * Card related settings
+ */
+/**
+ * Misc.
+ */
+.wp-block-chairforce-product-cat-swiper,
+.cf-product-cat-swiper-editor {
+  --cf-category-swiper-slide-width: 6.25rem;
+  --cf-category-swiper-scrollbar-gap: var(--wp--preset--spacing--medium);
+}
+.wp-block-chairforce-product-cat-swiper__hint,
+.cf-product-cat-swiper-editor__hint {
+  color: var(--wp--preset--color--neutral);
+  font-size: var(--wp--preset--font-size--small);
+  margin: 0;
+  text-align: center;
+}
+.wp-block-chairforce-product-cat-swiper__searching,
+.cf-product-cat-swiper-editor__searching {
+  align-items: center;
+  color: var(--wp--preset--color--neutral);
+  display: flex;
+  font-size: var(--wp--preset--font-size--small);
+  gap: var(--wp--preset--spacing--x-small);
+  margin: var(--wp--preset--spacing--x-small) 0 0;
+}
+.wp-block-chairforce-product-cat-swiper .cf-category-swiper__flex-list,
+.cf-product-cat-swiper-editor .cf-category-swiper__flex-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--wp--preset--spacing--small);
+}
+.wp-block-chairforce-product-cat-swiper .cf-category-swiper__slide,
+.cf-product-cat-swiper-editor .cf-category-swiper__slide {
+  flex: 0 0 auto;
+  width: var(--cf-category-swiper-slide-width);
+}
+.wp-block-chairforce-product-cat-swiper .cf-category-swiper__card,
+.cf-product-cat-swiper-editor .cf-category-swiper__card {
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  gap: var(--wp--preset--spacing--xx-small);
+  height: 100%;
+  pointer-events: none;
+  text-decoration: none;
+}
+.wp-block-chairforce-product-cat-swiper .cf-category-swiper__card:not(.cf-category-swiper__card--no-label),
+.cf-product-cat-swiper-editor .cf-category-swiper__card:not(.cf-category-swiper__card--no-label) {
+  padding-bottom: var(--cf-category-swiper-scrollbar-gap);
+}
+.wp-block-chairforce-product-cat-swiper .cf-category-swiper__media,
+.cf-product-cat-swiper-editor .cf-category-swiper__media {
+  align-items: center;
+  aspect-ratio: 1;
+  background-color: var(--wp--preset--color--white);
+  display: flex;
+  justify-content: center;
+  overflow: hidden;
+  padding: var(--wp--preset--spacing--xx-small);
+}
+.wp-block-chairforce-product-cat-swiper .cf-category-swiper__image,
+.cf-product-cat-swiper-editor .cf-category-swiper__image {
+  display: block;
+  height: auto;
+  max-height: 100%;
+  max-width: 100%;
+  object-fit: contain;
+  width: 100%;
+}
+.wp-block-chairforce-product-cat-swiper .cf-category-swiper__image--placeholder,
+.cf-product-cat-swiper-editor .cf-category-swiper__image--placeholder {
+  height: 100%;
+  object-fit: contain;
+  opacity: 0.45;
+  width: 100%;
+}
+.wp-block-chairforce-product-cat-swiper .cf-category-swiper__label,
+.cf-product-cat-swiper-editor .cf-category-swiper__label {
+  display: block;
+  font-size: var(--wp--preset--font-size--small);
+  font-weight: var(--wp--custom--font-weight--semi-bold);
+  line-height: 1.3;
+  text-align: center;
+}
+.wp-block-chairforce-product-cat-swiper .swiper-wrapper,
+.cf-product-cat-swiper-editor .swiper-wrapper {
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.wp-block-chairforce-product-cat-swiper .cf-category-swiper__nav,
+.cf-product-cat-swiper-editor .cf-category-swiper__nav {
+  display: none;
+}
+
+/*# sourceMappingURL=index.css.map*/

@@ -1,0 +1,36 @@
+// Form field tokens — map to theme.json via _theme-json-variable.scss.
+
+$form-field-border-width: 1px;
+$form-field-border-style: solid;
+$form-field-border-color: $color-outline;
+$form-field-border-radius: 0;
+$form-field-background-color: $color-white;
+$form-field-color: $color-body;
+$form-field-font-size: $font-size-medium;
+$form-field-min-height: 2.75rem;
+$form-field-padding-x: $spacing-small;
+$form-field-padding-y: $spacing-x-small;
+
+$form-placeholder-color: $color-neutral;
+
+$form-field-border-color-focus: $color-primary;
+$form-field-background-color-focus: $color-white;
+$form-field-color-focus: $color-body;
+$form-placeholder-color-focus: $color-neutral;
+$form-field-outline-width-focus: 1px;
+
+$form-field-border-color-error: $color-secondary;
+
+$form-label-color: $color-heading;
+$form-label-font-size: $font-size-small;
+$form-label-font-weight: $font-weight-semi-bold;
+$form-label-gap: $spacing-xx-small;
+
+$form-field-gap-vertical: $spacing-small;
+$form-field-gap-horizontal: $spacing-small;
+
+$form-checkbox-size: 1.125rem;
+$form-radio-size: 1.125rem;
+
+$form-field-border: $form-field-border-width $form-field-border-style $form-field-border-color;
+$form-field-outline-focus: $form-field-outline-width-focus $form-field-border-style $form-field-border-color-focus;

@@ -835,28 +835,6 @@ $rem-base: 16px;
   }
 }
 
-@mixin fieldSelectIcon($fa-icon) {
-  position: relative;
-
-  select {
-    background-image: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-  }
-  &::after {
-    @extend .fal;
-    content: fa-content($fa-icon);
-    position: absolute;
-    right: 10px;
-    bottom: 14px;
-    @include breakpoint-max(medium) {
-      bottom: 18px;
-    }
-  }
-}
-
-
 @mixin linkContainerWithInnerBlocks {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));

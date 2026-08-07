@@ -3,113 +3,135 @@
 
 $cf-shop-archive-sidebar-width: 20rem; // Match $cf-filters-sidebar-width in _product-filters.scss
 
-.shop-archive-shell-template-part{
-	margin-block-start: 0;
+.shop-archive-shell-template-part {
+  margin-block-start: 0;
 }
+
 // Shop archive — two full-bleed bands (white filters + body-bg grid).
 // Chrome lives in the filters band; sidebar + main share the grid band row.
 // Markup: parts/shop-archive-shell.html
 
 .cf-shop-archive-shell,
 .cf-shop-archive-layout {
-	width: 100%;
+  width: 100%;
 }
 
-.cf-shop-archive-shell{
-	.product-collection-template-part,
-	.wc-block-product-template,
-	[data-block-name="woocommerce/legacy-template"][data-template="archive-product"] ul.products {
-		margin-block-start: 0;
-	}
+.cf-shop-archive-shell {
+  .product-collection-template-part,
+  .wc-block-product-template,
+  [data-block-name="woocommerce/legacy-template"][data-template="archive-product"] ul.products {
+    margin-block-start: 0;
+  }
 }
 
 .cf-shop-archive-filters-band {
-	padding-block: $spacing-medium;
+  padding-block: $spacing-medium;
 }
 
 .cf-shop-archive-grid-band {
-	margin-block-start: 0;
-	//padding-block: $spacing-medium $spacing-section-m;
+  margin-block-start: 0;
+  //padding-block: $spacing-medium $spacing-section-m;
 }
 
 // Figma bar row: filter buttons + chips left, sort + view right.
 .cf-shop-archive-filters-band > .alignwide {
-	display: grid;
-	grid-template-columns: minmax(0, 1fr) auto auto;
-	grid-template-areas:
+  display: grid;
+  grid-template-columns: minmax(25rem, 1fr) auto auto;
+  grid-template-areas:
 		"bar sort view"
 		"chips sort view";
-	column-gap: $spacing-medium;
-	row-gap: $spacing-x-small;
-	align-items: center;
-	position: relative;
+  column-gap: $spacing-large;
+  row-gap: $spacing-x-small;
+  align-items: center;
+  position: relative;
+
+  @include breakpoint-medium-down {
+    grid-template-columns: minmax(0rem, 1fr) auto;
+    row-gap: $block-gap;
+    grid-template-areas:
+		"bar bar"
+		"sort view";
+
+
+    .cf-product-filters__chrome {
+      grid-area: bar;
+    }
+    .wc-block-catalog-sorting {
+      justify-self: start;
+    }
+  }
+
+  > * {
+    margin-block-start: 0;
+  }
 }
 
 .cf-shop-archive-filters-band .cf-product-filters__bar {
-	grid-area: bar;
-	min-width: 0;
+  grid-area: bar;
+  min-width: 0;
 }
 
 .cf-shop-archive-filters-band .cf-active-filters--chrome {
-	grid-area: chips;
+  grid-area: chips;
 }
 
 .cf-shop-archive-filters-band .wp-block-woocommerce-catalog-sorting,
 .cf-shop-archive-filters-band .wc-block-catalog-sorting {
-	grid-area: sort;
-	align-self: center;
-	justify-self: end;
+  grid-area: sort;
+  align-self: baseline;
+  justify-self: end;
 }
 
 .cf-shop-archive-filters-band .cf-product-view-switcher,
 .cf-shop-archive-filters-band .wp-block-chairforce-product-view-switcher {
-	grid-area: view;
-	align-self: center;
-	justify-self: end;
+  grid-area: view;
+  align-self: flex-start;
+  justify-self: end;
+  margin-bottom: 1em;
 }
 
 .cf-shop-archive-grid {
-	min-width: 0;
+  min-width: 0;
 }
 
 .cf-shop-archive-main {
-	display: flex;
-	flex-direction: column;
-	gap: $spacing-medium;
-	min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-medium;
+  min-width: 0;
 }
 
 .cf-shop-archive-sidebar {
-	min-width: 0;
+  min-width: 0;
 }
 
 @include breakpoint(medium) {
-	// Desktop vertical — push sidebar beside the shop grid (both in grid band).
-	.cf-shop-archive-layout:has(.cf-filters-panel--vertical) {
-		.cf-shop-archive-grid {
-			display: grid;
-			grid-template-columns: 0 minmax(0, 1fr);
-			grid-template-areas: "filters-sidebar shop-main";
-			column-gap: 0;
-			transition: grid-template-columns 0.35s ease;
-		}
+  // Desktop vertical — push sidebar beside the shop grid (both in grid band).
+  .cf-shop-archive-layout:has(.cf-filters-panel--vertical) {
+    .cf-shop-archive-grid {
+      display: grid;
+      grid-template-columns: 0 minmax(0, 1fr);
+      grid-template-areas: "filters-sidebar shop-main";
+      column-gap: 0;
+      transition: grid-template-columns 0.35s ease;
+    }
 
-		&.is-filters-open .cf-shop-archive-grid {
-			grid-template-columns: min($cf-shop-archive-sidebar-width, 100%) minmax(0, 1fr);
-			column-gap: $spacing-medium;
-		}
+    &.is-filters-open .cf-shop-archive-grid {
+      grid-template-columns: min($cf-shop-archive-sidebar-width, 100%) minmax(0, 1fr);
+      column-gap: $spacing-medium;
+    }
 
-		.cf-shop-archive-sidebar {
-			grid-area: filters-sidebar;
-			align-self: start;
-		}
+    .cf-shop-archive-sidebar {
+      grid-area: filters-sidebar;
+      align-self: start;
+    }
 
-		.cf-shop-archive-main {
-			grid-area: shop-main;
-		}
-	}
+    .cf-shop-archive-main {
+      grid-area: shop-main;
+    }
+  }
 
-	.cf-shop-archive-filters-band > .alignwide:has(.cf-filters-panel--horizontal) {
-		position: relative;
-	}
+  .cf-shop-archive-filters-band > .alignwide:has(.cf-filters-panel--horizontal) {
+    position: relative;
+  }
 }

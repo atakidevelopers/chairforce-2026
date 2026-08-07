@@ -1,1 +1,91 @@
-.cf-product-reviews-summary__inner{background:var(--wp--preset--color--white);border:1px solid var(--wp--preset--color--outline);padding:var(--wp--preset--spacing--large)}.cf-product-reviews-summary__score-row{align-items:center;display:flex;flex-direction:column;gap:var(--wp--preset--spacing--x-small);margin-bottom:var(--wp--preset--spacing--x-small);text-align:center}.cf-product-reviews-summary__average{font-size:var(--wp--preset--font-size--xx-large);font-weight:var(--wp--custom--font-weight--bold);line-height:1}.cf-product-reviews-summary__count{color:var(--wp--preset--color--neutral);margin:0 0 var(--wp--preset--spacing--medium);text-align:center}.cf-product-reviews-summary__bars{display:grid;gap:var(--wp--preset--spacing--xx-small);list-style:none;margin:0 0 var(--wp--preset--spacing--medium);padding:0}.cf-product-reviews-summary__bar-row{align-items:center;display:grid;gap:var(--wp--preset--spacing--x-small);grid-template-columns:3.75rem 1fr 2rem}.cf-product-reviews-summary__bar-count,.cf-product-reviews-summary__bar-label{font-size:var(--wp--preset--font-size--small);line-height:1.2}.cf-product-reviews-summary__bar-label{white-space:nowrap}.cf-product-reviews-summary__bar-count{color:var(--wp--preset--color--neutral);text-align:right}.cf-product-reviews-summary__bar-track{background:var(--wp--preset--color--outline);border-radius:999px;display:block;height:.375rem;overflow:hidden}.cf-product-reviews-summary__bar-fill{background:var(--wp--preset--color--body);display:block;height:100%}.cf-product-reviews-summary__actions .wp-block-button{width:100%}.cf-product-reviews-summary__actions .wp-block-button__link{justify-content:center;width:100%}
+/*!**************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./src-jsx-blocks/product-reviews-summary/style.scss ***!
+  \**************************************************************************************************************************************************************************************************************************************************************************/
+/**
+ * IMPORTANT: This file should not never declare any CSS rules, it should only contain variables and settings.
+ * TODO: Read Note above!
+ */
+/**
+ * Breakpoints
+ */
+/**
+ * Colours for Theme
+ * (Ideally, these should be css variables created with theme.json
+ */
+/**
+ * Theme.json Set Color Variables
+ */
+/**
+ * Card related settings
+ */
+/**
+ * Misc.
+ */
+.cf-product-reviews-summary__inner {
+  background: var(--wp--preset--color--white);
+  border: 1px solid var(--wp--preset--color--outline);
+  padding: var(--wp--preset--spacing--large);
+}
+.cf-product-reviews-summary__score-row {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: var(--wp--preset--spacing--x-small);
+  margin-bottom: var(--wp--preset--spacing--x-small);
+  text-align: center;
+}
+.cf-product-reviews-summary__average {
+  font-size: var(--wp--preset--font-size--xx-large);
+  font-weight: var(--wp--custom--font-weight--bold);
+  line-height: 1;
+}
+.cf-product-reviews-summary__count {
+  color: var(--wp--preset--color--neutral);
+  margin: 0 0 var(--wp--preset--spacing--medium);
+  text-align: center;
+}
+.cf-product-reviews-summary__bars {
+  display: grid;
+  gap: var(--wp--preset--spacing--xx-small);
+  list-style: none;
+  margin: 0 0 var(--wp--preset--spacing--medium);
+  padding: 0;
+}
+.cf-product-reviews-summary__bar-row {
+  align-items: center;
+  display: grid;
+  gap: var(--wp--preset--spacing--x-small);
+  grid-template-columns: 3.75rem 1fr 2rem;
+}
+.cf-product-reviews-summary__bar-label, .cf-product-reviews-summary__bar-count {
+  font-size: var(--wp--preset--font-size--small);
+  line-height: 1.2;
+}
+.cf-product-reviews-summary__bar-label {
+  white-space: nowrap;
+}
+.cf-product-reviews-summary__bar-count {
+  color: var(--wp--preset--color--neutral);
+  text-align: right;
+}
+.cf-product-reviews-summary__bar-track {
+  background: var(--wp--preset--color--outline);
+  border-radius: 999px;
+  display: block;
+  height: 0.375rem;
+  overflow: hidden;
+}
+.cf-product-reviews-summary__bar-fill {
+  background: var(--wp--preset--color--body);
+  display: block;
+  height: 100%;
+}
+.cf-product-reviews-summary__actions .wp-block-button {
+  width: 100%;
+}
+.cf-product-reviews-summary__actions .wp-block-button__link {
+  justify-content: center;
+  width: 100%;
+}
+
+/*# sourceMappingURL=style-index.css.map*/
