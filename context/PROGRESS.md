@@ -579,6 +579,21 @@ any standalone public FAQ page block — product-page accordion only.
 **Optional before UAT:** Full browser pass on a product with 6+ FAQs (Load More,
 schema in page source, category/global/product-specific merge order).
 
+#### Form field styling (cross-cutting, Aug 2026)
+
+**Status: ✅ Done**
+
+- `src/sass/base/forms/` — shared field tokens + `cf-all-input-fields` mixin.
+- Text-like inputs: border, focus, validation states; native pickers (`select`,
+  date/time, search, number) keep `appearance: auto`.
+- Checkbox/radio: `$color-outline` border; primary checked state.
+- Form `submit`/`reset` buttons: primary button styling (excludes header search
+  + qty controls).
+- Select2 (WC country/state) aligned with field tokens.
+
+**Deferred:** Plugin-specific partials (Gravity Forms, HubSpot, CF7); WC
+checkout/cart/account form layouts (Phase 5).
+
 ### Phase 4 — Content templates, CPT surfaces & page assembly
 
 **Status: ⏳ Not started**
