@@ -38,7 +38,7 @@ active?" second-guess was raised and rejected —
 |---|---|---|
 | **1** | Header + mega menu | ✅ Done |
 | **2** | Static patterns (team) | ⏳ Not started |
-| **3** | Registration + commerce UI (3a–3p) | 🔄 Mostly done — **3l**, **3n** remain; **3o** QA polish optional |
+| **3** | Registration + commerce UI (3a–3p) | 🔄 Mostly done — **3l** Chunks 3–4, **3n** remain; **3o** QA polish optional |
 | **4** | Content CPT templates + page assembly (4a–4b) | ⏳ Not started |
 | **5** | Blog + My Account | ⏳ Not started |
 | **6** | `/gallery/` shoppable page | ⏳ Blocked on relation migration |
@@ -453,18 +453,30 @@ pass optional (see Known open issues below).
 
 #### 3l. Product category archive chrome (`product_cat` and shared term surfaces)
 
-**Status: ⏳ Not started**
+**Status: 🔄 In progress — Chunks 1–2 ✅; Chunks 3–4 remain**
 
-Category/term archive components beyond today's title + term description row:
+Plan: `context/plans/3l-product-category-archive-chrome-plan.md`. Figma:
+`context/figma/components/Product Category Title Area.png` (+ Mobile).
 
-- **Taxonomy banner** — term hero (image, title, description, optional CTA).
-- **Taxonomy thumbs grid** — child-category / sibling-term thumbnail grid.
-- **Taxonomy swiper** — horizontal term carousel (distinct from homepage
-  `category-silder-list` content in Phase 2/4b).
+**Shipped — shared category swiper layer (Chunks 1–2, `7be0750`, `abd6076`):**
 
-Wire into `archive-product.html` (or dedicated taxonomy template parts). Likely
-first real consumer of the deferred **shared Swiper component** (3b) — decide
-during planning. No plan/notes doc yet.
+- PHP: `includes/category-swiper-functions.php` (markup + editor flex preview),
+  `includes/product-cat-swiper-functions.php` (term mappers + orderby/order sort).
+- Frontend: `src/js/category-swiper.js` (Swiper 11, Navigation + Scrollbar,
+  `watchOverflow`), `src/sass/components/_category-swiper.scss`.
+- **`chairforce/product-cat-child-swiper`** — context-aware on `product_cat`
+  archives; immediate child terms only; wired in `templates/archive-product.html`.
+- **`chairforce/product-cat-swiper`** — manual term picker (`FormTokenField`),
+  ServerSideRender flex-list editor preview, display toggles, WordPress standard
+  **Order by** + **Order** (ASC/DESC).
+
+**Remaining (same plan):**
+
+- **Chunk 3 — Taxonomy banner** — plan locked:
+  `context/plans/3l-product-category-banner-plan.md` (`chairforce_banner` CPT,
+  Banner Configurations + `display_on_child_categories`, `product-cat-banner` block).
+
+**Dropped:** Chunk 4 thumbs grid — covered by category swiper blocks.
 
 #### 3m. Product card block + full Product Collection parity
 
@@ -708,9 +720,9 @@ Carried from checklist file `19` §8 — resolve before/during the phase noted:
   batch job.
 - ~~**Load More UI, deferred out of 3b**~~ — ✅ Done as **3i** (`d7d7acc`).
   Page-1 Load More on inherited Product Collection archives; minor quirks
-  pending polish (see Known open issues). **Shared Swiper carousel** remains
-  deferred — not needed for single-product gallery (see 3e); first real consumer
-  still TBD (testimonials, category sliders, etc.).
+  pending polish (see Known open issues). ~~**Shared Swiper carousel** remains
+  deferred~~ — ✅ Category swiper layer shipped in **3l** Chunks 1–2 (`7be0750`);
+  testimonials/homepage sliders (Phase 4b) can reuse the same pattern.
 - ~~**Card composition mechanism (swatches + quick view) — Block Hooks rework**~~
   — ✅ Done via shared **`parts/product-card.html` template part** (`2a455c9`),
   not Block Hooks. Block Hooks spike passed (30 Jul 2026) but implementation
@@ -764,6 +776,8 @@ Carried from checklist file `19` §8 — resolve before/during the phase noted:
 | `context/notes/product-filters-findings.md` | Phase 3f investigation + locked UX/engine decisions |
 | `context/plans/3o-product-reviews-section-plan.md` | Execution plan for Phase 3o (product reviews section) |
 | `context/plans/3p-product-faqs-section-plan.md` | Execution plan for Phase 3p (product FAQs accordion, schema, admin config) |
+| `context/plans/3l-product-category-archive-chrome-plan.md` | Execution plan for Phase 3l (category archive chrome — swiper, banner) |
+| `context/plans/3l-product-category-banner-plan.md` | Execution plan for Phase 3l Chunk 3 (Banner CPT, config, archive block) |
 | `context/plans/3f-product-filters-plan.md` | Execution plan for Phase 3f (archive filters) |
 | `context/plans/3i-load-more-plan.md` | Execution plan for Phase 3i (page-1 Load More on Product Collection archives) |
 | `context/plans/3j-wishlist-plan.md` | Execution plan for Phase 3j (logged-in wishlist — custom table, loop + single; account endpoint deferred) |

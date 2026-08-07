@@ -1,17 +1,16 @@
 # 3l — Product Category Archive Chrome — Implementation Plan
 
-## Status: 🔄 In progress — Chunk 1 *what* + *how* locked (Aug 2026)
+## Status: 🔄 In progress — Chunks 1–2 ✅ (Aug 2026)
 
 Phase **3l** in `context/PROGRESS.md` covers three archive chrome pieces.
-This plan tracks them in order. **Chunk 1 (child category swiper)** scope,
-architecture, and implementation direction are locked below.
+This plan tracks them in order.
 
 | Chunk | Scope | Status |
 |---|---|---|
-| 1 | Reusable category swiper + archive child-category block | 🔄 Ready to implement |
-| 2 | Manual category-picker block (reuses swiper) | ⏳ Not started |
-| 3 | Taxonomy banner (hero image, title, description, optional CTA) | ⏳ Not started |
-| 4 | Taxonomy thumbs grid (non-swiper sibling layout, if still needed) | ⏳ TBD vs Chunk 1 |
+| 1 | Reusable category swiper + archive child-category block | ✅ Done (`7be0750`) |
+| 2 | Manual category-picker block (reuses swiper) | ✅ Done (`abd6076`) |
+| 3 | Taxonomy banner (Banner CPT + config + archive block) | 📋 Plan locked — see `3l-product-category-banner-plan.md` |
+| 4 | Taxonomy thumbs grid | ❌ Dropped — covered by swiper (Chunks 1–2) |
 
 **Design reference (Chunk 1):**
 
@@ -27,21 +26,56 @@ ID **183**) shows a swiper of its **immediate child** terms only.
   `src/js/accordion.js`, `src/sass/components/_accordion.scss`
 - Current archive title area: `templates/archive-product.html` (`query-title`
   + `term-description` in a white header band above `shop-archive-shell`)
-- Swiper already in theme build (`package.json` → `swiper ^11`); first use was
-  Quick View gallery (`src/js/quick-view-gallery.js`). Chunk 1 introduces the
-  **shared category swiper** layer for term-card carousels.
+- Swiper 11 in theme build (`package.json`); category swiper is the shared
+  term-card carousel layer (distinct from Quick View product gallery).
 
 ---
 
-## Goal (Chunk 1)
+## Shipped — Chunks 1–2
+
+### Shared category swiper layer
+
+| Piece | Location |
+|---|---|
+| PHP markup + flex preview | `includes/category-swiper-functions.php` |
+| Term mappers + sort | `includes/product-cat-swiper-functions.php` |
+| Frontend init | `src/js/category-swiper.js` |
+| Styles | `src/sass/components/_category-swiper.scss` |
+
+- Swiper config: `slidesPerView: 'auto'`, `spaceBetween: 12`, slide width
+  `6.25rem` (WP `thumbnail` size).
+- Images via WooCommerce `thumbnail_id` term meta + theme placeholder.
+- `watchOverflow: true` — arrows/scrollbar hidden when locked (Swiper CSS).
+- Editor preview: `chairforce_get_category_swiper_flex_list_html()` (static
+  flex list, no Swiper JS) for `ServerSideRender` with `previewMode: true`.
+
+### Blocks
+
+| Block | Item source | Commit |
+|---|---|---|
+| **`chairforce/product-cat-child-swiper`** | Queried `product_cat` → immediate children (`menu_order`) | `7be0750` |
+| **`chairforce/product-cat-swiper`** | Editor-selected terms; `FormTokenField` picker; orderby/order | `abd6076` |
+
+Both blocks expose display toggles: `showArrowsDesktop`, `showArrowsMobile`,
+`showProgressBar`, `showLabels`.
+
+Manual block **Order by**: `manual` (token order), `menu_order`, `name`,
+`slug`, `term_id`, `count`, `description`, `term_group`. **Order**: `asc` |
+`desc` (default `asc`; shown when order by ≠ manual).
+
+### Template
+
+`templates/archive-product.html` — two-column header: title/description |
+`product-cat-child-swiper` block. Styling targets `.cf-category-swiper` /
+block wrapper classes (no separate BEM header wrappers).
+
+---
+
+## Goal (Chunk 1) — reference
 
 On **`product_cat` archive pages**, replace/enhance the plain title row with a
 **block-based header** that includes a horizontal **child-category swiper**
 beside the archive title and term description (Figma layout).
-
-Editors place the block in **`templates/archive-product.html`** (or a template
-part) in the archive chrome area — same placement philosophy as other
-Site-Editor-controlled sections.
 
 ---
 
@@ -133,60 +167,44 @@ Configurable flags passed with the config (block attributes or `$args`):
 Archive child-category block and manual picker block may expose different
 defaults; swiper renders whatever it receives.
 
-### Planned consumers (two blocks, one engine)
+### Consumers (two blocks, one engine) — ✅ both shipped
 
 | Block | Item source | Status |
 |---|---|---|
-| **`chairforce/product-cat-child-swiper`** (name TBD) | Current queried `product_cat` → `get_terms( parent => $term_id )` | Chunk 1 |
-| **Manual category swiper block** (name TBD) | Editor-selected `product_cat` terms (any parent/child mix, order preserved) | Chunk 2 |
+| **`chairforce/product-cat-child-swiper`** | Current queried `product_cat` → `get_terms( parent => $term_id )` | ✅ Chunk 1 |
+| **`chairforce/product-cat-swiper`** | Editor-selected `product_cat` terms | ✅ Chunk 2 |
 
 Both blocks:
 
 1. Build the items config array.
 2. Pass display options (from block attributes).
-3. Echo shared markup via e.g. `chairforce_get_category_swiper_html( $items, $args )`.
+3. Echo shared markup via `chairforce_get_category_swiper_html()`.
 
 ### Parallels with accordion
 
 | Accordion | Category swiper |
 |---|---|
-| `chairforce_get_accordion_html()` | `chairforce_get_category_swiper_html()` (name TBD) |
-| `.cf-accordion` + `accordion.js` | `.cf-category-swiper` + JS init (TBD) |
+| `chairforce_get_accordion_html()` | `chairforce_get_category_swiper_html()` |
+| `.cf-accordion` + `accordion.js` | `.cf-category-swiper` + `category-swiper.js` |
 | `chairforce/product-faqs` resolves FAQ IDs | Archive block resolves child term IDs |
-| Future blocks pass arbitrary item lists | Manual picker passes selected term IDs |
+| Manual picker passes selected term IDs | `chairforce/product-cat-swiper` |
 
 ---
 
-## Locked decisions — Chunk 1 *how*
+## Locked decisions — Chunk 1 *how* — ✅ implemented
 
 ### Theme-owned Swiper (shared category swiper layer)
 
-Use the theme's existing **Swiper 11** npm dependency and build pipeline —
-same library family as Quick View gallery, but a **separate reusable
-component** for term-card carousels (not product slides, not tied to any
-single block).
-
-Quick View and category swiper may share init conventions later; Chunk 1
-ships the category swiper layer first.
-
-### File layout (mirror accordion pattern)
-
-| Piece | Location |
-|---|---|
-| PHP helpers + markup | `includes/category-swiper-functions.php` |
-| Term → config mappers | `includes/product-cat-swiper-functions.php` (or colocated in above) |
-| Frontend init | `src/js/category-swiper.js` |
-| Styles | `src/sass/components/_category-swiper.scss` |
-| Archive block | `src-jsx-blocks/product-cat-child-swiper/` (name TBD) |
-
-Require helpers from `includes/init.php`. Enqueue/init via `public.js`
-(same as accordion).
+Swiper 11 via npm/build pipeline — separate reusable component for term-card
+carousels (not product slides, not tied to any single block).
 
 ### PHP API (canonical)
 
 ```php
 chairforce_get_category_swiper_items_from_term_ids( array $term_ids ): array
 chairforce_get_category_swiper_html( array $items, array $args = [] ): string
+chairforce_get_category_swiper_flex_list_html( array $items, array $args = [] ): string // editor preview
+chairforce_sort_product_cat_swiper_term_ids( array $term_ids, string $order_by, string $order ): array
 ```
 
 - **`$items`** — normalized config array (see above).
@@ -197,90 +215,55 @@ Markup wrapper: `[data-cf-category-swiper]` root, BEM `.cf-category-swiper`.
 
 ### JS init
 
-- Idempotent init per root (`data-cf-category-swiper-init` or WeakMap).
-- Swiper modules: **Navigation** (arrows), **Scrollbar** or **Pagination**
-  for Figma bottom progress bar — pick during implementation to match design.
-- Read display options from `data-*` attributes emitted by PHP (or a JSON
-  blob on the root) so JS stays presentation-only.
-- Listen for `chairforce:content-updated` if archive shell reload ever
-  replaces header markup (same delegation pattern as other grid features).
-
-### Swiper display options → markup/JS
-
-Block attributes map to `$args` / `data-*`:
-
-| Option | Default (archive block TBD) |
-|---|---|
-| `showArrowsDesktop` | `true` (Figma desktop) |
-| `showArrowsMobile` | `false` (Figma mobile omits; block can override) |
-| `showProgressBar` | `true` (Figma bottom track) |
-| `showLabels` | `true` |
-
-Shared helper hides arrows/progress/labels in DOM when flag is false.
-
-### Chunk 1 block responsibilities
-
-**`chairforce/product-cat-child-swiper`** (name TBD):
-
-1. Detect queried `product_cat` term on taxonomy archives.
-2. `get_terms( [ 'parent' => $term_id, 'taxonomy' => 'product_cat', … ] )`.
-3. Map to config via `chairforce_get_category_swiper_items_from_term_ids()`.
-4. If empty → return (no output).
-5. Pass block attributes as display options → `chairforce_get_category_swiper_html()`.
-
-Block attributes: display flags above (and any swiper-specific tuning e.g.
-`slidesPerView` desktop/mobile — finalize in block.json during build).
-
-### Template wiring
-
-Keep **`query-title`** + **`term-description`** as sibling blocks in
-`archive-product.html`; add archive child swiper in the same header group
-(Figma two-column desktop / stacked mobile via CSS grid or flex on a wrapper
-group — editor-controlled).
-
-### Term helper (parent blocks only)
-
-```php
-chairforce_get_category_swiper_items_from_terms( array $terms ): array
-// or from IDs:
-chairforce_get_category_swiper_items_from_term_ids( array $term_ids ): array
-```
-
-Reads `thumbnail_id`, `name`, `get_term_link()` — **only here**, never in
-swiper HTML/JS layer.
+- Idempotent init per root.
+- Swiper modules: **Navigation** (arrows), **Scrollbar** for Figma bottom track.
+- Display options from `data-*` attributes on root.
+- `chairforce:content-updated` listener for archive shell reload.
 
 ---
 
-## Out of scope (Chunk 1)
+## Out of scope (Chunks 1–2)
 
-- Full **taxonomy banner** with hero background / CTA (Chunk 3).
-- Static **thumbnail grid** without carousel (Chunk 4 — may overlap; revisit
-  after Chunk 1 ships).
+- Full **taxonomy banner** with hero background / CTA (**Chunk 3**).
+- Static **thumbnail grid** without carousel (**Chunk 4**).
 - **`venues` / `sales-by-location`** archives (**3n**).
 - Shop archive shell, filters, Load More, product grid (**3f**, **3i**).
 
 ---
 
-## Open items (remaining)
+## Next — Chunk 3 (taxonomy banner)
 
-1. **Missing thumbnail** — theme placeholder from options vs first product in
-   category vs generic image asset in `/src/assets/images/`.
-2. **Scrollbar vs pagination** — which Swiper module best matches Figma
-   bottom track.
-3. **Block slug** — final name (`product-cat-child-swiper` vs shorter).
-4. **`slidesPerView`** — fixed count vs `auto` with slide width from Figma.
-5. **Editor preview** — ServerSideRender with mock items when not on a
-   category archive.
-6. **Accessibility pass** — arrow `aria-label`s, focus order, keyboard nav.
+**Plan:** `context/plans/3l-product-category-banner-plan.md`
+
+- `chairforce_banner` CPT (Gutenberg content)
+- Banner Configurations options sub-page (category → banner repeater +
+  `display_on_child_categories` in v1)
+- `chairforce/product-cat-banner` block on `archive-product.html`
+
+## Chunk 4 — dropped
+
+Category swiper blocks cover the thumbs-grid use case; no separate grid chunk.
 
 ---
 
-## Verification (Chunk 1 — draft)
+## Open items (remaining)
 
-- [ ] `/product-category/chairs/` shows swiper of immediate children only
-- [ ] Child term links resolve to correct archives
-- [ ] Desktop: arrows + progress bar match Figma when options enabled
-- [ ] Mobile: stacked title area + horizontal swiper; arrows optional
-- [ ] Leaf category archive: no swiper / no empty chrome
+1. **Missing thumbnail** — theme placeholder in use; confirm client preference
+   (options vs first product vs static asset).
+2. **Editor preview (child block)** — static placeholders in edit.js; SSR not
+   used (archive context unavailable in editor).
+3. **Accessibility pass** — arrow `aria-label`s, focus order, keyboard nav.
+4. **Chunk 3 banner fields** — ACF on term vs reuse WC thumbnail + description.
+
+---
+
+## Verification (Chunks 1–2)
+
+- [x] `/product-category/chairs/` shows swiper of immediate children only
+- [x] Child term links resolve to correct archives
+- [x] Desktop: arrows + progress bar when options enabled
+- [x] Mobile: stacked title area + horizontal swiper
+- [x] Leaf category archive: no swiper / no empty chrome
+- [x] Manual picker block reuses same helper + editor flex preview
 - [ ] Swiper re-inits after shop archive shell reload (if applicable)
-- [ ] Manual picker block (Chunk 2) can reuse same helper without code fork
+- [ ] Full a11y pass
