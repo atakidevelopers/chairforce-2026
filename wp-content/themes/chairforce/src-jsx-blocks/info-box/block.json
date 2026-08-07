@@ -1,0 +1,77 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "chairforce/info-box",
+	"version": "2.0.0",
+	"title": "Info Box",
+	"category": "design",
+	"icon": "info",
+	"description": "An icon with flexible inner content. The icon is a locked child block — choose the icon via the Icon Block controls. Use the toolbar to switch icon position (left / right / top).",
+	"keywords": ["info", "icon", "feature", "benefit", "service", "infobox"],
+	"textdomain": "chairforce",
+	"attributes": {
+		"iconPosition": {
+			"type": "string",
+			"default": "left"
+		},
+		"iconStyle": {
+			"type": "string",
+			"default": "plain"
+		},
+		"alignment": {
+			"type": "string",
+			"default": "center"
+		},
+		"layout": {
+			"type": "object",
+			"default": {
+				"type": "flex",
+				"orientation": "horizontal"
+			}
+		}
+	},
+	"supports": {
+		"html": false,
+		"anchor": true,
+		"reusable": true,
+		"layout": {
+			"allowSwitching": false,
+			"allowInheriting": false,
+			"allowEditing": false,
+			"default": {
+				"type": "flex"
+			}
+		},
+		"color": {
+			"background": true,
+			"text": true,
+			"gradients": true,
+			"link": true,
+			"button": true,
+			"heading": true
+		},
+		"typography": {
+			"fontSize": true,
+			"lineHeight": true,
+			"fontFamily": true
+		},
+		"spacing": {
+			"blockGap": true,
+			"margin": true,
+			"padding": true
+		},
+		"border": {
+			"color": true,
+			"radius": true,
+			"style": true,
+			"width": true
+		},
+		"dimensions": {
+			"minHeight": true
+		},
+		"shadow": true
+	},
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css"
+}

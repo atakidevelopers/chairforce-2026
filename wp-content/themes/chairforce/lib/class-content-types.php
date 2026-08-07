@@ -98,7 +98,7 @@ class Content_Types {
 				'map_meta_cap'        => true,
 				'menu_icon'           => 'dashicons-admin-site',
 				'menu_position'       => 25,
-				'supports'            => [ 'title', 'thumbnail', 'revisions' ],
+				'supports'            => [ 'title', 'thumbnail', 'revisions', "editor" ],
 			]
 		);
 	}

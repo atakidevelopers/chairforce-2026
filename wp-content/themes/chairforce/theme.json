@@ -555,7 +555,7 @@
 			}
 		},
 		"color": {
-			"background": "var(--wp--preset--color--background)",
+			"background": "var(--wp--preset--color--white)",
 			"text": "var(--wp--preset--color--body)"
 		},
 		"elements": {

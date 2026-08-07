@@ -1,0 +1,59 @@
+// Info Box — editor canvas styles
+//
+// In the editor each inner block is wrapped in a
+// .block-editor-block-list__block div, so we target those wrappers
+// (not .wp-block-outermost-icon-block / .wp-block-group which only
+// exist in the frontend/save output).
+
+.wp-block-chairforce-info-box {
+	display: flex;
+	width: 100%;
+	min-width: 0;
+
+	// ── Icon position ─────────────────────────────────────────────────────────
+	&.is-icon-left  { flex-direction: row; }
+	&.is-icon-right { flex-direction: row-reverse; }
+	&.is-icon-top   { flex-direction: column; }
+
+	// ── Cross-axis alignment ──────────────────────────────────────────────────
+	&.is-align-start  { align-items: flex-start; }
+	&.is-align-center { align-items: center; }
+	&.is-align-end    { align-items: flex-end; }
+
+	// ── Editor child block wrappers ───────────────────────────────────────────
+	> .block-editor-block-list__block:first-child {
+		flex-shrink: 0;
+		box-sizing: border-box;
+	}
+
+	> .block-editor-block-list__block:last-child {
+		flex: 1;
+		min-width: 0;
+	}
+
+	// ── Icon styles in the editor canvas ──────────────────────────────────────
+	// Target the first child's inner icon-block element for the box styles.
+
+	&.is-icon-style-light-box {
+		> .block-editor-block-list__block:first-child
+		.wp-block-outermost-icon-block {
+			background-color: var(--wp--preset--color--background, #fff);
+			border: 1px solid var(--wp--preset--color--outline, rgba(0, 0, 0, 0.15));
+			padding: 0.75em;
+		}
+	}
+
+	&.is-icon-style-dark-box {
+		> .block-editor-block-list__block:first-child
+		.wp-block-outermost-icon-block {
+			background-color: var(--wp--preset--color--primary, #1e3a5f);
+			padding: 0.75em;
+			color: var(--wp--preset--color--background, #fff);
+
+			svg {
+				stroke: var(--wp--preset--color--background, #fff);
+				fill: none;
+			}
+		}
+	}
+}
