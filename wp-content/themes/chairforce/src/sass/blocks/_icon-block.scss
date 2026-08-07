@@ -1,0 +1,80 @@
+// Icon Block (outermost/icon-block) — registered style variations
+//
+// All rules live inside :where() (zero specificity) so any colour, size,
+// border, or background the editor sets via the block's own controls wins
+// without needing !important.
+//
+// Style reference:
+//   Style 1 — Box: Primary (navy bg, white icon)
+//   Style 2 — Plain: Secondary colour (red icon, no bg)
+//   Style 3 — Light Box (white/background bg + outline border, icon keeps colour)
+//   Style 4 — Surface Box (surface/grey bg, no border, icon keeps colour)
+//   Style 5 — Box: Secondary (red bg, white icon)
+//   Style 6 — Box: Dark (heading/black bg, white icon)
+//   Style 7 — Box: Tertiary (green bg, white icon)
+
+// ── Shared defaults for solid-colour box styles (1, 5, 6, 7) ─────────────────
+:where(
+	.wp-block-outermost-icon-block.is-style-style-1,
+	.wp-block-outermost-icon-block.is-style-style-5,
+	.wp-block-outermost-icon-block.is-style-style-6,
+	.wp-block-outermost-icon-block.is-style-style-7
+) {
+	.icon-container {
+		padding: 0.625em;
+		// Default icon colour — overridden by the block's colour picker (inline style).
+		color: #fff;
+	}
+}
+
+// ── Style 1: Box Primary (navy) ───────────────────────────────────────────────
+:where(.wp-block-outermost-icon-block.is-style-style-1) {
+	.icon-container {
+		background-color: $color-primary;
+	}
+}
+
+// ── Style 2: Plain — Secondary (red) icon ────────────────────────────────────
+:where(.wp-block-outermost-icon-block.is-style-style-2) {
+	.icon-container {
+		color: $color-secondary;
+	}
+}
+
+// ── Style 3: Light Box (white bg + outline border) ───────────────────────────
+:where(.wp-block-outermost-icon-block.is-style-style-3) {
+	.icon-container {
+		background-color: $color-background;
+		border: 1px solid $color-outline;
+		padding: 0.625em;
+	}
+}
+
+// ── Style 4: Surface Box (light grey bg, no border) ──────────────────────────
+:where(.wp-block-outermost-icon-block.is-style-style-4) {
+	.icon-container {
+		background-color: $color-surface;
+		padding: 0.625em;
+	}
+}
+
+// ── Style 5: Box Secondary (red) ─────────────────────────────────────────────
+:where(.wp-block-outermost-icon-block.is-style-style-5) {
+	.icon-container {
+		background-color: $color-secondary;
+	}
+}
+
+// ── Style 6: Box Dark (heading / black) ──────────────────────────────────────
+:where(.wp-block-outermost-icon-block.is-style-style-6) {
+	.icon-container {
+		background-color: $color-heading;
+	}
+}
+
+// ── Style 7: Box Tertiary (green) ─────────────────────────────────────────────
+:where(.wp-block-outermost-icon-block.is-style-style-7) {
+	.icon-container {
+		background-color: $color-tertiary;
+	}
+}

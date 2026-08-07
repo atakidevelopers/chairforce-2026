@@ -74,4 +74,35 @@ wp.domReady(() => {
 			label: 'Narrow',
 		},
 	]);
+
+	wp.blocks.registerBlockStyle('outermost/icon-block', [
+		{
+			name: 'style-1',
+			label: 'Style 1',
+		},
+		{
+			name: 'style-2',
+			label: 'Style 2',
+		},
+		{
+			name: 'style-3',
+			label: 'Style 3',
+		},
+		{
+			name: 'style-4',
+			label: 'Style 4',
+		},
+		{
+			name: 'style-5',
+			label: 'Style 5',
+		},
+		{
+			name: 'style-6',
+			label: 'Style 6',
+		},
+		{
+			name: 'style-7',
+			label: 'Style 7',
+		},
+	]);
 });
