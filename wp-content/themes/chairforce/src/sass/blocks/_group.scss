@@ -10,3 +10,10 @@
     margin-right: auto;
   }
 }
+
+
+//.is-layout-constrained > :where(:not(.alignleft):not(.alignright):not(.alignfull)) {
+//  :where(.wp-block-group.is-layout-grid){
+//    max-width: unset;
+//  }
+//}

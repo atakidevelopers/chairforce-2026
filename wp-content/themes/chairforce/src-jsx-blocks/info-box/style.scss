@@ -1,3 +1,4 @@
+@import "../../src/sass/settings";
 // Info Box — frontend styles
 //
 // Layout is driven entirely by modifier classes on the root element.
@@ -7,6 +8,12 @@
 	display: flex;
 	width: 100%;
 	min-width: 0;
+
+	&.is-layout-flex{
+		row-gap: $spacing-small;
+		column-gap: $spacing-medium;
+	}
+
 
 	// ── Icon position ─────────────────────────────────────────────────────────
 	&.is-icon-left  { flex-direction: row; }
@@ -31,36 +38,5 @@
 
 		> :first-child { margin-top: 0; }
 		> :last-child  { margin-bottom: 0; }
-	}
-
-	// ── Icon styles ───────────────────────────────────────────────────────────
-	//
-	// plain      — bare icon, no decoration. Icon block controls set color/size.
-	// light-box  — white/base square with a subtle outline border.
-	// dark-box   — primary-color square; icon forced white via SVG stroke override.
-
-	&.is-icon-style-light-box {
-		> .wp-block-outermost-icon-block {
-			background-color: var(--wp--preset--color--background, #fff);
-			border: 1px solid var(--wp--preset--color--outline, rgba(0, 0, 0, 0.15));
-			padding: 0.75em;
-		}
-	}
-
-	&.is-icon-style-dark-box {
-		> .wp-block-outermost-icon-block {
-			background-color: var(--wp--preset--color--primary, #1e3a5f);
-			padding: 0.75em;
-
-			// Lucide SVGs use stroke="currentColor". Setting color here cascades
-			// into currentColor. The svg rule ensures it overrides any inline
-			// color the icon block editor may have saved.
-			color: var(--wp--preset--color--background, #fff);
-
-			svg {
-				stroke: var(--wp--preset--color--background, #fff);
-				fill: none;
-			}
-		}
 	}
 }

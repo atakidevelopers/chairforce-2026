@@ -1,18 +1,10 @@
 import { __ } from '@wordpress/i18n';
 
 export const ICON_POSITIONS = [ 'left', 'right', 'top' ];
-export const ICON_STYLES    = [ 'plain', 'light-box', 'dark-box' ];
 export const ALIGNMENTS     = [ 'start', 'center', 'end' ];
 
 export const DEFAULT_ICON_POSITION = 'left';
-export const DEFAULT_ICON_STYLE    = 'plain';
 export const DEFAULT_ALIGNMENT     = 'center';
-
-export const ICON_STYLE_OPTIONS = [
-	{ label: __( 'Plain',      'chairforce' ), value: 'plain'     },
-	{ label: __( 'Light box',  'chairforce' ), value: 'light-box' },
-	{ label: __( 'Dark box',   'chairforce' ), value: 'dark-box'  },
-];
 
 export const ALLOWED_BLOCKS = [ 'outermost/icon-block', 'core/group' ];
 
@@ -50,10 +42,6 @@ export const INNER_BLOCKS_TEMPLATE = [
 
 export function sanitizeIconPosition( value ) {
 	return ICON_POSITIONS.includes( value ) ? value : DEFAULT_ICON_POSITION;
-}
-
-export function sanitizeIconStyle( value ) {
-	return ICON_STYLES.includes( value ) ? value : DEFAULT_ICON_STYLE;
 }
 
 export function sanitizeAlignment( value ) {
@@ -97,13 +85,12 @@ export function getAlignmentOptions( iconPosition ) {
 /**
  * Build the CSS modifier classes for the root block wrapper.
  *
- * @param {{ iconPosition: string, iconStyle: string, alignment: string }} attrs
+ * @param {{ iconPosition: string, alignment: string }} attrs
  * @return {string}
  */
-export function buildModifierClasses( { iconPosition, iconStyle, alignment } ) {
+export function buildModifierClasses( { iconPosition, alignment } ) {
 	return [
 		`is-icon-${ sanitizeIconPosition( iconPosition ) }`,
-		`is-icon-style-${ sanitizeIconStyle( iconStyle ) }`,
 		`is-align-${ sanitizeAlignment( alignment ) }`,
 	].join( ' ' );
 }

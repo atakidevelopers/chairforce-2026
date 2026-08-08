@@ -16,14 +16,12 @@
 // ── Shared defaults for solid-colour box styles (1, 5, 6, 7) ─────────────────
 :where(
 	.wp-block-outermost-icon-block.is-style-style-1,
-	.wp-block-outermost-icon-block.is-style-style-5,
-	.wp-block-outermost-icon-block.is-style-style-6,
-	.wp-block-outermost-icon-block.is-style-style-7
+	.wp-block-outermost-icon-block.is-style-style-5
 ) {
 	.icon-container {
-		padding: 0.625em;
+		padding: 0.5em;
 		// Default icon colour — overridden by the block's colour picker (inline style).
-		color: #fff;
+		color: $color-white;
 	}
 }
 
@@ -37,6 +35,8 @@
 // ── Style 2: Plain — Secondary (red) icon ────────────────────────────────────
 :where(.wp-block-outermost-icon-block.is-style-style-2) {
 	.icon-container {
+		background-color: $color-white;
+		padding: 1em;
 		color: $color-secondary;
 	}
 }
@@ -44,9 +44,10 @@
 // ── Style 3: Light Box (white bg + outline border) ───────────────────────────
 :where(.wp-block-outermost-icon-block.is-style-style-3) {
 	.icon-container {
-		background-color: $color-background;
+		background-color: $color-white;
 		border: 1px solid $color-outline;
-		padding: 0.625em;
+		padding: 1em;
+		color: $color-secondary;
 	}
 }
 
@@ -54,6 +55,7 @@
 :where(.wp-block-outermost-icon-block.is-style-style-4) {
 	.icon-container {
 		background-color: $color-surface;
+		color: $color-primary;
 		padding: 0.625em;
 	}
 }
@@ -69,6 +71,8 @@
 :where(.wp-block-outermost-icon-block.is-style-style-6) {
 	.icon-container {
 		background-color: $color-heading;
+		color: $color-white;
+		padding: $spacing-x-small;
 	}
 }
 
@@ -76,5 +80,7 @@
 :where(.wp-block-outermost-icon-block.is-style-style-7) {
 	.icon-container {
 		background-color: $color-tertiary;
+		color: $color-white;
+		padding: 0.35em;
 	}
 }

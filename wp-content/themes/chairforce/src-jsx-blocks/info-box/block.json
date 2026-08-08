@@ -14,10 +14,6 @@
 			"type": "string",
 			"default": "left"
 		},
-		"iconStyle": {
-			"type": "string",
-			"default": "plain"
-		},
 		"alignment": {
 			"type": "string",
 			"default": "center"

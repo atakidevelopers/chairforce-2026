@@ -20,20 +20,17 @@ import {
 	buildModifierClasses,
 	getAlignmentOptions,
 	getLayoutFromIconPosition,
-	ICON_STYLE_OPTIONS,
 	INNER_BLOCKS_TEMPLATE,
 	sanitizeAlignment,
 	sanitizeIconPosition,
-	sanitizeIconStyle,
 } from './constants';
 
 import './editor.scss';
 
 export default function Edit( { attributes, setAttributes, clientId } ) {
-	const { iconPosition, iconStyle, alignment, layout } = attributes;
+	const { iconPosition, alignment, layout } = attributes;
 
 	const safeIconPosition = sanitizeIconPosition( iconPosition );
-	const safeIconStyle    = sanitizeIconStyle( iconStyle );
 	const safeAlignment    = sanitizeAlignment( alignment );
 
 	const hasInnerBlocks = useSelect(
@@ -56,7 +53,6 @@ export default function Edit( { attributes, setAttributes, clientId } ) {
 	const blockProps = useBlockProps( {
 		className: buildModifierClasses( {
 			iconPosition: safeIconPosition,
-			iconStyle: safeIconStyle,
 			alignment: safeAlignment,
 		} ),
 	} );
@@ -109,30 +105,20 @@ export default function Edit( { attributes, setAttributes, clientId } ) {
 				</ToolbarGroup>
 			</BlockControls>
 
-			<InspectorControls>
-				<PanelBody title={ __( 'Icon Box', 'chairforce' ) } initialOpen>
-					<SelectControl
-						__next40pxDefaultSize
-						__nextHasNoMarginBottom
-						label={ __( 'Icon style', 'chairforce' ) }
-						value={ safeIconStyle }
-						options={ ICON_STYLE_OPTIONS }
-						onChange={ ( next ) =>
-							setAttributes( { iconStyle: next } )
-						}
-					/>
-					<SelectControl
-						__next40pxDefaultSize
-						__nextHasNoMarginBottom
-						label={ __( 'Alignment', 'chairforce' ) }
-						value={ safeAlignment }
-						options={ alignmentOptions }
-						onChange={ ( next ) =>
-							setAttributes( { alignment: next } )
-						}
-					/>
-				</PanelBody>
-			</InspectorControls>
+		<InspectorControls>
+			<PanelBody title={ __( 'Icon Box', 'chairforce' ) } initialOpen>
+				<SelectControl
+					__next40pxDefaultSize
+					__nextHasNoMarginBottom
+					label={ __( 'Alignment', 'chairforce' ) }
+					value={ safeAlignment }
+					options={ alignmentOptions }
+					onChange={ ( next ) =>
+						setAttributes( { alignment: next } )
+					}
+				/>
+			</PanelBody>
+		</InspectorControls>
 
 			<div { ...innerBlocksProps } />
 		</>

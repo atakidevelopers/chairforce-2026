@@ -132,8 +132,9 @@ class After_Setup_Theme {
 		}
 
 		$categories_to_register = [
-			'elements' => __( 'Elements', 'chairforce' ),
-			'section'  => __( 'Section', 'chairforce' ),
+			'elements'   => __( 'Elements', 'chairforce' ),
+			'section'    => __( 'Section', 'chairforce' ),
+			'chairforce' => __( 'Chairforce', 'chairforce' ),
 		];
 
 		foreach ( $categories_to_register as $category_slug => $category_label ) {
