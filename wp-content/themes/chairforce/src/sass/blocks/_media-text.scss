@@ -1,0 +1,40 @@
+.wp-block-media-text {
+
+  // Override WordPress default 8% padding on the content column.
+  > .wp-block-media-text__content {
+    padding-top: $block-gap;
+    padding-bottom: $block-gap;
+  }
+
+  // Small screens
+  @include breakpoint-max(wp-small) {
+
+    &.has-background {
+      > .wp-block-media-text__content {
+        padding-left: $block-gap;
+        padding-right: $block-gap;
+      }
+    }
+
+    &:not(.alignfull):not(.has-background) {
+      > .wp-block-media-text__content {
+        padding-left: 0;
+        padding-right: 0;
+      }
+    }
+
+    &.alignfull {
+      > .wp-block-media-text__content {
+        padding-left: $grid-container-padding-left;
+        padding-right: $grid-container-padding-right;
+      }
+    }
+  }
+
+  &.is-style-constrained {
+    > .wp-block-media-text__content {
+      @include constrainedContent;
+    }
+  }
+
+}
