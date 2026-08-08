@@ -68,41 +68,11 @@
             "insert": "append"
         },
         {
-            "key": "field_showrooms_location",
-            "label": "Location",
-            "name": "location",
-            "type": "select",
-            "required": 0,
-            "choices": {
-                "New South Wales": "New South Wales",
-                "Queensland": "Queensland",
-                "South Australia": "South Australia",
-                "Tasmania": "Tasmania",
-                "Victoria": "Victoria",
-                "Western Australia": "Western Australia",
-                "Australian Capital Territory": "Australian Capital Territory",
-                "Northern Territory": "Northern Territory",
-                "New Zealand": "New Zealand"
-            },
-            "default_value": false,
-            "allow_null": 1,
-            "ui": 0,
-            "return_format": "value"
-        },
-        {
             "key": "field_showrooms_id",
             "label": "Id",
             "name": "id",
             "type": "text",
             "required": 0
-        },
-        {
-            "key": "field_showrooms_state",
-            "label": "State",
-            "name": "state",
-            "type": "text",
-            "required": 0,
-            "instructions": "Legacy ad-hoc meta key (not in JetEngine field list). Kept for pickup-selector compatibility."
         }
     ],
     "location": [
@@ -120,5 +90,5 @@
     "label_placement": "left",
     "instruction_placement": "field",
     "active": true,
-    "modified": 1753710400
+    "modified": 1754678400
 }
