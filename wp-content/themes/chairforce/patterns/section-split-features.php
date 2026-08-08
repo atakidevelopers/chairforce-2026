@@ -1,13 +1,13 @@
 <?php
 /**
- * Title: Section — Bulk Order (Media Text + Info Boxes)
- * Slug: chairforce/section-bulk-order
- * Description: Full-width section with image on the right and a 2-column info-box grid on the left. Navy box style (style 1).
+ * Title: Split — Features
+ * Slug: chairforce/section-split-features
+ * Description: Full-width media-text split with image on the right and a 2-column info-box grid on the left.
  * Categories: chairforce, section
- * Keywords: bulk order, commercial, media text, info box, features, split
+ * Keywords: split, features, media text, info box, two column
  */
 ?>
-<!-- wp:group {"tagName":"section","metadata":{"name":"Section Bulk Order"},"align":"full","style":{"spacing":{"padding":{"top":"var:preset|spacing|0","bottom":"var:preset|spacing|0"}}},"backgroundColor":"background","layout":{"type":"constrained"}} -->
+<!-- wp:group {"tagName":"section","metadata":{"name":"Split — Features"},"align":"full","style":{"spacing":{"padding":{"top":"var:preset|spacing|0","bottom":"var:preset|spacing|0"}}},"backgroundColor":"background","layout":{"type":"constrained"}} -->
 <section class="wp-block-group alignfull has-background-background-color has-background" style="padding-top:var(--wp--preset--spacing--0);padding-bottom:var(--wp--preset--spacing--0)"><!-- wp:media-text {"align":"wide","mediaPosition":"right","mediaId":0,"mediaLink":"","linkDestination":"none","mediaType":"image","imageFill":false} -->
     <div class="wp-block-media-text alignwide has-media-on-the-right is-stacked-on-mobile"><div class="wp-block-media-text__content"><!-- wp:group {"style":{"spacing":{"padding":{"top":"var:preset|spacing|xx-large","bottom":"var:preset|spacing|xx-large"}}},"layout":{"type":"constrained"}} -->
             <div class="wp-block-group" style="padding-top:var(--wp--preset--spacing--xx-large);padding-bottom:var(--wp--preset--spacing--xx-large)"><!-- wp:paragraph {"className":"is-style-text-eyebrow-filled"} -->
