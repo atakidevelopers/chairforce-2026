@@ -63,6 +63,10 @@
     align-items: center;
     border-radius: $border-radius-small;
     padding: $spacing-x-small $spacing-large;
-    //box-shadow: $shadow-card;
+
+    .wp-block-chairforce-stat-counter__label{
+      text-align: center;
+      line-height: 1.2;
+    }
   }
 }

@@ -8,3 +8,8 @@ import './sass-admin/index.scss';
  */
 import './js-admin';
 
+/**
+ * Block extensions
+ */
+import './blocks-extension';
+

@@ -1,0 +1,17 @@
+@import "../settings";
+
+// ── core/columns — Stack on tablet ───────────────────────────────────────────
+//
+// When the "Stack on tablet" toggle is on, columns stay vertically stacked
+// up to the large breakpoint (1024px), overriding WP's default 782px switch.
+
+.wp-block-columns.is-stacked-on-tablet {
+	@media (max-width: #{map-get($breakpoints, large) - 1px}) {
+		flex-wrap: wrap;
+
+		> .wp-block-column {
+			flex-basis: 100% !important;
+			max-width: 100% !important;
+		}
+	}
+}

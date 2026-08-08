@@ -28,20 +28,27 @@ All patterns live in `wp-content/themes/chairforce/patterns/{slug}.php`.
 
 ## Rules before writing any pattern
 
-### 1. `metadata` — keep `name` on root block, strip from inner blocks
+### 1. `metadata` — root block vs inner blocks
 
-The editor adds `"metadata":{...}` to block JSON attrs.
-
-- **Root block** (the outermost wrapper of the pattern): keep `metadata.name` if present — it labels the block in the editor. Strip `metadata.categories`.
-- **All inner/nested blocks**: strip `metadata` entirely.
+- **Root block**: keep `metadata.name`. Add `metadata.patternName` matching the PHP `Slug:`. Strip `metadata.categories`.
+- **All inner blocks**: strip `metadata` entirely — including any stale `patternName` left from when a sub-pattern was inserted.
 
 ```
-<!-- wp:group {"metadata":{"name":"Section Bulk Order"},"align":"full",...} -->  ← keep name on root
-<!-- wp:group {"metadata":{"categories":["chairforce"],"name":"Info Box — Bar"},...} -->  ← strip entirely from inner
-→ <!-- wp:group {...} -->
+<!-- wp:group {"tagName":"section","metadata":{"name":"Split — Features","patternName":"chairforce/section-split-features"},...} -->  ← root
+<!-- wp:group {"metadata":{"categories":["chairforce"],"patternName":"chairforce/info-box-bar-navy","name":"Info Box — Bar"},...} -->  ← inner → strip entirely
 ```
 
-### 2. Images — use theme assets, never upload URLs
+### 2. Root group — `tagName:"section"` for section patterns
+
+Section-level patterns must use `"tagName":"section"` on the root `core/group` and a matching `<section>` closing tag. Do **not** leave the default `<div>`.
+
+```
+<!-- wp:group {"tagName":"section","metadata":{...},"align":"full",...} -->
+<section class="wp-block-group ...">...</section>
+<!-- /wp:group -->
+```
+
+### 3. Images — use theme assets, never upload URLs
 
 Never leave `https://chairforce-2026.test/wp-content/uploads/...` in a pattern.
 
@@ -51,25 +58,21 @@ Available placeholder images in `assets/images/`:
 - `placeholder-4x3.png` (landscape)
 - `placeholder-16x9.png` (wide)
 
-Use `get_theme_file_uri()` in the img src. Do NOT add `class="size-full"` to pattern placeholder images:
-
 ```php
 <img src="<?php echo esc_url( get_theme_file_uri( 'assets/images/placeholder.png' ) ); ?>" alt="placeholder"/>
 ```
 
-Also remove `wp-image-{ID}` class from any `<img>` tags.
+Also remove `wp-image-{ID}` class and `class="size-full"` from pattern placeholder `<img>` tags.
 
-### 3. `wp:media-text` — keep `mediaId:0`, strip real IDs
-
-For `wp:media-text` blocks, replace the site-specific `mediaId` with `0` and `mediaLink` with `""`. Keep `linkDestination` and `mediaType` attrs:
+### 4. `wp:media-text` — keep `mediaId:0`, strip real IDs
 
 ```
 <!-- wp:media-text {"align":"wide","mediaPosition":"right","mediaId":0,"mediaLink":"","linkDestination":"none","mediaType":"image","imageFill":false} -->
 ```
 
-### 4. Reuse existing patterns with `wp:pattern`
+### 5. Reuse existing patterns with `wp:pattern`
 
-When a section pattern contains an info-box grid (or any other named sub-pattern), reference it instead of duplicating the markup inline:
+When a section contains an info-box grid or any other named sub-pattern, reference it — never duplicate markup inline:
 
 ```
 <!-- wp:pattern {"slug":"chairforce/info-box-bar-navy"} /-->
@@ -77,7 +80,7 @@ When a section pattern contains an info-box grid (or any other named sub-pattern
 
 Check `patterns/` for existing slugs before inlining block markup.
 
-### 5. Placeholder text standard
+### 6. Placeholder text standard
 
 | Element | Placeholder |
 |---------|-------------|
@@ -86,11 +89,25 @@ Check `patterns/` for existing slugs before inlining block markup.
 | Eyebrow | `Change me please` |
 | Button label | `Change Me` |
 
-Section/wrapper patterns (like a media-text section) may use real sample content to better communicate their purpose.
+Section/wrapper patterns may use real sample content to communicate their purpose.
 
-### 6. Dead class cleanup
+### 7. Dead class cleanup
 
-Remove `is-icon-style-*` from any `className` attrs or rendered `<div class="...">`. This was a removed `iconStyle` attribute from the `chairforce/info-box` block.
+Remove `is-icon-style-*` from any `className` attrs or rendered `<div class="...">`. This was a removed attribute from `chairforce/info-box`.
+
+---
+
+## `chairforce/stat-counter` in patterns
+
+| Counter display | `number` | `suffix` | Notes |
+|-----------------|----------|----------|-------|
+| `50,000+` | `50000` | `+` (default) | comma-formatted |
+| `15k+` | `15` | `k+` | "k" goes in suffix, not in number |
+| `98%` | `98` | `%` | |
+| `7` (no plus) | `7` | `""` | **must** set `"suffix":""` to override the default `+` |
+| `2,500+` | `2500` | `+` (default) | comma-formatted |
+
+Default suffix is `+`. Set `"suffix":""` explicitly whenever the number should stand alone.
 
 ---
 
@@ -131,13 +148,14 @@ When extracting a pattern from this content:
 
 ## Fix checklist for existing pattern files
 
-- [ ] `metadata` on root block: keep `name`, strip `categories`
-- [ ] `metadata` on all inner blocks: stripped entirely
+- [ ] PHP header present: `Title`, `Slug`, `Categories`, `Description`
+- [ ] Root block: `tagName:"section"`, `metadata.name` kept, `metadata.patternName` added, `metadata.categories` stripped
+- [ ] All inner blocks: `metadata` stripped entirely (including stale `patternName`)
 - [ ] No `https://chairforce-2026.test/wp-content/uploads/` URLs
 - [ ] No `is-icon-style-*` dead classes
-- [ ] `wp:media-text`: `mediaId:0`, `mediaLink:""` (not stripped, not site-specific ID)
-- [ ] No `wp-image-{ID}` class on `<img>` tags
-- [ ] No `class="size-full"` on pattern placeholder images
-- [ ] Existing sub-patterns referenced via `wp:pattern` slug, not duplicated inline
+- [ ] `wp:media-text`: `mediaId:0`, `mediaLink:""`
+- [ ] No `wp-image-{ID}` or `class="size-full"` on `<img>` tags
+- [ ] Existing sub-patterns referenced via `wp:pattern` slug, not inlined
 - [ ] Icon blocks have SVG inline (not self-closing)
 - [ ] Locking present on icon block and content group inside info-box
+- [ ] `stat-counter` blocks: `"suffix":""` set explicitly for numbers with no suffix
