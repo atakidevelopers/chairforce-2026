@@ -22,8 +22,8 @@ export default function Edit({ attributes, setAttributes }) {
 		const posts = select(coreStore).getEntityRecords('postType', 'showrooms', {
 			per_page: -1,
 			status: 'publish',
-			orderby: 'menu_order',
-			order: 'asc',
+			orderby: 'date',
+			order: 'desc',
 		});
 
 		if (!posts) {

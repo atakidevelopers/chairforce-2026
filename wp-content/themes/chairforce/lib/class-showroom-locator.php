@@ -97,6 +97,11 @@ class Showroom_Locator {
 				'marker_y' => 43.80,
 				'order'    => 2,
 			],
+			'northern-territory' => [
+				'marker_x' => 38.80,
+				'marker_y' => 3.50,
+				'order'    => 8,
+			],
 			'victoria'        => [
 				'marker_x' => 64.21,
 				'marker_y' => 80.64,
@@ -146,10 +151,8 @@ class Showroom_Locator {
 				'post_status'            => 'publish',
 				'posts_per_page'         => -1,
 				'no_found_rows'          => true,
-				'orderby'                => [
-					'menu_order' => 'ASC',
-					'title'      => 'ASC',
-				],
+				'orderby'                => 'date',
+				'order'                  => 'DESC',
 				'update_post_meta_cache' => true,
 				'update_post_term_cache' => true,
 			]
