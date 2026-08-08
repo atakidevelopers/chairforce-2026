@@ -11,9 +11,9 @@
   }
 }
 
-
-//.is-layout-constrained > :where(:not(.alignleft):not(.alignright):not(.alignfull)) {
-//  :where(.wp-block-group.is-layout-grid){
-//    max-width: unset;
-//  }
-//}
+// Keep it! Added to fix the Editor and Frontend when the Group (set as Grid) is added.
+.is-layout-constrained > :where(:not(.alignleft):not(.alignright):not(.alignfull)) {
+  :where(.wp-block-group.is-layout-grid){
+    max-width: unset;
+  }
+}
