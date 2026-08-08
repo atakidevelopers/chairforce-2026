@@ -7,7 +7,7 @@
  * Keywords: contact, support, dark, cards, centered, help
  */
 ?>
-<!-- wp:group {"metadata":{"categories":["chairforce"],"name":"Info Box — Contact (Dark Cards)"},"align":"wide","layout":{"type":"grid","columnCount":3,"minimumColumnWidth":"20rem"}} -->
+<!-- wp:group {"align":"wide","layout":{"type":"grid","columnCount":3,"minimumColumnWidth":"20rem"}} -->
 <div class="wp-block-group alignwide"><!-- wp:chairforce/info-box {"iconPosition":"top","layout":{"type":"flex","orientation":"vertical"},"style":{"spacing":{"padding":{"top":"var:preset|spacing|large","bottom":"var:preset|spacing|large"}}},"backgroundColor":"background"} -->
     <div class="wp-block-chairforce-info-box is-icon-top is-align-center has-background-background-color has-background" style="padding-top:var(--wp--preset--spacing--large);padding-bottom:var(--wp--preset--spacing--large)"><!-- wp:outermost/icon-block {"iconName":"chairforce-phone","hasNoIconFill":true,"width":"4rem","lock":{"remove":true,"move":true},"className":"is-style-style-6"} -->
         <div class="wp-block-outermost-icon-block is-style-style-6"><div class="icon-container has-no-icon-fill-color" style="width:4rem;transform:rotate(0deg) scaleX(1) scaleY(1)"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384"></path></svg></div></div>

@@ -7,7 +7,7 @@
  * Keywords: features, benefits, list, icons, surface, grey
  */
 ?>
-<!-- wp:group {"metadata":{"categories":["chairforce"],"name":"Info Box — List (Surface Box)"},"style":{"spacing":{"blockGap":"var:preset|spacing|medium"}},"layout":{"type":"flex","orientation":"vertical"}} -->
+<!-- wp:group {"style":{"spacing":{"blockGap":"var:preset|spacing|medium"}},"layout":{"type":"flex","orientation":"vertical"}} -->
 <div class="wp-block-group"><!-- wp:chairforce/info-box {"alignment":"start"} -->
     <div class="wp-block-chairforce-info-box is-icon-left is-align-start"><!-- wp:outermost/icon-block {"iconName":"chairforce-badge-check","hasNoIconFill":true,"lock":{"remove":true,"move":true},"className":"is-style-style-4"} -->
         <div class="wp-block-outermost-icon-block is-style-style-4"><div class="icon-container has-no-icon-fill-color" style="width:48px;transform:rotate(0deg) scaleX(1) scaleY(1)"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z"></path><path d="m9 12 2 2 4-4"></path></svg></div></div>

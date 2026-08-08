@@ -7,7 +7,7 @@
  * Keywords: steps, process, how to, dark, cards, centered, list
  */
 ?>
-<!-- wp:group {"metadata":{"categories":["chairforce"],"name":"Info Box — Steps (Dark Cards)"},"align":"wide","layout":{"type":"grid","columnCount":3,"minimumColumnWidth":"20rem"}} -->
+<!-- wp:group {"align":"wide","layout":{"type":"grid","columnCount":3,"minimumColumnWidth":"20rem"}} -->
 <div class="wp-block-group alignwide"><!-- wp:chairforce/info-box {"iconPosition":"top","layout":{"type":"flex","orientation":"vertical"},"style":{"spacing":{"padding":{"top":"var:preset|spacing|large","bottom":"var:preset|spacing|large"}}},"backgroundColor":"white"} -->
     <div class="wp-block-chairforce-info-box is-icon-top is-align-center has-white-background-color has-background" style="padding-top:var(--wp--preset--spacing--large);padding-bottom:var(--wp--preset--spacing--large)"><!-- wp:outermost/icon-block {"iconName":"chairforce-user","hasNoIconFill":true,"width":"4rem","lock":{"remove":true,"move":true},"className":"is-style-style-6"} -->
         <div class="wp-block-outermost-icon-block is-style-style-6"><div class="icon-container has-no-icon-fill-color" style="width:4rem;transform:rotate(0deg) scaleX(1) scaleY(1)"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg></div></div>

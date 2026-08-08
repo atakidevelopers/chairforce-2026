@@ -7,7 +7,7 @@
  * Keywords: strip, bar, features, icons, red, plain, compact, four
  */
 ?>
-<!-- wp:group {"metadata":{"categories":["chairforce"],"name":"Info Box — Strip (Plain Red)"},"align":"wide","style":{"spacing":{"padding":{"top":"var:preset|spacing|0","bottom":"var:preset|spacing|0"}}},"layout":{"type":"grid","columnCount":4,"minimumColumnWidth":"15rem"}} -->
+<!-- wp:group {"align":"wide","style":{"spacing":{"padding":{"top":"var:preset|spacing|0","bottom":"var:preset|spacing|0"}}},"layout":{"type":"grid","columnCount":4,"minimumColumnWidth":"15rem"}} -->
 <div class="wp-block-group alignwide" style="padding-top:var(--wp--preset--spacing--0);padding-bottom:var(--wp--preset--spacing--0)"><!-- wp:chairforce/info-box -->
     <div class="wp-block-chairforce-info-box is-icon-left is-align-center"><!-- wp:outermost/icon-block {"iconName":"chairforce-shield-check","hasNoIconFill":true,"width":"4rem","lock":{"remove":true,"move":true},"className":"is-style-style-2"} -->
         <div class="wp-block-outermost-icon-block is-style-style-2"><div class="icon-container has-no-icon-fill-color" style="width:4rem;transform:rotate(0deg) scaleX(1) scaleY(1)"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"></path><path d="m9 12 2 2 4-4"></path></svg></div></div>
