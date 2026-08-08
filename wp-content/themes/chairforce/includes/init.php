@@ -33,6 +33,7 @@ require_once get_stylesheet_directory() . '/includes/category-swiper-functions.p
 require_once get_stylesheet_directory() . '/includes/product-cat-swiper-functions.php';
 require_once get_stylesheet_directory() . '/includes/product-cat-banner-functions.php';
 require_once get_stylesheet_directory() . '/includes/product-faqs-functions.php';
+require_once get_stylesheet_directory() . '/includes/showroom-card-functions.php';
 
 /**
  * Register CPTs

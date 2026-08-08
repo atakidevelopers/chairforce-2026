@@ -1,0 +1,53 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "chairforce/showroom-card",
+	"version": "1.0.0",
+	"title": "Showroom Card",
+	"category": "widgets",
+	"description": "Canonical Chairforce showroom card for the current showroom in a Query Loop.",
+	"keywords": ["showroom", "location", "store", "branch", "card"],
+	"textdomain": "chairforce",
+	"icon": "store",
+	"ancestor": ["core/post-template"],
+	"usesContext": ["postId", "postType", "query", "queryId"],
+	"attributes": {
+		"ctaType": {
+			"type": "string",
+			"default": "directions",
+			"enum": ["directions", "learn-more"]
+		},
+		"showImage": {
+			"type": "boolean",
+			"default": true
+		},
+		"showAddress": {
+			"type": "boolean",
+			"default": true
+		},
+		"showTime": {
+			"type": "boolean",
+			"default": true
+		},
+		"showContact": {
+			"type": "boolean",
+			"default": true
+		}
+	},
+	"supports": {
+		"html": false,
+		"inserter": true,
+		"reusable": false,
+		"lock": false,
+		"anchor": true,
+		"align": ["wide", "full"],
+		"spacing": {
+			"margin": true,
+			"padding": true
+		}
+	},
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css",
+	"render": "file:./render.php"
+}

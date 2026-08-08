@@ -1,0 +1,28 @@
+.cf-showroom-card-editor {
+	.cf-showroom-card-editor__placeholder {
+		align-items: center;
+		display: flex;
+		flex-direction: column;
+		gap: var(--wp--preset--spacing--small);
+		justify-content: center;
+		min-height: 8rem;
+		padding: var(--wp--preset--spacing--medium);
+		text-align: center;
+	}
+
+	.cf-showroom-card-editor__placeholder--error {
+		color: var(--wp--preset--color--secondary);
+	}
+
+	.cf-showroom-card-editor__cta-control {
+		.components-button-group {
+			display: flex;
+			width: 100%;
+
+			.components-button {
+				flex: 1 1 50%;
+				justify-content: center;
+			}
+		}
+	}
+}
