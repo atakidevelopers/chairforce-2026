@@ -10,22 +10,31 @@
   @include breakpoint-max(medium) {
     &.is-stacked-on-mobile {
       grid-template-columns: 100% !important;
-      grid-template-rows: auto auto;
 
       .wp-block-media-text__media {
         grid-column: 1;
         grid-row: 1;
       }
 
-      &.has-media-on-the-right .wp-block-media-text__media {
+      .wp-block-media-text__content {
         grid-column: 1;
         grid-row: 2;
+      }
+
+      &.has-media-on-the-right {
+        .wp-block-media-text__media {
+          grid-row: 2;
+        }
+
+        .wp-block-media-text__content {
+          grid-row: 1;
+        }
       }
     }
   }
 
   // Small screens
-  @include breakpoint-max(wp-small) {
+  @include breakpoint-max(medium) {
 
     &.has-background {
       > .wp-block-media-text__content {
