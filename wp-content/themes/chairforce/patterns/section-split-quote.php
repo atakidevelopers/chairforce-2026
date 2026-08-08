@@ -9,8 +9,8 @@
 ?>
 <!-- wp:group {"tagName":"section","metadata":{"name":"Split — Quote"},"align":"full","style":{"spacing":{"padding":{"top":"var:preset|spacing|section-xl","bottom":"var:preset|spacing|section-xl"}}},"backgroundColor":"background","layout":{"type":"constrained"}} -->
 <section class="wp-block-group alignfull has-background-background-color has-background" style="padding-top:var(--wp--preset--spacing--section-xl);padding-bottom:var(--wp--preset--spacing--section-xl)"><!-- wp:media-text {"align":"wide","mediaId":0,"mediaLink":"","linkDestination":"none","mediaType":"image"} -->
-    <div class="wp-block-media-text alignwide is-stacked-on-mobile"><figure class="wp-block-media-text__media"><img src="<?php echo esc_url( get_theme_file_uri( 'assets/images/placeholder-4x3.png' ) ); ?>" alt="placeholder"/></figure><div class="wp-block-media-text__content"><!-- wp:group {"layout":{"type":"constrained"}} -->
-            <div class="wp-block-group"><!-- wp:heading -->
+    <div class="wp-block-media-text alignwide is-stacked-on-mobile"><figure class="wp-block-media-text__media"><img src="<?php echo esc_url( get_theme_file_uri( 'assets/images/placeholder-4x3.png' ) ); ?>" alt="placeholder"/></figure><div class="wp-block-media-text__content"><!-- wp:group {"style":{"spacing":{"padding":{"top":"var:preset|spacing|large","bottom":"var:preset|spacing|large"}}},"layout":{"type":"constrained"}} -->
+            <div class="wp-block-group" style="padding-top:var(--wp--preset--spacing--large);padding-bottom:var(--wp--preset--spacing--large)"><!-- wp:heading -->
                 <h2 class="wp-block-heading">Built on Trust &amp; Quality</h2>
                 <!-- /wp:heading -->
 
