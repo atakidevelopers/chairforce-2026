@@ -1,0 +1,27 @@
+// Stat Counter — editor canvas styles
+//
+// The number span is a static <span> (not a RichText), so we need to
+// give it cursor:default so it doesn't look like a text field.
+// Prefix / suffix are RichText with allowedFormats=[], so they show the
+// standard editable outline on focus.
+
+.wp-block-chairforce-stat-counter {
+
+	//&.is-style-card{
+	//	display: flex;
+	//	flex-direction: column;
+	//	align-items: center;
+	//}
+
+
+	&__number {
+		// Not directly editable — editing is done via the Inspector sidebar.
+		cursor: default;
+		user-select: none;
+	}
+
+	// Dim the placeholder text for prefix/suffix in the editor
+	.rich-text:empty::before {
+		opacity: 0.4;
+	}
+}

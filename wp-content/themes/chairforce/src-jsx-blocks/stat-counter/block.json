@@ -1,0 +1,72 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "chairforce/stat-counter",
+	"version": "1.0.0",
+	"title": "Stat Counter",
+	"category": "design",
+	"icon": "chart-bar",
+	"description": "Animated stat counter with prefix, number, suffix and label. Counts from zero when it enters the viewport.",
+	"keywords": ["counter", "stat", "number", "statistic", "count", "animate", "stats"],
+	"textdomain": "chairforce",
+	"attributes": {
+		"prefix": {
+			"type": "string",
+			"default": ""
+		},
+		"number": {
+			"type": "number",
+			"default": 0
+		},
+		"numberSeparator": {
+			"type": "string",
+			"default": ","
+		},
+		"suffix": {
+			"type": "string",
+			"default": "+"
+		},
+		"label": {
+			"type": "string",
+			"default": ""
+		},
+		"animationDuration": {
+			"type": "number",
+			"default": 2000
+		}
+	},
+	"supports": {
+		"html": false,
+		"anchor": true,
+		"textAlign": true,
+		"color": {
+			"background": true,
+			"text": true,
+			"gradients": true
+		},
+		"typography": {
+			"fontSize": true,
+			"lineHeight": true,
+			"fontFamily": true
+		},
+		"spacing": {
+			"margin": true,
+			"padding": true
+		},
+		"border": {
+			"color": true,
+			"radius": true,
+			"style": true,
+			"width": true
+		},
+		"shadow": true
+	},
+	"styles": [
+		{ "name": "default", "label": "Default", "isDefault": true },
+		{ "name": "card", "label": "Card" }
+	],
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css",
+	"viewScript": "file:./view.js"
+}

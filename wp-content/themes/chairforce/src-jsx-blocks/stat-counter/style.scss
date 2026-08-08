@@ -1,0 +1,68 @@
+@import "../../src/sass/settings";
+@import "../../src/sass/mixins";
+
+// ── Stat Counter — frontend styles ────────────────────────────────────────────
+//
+// Block class: .wp-block-chairforce-stat-counter
+// Children:
+//   __number-row   flex row — prefix, number, suffix sit on the same baseline
+//   __prefix       optional text before the number  (e.g. "$")
+//   __number       the animated count span
+//   __suffix       optional text after  the number  (e.g. "+", "k+", "%")
+//   __label        smaller descriptor below the number row
+//
+// Block styles:
+//   default        bare counter, no background
+//   is-style-card  white card with shadow (Style 2 from Figma)
+
+.wp-block-chairforce-stat-counter {
+  font-size: clamp(26px, 1.496rem + ((1vw - 3.2px) * 0.714), 34px);
+  font-weight: $font-weight-extra-bold;
+  color: $color-primary;
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-xxx-small;
+
+
+  // ── Number row ─────────────────────────────────────────────────────────────
+  // inline-flex so that text-align on the wrapper (has-text-align-center etc.)
+  // centres the row without any extra alignment-specific CSS on our end.
+  &__number-row {
+    display: inline-flex;
+    align-items: baseline;
+    flex-wrap: nowrap;
+    line-height: 1;
+  }
+
+  // ── Number parts — prefix / number / suffix share identical typography ─────
+  // :where() keeps specificity at 0 so WP block-support classes
+  // (has-tertiary-color, has-xxx-large-font-size, etc.) always win.
+  :where(&__prefix, &__number, &__suffix) {
+    line-height: 1;
+  }
+
+  // ── Label ──────────────────────────────────────────────────────────────────
+  &__label {
+    margin: 0;
+    font-family: $font-primary;
+    font-style: normal;
+    font-weight: $font-weight-regular;
+    color: $color-neutral;
+    //opacity: 0.80;
+    font-size: $font-size-small;
+
+    // Strip default paragraph margins that WP injects
+    &.wp-block-chairforce-stat-counter__label {
+      margin-block: 0;
+    }
+  }
+
+  // ── Card style variation ───────────────────────────────────────────────────
+  &.is-style-card {
+    background-color: $color-white;
+    align-items: center;
+    border-radius: $border-radius-small;
+    padding: $spacing-x-small $spacing-large;
+    //box-shadow: $shadow-card;
+  }
+}
