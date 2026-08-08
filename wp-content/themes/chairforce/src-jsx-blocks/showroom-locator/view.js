@@ -1,60 +1,74 @@
+import Swiper from 'swiper';
+import { Autoplay, Navigation, Pagination } from 'swiper/modules';
+
 import {
 	CONTENT_UPDATED_EVENT,
 	delegateOn,
 } from '../../src/js/shared/delegated-events';
 
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+
 const ROOT_SELECTOR = '.wp-block-chairforce-showroom-locator';
 const FILTER_SELECTOR = '.cf-showroom-locator__filter';
-const CARD_SELECTOR = '.cf-showroom-locator__card';
+const SINGLE_PANEL_SELECTOR = '.cf-showroom-locator__panel--single';
+const STATE_PANEL_SELECTOR = '.cf-showroom-locator__panel--state';
 const MARKER_SELECTOR = '.cf-showroom-locator__marker';
 const INIT_FLAG = 'cfShowroomLocatorInitialized';
+const SWIPER_FLAG = 'cfShowroomLocatorSwiper';
 
 /**
- * Activate a showroom location within one locator instance.
- *
- * @param {HTMLElement} root         Locator root element.
- * @param {string}      locationKey  Machine location key.
- * @param {object}      [options]    Optional behavior flags.
+ * @param {HTMLElement} root Locator root.
  */
-function setActiveLocation(root, locationKey, options = {}) {
-	if (!root || !locationKey) {
-		return;
-	}
+function destroySwipers(root) {
+	root.querySelectorAll(STATE_PANEL_SELECTOR).forEach((panel) => {
+		const swiperEl = panel.querySelector('.cf-showroom-locator__swiper');
 
-	const filters = Array.from(root.querySelectorAll(FILTER_SELECTOR));
-	const cards = Array.from(root.querySelectorAll(CARD_SELECTOR));
-	const markers = Array.from(root.querySelectorAll(MARKER_SELECTOR));
+		if (swiperEl?.[SWIPER_FLAG]) {
+			swiperEl[SWIPER_FLAG].destroy(true, true);
+			delete swiperEl[SWIPER_FLAG];
+		}
+	});
+}
 
-	const hasLocation = filters.some(
-		(filter) => filter.dataset.showroomLocation === locationKey
+/**
+ * @param {HTMLElement} root Locator root.
+ */
+function hideAllPanels(root) {
+	root.querySelectorAll(`${SINGLE_PANEL_SELECTOR}, ${STATE_PANEL_SELECTOR}`).forEach(
+		(panel) => {
+			panel.classList.remove('is-active');
+			panel.setAttribute('hidden', '');
+		}
 	);
+}
 
-	if (!hasLocation) {
-		return;
-	}
-
-	filters.forEach((filter) => {
-		const isActive = filter.dataset.showroomLocation === locationKey;
+/**
+ * @param {HTMLElement} root        Locator root.
+ * @param {string}      showroomSlug Active showroom slug.
+ */
+function updateTabs(root, showroomSlug, stateSlug, { highlightState = false } = {}) {
+	root.querySelectorAll(FILTER_SELECTOR).forEach((filter) => {
+		const slug = filter.dataset.showroomSlug;
+		const filterState = filter.dataset.showroomState;
+		const isActive = highlightState
+			? filterState === stateSlug
+			: slug === showroomSlug;
 
 		filter.classList.toggle('is-active', isActive);
 		filter.setAttribute('aria-selected', isActive ? 'true' : 'false');
 		filter.setAttribute('tabindex', isActive ? '0' : '-1');
 	});
+}
 
-	cards.forEach((card) => {
-		const isActive = card.dataset.showroomLocation === locationKey;
-
-		card.classList.toggle('is-active', isActive);
-
-		if (isActive) {
-			card.removeAttribute('hidden');
-		} else {
-			card.setAttribute('hidden', '');
-		}
-	});
-
-	markers.forEach((marker) => {
-		const isActive = marker.dataset.showroomLocation === locationKey;
+/**
+ * @param {HTMLElement} root      Locator root.
+ * @param {string}      stateSlug Active state slug.
+ */
+function updateMarkers(root, stateSlug) {
+	root.querySelectorAll(MARKER_SELECTOR).forEach((marker) => {
+		const isActive = marker.dataset.showroomState === stateSlug;
 
 		marker.classList.toggle('is-active', isActive);
 
@@ -64,56 +78,204 @@ function setActiveLocation(root, locationKey, options = {}) {
 			marker.removeAttribute('aria-current');
 		}
 	});
+}
 
-	root.dataset.activeLocation = locationKey;
+/**
+ * @param {HTMLElement} root Locator root.
+ * @param {string}      slug Showroom slug.
+ * @return {string}
+ */
+function getShowroomState(root, slug) {
+	const filter = root.querySelector(
+		`${FILTER_SELECTOR}[data-showroom-slug="${slug}"]`
+	);
+
+	return filter?.dataset.showroomState || '';
+}
+
+/**
+ * @param {HTMLElement} root      Locator root.
+ * @param {string}      stateSlug State taxonomy slug.
+ * @return {string[]}
+ */
+function getShowroomSlugsForState(root, stateSlug) {
+	return Array.from(
+		root.querySelectorAll(
+			`${FILTER_SELECTOR}[data-showroom-state="${stateSlug}"]`
+		)
+	)
+		.map((filter) => filter.dataset.showroomSlug || '')
+		.filter(Boolean);
+}
+
+/**
+ * @param {HTMLElement} statePanel State swiper panel.
+ * @return {import('swiper').default|null}
+ */
+function initStateSwiper(statePanel) {
+	const swiperEl = statePanel.querySelector('.cf-showroom-locator__swiper');
+
+	if (!swiperEl) {
+		return null;
+	}
+
+	if (swiperEl[SWIPER_FLAG]) {
+		swiperEl[SWIPER_FLAG].update();
+		return swiperEl[SWIPER_FLAG];
+	}
+
+	swiperEl[SWIPER_FLAG] = new Swiper(swiperEl, {
+		modules: [Autoplay, Navigation, Pagination],
+		slidesPerView: 1,
+		spaceBetween: 16,
+		autoplay: {
+			delay: 3000,
+			disableOnInteraction: false,
+			pauseOnMouseEnter: true,
+		},
+		navigation: {
+			prevEl: statePanel.querySelector('.cf-showroom-locator__nav--prev'),
+			nextEl: statePanel.querySelector('.cf-showroom-locator__nav--next'),
+		},
+		pagination: {
+			el: statePanel.querySelector(
+				'.cf-showroom-locator__swiper-controls .swiper-pagination'
+			),
+			clickable: true,
+		},
+	});
+
+	return swiperEl[SWIPER_FLAG];
+}
+
+/**
+ * Activate one showroom tab — single card view.
+ *
+ * @param {HTMLElement} root         Locator root.
+ * @param {string}      showroomSlug Showroom post slug.
+ * @param {object}      [options]    Optional behavior flags.
+ */
+function setActiveShowroom(root, showroomSlug, options = {}) {
+	if (!root || !showroomSlug) {
+		return;
+	}
+
+	const panel = root.querySelector(
+		`${SINGLE_PANEL_SELECTOR}[data-showroom-slug="${showroomSlug}"]`
+	);
+
+	if (!panel) {
+		return;
+	}
+
+	const stateSlug = getShowroomState(root, showroomSlug);
+
+	destroySwipers(root);
+	hideAllPanels(root);
+
+	panel.classList.add('is-active');
+	panel.removeAttribute('hidden');
+
+	updateTabs(root, showroomSlug, stateSlug);
+	updateMarkers(root, stateSlug);
+
+	root.dataset.viewMode = 'single';
+	root.dataset.activeShowroom = showroomSlug;
+	root.dataset.activeState = stateSlug;
 
 	if (options.focusFilter) {
-		const activeFilter = filters.find(
-			(filter) => filter.dataset.showroomLocation === locationKey
-		);
-
-		activeFilter?.focus({ preventScroll: true });
+		root
+			.querySelector(`${FILTER_SELECTOR}[data-showroom-slug="${showroomSlug}"]`)
+			?.focus({ preventScroll: true });
 	}
 }
 
 /**
- * Resolve the initial location for a locator instance.
+ * Activate a state marker — one card or swiper for multiple showrooms.
  *
- * @param {HTMLElement} root Locator root element.
+ * @param {HTMLElement} root      Locator root.
+ * @param {string}      stateSlug State taxonomy slug.
+ * @param {object}      [options] Optional behavior flags.
+ */
+function setActiveState(root, stateSlug, options = {}) {
+	if (!root || !stateSlug) {
+		return;
+	}
+
+	const slugs = getShowroomSlugsForState(root, stateSlug);
+
+	if (!slugs.length) {
+		return;
+	}
+
+	if (slugs.length === 1) {
+		setActiveShowroom(root, slugs[0], options);
+		return;
+	}
+
+	const statePanel = root.querySelector(
+		`${STATE_PANEL_SELECTOR}[data-showroom-state="${stateSlug}"]`
+	);
+
+	if (!statePanel) {
+		setActiveShowroom(root, slugs[0], options);
+		return;
+	}
+
+	destroySwipers(root);
+	hideAllPanels(root);
+
+	statePanel.classList.add('is-active');
+	statePanel.removeAttribute('hidden');
+
+	initStateSwiper(statePanel);
+
+	updateTabs(root, '', stateSlug, { highlightState: true });
+	updateMarkers(root, stateSlug);
+
+	root.dataset.viewMode = 'state';
+	root.dataset.activeState = stateSlug;
+	root.dataset.activeShowroom = slugs[0];
+
+	if (options.focusFilter) {
+		root
+			.querySelector(`${FILTER_SELECTOR}[data-showroom-slug="${slugs[0]}"]`)
+			?.focus({ preventScroll: true });
+	}
+}
+
+/**
+ * @param {HTMLElement} root Locator root.
  * @return {string}
  */
-function resolveInitialLocation(root) {
+function resolveInitialShowroom(root) {
 	const filters = Array.from(root.querySelectorAll(FILTER_SELECTOR));
 
 	if (!filters.length) {
 		return '';
 	}
 
-	const configuredDefault = root.dataset.defaultLocation;
+	const configuredDefault = root.dataset.defaultShowroom;
 	const activeFilter = filters.find((filter) =>
 		filter.classList.contains('is-active')
 	);
 
 	if (
 		configuredDefault &&
-		filters.some(
-			(filter) => filter.dataset.showroomLocation === configuredDefault
-		)
+		filters.some((filter) => filter.dataset.showroomSlug === configuredDefault)
 	) {
 		return configuredDefault;
 	}
 
-	if (activeFilter?.dataset.showroomLocation) {
-		return activeFilter.dataset.showroomLocation;
+	if (activeFilter?.dataset.showroomSlug) {
+		return activeFilter.dataset.showroomSlug;
 	}
 
-	return filters[0].dataset.showroomLocation || '';
+	return filters[0].dataset.showroomSlug || '';
 }
 
 /**
- * Get enabled filters in DOM order.
- *
- * @param {HTMLElement} root Locator root element.
+ * @param {HTMLElement} root Locator root.
  * @return {HTMLElement[]}
  */
 function getFilters(root) {
@@ -121,9 +283,7 @@ function getFilters(root) {
 }
 
 /**
- * Focus and activate the next or previous filter tab.
- *
- * @param {HTMLElement} root      Locator root element.
+ * @param {HTMLElement} root      Locator root.
  * @param {number}      direction 1 for next, -1 for previous.
  */
 function activateAdjacentFilter(root, direction) {
@@ -140,19 +300,17 @@ function activateAdjacentFilter(root, direction) {
 	const nextIndex =
 		(startIndex + direction + filters.length) % filters.length;
 	const nextFilter = filters[nextIndex];
-	const locationKey = nextFilter?.dataset.showroomLocation;
+	const showroomSlug = nextFilter?.dataset.showroomSlug;
 
-	if (!locationKey) {
+	if (!showroomSlug) {
 		return;
 	}
 
-	setActiveLocation(root, locationKey, { focusFilter: true });
+	setActiveShowroom(root, showroomSlug, { focusFilter: true });
 }
 
 /**
- * Initialize one showroom locator instance.
- *
- * @param {HTMLElement} root Locator root element.
+ * @param {HTMLElement} root Locator root.
  */
 function initShowroomLocator(root) {
 	if (!(root instanceof HTMLElement) || root[INIT_FLAG]) {
@@ -161,34 +319,34 @@ function initShowroomLocator(root) {
 
 	root[INIT_FLAG] = true;
 
-	const initialLocation = resolveInitialLocation(root);
+	const initialShowroom = resolveInitialShowroom(root);
 
 	delegateOn(root, 'click', FILTER_SELECTOR, (event, filter) => {
-		const locationKey = filter.dataset.showroomLocation;
+		const showroomSlug = filter.dataset.showroomSlug;
 
-		if (!locationKey) {
+		if (!showroomSlug) {
 			return;
 		}
 
 		event.preventDefault();
-		setActiveLocation(root, locationKey);
+		setActiveShowroom(root, showroomSlug);
 	});
 
 	delegateOn(root, 'click', MARKER_SELECTOR, (event, marker) => {
-		const locationKey = marker.dataset.showroomLocation;
+		const stateSlug = marker.dataset.showroomState;
 
-		if (!locationKey) {
+		if (!stateSlug) {
 			return;
 		}
 
 		event.preventDefault();
-		setActiveLocation(root, locationKey, { focusFilter: true });
+		setActiveState(root, stateSlug, { focusFilter: true });
 	});
 
 	delegateOn(root, 'keydown', FILTER_SELECTOR, (event, filter) => {
-		const locationKey = filter.dataset.showroomLocation;
+		const showroomSlug = filter.dataset.showroomSlug;
 
-		if (!locationKey) {
+		if (!showroomSlug) {
 			return;
 		}
 
@@ -203,43 +361,39 @@ function initShowroomLocator(root) {
 				break;
 			case 'Home': {
 				event.preventDefault();
-				const firstFilter = getFilters(root)[0];
-				const firstKey = firstFilter?.dataset.showroomLocation;
+				const firstSlug = getFilters(root)[0]?.dataset.showroomSlug;
 
-				if (firstKey) {
-					setActiveLocation(root, firstKey, { focusFilter: true });
+				if (firstSlug) {
+					setActiveShowroom(root, firstSlug, { focusFilter: true });
 				}
 				break;
 			}
 			case 'End': {
 				event.preventDefault();
 				const filters = getFilters(root);
-				const lastFilter = filters[filters.length - 1];
-				const lastKey = lastFilter?.dataset.showroomLocation;
+				const lastSlug = filters[filters.length - 1]?.dataset.showroomSlug;
 
-				if (lastKey) {
-					setActiveLocation(root, lastKey, { focusFilter: true });
+				if (lastSlug) {
+					setActiveShowroom(root, lastSlug, { focusFilter: true });
 				}
 				break;
 			}
 			case 'Enter':
 			case ' ':
 				event.preventDefault();
-				setActiveLocation(root, locationKey);
+				setActiveShowroom(root, showroomSlug);
 				break;
 			default:
 				break;
 		}
 	});
 
-	if (initialLocation) {
-		setActiveLocation(root, initialLocation);
+	if (initialShowroom) {
+		setActiveShowroom(root, initialShowroom);
 	}
 }
 
 /**
- * Initialize all uninitialized locator blocks.
- *
  * @param {ParentNode} [scope=document]
  */
 function initShowroomLocators(scope = document) {

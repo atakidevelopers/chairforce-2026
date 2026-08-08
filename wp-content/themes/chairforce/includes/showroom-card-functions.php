@@ -65,6 +65,69 @@ function chairforce_get_showroom_card_blocks_markup( array $args = [] ): string 
 }
 
 /**
+ * Enqueue showroom-card block styles when rendered outside a saved post context.
+ *
+ * @return void
+ */
+function chairforce_enqueue_showroom_card_assets(): void {
+	static $enqueued = false;
+
+	if ( $enqueued || ! function_exists( 'register_block_type' ) ) {
+		return;
+	}
+
+	$block_type = \WP_Block_Type_Registry::get_instance()->get_registered( 'chairforce/showroom-card' );
+
+	if ( $block_type && ! empty( $block_type->style ) ) {
+		wp_enqueue_style( $block_type->style );
+	}
+
+	$enqueued = true;
+}
+
+/**
+ * Render a showroom card for a specific post ID via do_blocks().
+ *
+ * @param int                  $post_id Showroom post ID.
+ * @param array<string, mixed> $args    Block attribute overrides.
+ * @return string
+ */
+function chairforce_render_showroom_card_for_post( int $post_id, array $args = [] ): string {
+	if ( $post_id <= 0 || 'showrooms' !== get_post_type( $post_id ) ) {
+		return '';
+	}
+
+	$post = get_post( $post_id );
+
+	if ( ! $post instanceof \WP_Post ) {
+		return '';
+	}
+
+	chairforce_enqueue_showroom_card_assets();
+
+	$previous_post = isset( $GLOBALS['post'] ) && $GLOBALS['post'] instanceof \WP_Post ? $GLOBALS['post'] : null;
+
+	// phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
+	$GLOBALS['post'] = $post;
+	setup_postdata( $post );
+
+	$markup = do_blocks( chairforce_get_showroom_card_blocks_markup( $args ) );
+
+	wp_reset_postdata();
+
+	if ( $previous_post instanceof \WP_Post ) {
+		// phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
+		$GLOBALS['post'] = $previous_post;
+		setup_postdata( $previous_post );
+	} else {
+		// phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
+		$GLOBALS['post'] = null;
+	}
+
+	return $markup;
+}
+
+/**
  * Resolve the showroom post ID for card rendering.
  *
  * Order: block query context → REST SSR query arg → loop global post.
@@ -267,16 +330,20 @@ function chairforce_render_showroom_card( array $attributes, $block = null ): st
 		$wrapper_classes .= ' cf-showroom-card--cta-learn-more';
 	}
 
-	$wrapper_attributes = get_block_wrapper_attributes(
-		[
-			'class' => $wrapper_classes,
-		],
-		$block
-	);
+	if ( $block instanceof \WP_Block ) {
+		$wrapper_attributes = get_block_wrapper_attributes(
+			[
+				'class' => $wrapper_classes,
+			],
+			$block
+		);
+	} else {
+		$wrapper_attributes = 'class="' . esc_attr( $wrapper_classes ) . '"';
+	}
 
 	ob_start();
 	?>
-	<article <?php echo $wrapper_attributes; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?> data-showroom-location="<?php echo esc_attr( $showroom_key ); ?>">
+	<article <?php echo $wrapper_attributes; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?> data-showroom-slug="<?php echo esc_attr( $showroom_key ); ?>" data-showroom-state="<?php echo esc_attr( (string) ( $showroom['state_slug'] ?? '' ) ); ?>">
 		<?php
 		if ( $show_image ) {
 			echo chairforce_render_showroom_card_media( $showroom ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
@@ -323,7 +390,7 @@ function chairforce_render_showroom_card_empty_notice( int $post_id ): string {
 	if ( $post_id > 0 ) {
 		$message = sprintf(
 			/* translators: %d: showroom post ID */
-			__( 'No mapped showroom data for post ID %d. The post must be a published showroom with a supported id meta value.', 'chairforce' ),
+			__( 'No mapped showroom data for post ID %d. The post must be a published showroom assigned to a showroom location.', 'chairforce' ),
 			$post_id
 		);
 	} else {

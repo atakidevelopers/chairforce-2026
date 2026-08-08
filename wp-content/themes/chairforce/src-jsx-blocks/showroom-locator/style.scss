@@ -1,5 +1,7 @@
 @import "../../src/sass/settings";
 @import "../../src/sass/mixins";
+@import "../../src/sass/icon-font/variables";
+@import "../../src/sass/icon-font/mixins";
 
 .wp-block-chairforce-showroom-locator {
 	.cf-showroom-locator__filters {
@@ -23,6 +25,7 @@
 		.wp-block-button__link {
 			border-color: var(--wp--preset--color--outline);
 			border-width: 2px;
+			cursor: pointer;
 			padding-block: 11px;
 			padding-inline: 22px;
 			text-transform: none;
@@ -43,6 +46,9 @@
 	}
 
 	.cf-showroom-locator__filter {
+		appearance: none;
+		font: inherit;
+		text-align: inherit;
 		white-space: nowrap;
 	}
 
@@ -56,122 +62,65 @@
 		min-width: 0;
 	}
 
-	.cf-showroom-locator__card {
-		background: var(--wp--preset--color--background);
-		border: 0;
-		border-radius: 0;
-		display: grid;
-		gap: 0;
+	.cf-showroom-locator__panel {
 		min-width: 0;
-		overflow: hidden;
-		padding: 0;
 
 		&[hidden] {
 			display: none !important;
 		}
 	}
 
-	.cf-showroom-locator__card-media {
-		height: 250px;
+	.cf-showroom-locator__swiper {
+		min-width: 0;
 		overflow: hidden;
-
-		&--placeholder {
-			background: var(--wp--preset--color--background);
-
-			.cf-showroom-locator__card-image {
-				object-fit: contain;
-				padding: var(--wp--preset--spacing--medium);
-			}
-		}
-	}
-
-	.cf-showroom-locator__card-image {
-		display: block;
-		height: 100%;
-		object-fit: cover;
 		width: 100%;
 	}
 
-	.cf-showroom-locator__card-content {
-		display: grid;
-		gap: var(--wp--preset--spacing--small);
-		padding: var(--wp--preset--spacing--large);
-	}
-
-	.cf-showroom-locator__card-title {
-		color: var(--wp--preset--color--heading);
-		margin: 0;
-	}
-
-	.cf-showroom-locator__detail {
+	.cf-showroom-locator__swiper-controls {
 		align-items: center;
-		color: var(--wp--preset--color--body);
-		display: grid;
-		gap: var(--wp--preset--spacing--x-small);
-		grid-template-columns: auto minmax(0, 1fr);
-		min-width: 0;
+		display: flex;
+		gap: $spacing-medium;
+		justify-content: center;
+		margin-block-start: $spacing-medium;
+	}
 
-		.cf-icon-preview {
-			align-self: center;
-			color: var(--wp--preset--color--secondary);
-			flex-shrink: 0;
-			font-size: 1.125rem;
-			line-height: 1;
+	.cf-showroom-locator__nav {
+		align-items: center;
+		background: $color-white;
+		border: 1px solid $color-outline;
+		border-radius: $radius-sm;
+		color: $color-body;
+		cursor: pointer;
+		display: inline-flex;
+		flex-shrink: 0;
+		height: 2.25rem;
+		justify-content: center;
+		padding: 0;
+		width: 2.25rem;
+
+		&::after {
+			content: none;
+		}
+
+		&.swiper-button-disabled {
+			cursor: default;
+			opacity: 0.35;
 		}
 	}
 
-	.cf-showroom-locator__detail-text,
-	.cf-showroom-locator__detail-link {
-		min-width: 0;
-		overflow-wrap: anywhere;
-		word-break: break-word;
+	.cf-showroom-locator__nav--prev {
+		@include cf-icon-before('chevron-left');
 	}
 
-	.cf-showroom-locator__detail-link {
-		color: var(--wp--preset--color--body);
-		text-decoration: none;
-
-		&:focus-visible {
-			outline: 2px solid var(--wp--preset--color--primary);
-			outline-offset: 2px;
-		}
+	.cf-showroom-locator__nav--next {
+		@include cf-icon-before('chevron-right');
 	}
 
-	.cf-showroom-locator__detail--contact {
-		.cf-showroom-locator__contact-line {
-			align-items: center;
-			display: flex;
-			flex-wrap: wrap;
-			gap: var(--wp--preset--spacing--x-small);
-			min-width: 0;
-		}
-
-		.cf-showroom-locator__email-item {
-			align-items: center;
-			display: inline-flex;
-			flex: 0 1 auto;
-			gap: var(--wp--preset--spacing--x-small);
-			min-width: 0;
-
-			.cf-icon-preview {
-				color: var(--wp--preset--color--secondary);
-				flex-shrink: 0;
-				font-size: 1.125rem;
-			}
-		}
-
-		.cf-showroom-locator__detail-link {
-			flex: 0 1 auto;
-			min-width: 0;
-		}
-	}
-
-	.cf-showroom-locator__cta {
-		margin-block-start: var(--wp--preset--spacing--small);
-
-		.wp-block-button__link {
-			text-transform: none;
-		}
+	.cf-showroom-locator__swiper-controls .swiper-pagination {
+		flex: 0 1 auto;
+		margin: 0;
+		position: static;
+		width: auto;
 	}
 
 	.cf-showroom-locator__map {
@@ -196,12 +145,15 @@
 
 	.cf-showroom-locator__marker {
 		align-items: center;
+		background: transparent;
+		border: 0;
+		cursor: pointer;
 		display: flex;
 		height: 3rem;
 		justify-content: center;
 		left: var(--cf-marker-x);
+		padding: 0;
 		position: absolute;
-		text-decoration: none;
 		top: var(--cf-marker-y);
 		transform: translate(-50%, -50%);
 		width: 3rem;
@@ -220,12 +172,12 @@
 		}
 
 		&.is-active > span {
-			background: var(--wp--preset--color--primary);
+			background: $color-secondary;
 			transform: scale(1.35);
 		}
 
 		&:focus-visible {
-			outline: 2px solid var(--wp--preset--color--primary);
+			outline: 2px solid $color-secondary;
 			outline-offset: 2px;
 		}
 	}

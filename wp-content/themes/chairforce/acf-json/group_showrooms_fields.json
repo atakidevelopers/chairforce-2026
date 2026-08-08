@@ -47,16 +47,6 @@
             "new_lines": ""
         },
         {
-            "key": "field_showrooms_map",
-            "label": "Map (check for delete in the futre)",
-            "name": "map",
-            "type": "image",
-            "required": 0,
-            "return_format": "id",
-            "library": "all",
-            "preview_size": "thumbnail"
-        },
-        {
             "key": "field_showrooms_gallery",
             "label": "Showroom Gallery",
             "name": "showroom_gallery",
@@ -66,13 +56,6 @@
             "library": "all",
             "preview_size": "thumbnail",
             "insert": "append"
-        },
-        {
-            "key": "field_showrooms_id",
-            "label": "Id",
-            "name": "id",
-            "type": "text",
-            "required": 0
         }
     ],
     "location": [

@@ -29,7 +29,6 @@ class Showroom_Locator_Full {
 	 * @return string
 	 */
 	public static function render( array $attributes, $block = null ): string {
-		$show_cta          = ! array_key_exists( 'showCta', $attributes ) || (bool) $attributes['showCta'];
 		$requested_default = isset( $attributes['defaultLocation'] )
 			? sanitize_key( (string) $attributes['defaultLocation'] )
 			: 'brisbane';
@@ -45,13 +44,16 @@ class Showroom_Locator_Full {
 			return '';
 		}
 
-		$active_location = self::resolve_default_location( $requested_default, $showrooms );
+		$states       = Showroom_Locator::get_states_with_showrooms( $showrooms );
+		$active_slug  = Showroom_Locator::resolve_default_showroom( $requested_default, $showrooms );
+		$active_state = (string) ( $showrooms[ $active_slug ]['state_slug'] ?? '' );
 
 		$wrapper_attributes = get_block_wrapper_attributes(
 			[
-				'class'                  => self::BLOCK_PREFIX,
-				'data-default-location'  => esc_attr( $active_location ),
-				'data-active-location'   => esc_attr( $active_location ),
+				'class'                => self::BLOCK_PREFIX,
+				'data-default-showroom'  => esc_attr( $active_slug ),
+				'data-active-showroom'   => esc_attr( $active_slug ),
+				'data-active-state'      => esc_attr( $active_state ),
 			],
 			$block
 		);
@@ -61,14 +63,12 @@ class Showroom_Locator_Full {
 		<div <?php echo $wrapper_attributes; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>>
 			<div class="<?php echo esc_attr( self::BLOCK_PREFIX ); ?>__hero">
 				<div class="<?php echo esc_attr( self::BLOCK_PREFIX ); ?>__map">
-					<?php echo Showroom_Locator::render_map_markup( $showrooms, $active_location, self::BLOCK_PREFIX ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+					<?php echo Showroom_Locator::render_map_markup( $states, $active_state, self::BLOCK_PREFIX ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 				</div>
 				<div class="<?php echo esc_attr( self::BLOCK_PREFIX ); ?>__featured" aria-live="polite">
 					<?php
-					echo Showroom_Locator::render_full_card(
-						$showrooms[ $active_location ],
-						$show_cta,
-						self::BLOCK_PREFIX,
+					echo self::render_card_slot(
+						$showrooms[ $active_slug ],
 						'featured',
 						true
 					); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
@@ -77,15 +77,13 @@ class Showroom_Locator_Full {
 			</div>
 			<div class="<?php echo esc_attr( self::BLOCK_PREFIX ); ?>__grid" role="list">
 				<?php
-				foreach ( $showrooms as $key => $showroom ) {
-					if ( $key === $active_location ) {
+				foreach ( $showrooms as $slug => $showroom ) {
+					if ( $slug === $active_slug ) {
 						continue;
 					}
 
-					echo Showroom_Locator::render_full_card(
+					echo self::render_card_slot(
 						$showroom,
-						$show_cta,
-						self::BLOCK_PREFIX,
 						'grid',
 						false
 					); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
@@ -98,24 +96,33 @@ class Showroom_Locator_Full {
 	}
 
 	/**
-	 * Resolve the default active location.
+	 * Render one showroom card slot for the full layout.
 	 *
-	 * @param string                              $requested Default requested by block attributes.
-	 * @param array<string, array<string, mixed>> $showrooms Mapped showrooms.
+	 * @param array<string, mixed> $showroom  Mapped showroom data.
+	 * @param string               $context   featured|grid.
+	 * @param bool                 $is_active Whether the slot is active.
 	 * @return string
 	 */
-	private static function resolve_default_location( string $requested, array $showrooms ): string {
-		if ( isset( $showrooms[ $requested ] ) ) {
-			return $requested;
-		}
+	private static function render_card_slot( array $showroom, string $context, bool $is_active = false ): string {
+		$class_names = self::BLOCK_PREFIX . '__card-slot' . ( $is_active ? ' is-active' : '' );
 
-		if ( isset( $showrooms['brisbane'] ) ) {
-			return 'brisbane';
-		}
+		$markup = sprintf(
+			'<div class="%1$s" data-showroom-slug="%2$s" data-showroom-state="%3$s" data-card-context="%4$s" role="listitem">',
+			esc_attr( $class_names ),
+			esc_attr( (string) $showroom['key'] ),
+			esc_attr( (string) $showroom['state_slug'] ),
+			esc_attr( $context )
+		);
 
-		$keys = array_keys( $showrooms );
+		$markup .= chairforce_render_showroom_card_for_post(
+			(int) $showroom['post_id'],
+			[
+				'ctaType' => 'learn-more',
+			]
+		);
+		$markup .= '</div>';
 
-		return (string) ( $keys[0] ?? 'brisbane' );
+		return $markup;
 	}
 
 	/**
@@ -134,7 +141,7 @@ class Showroom_Locator_Full {
 	 */
 	private static function render_editor_empty_notice(): string {
 		return '<div class="' . esc_attr( self::BLOCK_PREFIX ) . ' ' . esc_attr( self::BLOCK_PREFIX ) . '--empty"><p>' . esc_html__(
-			'No valid mapped showroom posts were found. Each published showroom needs a supported id value (sydney, brisbane, melbourne, adelaide, perth, hobart, or auckland).',
+			'No published showroom posts with a showroom location were found. Assign each showroom to a state in the showroom-locations taxonomy.',
 			'chairforce'
 		) . '</p></div>';
 	}

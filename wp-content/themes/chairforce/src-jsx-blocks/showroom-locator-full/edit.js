@@ -1,11 +1,12 @@
 import { __ } from '@wordpress/i18n';
 import { InspectorControls, useBlockProps } from '@wordpress/block-editor';
+import { store as coreStore } from '@wordpress/core-data';
+import { useSelect } from '@wordpress/data';
 import {
 	Disabled,
 	PanelBody,
 	SelectControl,
 	Spinner,
-	ToggleControl,
 } from '@wordpress/components';
 import ServerSideRender from '@wordpress/server-side-render';
 
@@ -15,7 +16,30 @@ import { LOCATION_OPTIONS } from './constants';
 import './editor.scss';
 
 export default function Edit({ attributes, setAttributes }) {
-	const { defaultLocation, showCta } = attributes;
+	const { defaultLocation } = attributes;
+
+	const showroomOptions = useSelect((select) => {
+		const posts = select(coreStore).getEntityRecords('postType', 'showrooms', {
+			per_page: -1,
+			status: 'publish',
+			orderby: 'menu_order',
+			order: 'asc',
+		});
+
+		if (!posts) {
+			return null;
+		}
+
+		return posts.map((post) => ({
+			label: post.title?.rendered || post.slug,
+			value: post.slug,
+		}));
+	}, []);
+
+	const options =
+		showroomOptions && showroomOptions.length > 0
+			? showroomOptions
+			: LOCATION_OPTIONS;
 
 	const blockProps = useBlockProps({
 		className: 'cf-showroom-locator-full-editor',
@@ -31,15 +55,10 @@ export default function Edit({ attributes, setAttributes }) {
 					<SelectControl
 						label={__('Default showroom', 'chairforce')}
 						value={defaultLocation}
-						options={LOCATION_OPTIONS}
+						options={options}
 						onChange={(value) =>
 							setAttributes({ defaultLocation: value })
 						}
-					/>
-					<ToggleControl
-						label={__('Show showroom CTA', 'chairforce')}
-						checked={showCta}
-						onChange={(value) => setAttributes({ showCta: value })}
 					/>
 				</PanelBody>
 			</InspectorControls>
