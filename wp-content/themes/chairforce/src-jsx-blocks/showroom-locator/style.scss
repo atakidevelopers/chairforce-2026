@@ -7,9 +7,9 @@
 	.cf-showroom-locator__filters {
 		display: flex;
 		flex-wrap: wrap;
-		gap: var(--wp--preset--spacing--small);
+		gap: $spacing-small;
 		justify-content: center;
-		margin-block-end: var(--wp--preset--spacing--xx-large);
+		margin-block-end: $spacing-xx-large;
 	}
 
 	@include breakpoint(large) {
@@ -23,7 +23,7 @@
 		margin: 0;
 
 		.wp-block-button__link {
-			border-color: var(--wp--preset--color--outline);
+			border-color: $color-outline;
 			border-width: 2px;
 			cursor: pointer;
 			padding-block: 11px;
@@ -54,7 +54,7 @@
 
 	.cf-showroom-locator__body {
 		display: grid;
-		gap: var(--wp--preset--spacing--x-large);
+		gap: $spacing-x-large;
 		grid-template-columns: minmax(0, 1fr);
 	}
 
@@ -159,15 +159,15 @@
 		width: 3rem;
 
 		> span {
-			background: var(--wp--preset--color--secondary);
-			border: 3px solid var(--wp--preset--color--white);
+			background: $color-secondary;
+			border: 3px solid $color-white;
 			border-radius: 50%;
-			box-shadow: 0 0 0 1px var(--wp--preset--color--outline);
+			box-shadow: 0 0 0 1px $color-outline;
 			display: block;
 			height: 1.125rem;
 			transition:
-				transform var(--wp--custom--transition--duration, 0.2s) ease,
-				background-color var(--wp--custom--transition--duration, 0.2s) ease;
+				transform $transition,
+				background-color $transition;
 			width: 1.125rem;
 		}
 
@@ -185,7 +185,7 @@
 	@include breakpoint(large) {
 		.cf-showroom-locator__body {
 			align-items: start;
-			gap: var(--wp--preset--spacing--xxx-large);
+			gap: $spacing-xxx-large;
 			grid-template-columns: minmax(0, 9fr) minmax(0, 11fr);
 		}
 
@@ -204,8 +204,8 @@
 }
 
 .cf-showroom-locator--empty {
-	border: 1px dashed var(--wp--preset--color--outline);
-	border-radius: #{$border-radius-md};
-	color: var(--wp--preset--color--body);
-	padding: var(--wp--preset--spacing--large);
+	border: 1px dashed $color-outline;
+	border-radius: $border-radius-md;
+	color: $color-body;
+	padding: $spacing-large;
 }

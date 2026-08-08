@@ -205,7 +205,8 @@ get_posts(showrooms) + get_terms(showroom-locations)
 
 ### Phase H — BatchPress (optional, last)
 
-- [ ] **H1.** Job: `class-normalise-showroom-locator-posts.php` in normalise plugin (`wp-content/plugins/chairforce-woodmart-data-normalise/jobs/`) — pattern: `class-normalise-showroom-gallery.php`
+- [x] **H1.** Job: `class-normalise-showroom-locator-posts.php` in normalise plugin (`wp-content/plugins/chairforce-woodmart-data-normalise/jobs/`) — pattern: `class-normalise-showroom-gallery.php`
+- [x] **H1b.** Report job: `class-report-showroom-locator-posts.php` (read-only preview)
 - [ ] **H2.** `post_title` ← slug only: `sydney` → `Sydney`, `auckland` → `Auckland` (ucwords / hyphen → space; **no suffix**)
 - [ ] **H3.** `menu_order` ← fixed map by **`post_slug`** (locator tab order, legacy Figma):
 

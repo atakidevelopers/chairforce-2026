@@ -4,8 +4,6 @@
 @import "../../src/sass/icon-font/mixins";
 
 .wp-block-chairforce-showroom-locator-full {
-	--cf-showroom-locator-full-gap: var(--wp--preset--spacing--large);
-
 	.cf-showroom-locator-full__hero {
 		display: grid;
 		gap: 0;
@@ -14,17 +12,17 @@
 	}
 
 	.cf-showroom-locator-full__map {
-		background: var(--wp--preset--color--white);
+		background: $color-white;
 		min-width: 0;
-		padding: var(--wp--preset--spacing--section-s);
+		padding: $spacing-section-s;
 
 		@include breakpoint(large) {
-			background: var(--wp--preset--color--background);
+			background: $color-background;
 		}
 	}
 
 	.cf-showroom-locator-full__featured {
-		background: var(--wp--preset--color--white);
+		background: $color-white;
 		display: flex;
 		flex-direction: column;
 		min-width: 0;
@@ -97,9 +95,9 @@
 
 	.cf-showroom-locator-full__grid {
 		display: grid;
-		gap: var(--cf-showroom-locator-full-gap);
+		gap: $spacing-large;
 		grid-template-columns: minmax(0, 1fr);
-		margin-block-start: var(--wp--preset--spacing--x-large);
+		margin-block-start: $spacing-x-large;
 		min-width: 0;
 	}
 
@@ -138,25 +136,25 @@
 		width: 3rem;
 
 		> span {
-			background: var(--wp--preset--color--secondary);
-			border: 3px solid var(--wp--preset--color--white);
+			background: $color-secondary;
+			border: 3px solid $color-white;
 			border-radius: 50%;
-			box-shadow: 0 0 0 1px var(--wp--preset--color--outline);
+			box-shadow: 0 0 0 1px $color-outline;
 			display: block;
 			height: 1.125rem;
 			transition:
-				transform var(--wp--custom--transition--duration, 0.2s) ease,
-				background-color var(--wp--custom--transition--duration, 0.2s) ease;
+				transform $transition,
+				background-color $transition;
 			width: 1.125rem;
 		}
 
 		&.is-active > span {
-			background: var(--wp--preset--color--primary);
+			background: $color-primary;
 			transform: scale(1.35);
 		}
 
 		&:focus-visible {
-			outline: 2px solid var(--wp--preset--color--primary);
+			outline: 2px solid $color-primary;
 			outline-offset: 2px;
 		}
 	}
@@ -168,10 +166,10 @@
 	}
 
 	@include breakpoint(large) {
-		column-gap: var(--cf-showroom-locator-full-gap);
+		column-gap: $spacing-large;
 		display: grid;
 		grid-template-columns: repeat(3, minmax(0, 1fr));
-		row-gap: var(--wp--preset--spacing--x-large);
+		row-gap: $spacing-x-large;
 
 		.cf-showroom-locator-full__hero {
 			display: contents;
@@ -191,7 +189,7 @@
 		}
 
 		.cf-showroom-locator-full__grid {
-			gap: var(--cf-showroom-locator-full-gap);
+			gap: $spacing-large;
 			grid-column: 1 / -1;
 			grid-template-columns: repeat(3, minmax(0, 1fr));
 			margin-block-start: 0;
@@ -206,7 +204,8 @@
 }
 
 .cf-showroom-locator-full--empty {
-	border: 1px dashed var(--wp--preset--color--outline);
-	color: var(--wp--preset--color--body);
-	padding: var(--wp--preset--spacing--large);
+	border: 1px dashed $color-outline;
+	border-radius: $border-radius-md;
+	color: $color-body;
+	padding: $spacing-large;
 }
